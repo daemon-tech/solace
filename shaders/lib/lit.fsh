@@ -83,7 +83,7 @@ void main() {
 	vec3 block = vec3(1.0, 0.56, 0.20) * torch * mix(1.25, 0.40, day * lm.y);
 	vec3 lighting = ambient + sunCol * lb + block + vec3(0.03);
 	// underwater: kelp/seagrass/floor stay readable (light, not black)
-	if (isEyeInWater == 1) lighting = max(lighting, vec3(0.80, 0.92, 1.0) * mix(0.6, 1.0, day));
+	if (isEyeInWater == 1) lighting = max(lighting, vec3(0.62, 0.78, 0.95) * mix(0.6, 1.0, day));
 
 #ifdef FLAT_NORMAL
 	// particles: neutral brightness only, so they never pick up the cool/indigo tint

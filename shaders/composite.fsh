@@ -101,8 +101,8 @@ void main() {
 #ifdef WATER_FOAM
 		// shore foam: solid edge band plus a broken second band
 		float wob = vnoise(uv * vec2(viewWidth, viewHeight) * 0.03 + frameTimeCounter * 0.6) * 0.35;
-		if (behind < 0.75 + wob) col = vec3(0.97, 1.0, 1.0);
-		else if (behind > 1.15 + wob && behind < 1.55 + wob) col = mix(col, vec3(0.94, 0.99, 1.0), 0.80);
+		if (behind < 1.25 + wob) col = vec3(0.97, 1.0, 1.0);
+		else if (behind > 1.75 + wob && behind < 2.25 + wob) col = mix(col, vec3(0.94, 0.99, 1.0), 0.80);
 #endif
 	}
 
@@ -166,9 +166,9 @@ void main() {
 		// light cyan underwater fog, applied after grading so it is not over-saturated.
 		// Sky pixels (seen through the surface) only get a light tint, not full fog.
 		float dist = d0 >= 1.0 ? 12.0 : lin;
-		float f = celBand(clamp(dist / 48.0, 0.0, 1.0), 4) * UNDERWATER_FOG;
-		vec3 uw = mix(vec3(0.20, 0.62, 0.96), vec3(0.05, 0.27, 0.52), f);
-		col = mix(col * vec3(0.70, 0.95, 1.20) + vec3(0.02, 0.08, 0.16), uw, clamp(f * 0.95 + 0.18, 0.0, 0.9));
+		float f = celBand(clamp(dist / 36.0, 0.0, 1.0), 4) * UNDERWATER_FOG;
+		vec3 uw = mix(vec3(0.16, 0.52, 0.90), vec3(0.04, 0.17, 0.42), f);
+		col = mix(col * vec3(0.55, 0.85, 1.15) + vec3(0.0, 0.05, 0.14), uw, clamp(f * 0.95 + 0.18, 0.0, 0.9));
 	}
 	outColor = vec4(clamp(col, 0.0, 1.0), 1.0);
 }
