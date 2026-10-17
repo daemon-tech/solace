@@ -101,8 +101,8 @@ void main() {
 #ifdef WATER_FOAM
 		// shore foam: solid edge band plus a broken second band
 		float wob = vnoise(uv * vec2(viewWidth, viewHeight) * 0.03 + frameTimeCounter * 0.6) * 0.35;
-		if (behind < 1.25 + wob) col = vec3(0.97, 1.0, 1.0);
-		else if (behind > 1.75 + wob && behind < 2.25 + wob) col = mix(col, vec3(0.94, 0.99, 1.0), 0.80);
+		if (behind < 0.95 + wob) col = vec3(0.97, 1.0, 1.0);
+		else if (behind > 1.40 + wob && behind < 1.80 + wob) col = mix(col, vec3(0.94, 0.99, 1.0), 0.80);
 #endif
 	}
 

@@ -29,3 +29,7 @@ Drop the zip into `.minecraft/shaderpacks/` and select it in Iris' shader menu.
 
 ## License
 MIT, see LICENSE.
+- 0.6: crisp 1px silhouette outlines, glow/bloom + atmospheric haze, stronger sunset cast, torch pools, night indigo shift, brighter sand + foam band, brighter cyan water, underwater depth fog.
+- 0.7: brighter indigo night ambient, teal-blue night foliage, stronger dusk lift.
+- 0.8: torch-pool flag keeps torch light warm at night, hue-preserving night shift, brighter lime greens, closer haze, full dusk cast.
+- 0.9 / 0.9.1: deep-blue underwater depth fog, toned kelp, tuned shore foam widths.
