@@ -93,7 +93,7 @@ void main() {
 	if (isFoliage == 1) {
 		// lime-leaning, brighter foliage (#9dc832 direction)
 		float l = luma(col);
-		col = mix(col, vec3(l) * (isEyeInWater == 1 ? vec3(0.55, 1.05, 1.0) : mix(vec3(0.50, 0.78, 1.15), vec3(1.0, 1.28, 0.28) * 1.15, day)), FOLIAGE_LIME * mix(1.0, 1.0 - torch * 0.6, 1.0 - day));
+		col = mix(col, vec3(l) * (isEyeInWater == 1 ? vec3(0.55, 1.05, 1.0) : mix(vec3(0.50, 0.78, 1.15), vec3(1.08, 1.30, 0.22) * 1.18, day)), FOLIAGE_LIME * mix(1.0, 1.0 - torch * 0.6, 1.0 - day));
 	}
 	// warm torch pool painted over the surface (reads orange even on dark green leaves)
 	float pool = torch * (1.0 - day * lm.y);

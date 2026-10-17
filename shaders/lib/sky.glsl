@@ -15,9 +15,9 @@ vec3 celSky(vec3 dir, vec3 sunView, vec3 upView, float rain) {
 	// never turns olive. Top #f5e714 -> orange mid -> horizon #cf861c.
 	float duskW = smoothstep(0.0, 0.6, dusk);
 	vec3 zenBase = zen;
-	zen = mix(zen, vec3(0.961, 0.906, 0.078), duskW);
-	mid = mix(mid, vec3(0.950, 0.640, 0.140), duskW);
-	hor = mix(hor, vec3(0.812, 0.525, 0.110), duskW);
+	zen = mix(zen, vec3(0.965, 0.700, 0.090), duskW);
+	mid = mix(mid, vec3(0.930, 0.500, 0.090), duskW);
+	hor = mix(hor, vec3(0.840, 0.430, 0.070), duskW);
 	// high above the sunset band, return to the normal zenith colour
 	zen = mix(zen, zenBase, duskW * smoothstep(0.45, 0.95, h));
 

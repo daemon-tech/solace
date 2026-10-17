@@ -16,7 +16,7 @@ void main() {
 	vec3 col = celSky(dir, sunPosition, upPosition, rainStrength);
 	// stylized stars: sparse square-ish dots at night, above the horizon
 	vec3 up = safeNormalize(upPosition, vec3(0, 1, 0));
-	float night = clamp(-dot(safeNormalize(sunPosition, up), up) * 4.0, 0.0, 1.0);
+	float night = clamp((-dot(safeNormalize(sunPosition, up), up) - 0.30) * 4.0, 0.0, 1.0);
 	if (night > 0.0 && dot(dir, up) > 0.05) {
 		vec3 cell = floor(dir * 180.0);
 		float h = hash12(cell.xy + cell.z * 37.1);

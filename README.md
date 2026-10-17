@@ -1,4 +1,4 @@
-# Solace (prototype 0.9.1)
+# Solace (prototype 0.9.2)
 
 An original cartoon / cel-shading shaderpack for **Minecraft 26.3** with **Iris 1.11.x + Sodium 0.9.x**.
 All GLSL is written from scratch (MIT). Prototype codename; the final name is not decided.
@@ -33,3 +33,4 @@ MIT, see LICENSE.
 - 0.7: brighter indigo night ambient, teal-blue night foliage, stronger dusk lift.
 - 0.8: torch-pool flag keeps torch light warm at night, hue-preserving night shift, brighter lime greens, closer haze, full dusk cast.
 - 0.9 / 0.9.1: deep-blue underwater depth fog, toned kelp, tuned shore foam widths.
+- 0.9.2: stars only in full night, softer/narrower foam (dimmer at night), more yellow-lime land, deeper orange sunset sky.
