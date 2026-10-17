@@ -25,7 +25,7 @@ vec3 celSky(vec3 dir, vec3 sunView, vec3 upView, float rain) {
 	float t = clamp(h, 0.0, 1.0);
 	t = floor(pow(t, 0.6) * float(SKY_BANDS) + 0.5) / float(SKY_BANDS);
 	vec3 col = t < 0.5 ? mix(hor, mid, t * 2.0) : mix(mid, zen, t * 2.0 - 1.0);
-	if (h < 0.0) col = hor * mix(1.0, 0.6, clamp(-h * 3.0, 0.0, 1.0));
+	if (h < 0.0) col = hor * mix(1.0, 0.92, clamp(-h * 3.0, 0.0, 1.0));
 
 	// banded sun & moon discs with flat halo rings
 	float s = dot(dir, sun);
@@ -34,8 +34,11 @@ vec3 celSky(vec3 dir, vec3 sunView, vec3 upView, float rain) {
 	else if (s > 0.9960) col = mix(col, sunCol, 0.55);
 	else if (s > 0.9880) col = mix(col, sunCol, 0.25);
 	float m = dot(dir, -sun);
-	if (m > 0.9993) col = vec3(0.85, 0.88, 1.0);
-	else if (m > 0.9965) col = mix(col, vec3(0.6, 0.7, 1.0), 0.25);
+	if (m > 0.9993) col = vec3(0.90, 0.92, 1.0);
+	else if (m > 0.9965) col = mix(col, vec3(0.70, 0.78, 1.0), 0.45);
+	else if (m > 0.990) col = mix(col, vec3(0.55, 0.65, 1.0), 0.28);
+	else if (m > 0.975) col = mix(col, vec3(0.45, 0.55, 0.95), 0.16);
+	else if (m > 0.950) col = mix(col, vec3(0.40, 0.50, 0.90), 0.08);
 
 	return mix(col, vec3(luma(col)) * 0.7, rain * 0.6);
 }

@@ -7,7 +7,17 @@
 #define SHADOW_TINT_G 0.43 // [0.34 0.40 0.43 0.48 0.52]
 #define SHADOW_TINT_B 0.54 // [0.44 0.50 0.54 0.62 0.70]
 #define OUTLINES
-//#define OUTLINE_NORMALS // also ink block-grid/normal edges
+#define EDGE_STYLE 1 // [0 1 2] 0 off, 1 soft coloured edges, 2 black ink
+#define SOFT_EDGE_STRENGTH 0.45 // [0.2 0.3 0.45 0.6 0.8]
+#define STYLE 1 // [0 1] 0 Normal (vanilla-like packs), 1 Cartoony
+#if STYLE == 1
+#define STYLE_K 1.0
+#else
+#define STYLE_K 0.55
+#endif
+//#define OUTLINE_NORMALS // inner block edges (normal Sobel)
+#define INNER_STRENGTH 0.40 // [0.2 0.3 0.4 0.55 0.7]
+#define INNER_FADE 48.0 // [24.0 32.0 48.0 64.0 96.0]
 #define OUTLINE_THICKNESS 1.0 // [0.5 1.0 1.5 2.0 3.0]
 #define OUTLINE_STRENGTH 1.0 // [0.25 0.5 0.7 0.85 0.9 1.0]
 #define OUTLINE_R 0.10 // [0.0 0.06 0.10 0.15 0.3 0.5]
@@ -28,6 +38,9 @@
 #define SCENE_TINT 0.6 // [0.0 0.25 0.5 0.6 0.75 1.0]
 #define DUSK_TINT 1.0 // [0.0 0.25 0.5 0.85 1.0]
 #define BLOOM
+#define GODRAYS
+#define GODRAYS_STRENGTH 0.35 // [0.0 0.2 0.35 0.5 0.7]
+#define CANOPY_GLOW 0.12 // [0.0 0.06 0.12 0.2 0.3]
 #define BLOOM_STRENGTH 0.6 // [0.0 0.3 0.6 0.9 1.2]
 #define HAZE 0.22 // [0.0 0.1 0.18 0.22 0.3 0.45]
 #define SAND_BOOST 0.8 // [0.0 0.4 0.8 1.0]

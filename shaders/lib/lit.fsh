@@ -79,7 +79,7 @@ void main() {
 	vec3 sunCol = mix(sunNight, sunDay, day);
 	// torch light: warm orange pool with a sharp-ish falloff
 	// two hard-ish rings: wide pool + bright core
-	float torch = smoothstep(0.22, 0.34, lm.x) * 0.75 + smoothstep(0.55, 0.66, lm.x) * 0.9;
+	float torch = smoothstep(0.14, 0.26, lm.x) * 0.35 + smoothstep(0.38, 0.50, lm.x) * 0.40 + smoothstep(0.62, 0.72, lm.x) * 0.55;
 	vec3 block = vec3(1.0, 0.56, 0.20) * torch * mix(1.25, 0.40, day * lm.y);
 	vec3 lighting = ambient + sunCol * lb + block + vec3(0.03);
 	// underwater: kelp/seagrass/floor stay readable (light, not black)
@@ -93,11 +93,11 @@ void main() {
 	if (isFoliage == 1) {
 		// lime-leaning, brighter foliage (#9dc832 direction)
 		float l = luma(col);
-		col = mix(col, vec3(l) * (isEyeInWater == 1 ? vec3(0.55, 1.05, 1.0) : mix(vec3(0.50, 0.78, 1.15), vec3(1.08, 1.30, 0.22) * 1.18, day)), FOLIAGE_LIME * mix(1.0, 1.0 - torch * 0.6, 1.0 - day));
+		col = mix(col, vec3(l) * (isEyeInWater == 1 ? vec3(0.55, 1.05, 1.0) : mix(vec3(0.50, 0.78, 1.15), vec3(1.08, 1.30, 0.22) * 1.18, day)), FOLIAGE_LIME * STYLE_K * mix(1.0, 1.0 - torch * 0.6, 1.0 - day));
 	}
 	// warm torch pool painted over the surface (reads orange even on dark green leaves)
 	float pool = torch * (1.0 - day * lm.y);
-	col = mix(col, max(col, vec3(luma(albedo.rgb) * 0.6 + 0.35) * vec3(1.0, 0.55, 0.22)), clamp(pool * 0.75, 0.0, 0.85));
+	col = mix(col, vec3(luma(albedo.rgb) * 0.7 + 0.40) * vec3(1.0, 0.52, 0.18), clamp(pool * 0.55, 0.0, 0.6));
 	outColor = vec4(clamp(col, 0.0, 4.0), albedo.a);
 	outFlag = vec4(0.0, clamp(pool, 0.0, 1.0), 0.0, 1.0);
 	outNormal = vec4(n * 0.5 + 0.5, isFoliage == 1 ? 0.5 : 1.0); // alpha 0.5 = foliage flag for outlines

@@ -1,6 +1,7 @@
 #version 330 compatibility
 #include "/lib/settings.glsl"
 #include "/lib/common.glsl"
+#include "/lib/sky.glsl"
 // Solace - stylized turquoise water; other translucents get simple cel lighting.
 uniform sampler2D gtexture;
 uniform mat4 gbufferModelView;
@@ -44,6 +45,9 @@ void main() {
 		vec3 far = vec3(0.10, 0.48, 0.86);       // deeper blue far away
 		vec3 col = mix(base, bright, fres);
 		col = mix(col, far, celBand(smoothstep(24.0, 96.0, length(viewPos)), 3) * 0.45);
+		// banded sky reflection (stronger at grazing angles)
+		vec3 refl = celSky(reflect(-v, n), sunPosition, upPosition, rainStrength);
+		col = mix(col, refl, fres * 0.45);
 		float spec = dot(reflect(-safeNormalize(shadowLightPosition, up), n), v);
 		if (spec > 0.985 && day > 0.4) col = vec3(1.0);
 #ifdef WATER_SPARKLE
@@ -52,7 +56,7 @@ void main() {
 		float sparkle = step(0.80, vnoise(sp)) * step(0.45, vnoise(p * 0.2 + t * 0.07));
 		col = mix(col, vec3(1.0), sparkle * 0.9 * mix(0.4, 1.0, day));
 #endif
-		outColor = vec4(col * mix(light, 1.0, 0.5 * day), mix(0.78, 0.94, fres));
+		outColor = vec4(col * mix(light, 1.0, 0.5 * day), mix(0.62, 0.92, fres));
 		outFlag = vec4(1.0, 0.0, 0.0, 1.0);
 	} else {
 		vec4 albedo = texture(gtexture, texcoord) * vcolor;

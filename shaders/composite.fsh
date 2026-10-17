@@ -25,6 +25,8 @@ uniform float viewHeight;
 uniform float near;
 uniform float far;
 uniform int isEyeInWater;
+uniform mat4 gbufferProjection;
+uniform vec3 moonPosition;
 in vec2 uv;
 /* RENDERTARGETS: 0 */
 layout(location = 0) out vec4 outColor;
@@ -52,30 +54,33 @@ float outlineMask(vec2 c, float centerLin) {
 	vec3 ngx = (nz[2] + 2.0 * nz[5] + nz[8]) - (nz[0] + 2.0 * nz[3] + nz[6]);
 	vec3 ngy = (nz[6] + 2.0 * nz[7] + nz[8]) - (nz[0] + 2.0 * nz[1] + nz[2]);
 	float ne = sqrt(max(dot(ngx, ngx) + dot(ngy, ngy), 0.0));
-#ifdef OUTLINE_NORMALS
-	float e = max(smoothstep(0.25, 0.45, de), smoothstep(1.2, 1.8, ne));
-#else
-	// silhouettes / depth breaks only; normals just reinforce real depth steps
-	// crisp: hard threshold, 1px
+	// silhouettes: crisp 1px on depth breaks
 	float e = step(0.12, de);
 	// leaves: only ink silhouettes against the sky or a big depth jump, not every cut-out hole
 	if (foliage) e *= max(skyN, step(0.6, de));
+	e *= 1.0 - smoothstep(OUTLINE_FADE * 0.6, OUTLINE_FADE, centerLin);
+#ifdef OUTLINE_NORMALS
+	// inner block edges: normal Sobel, lighter ink, near range only, never on leaves
+	if (!foliage) {
+		float inner = step(1.6, ne) * INNER_STRENGTH * (1.0 - smoothstep(INNER_FADE * 0.5, INNER_FADE, centerLin));
+		e = max(e, inner);
+	}
 #endif
-	return e * (1.0 - smoothstep(OUTLINE_FADE * 0.6, OUTLINE_FADE, centerLin));
+	return e;
 }
 
 vec3 grade(vec3 c) {
 	float l = luma(c);
 	// warm/red hues (sand, terracotta) get less saturation boost
 	float warm = clamp((c.r - max(c.g * 0.85, c.b)) * 3.0, 0.0, 1.0);
-	float sat = mix(SATURATION, 1.0 + (SATURATION - 1.0) * (1.0 - WARM_SAT_LIMIT), warm);
+	float sat = mix((SATURATION * STYLE_K + 1.0 - STYLE_K), 1.0 + ((SATURATION * STYLE_K + 1.0 - STYLE_K) - 1.0) * (1.0 - WARM_SAT_LIMIT), warm);
 	c = mix(vec3(l), c, sat);
 	float mx = max(c.r, max(c.g, c.b)), mn = min(c.r, min(c.g, c.b));
 	c = mix(vec3(luma(c)), c, 1.0 + VIBRANCE * (1.0 - clamp(mx - mn, 0.0, 1.0)) * (1.0 - warm * 0.6));
 	// push greens towards lime (#9dc832)
 	float g = clamp((c.g - max(c.r, c.b)) * 4.0, 0.0, 1.0);
-	c.r += (c.g - c.r) * LIME_GREENS * g;
-	c *= 1.0 + 0.30 * g * LIME_GREENS / 0.25; // brighter, glowing greens
+	c.r += (c.g - c.r) * (LIME_GREENS * STYLE_K) * g;
+	c *= 1.0 + 0.30 * g * (LIME_GREENS * STYLE_K) / 0.25; // brighter, glowing greens
 	c *= mix(vec3(1.0), vec3(1.06, 1.0, 0.90), WARMTH * smoothstep(0.2, 0.8, l));
 	// sand-like (pale warm, low sat): brighter and more yellow
 	float sand = smoothstep(0.42, 0.55, l) * step(c.b, c.g * 0.92) * step(c.g, c.r * 1.02) * (1.0 - smoothstep(0.35, 0.5, (c.r - c.b) / max(c.r, 1e-3)));
@@ -115,11 +120,16 @@ void main() {
 		col = mix(col, fogCol, f);
 	}
 #endif
-#ifdef OUTLINES
+#if defined OUTLINES && EDGE_STYLE > 0
 	// no ink underwater (avoids dark rings around bubbles/particles)
 	if (isEyeInWater == 0) {
 		float e = outlineMask(uv, lin);
+		#if EDGE_STYLE == 2
 		col = mix(col, vec3(OUTLINE_R, OUTLINE_G, OUTLINE_B), clamp(e, 0.0, 1.0) * OUTLINE_STRENGTH);
+#else
+		// soft coloured edge: a darker, cooler shade of the surface itself (no black ink)
+		col = mix(col, col * vec3(0.66, 0.70, 0.84), clamp(e, 0.0, 1.0) * SOFT_EDGE_STRENGTH);
+#endif
 	}
 #endif
 	bool sky = d0 >= 1.0;
@@ -138,14 +148,50 @@ void main() {
 			glow += max(s - 0.55, 0.0);
 		}
 		glow /= 12.0;
-		col += glow * BLOOM_STRENGTH * mix(0.5, 1.6, max(duskG, 0.0));
+		col += glow * (BLOOM_STRENGTH * STYLE_K) * mix(0.5, 1.6, max(duskG, 0.0));
 	}
 #endif
+#ifdef GODRAYS
+	// screen-space light shafts: march towards the sun (or moon) and gather open sky
+	{
+		bool useSun = sunHg > -0.05;
+		vec3 lp = useSun ? sunPosition : moonPosition;
+		vec4 sc = gbufferProjection * vec4(lp, 1.0);
+		if (sc.w > 0.0 && isEyeInWater == 0) {
+			vec2 suv = sc.xy / sc.w * 0.5 + 0.5;
+			vec2 dlt = (suv - uv) / 20.0;
+			float acc = 0.0;
+			vec2 p = uv;
+			for (int i = 0; i < 20; i++) {
+				p += dlt;
+				if (any(lessThan(p, vec2(0.0))) || any(greaterThan(p, vec2(1.0)))) break;
+				acc += step(1.0, texture(depthtex0, p).r);
+			}
+			acc /= 20.0;
+			float fall = 1.0 - smoothstep(0.0, 0.85, length((suv - uv) * vec2(viewWidth / viewHeight, 1.0)));
+			vec3 rc = useSun ? mix(vec3(1.0, 0.96, 0.70), vec3(1.0, 0.62, 0.22), duskG) : vec3(0.45, 0.55, 1.0);
+			float str = GODRAYS_STRENGTH * (useSun ? mix(0.55, 1.0, duskG) : 0.35);
+			col += rc * celBand(acc * fall, 4) * str * (sky ? 0.35 : 0.55);
+		}
+	}
+#endif
+	if (!sky && isEyeInWater == 0) {
+		vec2 px2 = 6.0 / vec2(viewWidth, viewHeight);
+		float open = 0.0;
+		for (int i = 0; i < 8; i++) {
+			float a = float(i) * 0.785398;
+			open += step(1.0, texture(depthtex0, uv + vec2(cos(a), sin(a)) * px2).r);
+		}
+		open /= 8.0;
+		bool fol = texture(colortex1, uv).a < 0.75;
+		vec3 glowC = mix(vec3(0.85, 1.0, 0.45), vec3(1.0, 0.70, 0.30), duskG) * dayG + vec3(0.10, 0.14, 0.30) * (1.0 - dayG);
+		col += glowC * open * (fol ? CANOPY_GLOW : CANOPY_GLOW * 0.4);
+	}
 	// warm atmospheric haze with distance (sunset orange, daytime soft yellow-green in forests)
 	if (!sky && isEyeInWater == 0) {
 		float hz = smoothstep(3.0, far * 0.6, lin);
 		vec3 hzc = mix(vec3(0.85, 0.95, 0.55), vec3(1.0, 0.62, 0.22), duskG);
-		col = mix(col, hzc, hz * HAZE * dayG);
+		col = mix(col, hzc, hz * HAZE * STYLE_K * dayG * (1.0 - 0.5 * duskG));
 	}
 	// the sky is authored in its final palette: no grading / scene cast on sky pixels
 	if (!sky) col = grade(col);
