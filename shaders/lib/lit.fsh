@@ -6,6 +6,7 @@ uniform vec3 sunPosition;
 uniform vec3 upPosition;
 uniform float rainStrength;
 uniform vec4 entityColor;
+uniform int isEyeInWater;
 in vec2 texcoord;
 in vec2 lmcoord;
 in vec4 vcolor;
@@ -69,17 +70,19 @@ void main() {
 	// Shadowed areas keep only the cool ambient term (blue, never pink/purple on warm albedo).
 	vec3 ambDay = vec3(SHADOW_TINT_R, SHADOW_TINT_G, SHADOW_TINT_B);
 	vec3 sunDay = max(vec3(1.04, 1.02, 1.0) - ambDay, 0.0); // complement -> neutral sum
-	vec3 ambNight = vec3(0.17, 0.19, 0.40);                 // indigo, never black
-	vec3 sunNight = vec3(0.12, 0.15, 0.30);                 // moonlight
+	vec3 ambNight = vec3(0.30, 0.36, 0.72);                 // indigo, never black
+	vec3 sunNight = vec3(0.16, 0.22, 0.42);                 // moonlight
 	// at dusk the sun is low: lift ambient so foliage doesn't go black
-	float duskLift = 1.0 + 0.6 * clamp(1.0 - abs(dot(safeNormalize(sunPosition, up), up)) * 5.0, 0.0, 1.0);
+	float duskLift = 1.0 + 1.2 * clamp(1.0 - abs(dot(safeNormalize(sunPosition, up), up)) * 5.0, 0.0, 1.0);
 	vec3 ambient = duskLift * mix(ambNight, ambDay, day) * mix(0.55, 1.0, celBand(lm.y, 3)) * AMBIENT_BOOST;
 	vec3 sunCol = mix(sunNight, sunDay, day);
 	// torch light: warm orange pool with a sharp-ish falloff
 	// two hard-ish rings: wide pool + bright core
-	float torch = smoothstep(0.30, 0.42, lm.x) * 0.55 + smoothstep(0.62, 0.72, lm.x) * 0.65;
-	vec3 block = vec3(1.0, 0.58, 0.24) * torch * mix(1.6, 0.45, day * lm.y);
+	float torch = smoothstep(0.22, 0.34, lm.x) * 0.75 + smoothstep(0.55, 0.66, lm.x) * 0.9;
+	vec3 block = vec3(1.0, 0.56, 0.20) * torch * mix(2.2, 0.45, day * lm.y);
 	vec3 lighting = ambient + sunCol * lb + block + vec3(0.03);
+	// underwater: kelp/seagrass/floor stay readable (light, not black)
+	if (isEyeInWater == 1) lighting = max(lighting, vec3(0.80, 0.92, 1.0) * mix(0.6, 1.0, day));
 
 #ifdef FLAT_NORMAL
 	// particles: neutral brightness only, so they never pick up the cool/indigo tint
@@ -89,7 +92,7 @@ void main() {
 	if (isFoliage == 1) {
 		// lime-leaning, brighter foliage (#9dc832 direction)
 		float l = luma(col);
-		col = mix(col, vec3(l) * vec3(0.95, 1.18, 0.40), FOLIAGE_LIME);
+		col = mix(col, vec3(l) * (isEyeInWater == 1 ? vec3(0.55, 1.05, 1.0) : mix(vec3(0.50, 0.78, 1.15), vec3(1.0, 1.28, 0.28) * 1.15, day)), FOLIAGE_LIME * mix(1.0, 1.0 - torch * 0.6, 1.0 - day));
 	}
 	outColor = vec4(clamp(col, 0.0, 4.0), albedo.a);
 	outNormal = vec4(n * 0.5 + 0.5, isFoliage == 1 ? 0.5 : 1.0); // alpha 0.5 = foliage flag for outlines

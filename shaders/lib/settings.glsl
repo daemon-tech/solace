@@ -9,23 +9,28 @@
 #define OUTLINES
 //#define OUTLINE_NORMALS // also ink block-grid/normal edges
 #define OUTLINE_THICKNESS 1.0 // [0.5 1.0 1.5 2.0 3.0]
-#define OUTLINE_STRENGTH 0.90 // [0.25 0.5 0.7 0.85 1.0]
+#define OUTLINE_STRENGTH 1.0 // [0.25 0.5 0.7 0.85 0.9 1.0]
 #define OUTLINE_R 0.10 // [0.0 0.06 0.10 0.15 0.3 0.5]
 #define OUTLINE_G 0.10 // [0.0 0.05 0.10 0.15 0.3 0.5]
 #define OUTLINE_B 0.165 // [0.0 0.10 0.165 0.2 0.3 0.5]
 #define OUTLINE_FADE 128.0 // [32.0 64.0 96.0 128.0 160.0 256.0]
 #define AMBIENT_BOOST 1.50 // [1.0 1.15 1.35 1.50 1.7 1.9]
-#define FOLIAGE_LIME 0.45 // [0.0 0.2 0.45 0.6 0.8]
-#define SATURATION 1.25 // [1.0 1.1 1.25 1.4 1.6]
+#define FOLIAGE_LIME 0.60 // [0.0 0.2 0.45 0.60 0.8]
+#define SATURATION 1.35 // [1.0 1.1 1.25 1.35 1.4 1.6]
 #define WARM_SAT_LIMIT 0.55 // [0.0 0.25 0.55 0.8 1.0]
 #define LUMA_CAP 0.86 // [0.76 0.82 0.86 0.92 1.00]
 #define VIBRANCE 0.30 // [0.0 0.15 0.30 0.50 0.75]
-#define LIME_GREENS 0.12 // [0.0 0.06 0.12 0.2 0.35]
+#define LIME_GREENS 0.25 // [0.0 0.06 0.12 0.25 0.35]
 #define WARMTH 0.15 // [0.0 0.08 0.15 0.30 0.45]
 #define WATER_WAVES
 #define WATER_FOAM
 #define WATER_SPARKLE
-#define SCENE_TINT 0.5 // [0.0 0.25 0.5 0.75 1.0]
+#define SCENE_TINT 0.6 // [0.0 0.25 0.5 0.6 0.75 1.0]
+#define DUSK_TINT 0.85 // [0.0 0.25 0.5 0.85 1.0]
+#define BLOOM
+#define BLOOM_STRENGTH 0.6 // [0.0 0.3 0.6 0.9 1.2]
+#define HAZE 0.18 // [0.0 0.1 0.18 0.3 0.45]
+#define SAND_BOOST 0.8 // [0.0 0.4 0.8 1.0]
 #define DISTANCE_FOG
 #define FOG_STRENGTH 0.55 // [0.0 0.25 0.55 0.75 1.0]
 #define UNDERWATER_FOG 0.6 // [0.2 0.4 0.6 0.8 1.0]

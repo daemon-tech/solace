@@ -39,9 +39,9 @@ void main() {
 		vec3 v = safeNormalize(-viewPos, up);
 		// banded fresnel: 4 clearly visible steps
 		float fres = celBand(pow(1.0 - clamp(dot(n, v), 0.0, 1.0), 2.0), 4);
-		vec3 base = vec3(0.200, 0.760, 0.880);   // ~#33c2e0 turquoise
-		vec3 bright = vec3(0.435, 0.863, 0.941); // #6fdcf0
-		vec3 far = vec3(0.09, 0.36, 0.74);       // deeper blue far away
+		vec3 base = vec3(0.180, 0.800, 0.930);   // ~#33c2e0 turquoise
+		vec3 bright = vec3(0.500, 0.920, 0.980); // #6fdcf0
+		vec3 far = vec3(0.10, 0.48, 0.86);       // deeper blue far away
 		vec3 col = mix(base, bright, fres);
 		col = mix(col, far, celBand(smoothstep(24.0, 96.0, length(viewPos)), 3) * 0.45);
 		float spec = dot(reflect(-safeNormalize(shadowLightPosition, up), n), v);
@@ -52,7 +52,7 @@ void main() {
 		float sparkle = step(0.80, vnoise(sp)) * step(0.45, vnoise(p * 0.2 + t * 0.07));
 		col = mix(col, vec3(1.0), sparkle * 0.9 * mix(0.4, 1.0, day));
 #endif
-		outColor = vec4(col * light, mix(0.70, 0.92, fres));
+		outColor = vec4(col * mix(light, 1.0, 0.5 * day), mix(0.78, 0.94, fres));
 		outFlag = vec4(1.0, 0.0, 0.0, 1.0);
 	} else {
 		vec4 albedo = texture(gtexture, texcoord) * vcolor;

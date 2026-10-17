@@ -56,9 +56,10 @@ float outlineMask(vec2 c, float centerLin) {
 	float e = max(smoothstep(0.25, 0.45, de), smoothstep(1.2, 1.8, ne));
 #else
 	// silhouettes / depth breaks only; normals just reinforce real depth steps
-	float e = smoothstep(0.15, 0.30, de) * mix(0.7, 1.0, step(0.6, ne));
-	// leaves: only ink the outer silhouette against the sky, not every cut-out hole
-	if (foliage) e *= skyN;
+	// crisp: hard threshold, 1px
+	float e = step(0.12, de);
+	// leaves: only ink silhouettes against the sky or a big depth jump, not every cut-out hole
+	if (foliage) e *= max(skyN, step(0.6, de));
 #endif
 	return e * (1.0 - smoothstep(OUTLINE_FADE * 0.6, OUTLINE_FADE, centerLin));
 }
@@ -75,6 +76,9 @@ vec3 grade(vec3 c) {
 	float g = clamp((c.g - max(c.r, c.b)) * 4.0, 0.0, 1.0);
 	c.r += (c.g - c.r) * LIME_GREENS * g;
 	c *= mix(vec3(1.0), vec3(1.06, 1.0, 0.90), WARMTH * smoothstep(0.2, 0.8, l));
+	// sand-like (pale warm, low sat): brighter and more yellow
+	float sand = smoothstep(0.42, 0.55, l) * step(c.b, c.g * 0.92) * step(c.g, c.r * 1.02) * (1.0 - smoothstep(0.35, 0.5, (c.r - c.b) / max(c.r, 1e-3)));
+	c = mix(c, c * vec3(1.18, 1.12, 0.78), sand * SAND_BOOST);
 	c = max(c, 0.0);
 	// soft luminance cap: compress highlights above LUMA_CAP
 	float nl = luma(c);
@@ -96,8 +100,8 @@ void main() {
 #ifdef WATER_FOAM
 		// shore foam: solid edge band plus a broken second band
 		float wob = vnoise(uv * vec2(viewWidth, viewHeight) * 0.03 + frameTimeCounter * 0.6) * 0.35;
-		if (behind < 0.40 + wob) col = mix(col, vec3(0.97, 1.0, 1.0), 0.92);
-		else if (behind > 0.80 + wob && behind < 1.10 + wob) col = mix(col, vec3(0.92, 0.98, 1.0), 0.65);
+		if (behind < 0.75 + wob) col = vec3(0.97, 1.0, 1.0);
+		else if (behind > 1.15 + wob && behind < 1.55 + wob) col = mix(col, vec3(0.94, 0.99, 1.0), 0.80);
 #endif
 	}
 
@@ -117,6 +121,30 @@ void main() {
 	}
 #endif
 	bool sky = d0 >= 1.0;
+	float sunHg = dot(safeNormalize(sunPosition, safeNormalize(upPosition, vec3(0,1,0))), safeNormalize(upPosition, vec3(0,1,0)));
+	float duskG = clamp(1.0 - abs(sunHg) * 4.0, 0.0, 1.0);
+	float dayG = dayFactor(sunPosition, upPosition);
+#ifdef BLOOM
+	// cheap glow haze: sparse ring taps of bright pixels
+	{
+		vec3 glow = vec3(0.0);
+		vec2 px = 1.0 / vec2(viewWidth, viewHeight);
+		for (int i = 0; i < 12; i++) {
+			float a = float(i) * 2.39996;
+			float r = (4.0 + float(i) * 2.2);
+			vec3 s = texture(colortex0, uv + vec2(cos(a), sin(a)) * r * px).rgb;
+			glow += max(s - 0.55, 0.0);
+		}
+		glow /= 12.0;
+		col += glow * BLOOM_STRENGTH * mix(0.5, 1.6, max(duskG, 0.0));
+	}
+#endif
+	// warm atmospheric haze with distance (sunset orange, daytime soft yellow-green in forests)
+	if (!sky && isEyeInWater == 0) {
+		float hz = smoothstep(8.0, far * 0.8, lin);
+		vec3 hzc = mix(vec3(0.85, 0.95, 0.55), vec3(1.0, 0.62, 0.22), duskG);
+		col = mix(col, hzc, hz * HAZE * dayG);
+	}
 	// the sky is authored in its final palette: no grading / scene cast on sky pixels
 	if (!sky) col = grade(col);
 	// whole-scene cast: orange at sunset, indigo/purple at night (never black)
@@ -126,8 +154,11 @@ void main() {
 		float dusk = clamp(1.0 - abs(sunH) * 5.0, 0.0, 1.0);
 		float night = clamp(-sunH * 4.0, 0.0, 1.0);
 		if (!sky) {
-			col = mix(col, col * vec3(1.18, 0.98, 0.70) + vec3(0.04, 0.02, 0.0), dusk * SCENE_TINT);
-			col = mix(col, col * vec3(0.85, 0.82, 1.25) + vec3(0.03, 0.02, 0.07), night * SCENE_TINT);
+			col = mix(col, col * vec3(1.30, 0.92, 0.55) + vec3(0.07, 0.03, 0.0), dusk * DUSK_TINT);
+			// night: hue-shift towards indigo but keep warm torch pools warm
+			float warmPix = clamp((col.r - col.b) * 2.5, 0.0, 1.0) * step(0.30, col.r);
+			vec3 ind = vec3(luma(col)) * vec3(0.62, 0.66, 1.45) + vec3(0.03, 0.02, 0.08);
+			col = mix(col, ind, night * SCENE_TINT * (1.0 - warmPix));
 		}
 	}
 	if (isEyeInWater == 1) {
@@ -135,8 +166,8 @@ void main() {
 		// Sky pixels (seen through the surface) only get a light tint, not full fog.
 		float dist = d0 >= 1.0 ? 12.0 : lin;
 		float f = celBand(clamp(dist / 48.0, 0.0, 1.0), 4) * UNDERWATER_FOG;
-		vec3 uw = mix(vec3(0.42, 0.78, 0.90), vec3(0.17, 0.50, 0.66), f);
-		col = mix(col, uw, clamp(f * 0.75 + 0.06, 0.0, 0.7));
+		vec3 uw = mix(vec3(0.20, 0.62, 0.96), vec3(0.05, 0.27, 0.52), f);
+		col = mix(col * vec3(0.70, 0.95, 1.20) + vec3(0.02, 0.08, 0.16), uw, clamp(f * 0.95 + 0.18, 0.0, 0.9));
 	}
 	outColor = vec4(clamp(col, 0.0, 1.0), 1.0);
 }
