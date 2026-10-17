@@ -20,16 +20,16 @@
 #define WARM_SAT_LIMIT 0.55 // [0.0 0.25 0.55 0.8 1.0]
 #define LUMA_CAP 0.86 // [0.76 0.82 0.86 0.92 1.00]
 #define VIBRANCE 0.30 // [0.0 0.15 0.30 0.50 0.75]
-#define LIME_GREENS 0.25 // [0.0 0.06 0.12 0.25 0.35]
+#define LIME_GREENS 0.30 // [0.0 0.06 0.12 0.25 0.30 0.35]
 #define WARMTH 0.15 // [0.0 0.08 0.15 0.30 0.45]
 #define WATER_WAVES
 #define WATER_FOAM
 #define WATER_SPARKLE
 #define SCENE_TINT 0.6 // [0.0 0.25 0.5 0.6 0.75 1.0]
-#define DUSK_TINT 0.85 // [0.0 0.25 0.5 0.85 1.0]
+#define DUSK_TINT 1.0 // [0.0 0.25 0.5 0.85 1.0]
 #define BLOOM
 #define BLOOM_STRENGTH 0.6 // [0.0 0.3 0.6 0.9 1.2]
-#define HAZE 0.18 // [0.0 0.1 0.18 0.3 0.45]
+#define HAZE 0.22 // [0.0 0.1 0.18 0.22 0.3 0.45]
 #define SAND_BOOST 0.8 // [0.0 0.4 0.8 1.0]
 #define DISTANCE_FOG
 #define FOG_STRENGTH 0.55 // [0.0 0.25 0.55 0.75 1.0]

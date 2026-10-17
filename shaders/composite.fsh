@@ -75,6 +75,7 @@ vec3 grade(vec3 c) {
 	// push greens towards lime (#9dc832)
 	float g = clamp((c.g - max(c.r, c.b)) * 4.0, 0.0, 1.0);
 	c.r += (c.g - c.r) * LIME_GREENS * g;
+	c *= 1.0 + 0.30 * g * LIME_GREENS / 0.25; // brighter, glowing greens
 	c *= mix(vec3(1.0), vec3(1.06, 1.0, 0.90), WARMTH * smoothstep(0.2, 0.8, l));
 	// sand-like (pale warm, low sat): brighter and more yellow
 	float sand = smoothstep(0.42, 0.55, l) * step(c.b, c.g * 0.92) * step(c.g, c.r * 1.02) * (1.0 - smoothstep(0.35, 0.5, (c.r - c.b) / max(c.r, 1e-3)));
@@ -141,7 +142,7 @@ void main() {
 #endif
 	// warm atmospheric haze with distance (sunset orange, daytime soft yellow-green in forests)
 	if (!sky && isEyeInWater == 0) {
-		float hz = smoothstep(8.0, far * 0.8, lin);
+		float hz = smoothstep(3.0, far * 0.6, lin);
 		vec3 hzc = mix(vec3(0.85, 0.95, 0.55), vec3(1.0, 0.62, 0.22), duskG);
 		col = mix(col, hzc, hz * HAZE * dayG);
 	}
@@ -156,8 +157,8 @@ void main() {
 		if (!sky) {
 			col = mix(col, col * vec3(1.30, 0.92, 0.55) + vec3(0.07, 0.03, 0.0), dusk * DUSK_TINT);
 			// night: hue-shift towards indigo but keep warm torch pools warm
-			float warmPix = clamp((col.r - col.b) * 2.5, 0.0, 1.0) * step(0.30, col.r);
-			vec3 ind = vec3(luma(col)) * vec3(0.62, 0.66, 1.45) + vec3(0.03, 0.02, 0.08);
+			float warmPix = clamp(texture(colortex2, uv).g * 1.5, 0.0, 1.0);
+			vec3 ind = mix(vec3(luma(col)) * vec3(0.62, 0.70, 1.45), col * vec3(0.70, 0.95, 1.30), 0.5) + vec3(0.03, 0.03, 0.08);
 			col = mix(col, ind, night * SCENE_TINT * (1.0 - warmPix));
 		}
 	}
