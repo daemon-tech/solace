@@ -51,7 +51,7 @@ void main() {
 		col = mix(col, refl, fres * 0.65);
 		// soft wave crest lines drifting across the surface
 		float wv = sin(p.x * 0.55 + p.y * 0.25 + t * 0.9 + vnoise(p * 0.15) * 4.0);
-		col = mix(col, bright * 1.08, step(0.93, wv) * 0.35 * mix(0.4, 1.0, day));
+		col = mix(col, bright * 1.08, step(0.85, wv) * 0.55 * mix(0.4, 1.0, day));
 		float spec = dot(reflect(-safeNormalize(shadowLightPosition, up), n), v);
 		// banded sun glint: warm halo band + white core
 		if (day > 0.3) {

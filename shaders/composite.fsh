@@ -105,17 +105,20 @@ void main() {
 		// clear shallows -> teal -> deep blue-green, in soft bands (bottom visible near shore)
 		float dd = celBand(smoothstep(0.3, 12.0, behind), 4);
 		float wday = dayFactor(sunPosition, upPosition);
-		vec3 shallowC = vec3(0.80, 0.97, 1.0), deepC = mix(vec3(0.05, 0.13, 0.28), vec3(0.22, 0.55, 0.78), wday);
+		vec3 shallowC = vec3(0.80, 0.97, 1.0), deepC = mix(vec3(0.05, 0.13, 0.28), vec3(0.20, 0.50, 0.72), wday);
 		col = mix(col, col * shallowC * 1.12, (1.0 - dd) * 0.45);
 		col = mix(col, deepC, dd * WATER_DEPTH_TINT);
+		// calmer, less saturated water body; highlights keep their brightness
+		float wl = dot(col, vec3(0.299, 0.587, 0.114));
+		col = mix(vec3(wl), col, WATER_SAT) * mix(0.92, 1.25, smoothstep(0.45, 0.8, wl));
 #ifdef WATER_FOAM
 		// shore foam: solid edge band plus a broken second band
 		float wob = vnoise(uv * vec2(viewWidth, viewHeight) * 0.03 + frameTimeCounter * 0.6) * 0.35;
 		float fday = mix(0.45, 1.0, dayFactor(sunPosition, upPosition));
 		// shoreline foam lines: solid edge line + a thinner wavy line pulsing outward
 		float pulse = fract(frameTimeCounter * 0.15);
-		if (behind < 0.30 + wob * 0.5) col = mix(col, vec3(0.97, 1.0, 1.0), 0.90 * fday);
-		else if (abs(behind - (0.75 + pulse * 0.6 + wob)) < 0.07) col = mix(col, vec3(0.94, 0.99, 1.0), 0.65 * fday * (1.0 - pulse));
+		if (behind < 0.45 + wob * 0.5) col = mix(col, vec3(0.98, 1.0, 1.0), 0.95 * fday);
+		else if (abs(behind - (0.75 + pulse * 0.6 + wob)) < 0.13) col = mix(col, vec3(0.96, 1.0, 1.0), 0.85 * fday * (1.0 - 0.6 * pulse));
 #endif
 	}
 
