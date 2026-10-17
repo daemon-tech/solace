@@ -8,6 +8,11 @@
 #define SHADOW_TINT_B 0.54 // [0.44 0.50 0.54 0.62 0.70]
 #define OUTLINES
 #define WATER_SAT 0.62 // [0.5 0.62 0.72 0.85 1.0]
+#define WATER_BRIGHT 1.32 // [1.0 1.15 1.32 1.5]
+#define GROUND_GRADE // grass ground graded toward target hue, flat soft light
+#define GROUND_GRADE_STRENGTH 0.6 // [0.3 0.45 0.6 0.75 0.9]
+#define GRASS_SWAY 0.10 // [0.0 0.05 0.10 0.15]
+#define GRASS_SWAY_SPEED 1.2 // [0.6 1.2 2.0]
 #define WATER_OPACITY 1.0 // [0.6 0.8 1.0 1.2]
 #define WATER_DEPTH_TINT 0.55 // [0.4 0.55 0.7 0.85]
 #define EDGE_STYLE 1 // [0 1 2] 0 off, 1 soft coloured edges, 2 black ink

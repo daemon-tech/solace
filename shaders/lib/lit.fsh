@@ -13,6 +13,8 @@ in vec4 vcolor;
 in vec3 vnormal;
 in vec4 shadowClip;
 flat in int isFoliage;
+in vec3 cwpos;
+uniform float frameTimeCounter;
 /* RENDERTARGETS: 0,1,2 */
 layout(location = 0) out vec4 outColor;
 layout(location = 1) out vec4 outNormal;
@@ -89,7 +91,26 @@ void main() {
 	// particles: neutral brightness only, so they never pick up the cool/indigo tint
 	lighting = vec3(max(mix(0.35, 1.0, lm.y * mix(0.4, 1.0, day)), lm.x));
 #endif
+#ifdef GROUND_GRADE
+	// grass ground: tinted texels (grass top / side overlay) get flat, soft lighting
+	bool grassTex = isFoliage == 2 && vcolor.g > vcolor.b * 1.15 && vcolor.g > vcolor.r * 1.05;
+	if (grassTex) {
+		lb = mix(lb, 1.0, 0.55 * smoothstep(0.1, 0.4, light)); // fewer, softer steps in sun
+		lighting = ambient + sunCol * lb + block + vec3(0.03);
+	}
+#endif
 	vec3 col = albedo.rgb * lighting;
+#ifdef GROUND_GRADE
+	if (grassTex && isEyeInWater == 0) {
+		// pull toward the target grass: hue ~113, S ~0.66, V ~0.73, keep texture detail as luma
+		float gl = luma(col), lf = gl / max(luma(vec3(0.31, 0.73, 0.25)), 1e-3);
+		vec3 target = vec3(0.31, 0.73, 0.25) * mix(0.82, 1.12, clamp(lf, 0.0, 1.0)) * mix(0.45, 1.0, day) * (lb * 0.6 + 0.4);
+		// subtle colour-wave sway: slow lighter bands rolling over the field
+		float wave = sin(dot(cwpos.xz, vec2(0.21, 0.13)) + frameTimeCounter * GRASS_SWAY_SPEED);
+		target *= 1.0 + GRASS_SWAY * smoothstep(0.6, 1.0, wave);
+		col = mix(col, target, GROUND_GRADE_STRENGTH * mix(1.0, 0.4, torch));
+	}
+#endif
 	if (isFoliage == 1) {
 		// lime-leaning, brighter foliage (#9dc832 direction)
 		float l = luma(col);

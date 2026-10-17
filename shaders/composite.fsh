@@ -110,15 +110,19 @@ void main() {
 		col = mix(col, deepC, dd * WATER_DEPTH_TINT);
 		// calmer, less saturated water body; highlights keep their brightness
 		float wl = dot(col, vec3(0.299, 0.587, 0.114));
-		col = mix(vec3(wl), col, WATER_SAT) * mix(0.92, 1.25, smoothstep(0.45, 0.8, wl));
+		col = mix(vec3(wl), col, WATER_SAT) * WATER_BRIGHT;
+		// banded highlights: bright sky/sun glints step up to near-white (widens value range)
+		float hl = luma(col);
+		col = mix(col, mix(col, vec3(0.92, 0.98, 1.0), 0.55), step(0.70, hl));
 #ifdef WATER_FOAM
 		// shore foam: solid edge band plus a broken second band
 		float wob = vnoise(uv * vec2(viewWidth, viewHeight) * 0.03 + frameTimeCounter * 0.6) * 0.35;
 		float fday = mix(0.45, 1.0, dayFactor(sunPosition, upPosition));
 		// shoreline foam lines: solid edge line + a thinner wavy line pulsing outward
 		float pulse = fract(frameTimeCounter * 0.15);
-		if (behind < 0.45 + wob * 0.5) col = mix(col, vec3(0.98, 1.0, 1.0), 0.95 * fday);
-		else if (abs(behind - (0.75 + pulse * 0.6 + wob)) < 0.13) col = mix(col, vec3(0.96, 1.0, 1.0), 0.85 * fday * (1.0 - 0.6 * pulse));
+		if (behind < 0.55 + wob * 0.5) col = mix(col, vec3(0.98, 1.0, 1.0), 0.97 * fday);
+		else if (behind < 0.70 + wob * 0.5) col = mix(col, vec3(0.90, 0.97, 1.0), 0.55 * fday); // soft foam rim
+		else if (abs(behind - (0.75 + pulse * 0.6 + wob)) < 0.16) col = mix(col, vec3(0.97, 1.0, 1.0), 0.90 * fday * (1.0 - 0.6 * pulse));
 #endif
 	}
 
