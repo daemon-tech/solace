@@ -1,4 +1,4 @@
-# Solace (prototype 0.5)
+# Solace (prototype 0.9.1)
 
 An original cartoon / cel-shading shaderpack for **Minecraft 26.3** with **Iris 1.11.x + Sodium 0.9.x**.
 All GLSL is written from scratch (MIT). Prototype codename; the final name is not decided.
