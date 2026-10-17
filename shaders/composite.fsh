@@ -105,7 +105,7 @@ void main() {
 	if (isEyeInWater == 0 && d0 < 1.0) {
 		float day = dayFactor(sunPosition, upPosition);
 		vec3 fogCol = mix(vec3(0.18, 0.20, 0.50), vec3(0.42, 0.72, 0.85), day); // blue-teal
-		float f = celBand(smoothstep(far * 0.25, far, lin), 4) * FOG_STRENGTH;
+		float f = celBand(smoothstep(far * 0.12, far * 0.9, lin), 4) * FOG_STRENGTH;
 		col = mix(col, fogCol, f);
 	}
 #endif
@@ -116,15 +116,19 @@ void main() {
 		col = mix(col, vec3(OUTLINE_R, OUTLINE_G, OUTLINE_B), clamp(e, 0.0, 1.0) * OUTLINE_STRENGTH);
 	}
 #endif
-	col = grade(col);
+	bool sky = d0 >= 1.0;
+	// the sky is authored in its final palette: no grading / scene cast on sky pixels
+	if (!sky) col = grade(col);
 	// whole-scene cast: orange at sunset, indigo/purple at night (never black)
 	{
 		vec3 up = safeNormalize(upPosition, vec3(0, 1, 0));
 		float sunH = dot(safeNormalize(sunPosition, up), up);
 		float dusk = clamp(1.0 - abs(sunH) * 5.0, 0.0, 1.0);
 		float night = clamp(-sunH * 4.0, 0.0, 1.0);
-		col = mix(col, col * vec3(1.18, 0.98, 0.70), dusk * SCENE_TINT);
-		col = mix(col, col * vec3(0.80, 0.78, 1.35) + vec3(0.03, 0.02, 0.07), night * SCENE_TINT);
+		if (!sky) {
+			col = mix(col, col * vec3(1.18, 0.98, 0.70) + vec3(0.04, 0.02, 0.0), dusk * SCENE_TINT);
+			col = mix(col, col * vec3(0.85, 0.82, 1.25) + vec3(0.03, 0.02, 0.07), night * SCENE_TINT);
+		}
 	}
 	if (isEyeInWater == 1) {
 		// light cyan underwater fog, applied after grading so it is not over-saturated.

@@ -15,7 +15,8 @@ void main() {
 	float sunH = dot(safeNormalize(sunPosition, up), up);
 	float day = clamp(sunH * 4.0 + 0.4, 0.0, 1.0);
 	float dusk = clamp(1.0 - abs(sunH) * 5.0, 0.0, 1.0);
-	vec3 top = mix(vec3(0.42, 0.42, 0.75), vec3(1.0), day);
+	// night clouds: dim indigo slabs, only slightly lighter than the night sky
+	vec3 top = mix(vec3(0.17, 0.19, 0.42), vec3(1.0), day);
 	top = mix(top, vec3(1.0, 0.93, 0.62), dusk * 0.8);
 	vec3 side = top * vec3(0.90, 0.93, 1.0);
 	vec3 under = top * vec3(0.74, 0.82, 1.0); // slightly bluish underside

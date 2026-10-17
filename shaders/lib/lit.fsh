@@ -71,11 +71,14 @@ void main() {
 	vec3 sunDay = max(vec3(1.04, 1.02, 1.0) - ambDay, 0.0); // complement -> neutral sum
 	vec3 ambNight = vec3(0.17, 0.19, 0.40);                 // indigo, never black
 	vec3 sunNight = vec3(0.12, 0.15, 0.30);                 // moonlight
-	vec3 ambient = mix(ambNight, ambDay, day) * mix(0.55, 1.0, celBand(lm.y, 3)) * AMBIENT_BOOST;
+	// at dusk the sun is low: lift ambient so foliage doesn't go black
+	float duskLift = 1.0 + 0.6 * clamp(1.0 - abs(dot(safeNormalize(sunPosition, up), up)) * 5.0, 0.0, 1.0);
+	vec3 ambient = duskLift * mix(ambNight, ambDay, day) * mix(0.55, 1.0, celBand(lm.y, 3)) * AMBIENT_BOOST;
 	vec3 sunCol = mix(sunNight, sunDay, day);
 	// torch light: warm orange pool with a sharp-ish falloff
-	float torch = smoothstep(0.45, 0.62, lm.x) * 0.75 + smoothstep(0.75, 0.85, lm.x) * 0.35;
-	vec3 block = vec3(1.0, 0.60, 0.26) * torch * mix(1.35, 0.5, day * lm.y);
+	// two hard-ish rings: wide pool + bright core
+	float torch = smoothstep(0.30, 0.42, lm.x) * 0.55 + smoothstep(0.62, 0.72, lm.x) * 0.65;
+	vec3 block = vec3(1.0, 0.58, 0.24) * torch * mix(1.6, 0.45, day * lm.y);
 	vec3 lighting = ambient + sunCol * lb + block + vec3(0.03);
 
 #ifdef FLAT_NORMAL
