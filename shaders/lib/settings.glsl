@@ -7,6 +7,8 @@
 #define SHADOW_TINT_G 0.43 // [0.34 0.40 0.43 0.48 0.52]
 #define SHADOW_TINT_B 0.54 // [0.44 0.50 0.54 0.62 0.70]
 #define OUTLINES
+#define WATER_OPACITY 1.0 // [0.6 0.8 1.0 1.2]
+#define WATER_DEPTH_TINT 0.55 // [0.4 0.55 0.7 0.85]
 #define EDGE_STYLE 1 // [0 1 2] 0 off, 1 soft coloured edges, 2 black ink
 #define SOFT_EDGE_STRENGTH 0.45 // [0.2 0.3 0.45 0.6 0.8]
 #define STYLE 1 // [0 1] 0 Normal (vanilla-like packs), 1 Cartoony

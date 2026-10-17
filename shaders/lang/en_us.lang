@@ -58,3 +58,5 @@ option.SOFT_EDGE_STRENGTH=Soft Edge Strength
 option.STYLE=Look
 value.STYLE.0=Normal
 value.STYLE.1=Cartoony
+option.WATER_OPACITY=Water Opacity
+option.WATER_DEPTH_TINT=Water Depth Tint

@@ -40,23 +40,31 @@ void main() {
 		vec3 v = safeNormalize(-viewPos, up);
 		// banded fresnel: 4 clearly visible steps
 		float fres = celBand(pow(1.0 - clamp(dot(n, v), 0.0, 1.0), 2.0), 4);
-		vec3 base = vec3(0.180, 0.800, 0.930);   // ~#33c2e0 turquoise
-		vec3 bright = vec3(0.500, 0.920, 0.980); // #6fdcf0
-		vec3 far = vec3(0.10, 0.48, 0.86);       // deeper blue far away
+		// softer teal surface; the depth colour is added in composite (shore -> deep gradient)
+		vec3 base = vec3(0.30, 0.68, 0.85);
+		vec3 bright = vec3(0.62, 0.86, 0.96);
+		vec3 far = vec3(0.18, 0.46, 0.72);
 		vec3 col = mix(base, bright, fres);
 		col = mix(col, far, celBand(smoothstep(24.0, 96.0, length(viewPos)), 3) * 0.45);
 		// banded sky reflection (stronger at grazing angles)
 		vec3 refl = celSky(reflect(-v, n), sunPosition, upPosition, rainStrength);
-		col = mix(col, refl, fres * 0.45);
+		col = mix(col, refl, fres * 0.65);
+		// soft wave crest lines drifting across the surface
+		float wv = sin(p.x * 0.55 + p.y * 0.25 + t * 0.9 + vnoise(p * 0.15) * 4.0);
+		col = mix(col, bright * 1.08, step(0.93, wv) * 0.35 * mix(0.4, 1.0, day));
 		float spec = dot(reflect(-safeNormalize(shadowLightPosition, up), n), v);
-		if (spec > 0.985 && day > 0.4) col = vec3(1.0);
+		// banded sun glint: warm halo band + white core
+		if (day > 0.3) {
+			col = mix(col, vec3(1.0, 0.93, 0.72), step(0.955, spec) * 0.45);
+			if (spec > 0.988) col = vec3(1.0);
+		}
 #ifdef WATER_SPARKLE
 		// white sparkle streaks drifting with the waves
 		vec2 sp = p * vec2(0.8, 3.0) + vec2(t * 0.4, 0.0);
-		float sparkle = step(0.80, vnoise(sp)) * step(0.45, vnoise(p * 0.2 + t * 0.07));
+		float sparkle = step(0.90, vnoise(sp)) * step(0.55, vnoise(p * 0.2 + t * 0.07)) * step(0.80, spec);
 		col = mix(col, vec3(1.0), sparkle * 0.9 * mix(0.4, 1.0, day));
 #endif
-		outColor = vec4(col * mix(light, 1.0, 0.5 * day), mix(0.62, 0.92, fres));
+		outColor = vec4(col * mix(light, 1.0, 0.5 * day), mix(0.30, 0.85, fres) * WATER_OPACITY);
 		outFlag = vec4(1.0, 0.0, 0.0, 1.0);
 	} else {
 		vec4 albedo = texture(gtexture, texcoord) * vcolor;
