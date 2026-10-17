@@ -8,6 +8,9 @@ const int colortex1Format = RGBA8;
 const int colortex2Format = RGBA8;
 const vec4 colortex1ClearColor = vec4(0.5, 0.5, 1.0, 0.0);
 const vec4 colortex2ClearColor = vec4(0.0, 0.0, 0.0, 0.0);
+const bool colortex0Clear = true;
+const bool colortex1Clear = true;
+const bool colortex2Clear = true;
 */
 uniform sampler2D colortex0;
 uniform sampler2D colortex1;
@@ -110,8 +113,10 @@ void main() {
 #endif
 	col = grade(col);
 	if (isEyeInWater == 1) {
-		// light cyan underwater fog, applied after grading so it is not over-saturated
-		float f = celBand(clamp(lin / 48.0, 0.0, 1.0), 4) * UNDERWATER_FOG;
+		// light cyan underwater fog, applied after grading so it is not over-saturated.
+		// Sky pixels (seen through the surface) only get a light tint, not full fog.
+		float dist = d0 >= 1.0 ? 12.0 : lin;
+		float f = celBand(clamp(dist / 48.0, 0.0, 1.0), 4) * UNDERWATER_FOG;
 		vec3 uw = mix(vec3(0.42, 0.78, 0.90), vec3(0.17, 0.50, 0.66), f);
 		col = mix(col, uw, clamp(f * 0.75 + 0.06, 0.0, 0.7));
 	}

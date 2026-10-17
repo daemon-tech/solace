@@ -75,6 +75,10 @@ void main() {
 	vec3 block = vec3(1.0, 0.62, 0.30) * torch * mix(1.0, 0.5, day * lm.y);
 	vec3 lighting = ambient + sunCol * lb + block + vec3(0.03);
 
+#ifdef FLAT_NORMAL
+	// particles: neutral brightness only, so they never pick up the cool/indigo tint
+	lighting = vec3(max(mix(0.35, 1.0, lm.y * mix(0.4, 1.0, day)), lm.x));
+#endif
 	outColor = vec4(clamp(albedo.rgb * lighting, 0.0, 4.0), albedo.a);
 	outNormal = vec4(n * 0.5 + 0.5, 1.0);
 }

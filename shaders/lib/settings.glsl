@@ -29,5 +29,5 @@
 #define SKY_BANDS 6 // [3 4 6 8 12]
 
 const int shadowMapResolution = 1024; // [512 1024 2048]
-const float shadowDistance = 96.0; // [48.0 64.0 96.0 128.0]
+const float shadowDistance = 64.0; // [48.0 64.0 96.0 128.0]
 const float sunPathRotation = -25.0;
