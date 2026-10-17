@@ -34,12 +34,15 @@ float linDepth(float d) { return 2.0 * near * far / max(far + near - (2.0 * d - 
 float outlineMask(vec2 c, float centerLin) {
 	vec2 px = OUTLINE_THICKNESS / vec2(viewWidth, viewHeight);
 	float dz[9]; vec3 nz[9];
+	bool foliage = texture(colortex1, c).a < 0.75;
+	float skyN = 0.0;
 	int k = 0;
 	for (int y = -1; y <= 1; y++)
 	for (int x = -1; x <= 1; x++) {
 		vec2 o = c + vec2(x, y) * px;
 		dz[k] = linDepth(texture(depthtex0, o).r);
 		nz[k] = texture(colortex1, o).xyz * 2.0 - 1.0;
+		skyN = max(skyN, step(1.0, texture(depthtex0, o).r));
 		k++;
 	}
 	// Sobel on linear depth, relative to distance
@@ -53,7 +56,9 @@ float outlineMask(vec2 c, float centerLin) {
 	float e = max(smoothstep(0.25, 0.45, de), smoothstep(1.2, 1.8, ne));
 #else
 	// silhouettes / depth breaks only; normals just reinforce real depth steps
-	float e = smoothstep(0.30, 0.50, de) * mix(0.6, 1.0, step(0.8, ne));
+	float e = smoothstep(0.15, 0.30, de) * mix(0.7, 1.0, step(0.6, ne));
+	// leaves: only ink the outer silhouette against the sky, not every cut-out hole
+	if (foliage) e *= skyN;
 #endif
 	return e * (1.0 - smoothstep(OUTLINE_FADE * 0.6, OUTLINE_FADE, centerLin));
 }
@@ -87,7 +92,7 @@ void main() {
 	if (water && isEyeInWater == 0) {
 		float behind = max(linDepth(texture(depthtex1, uv).r) - lin, 0.0);
 		// deeper water -> banded deeper blue
-		col = mix(col, vec3(0.06, 0.30, 0.66), celBand(smoothstep(1.0, 8.0, behind), 3) * 0.55);
+		col = mix(col, vec3(0.08, 0.42, 0.72), celBand(smoothstep(2.0, 10.0, behind), 3) * 0.35);
 #ifdef WATER_FOAM
 		// shore foam: solid edge band plus a broken second band
 		float wob = vnoise(uv * vec2(viewWidth, viewHeight) * 0.03 + frameTimeCounter * 0.6) * 0.35;
@@ -112,6 +117,15 @@ void main() {
 	}
 #endif
 	col = grade(col);
+	// whole-scene cast: orange at sunset, indigo/purple at night (never black)
+	{
+		vec3 up = safeNormalize(upPosition, vec3(0, 1, 0));
+		float sunH = dot(safeNormalize(sunPosition, up), up);
+		float dusk = clamp(1.0 - abs(sunH) * 5.0, 0.0, 1.0);
+		float night = clamp(-sunH * 4.0, 0.0, 1.0);
+		col = mix(col, col * vec3(1.18, 0.98, 0.70), dusk * SCENE_TINT);
+		col = mix(col, col * vec3(0.80, 0.78, 1.35) + vec3(0.03, 0.02, 0.07), night * SCENE_TINT);
+	}
 	if (isEyeInWater == 1) {
 		// light cyan underwater fog, applied after grading so it is not over-saturated.
 		// Sky pixels (seen through the surface) only get a light tint, not full fog.

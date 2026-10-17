@@ -37,3 +37,6 @@ option.WATER_WAVES=Water Waves
 option.WATER_FOAM=Water Foam
 option.WATER_SPARKLE=Water Sparkles
 option.UNDERWATER_FOG=Underwater Fog Density
+option.AMBIENT_BOOST=Shadow Brightness
+option.FOLIAGE_LIME=Lime Foliage
+option.SCENE_TINT=Sunset/Night Scene Tint

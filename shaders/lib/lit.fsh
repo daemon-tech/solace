@@ -11,6 +11,7 @@ in vec2 lmcoord;
 in vec4 vcolor;
 in vec3 vnormal;
 in vec4 shadowClip;
+flat in int isFoliage;
 /* RENDERTARGETS: 0,1 */
 layout(location = 0) out vec4 outColor;
 layout(location = 1) out vec4 outNormal;
@@ -61,6 +62,8 @@ void main() {
 #endif
 	light *= smoothstep(0.3, 0.7, lm.y) * (1.0 - rainStrength * 0.7);
 	float lb = celBand(light, CEL_BANDS);
+	// foliage: flat fields with a single shadow tone (2 bands)
+	if (isFoliage == 1) lb = step(0.35, light) * 0.9 + 0.1 * lb;
 
 	// Light is white-balanced: ambient + sun ~= neutral white on a fully lit surface.
 	// Shadowed areas keep only the cool ambient term (blue, never pink/purple on warm albedo).
@@ -68,17 +71,23 @@ void main() {
 	vec3 sunDay = max(vec3(1.04, 1.02, 1.0) - ambDay, 0.0); // complement -> neutral sum
 	vec3 ambNight = vec3(0.17, 0.19, 0.40);                 // indigo, never black
 	vec3 sunNight = vec3(0.12, 0.15, 0.30);                 // moonlight
-	vec3 ambient = mix(ambNight, ambDay, day) * mix(0.45, 1.0, celBand(lm.y, 3));
+	vec3 ambient = mix(ambNight, ambDay, day) * mix(0.55, 1.0, celBand(lm.y, 3)) * AMBIENT_BOOST;
 	vec3 sunCol = mix(sunNight, sunDay, day);
 	// torch light: warm orange pool with a sharp-ish falloff
 	float torch = smoothstep(0.45, 0.62, lm.x) * 0.75 + smoothstep(0.75, 0.85, lm.x) * 0.35;
-	vec3 block = vec3(1.0, 0.62, 0.30) * torch * mix(1.0, 0.5, day * lm.y);
+	vec3 block = vec3(1.0, 0.60, 0.26) * torch * mix(1.35, 0.5, day * lm.y);
 	vec3 lighting = ambient + sunCol * lb + block + vec3(0.03);
 
 #ifdef FLAT_NORMAL
 	// particles: neutral brightness only, so they never pick up the cool/indigo tint
 	lighting = vec3(max(mix(0.35, 1.0, lm.y * mix(0.4, 1.0, day)), lm.x));
 #endif
-	outColor = vec4(clamp(albedo.rgb * lighting, 0.0, 4.0), albedo.a);
-	outNormal = vec4(n * 0.5 + 0.5, 1.0);
+	vec3 col = albedo.rgb * lighting;
+	if (isFoliage == 1) {
+		// lime-leaning, brighter foliage (#9dc832 direction)
+		float l = luma(col);
+		col = mix(col, vec3(l) * vec3(0.95, 1.18, 0.40), FOLIAGE_LIME);
+	}
+	outColor = vec4(clamp(col, 0.0, 4.0), albedo.a);
+	outNormal = vec4(n * 0.5 + 0.5, isFoliage == 1 ? 0.5 : 1.0); // alpha 0.5 = foliage flag for outlines
 }

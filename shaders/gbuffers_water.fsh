@@ -39,11 +39,11 @@ void main() {
 		vec3 v = safeNormalize(-viewPos, up);
 		// banded fresnel: 4 clearly visible steps
 		float fres = celBand(pow(1.0 - clamp(dot(n, v), 0.0, 1.0), 2.0), 4);
-		vec3 base = vec3(0.184, 0.710, 0.847);   // #2fb5d8
+		vec3 base = vec3(0.200, 0.760, 0.880);   // ~#33c2e0 turquoise
 		vec3 bright = vec3(0.435, 0.863, 0.941); // #6fdcf0
 		vec3 far = vec3(0.09, 0.36, 0.74);       // deeper blue far away
 		vec3 col = mix(base, bright, fres);
-		col = mix(col, far, celBand(smoothstep(12.0, 72.0, length(viewPos)), 3) * 0.75);
+		col = mix(col, far, celBand(smoothstep(24.0, 96.0, length(viewPos)), 3) * 0.45);
 		float spec = dot(reflect(-safeNormalize(shadowLightPosition, up), n), v);
 		if (spec > 0.985 && day > 0.4) col = vec3(1.0);
 #ifdef WATER_SPARKLE

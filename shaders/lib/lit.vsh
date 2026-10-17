@@ -7,8 +7,11 @@ out vec2 lmcoord;
 out vec4 vcolor;
 out vec3 vnormal;
 out vec4 shadowClip;
+flat out int isFoliage;
+in vec4 mc_Entity;
 void main() {
 	gl_Position = ftransform();
+	isFoliage = int(mc_Entity.x + 0.5) == 10002 ? 1 : 0;
 	texcoord = (gl_TextureMatrix[0] * gl_MultiTexCoord0).xy;
 	lmcoord = (gl_TextureMatrix[1] * gl_MultiTexCoord1).xy;
 	vcolor = gl_Color;

@@ -1,4 +1,4 @@
-# Solace (prototype 0.3.1)
+# Solace (prototype 0.4)
 
 An original cartoon / cel-shading shaderpack for **Minecraft 26.3** with **Iris 1.11.x + Sodium 0.9.x**.
 All GLSL is written from scratch (MIT). Prototype codename; the final name is not decided.
@@ -16,6 +16,7 @@ All GLSL is written from scratch (MIT). Prototype codename; the final name is no
 - Settings menu with LOW / MEDIUM / HIGH profiles
 
 ## Changelog
+- 0.4: visible ~1px depth outlines, brighter cool shadows, flat lime foliage (block.properties 10002), stronger torch pools, orange sunset / indigo night scene cast, more turquoise water (less deep-blue), F1 tip for captures.
 - 0.3.1: underwater fog no longer floods sky pixels (flat cyan sky), explicit buffer clears, particles neutrally lit, default shadow distance 64 for software GL.
 - 0.3: fix global hue bug: lighting was not white-balanced (strong blue-violet ambient added on top of a warm sun turned sand/stone pink-purple); neutral light balance, subtler cool shadows, gentler lime/warmth grading, sunset sky no longer averages to olive, underwater fog after grading, particle alpha cut-off.
 - 0.2: less pink/bright sand (warm-hue saturation limit, luminance cap, saturation 1.25),
