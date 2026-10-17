@@ -38,7 +38,11 @@ float shadowAt(vec4 clip) {
 
 void main() {
 	vec4 albedo = texture(gtexture, texcoord) * vcolor;
+#ifdef FLAT_NORMAL
+	if (albedo.a < 0.3) discard; // particles: drop soft/empty texels (no square halos)
+#else
 	if (albedo.a < 0.1) discard;
+#endif
 	albedo.rgb = mix(albedo.rgb, entityColor.rgb, entityColor.a);
 
 	vec2 lm = clamp((lmcoord - 1.0 / 32.0) * 16.0 / 15.0, 0.0, 1.0);
@@ -58,15 +62,18 @@ void main() {
 	light *= smoothstep(0.3, 0.7, lm.y) * (1.0 - rainStrength * 0.7);
 	float lb = celBand(light, CEL_BANDS);
 
-	// warm sun by day, indigo moonlight at night (never pitch black)
-	vec3 sunCol = mix(vec3(0.30, 0.30, 0.75), vec3(1.05, 0.93, 0.80), day);
-	vec3 tint = vec3(SHADOW_TINT_R, SHADOW_TINT_G, SHADOW_TINT_B);
-	vec3 nightAmb = vec3(0.24, 0.20, 0.55);
-	vec3 ambient = mix(nightAmb, tint * 0.62, day) * mix(0.35, 1.0, celBand(lm.y, 3));
+	// Light is white-balanced: ambient + sun ~= neutral white on a fully lit surface.
+	// Shadowed areas keep only the cool ambient term (blue, never pink/purple on warm albedo).
+	vec3 ambDay = vec3(SHADOW_TINT_R, SHADOW_TINT_G, SHADOW_TINT_B);
+	vec3 sunDay = max(vec3(1.04, 1.02, 1.0) - ambDay, 0.0); // complement -> neutral sum
+	vec3 ambNight = vec3(0.17, 0.19, 0.40);                 // indigo, never black
+	vec3 sunNight = vec3(0.12, 0.15, 0.30);                 // moonlight
+	vec3 ambient = mix(ambNight, ambDay, day) * mix(0.45, 1.0, celBand(lm.y, 3));
+	vec3 sunCol = mix(sunNight, sunDay, day);
 	// torch light: warm orange pool with a sharp-ish falloff
 	float torch = smoothstep(0.45, 0.62, lm.x) * 0.75 + smoothstep(0.75, 0.85, lm.x) * 0.35;
-	vec3 block = vec3(1.0, 0.58, 0.24) * torch;
-	vec3 lighting = ambient + sunCol * lb * 0.72 + block + vec3(0.04, 0.035, 0.08);
+	vec3 block = vec3(1.0, 0.62, 0.30) * torch * mix(1.0, 0.5, day * lm.y);
+	vec3 lighting = ambient + sunCol * lb + block + vec3(0.03);
 
 	outColor = vec4(clamp(albedo.rgb * lighting, 0.0, 4.0), albedo.a);
 	outNormal = vec4(n * 0.5 + 0.5, 1.0);

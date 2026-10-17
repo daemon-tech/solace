@@ -93,14 +93,8 @@ void main() {
 #endif
 	}
 
-	if (isEyeInWater == 1) {
-		// light cyan underwater fog, lower density
-		float f = celBand(clamp(lin / 48.0, 0.0, 1.0), 4) * UNDERWATER_FOG;
-		vec3 uw = mix(vec3(0.44, 0.83, 0.96), vec3(0.16, 0.56, 0.75), f);
-		col = mix(col * vec3(0.85, 1.0, 1.05), uw, clamp(f * 0.85 + 0.08, 0.0, 0.8));
-	}
 #ifdef DISTANCE_FOG
-	else if (d0 < 1.0) {
+	if (isEyeInWater == 0 && d0 < 1.0) {
 		float day = dayFactor(sunPosition, upPosition);
 		vec3 fogCol = mix(vec3(0.18, 0.20, 0.50), vec3(0.42, 0.72, 0.85), day); // blue-teal
 		float f = celBand(smoothstep(far * 0.25, far, lin), 4) * FOG_STRENGTH;
@@ -114,5 +108,12 @@ void main() {
 		col = mix(col, vec3(OUTLINE_R, OUTLINE_G, OUTLINE_B), clamp(e, 0.0, 1.0) * OUTLINE_STRENGTH);
 	}
 #endif
-	outColor = vec4(clamp(grade(col), 0.0, 1.0), 1.0);
+	col = grade(col);
+	if (isEyeInWater == 1) {
+		// light cyan underwater fog, applied after grading so it is not over-saturated
+		float f = celBand(clamp(lin / 48.0, 0.0, 1.0), 4) * UNDERWATER_FOG;
+		vec3 uw = mix(vec3(0.42, 0.78, 0.90), vec3(0.17, 0.50, 0.66), f);
+		col = mix(col, uw, clamp(f * 0.75 + 0.06, 0.0, 0.7));
+	}
+	outColor = vec4(clamp(col, 0.0, 1.0), 1.0);
 }
