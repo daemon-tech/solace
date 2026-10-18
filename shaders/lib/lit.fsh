@@ -163,8 +163,8 @@ void main() {
 	float golden = GOLDEN_HOUR_TINT * day * clamp(1.0 - dot(safeNormalize(sunPosition, up), up) * 3.5, 0.0, 1.0);
 	// torch light: warm orange pool with a sharp-ish falloff
 	// two hard-ish rings: wide pool + bright core
-	float torch = celBand(pow(lm.x, 1.8), 4) * TORCH_STRENGTH; // softer falloff, 4 gentle bands
-	vec3 block = vec3(1.0, 0.76, 0.50) * torch * mix(0.95, 0.35, day * lm.y); // neutral warm
+	float torch = celBandSoft(smoothstep(0.0, 1.0, pow(lm.x, 1.8)), 4, 0.45) * TORCH_STRENGTH; // smooth falloff: no ring at a fixed distance around held/dynamic lights
+	vec3 block = vec3(1.0, 0.76, 0.50) * torch * mix(0.95, 0.15, day * lm.y); // neutral warm
 	// shade twice: fully shadowed (lb=0) and fully lit (lb=1); the real band value blends them, so composite can
 	// re-blend with a smoothed shadow term (soft shadows part 2) without re-running the lighting
 	float lbReal = lb; float pool = 0.0;
@@ -209,7 +209,7 @@ void main() {
 			target *= 1.0 + GRASS_SWAY * smoothstep(0.6, 1.0, wave) * 0.5;
 			// wind sheen: bent grass catches a little more light where a gust passes (subtle, no glow)
 			target *= 1.0 + WIND_SHEEN * windGust(cwpos.xz, frameTimeCounter) * mix(0.4, 1.0, day);
-			col = mix(col, target, GROUND_GRADE_STRENGTH * mix(1.0, 0.4, torch));
+			col = mix(col, target, GROUND_GRADE_STRENGTH * mix(1.0, 0.4, torch * (1.0 - day * lm.y)));
 		}
 	#endif
 #ifdef WET_GROUND

@@ -3,6 +3,12 @@
 Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All Rights Reserved.
 All builds tested in the real client with screenshots.
 
+## 0.22.1-dev – 2026-10-18 (prerelease)
+Fix release.
+
+**Fixed**
+- A brighter band on the ground in a ring a few blocks around the player. It came from the light of held items and other dynamic lights: block light used hard steps, and the grass colouring switched off inside that light even in full daylight. Block light now falls off smoothly, its daytime brightening is much weaker, and the grass colouring only eases off for torch light at night. Lanterns and torches still light the ground at night, with a soft edge instead of a ring.
+
 ## 0.22-dev – 2026-10-18 (prerelease)
 Sign-off release for light, atmosphere, weather and foliage. Outlines and cel bands unchanged.
 
