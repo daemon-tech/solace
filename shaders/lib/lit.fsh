@@ -95,7 +95,7 @@ void main() {
 	// torch light: warm orange pool with a sharp-ish falloff
 	// two hard-ish rings: wide pool + bright core
 	float torch = celBand(pow(lm.x, 1.8), 4) * TORCH_STRENGTH; // softer falloff, 4 gentle bands
-	vec3 block = vec3(1.0, 0.78, 0.55) * torch * mix(0.95, 0.35, day * lm.y); // neutral warm
+	vec3 block = vec3(1.0, 0.76, 0.50) * torch * mix(0.95, 0.35, day * lm.y); // neutral warm
 	vec3 lighting = ambient + sunCol * lb + block + vec3(0.03);
 	// underwater: kelp/seagrass/floor stay readable (light, not black)
 	if (isEyeInWater == 1) lighting = max(lighting, vec3(0.62, 0.78, 0.95) * mix(0.6, 1.0, day));

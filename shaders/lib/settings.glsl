@@ -16,7 +16,7 @@
 #define HIDE_LEAF_LITTER // leaf litter specks off (smooth even ground)
 #define GRASS_SWAY 0.10 // [0.0 0.05 0.10 0.15]
 #define GRASS_SWAY_SPEED 1.2 // [0.6 1.2 2.0]
-#define TORCH_STRENGTH 0.75 // [0.5 0.6 0.75 0.9 1.0]
+#define TORCH_STRENGTH 0.9 // [0.5 0.6 0.75 0.9 1.0]
 #define SOFT_CLOUDS // puffy cel-shaded clouds instead of blocky vanilla clouds
 #define CLOUD_COVER 0.5 // [0.2 0.35 0.5 0.65 0.8]
 #define WAVING_FOLIAGE // gentle wind sway for leaves and plants
