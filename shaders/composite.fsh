@@ -150,16 +150,19 @@ void main() {
 		vec2 wxz = (mat3(gbufferModelViewInverse) * wv).xz + mod(cameraPosition.xz, 4096.0);
 		float dd = celBand(smoothstep(0.3, 14.0 * mix(0.8, 1.4, WATER_CLARITY * 0.5), behind), 4);
 		vec3 shoreC = vec3(0.80, 0.98, 0.96);
-		vec3 midC = vec3(0.38, 0.84, 0.88);
-		vec3 deepC = vec3(0.14, 0.54, 0.68);
+		vec3 midC = vec3(0.32, 0.80, 0.86);
+		vec3 deepC = vec3(0.09, 0.42, 0.60); // deeper end of the shallow-to-deep gradient
 		midC = mix(midC, vec3(0.34, 0.60, 0.46), bSwamp * BIOME_MOOD);
 		deepC = mix(deepC, vec3(0.16, 0.36, 0.30), bSwamp * BIOME_MOOD);
 		// night: same hues, darker and bluer (never navy-black)
 		vec3 nightK = mix(vec3(0.30, 0.40, 0.64), vec3(1.0), wday);
 		vec3 wc = (dd < 0.5 ? mix(shoreC, midC, dd * 2.0) : mix(midC, deepC, dd * 2.0 - 1.0)) * nightK;
+		// falling / sloped water (normal not up): keep the surface's white flow streaks readable
+		vec3 nV = texture(colortex1, uv).xyz * 2.0 - 1.0;
+		float fall = smoothstep(0.3, 0.6, 1.0 - abs(dot(safeNormalize(nV, vec3(0, 1, 0)), safeNormalize(upPosition, vec3(0, 1, 0)))));
 		float farF = smoothstep(24.0, far * 0.7, lin); // far water keeps the surface sky mirror
 		vec3 hiPre = max(col - vec3(0.80), 0.0);
-		col = mix(col, wc, mix(0.55, 0.88, dd) * (1.0 - 0.65 * farF) * WATER_DEPTH_TINT / 0.70);
+		col = mix(col, wc, mix(0.55, 0.88, dd) * (1.0 - 0.65 * farF) * (1.0 - 0.75 * fall) * WATER_DEPTH_TINT / 0.70);
 		col *= 1.0 - 0.10 * texture(colortex2, uv).b * (1.0 - farF);
 		float wl = dot(col, vec3(0.299, 0.587, 0.114));
 		col = mix(vec3(wl), col, WATER_SAT) * WATER_BRIGHT + hiPre * 2.0;
@@ -176,8 +179,8 @@ void main() {
 			float ph = wxz.x * 0.55 + wxz.y * 0.25 + t * 0.9 + vnoise(wxz * 0.15) * 4.0;
 			vec2 rq = mat2(0.8, -0.6, 0.6, 0.8) * wxz; // rotated so breaks are not grid-aligned
 			float brk = smoothstep(0.30, 0.62, vnoise(rq * 0.45 + vec2(t * 0.2, 0.0)) * 0.7 + vnoise(rq * 1.3) * 0.3);
-			float streak = smoothstep(0.82, 0.92, sin(ph)) * brk * (1.0 - farF * 0.8) * mix(0.55, 1.0, shore);
-			col = mix(col, foamC, clamp(max(sheet * 0.80, streak * 0.85), 0.0, 1.0) * fday * WATER_FOAM_AMT);
+			float streak = smoothstep(mix(0.82, 0.90, farF), 0.94, sin(ph)) * brk * (1.0 - farF * 0.35) * mix(0.60, 1.0, shore); // far sea keeps thin foam
+			col = mix(col, foamC, clamp(max(sheet * 0.85, streak * 0.95), 0.0, 1.0) * (1.0 - fall) * fday * WATER_FOAM_AMT);
 			// crisp shoreline line + soft rim
 			if (behind < 0.50 + wob * 0.5) col = mix(col, foamC, 0.95 * fday);
 			else if (behind < 0.95 + wob) col = mix(col, foamC, 0.45 * fday);

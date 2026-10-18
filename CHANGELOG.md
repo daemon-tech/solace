@@ -3,6 +3,18 @@
 Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All Rights Reserved.
 All builds tested in the real client with screenshots.
 
+## 0.19-dev – 2026-10-18 (prerelease)
+Water closer to the target look.
+- Cloud reflections: the water mirror now reflects the soft clouds (same sky-plane mapping as the sky pass), not only the sky gradient.
+- Foam: brighter flowing streak foam on the wave crests, thinner but still present on the far sea (no longer fades out at distance); shore foam sheets slightly brighter.
+- Colour gradient: deeper, richer end of the shallow-to-deep gradient (near-white shallows -> turquoise -> deep blue-teal).
+- Night: stronger two-step moonlit ripples on night water.
+- Flowing water: falls and slopes get white streaks running downhill; no depth darkening or deep patches on falling water.
+- Rain: expanding ripple rings on the water surface while it rains (near range, fade with distance).
+- Settings unchanged: outlines and cel bands untouched; all existing sliders and toggles kept.
+- QA: no NaN/black/magenta pixels in ocean, river, lake, night, rain and waterfall captures; sunrise, noon, sunset, night, forest, swamp and snowy re-checked.
+- Known: rain rings are subtle at a distance; swamp sky above the horizon still slightly pale.
+
 ## 0.18-dev – 2026-10-18 (prerelease)
 Water closer to the target look, horizon haze, night water.
 - Flowing streak foam: bright foam lines ride the wave crests (same phase as the surface waves) and move with them; broken up by rotated noise so no grid-aligned cuts.

@@ -5,6 +5,7 @@
 // Solace - stylized turquoise water; other translucents get simple cel lighting.
 uniform sampler2D gtexture;
 uniform mat4 gbufferModelView;
+uniform mat4 gbufferModelViewInverse;
 uniform vec3 sunPosition;
 uniform vec3 upPosition;
 uniform vec3 shadowLightPosition;
@@ -47,7 +48,22 @@ void main() {
 		vec3 col = mix(base, bright, fres);
 		col = mix(col, far, celBand(smoothstep(24.0, 96.0, length(viewPos)), 3) * 0.45);
 		// banded sky reflection (stronger at grazing angles)
-		vec3 refl = celSky(reflect(-v, n), sunPosition, upPosition, rainStrength);
+		vec3 rd = reflect(-v, n);
+		vec3 refl = celSky(rd, sunPosition, upPosition, rainStrength);
+#ifdef SOFT_CLOUDS
+		{
+			// cheap reflected clouds (same sky-plane mapping as the sky pass, 3 octaves)
+			vec3 rw = mat3(gbufferModelViewInverse) * rd;
+			if (rw.y > 0.02) {
+				vec2 cp = rw.xz / rw.y * 1.6 + vec2(t * 0.006, 0.0);
+				float cd = vnoise(cp * 1.3) * 0.5 + vnoise(cp * 2.64 + 17.1) * 0.25 + vnoise(cp * 5.36 + 51.0) * 0.125;
+				float cov = mix(0.56, 0.44, CLOUD_COVER) * 0.875;
+				float cm = smoothstep(cov, cov + 0.06, cd) * smoothstep(0.02, 0.12, rw.y);
+				vec3 cc = mix(vec3(0.20, 0.22, 0.45), vec3(1.0, 1.0, 0.98), day);
+				refl = mix(refl, cc, cm * 0.85);
+			}
+		}
+#endif
 		// sky mirror grows with distance (far water reads as the sky, the target look)
 		float farR = smoothstep(12.0, 72.0, length(viewPos));
 		// bright mirror toward the horizon (lifted a touch so it reads as sheen, not a copy of the sky)
@@ -68,8 +84,25 @@ void main() {
 			// night: banded moon glint path and moonlit ripple highlights
 			col = mix(col, vec3(0.70, 0.80, 1.0), step(0.94, spec) * 0.45);
 			if (spec > 0.985) col = vec3(0.90, 0.94, 1.0);
-			float rip = step(0.90, sin(p.x * 1.1 - p.y * 0.6 + t * 1.3 + vnoise(p * 0.3) * 3.0));
-			col = mix(col, vec3(0.55, 0.68, 0.95), rip * 0.35 * (1.0 - day));
+			float rph = sin(p.x * 1.1 - p.y * 0.6 + t * 1.3 + vnoise(p * 0.3) * 3.0);
+			float rip = step(0.84, rph) + step(0.95, rph);
+			col = mix(col, vec3(0.60, 0.74, 1.0), clamp(rip, 0.0, 1.0) * mix(0.45, 0.75, step(1.5, rip)) * (1.0 - day));
+		}
+		// flowing water (falls, slopes): white streaks running downhill
+		float side = 1.0 - abs(dot(safeNormalize(vnormal, up), up));
+		if (side > 0.3) {
+			float fl = vnoise(vec2((p.x + p.y) * 2.0, worldPos.y * 0.7 + t * 2.6));
+			col = mix(col, vec3(0.92, 0.99, 1.0), (step(0.62, fl) * 0.55 + step(0.80, fl) * 0.4) * mix(0.4, 1.0, day));
+			crest = max(crest, step(0.62, fl));
+		}
+		// rain: expanding ripple rings on the surface
+		if (rainStrength > 0.01) {
+			vec2 rc = floor(p * 0.8); vec2 rf = fract(p * 0.8) - 0.5;
+			float ph0 = hash12(rc);
+			float age = fract(t * 0.9 + ph0);
+			float ring = abs(length(rf + (vec2(hash12(rc + 3.1), hash12(rc + 7.7)) - 0.5) * 0.4) - age * 0.45);
+			float rr = step(ring, 0.06) * (1.0 - age) * step(0.35, ph0) * (1.0 - smoothstep(16.0, 40.0, length(viewPos)));
+			col = mix(col, vec3(0.90, 0.97, 1.0), rr * 0.85 * rainStrength);
 		}
 #ifdef WATER_SPARKLE
 		// white sparkle streaks drifting with the waves
@@ -79,7 +112,7 @@ void main() {
 		col = mix(col, vec3(1.0), clamp(sparkle, 0.0, 1.0) * 0.9 * mix(0.4, 1.0, day));
 #endif
 		outColor = vec4(col * mix(light, 1.0, 0.5 * day), max(max(mix(mix(0.30, 0.20, WATER_CLARITY), 0.85, fres), farR * 0.9 * min(WATER_REFLECT, 1.0)) * WATER_OPACITY, clamp(crest, 0.0, 1.0) * 0.80));
-		outFlag = vec4(1.0, 0.0, deepPatch, 1.0);
+		outFlag = vec4(1.0, 0.0, deepPatch * step(side, 0.3), 1.0); // no deep patches on falling water
 	} else {
 		vec4 albedo = texture(gtexture, texcoord) * vcolor;
 		if (albedo.a < 0.05) discard;
