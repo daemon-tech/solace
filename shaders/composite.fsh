@@ -106,8 +106,8 @@ void main() {
 		float dd = celBand(smoothstep(0.3, 12.0, behind), 4);
 		float wday = dayFactor(sunPosition, upPosition);
 		// strong turquoise: clear tinted shallows -> turquoise -> dark blue depths (banded)
-		vec3 midC = mix(vec3(0.04, 0.20, 0.30), vec3(0.08, 0.60, 0.68), wday);
-		vec3 deepC = mix(vec3(0.02, 0.06, 0.16), vec3(0.03, 0.17, 0.38), wday);
+		vec3 midC = mix(vec3(0.05, 0.24, 0.32), vec3(0.14, 0.68, 0.72), wday);
+		vec3 deepC = mix(vec3(0.03, 0.12, 0.20), vec3(0.05, 0.36, 0.46), wday); // dark teal, never navy
 		vec3 hiPre = max(col - vec3(0.80), 0.0); // keep localized glints/foam lines from the surface pass
 		col = mix(col * vec3(0.62, 1.02, 0.98), midC, clamp(dd * 2.0, 0.0, 1.0) * 0.75);
 		col = mix(col, deepC, clamp(dd * 2.0 - 1.0, 0.0, 1.0) * WATER_DEPTH_TINT);
