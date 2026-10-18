@@ -222,5 +222,5 @@ option.WATER_STARS=Water Sparkles
 option.WATER_STARS.comment=Cross-shaped sparkles twinkle where the sun reflects on the water. Needs Sun Glint.
 option.WATER_STARS_STRENGTH=Sparkle Strength
 option.WATER_ROLL=Rolling Ocean Waves
-option.WATER_ROLL.comment=Oceans roll in long, blocky waves with white foam on the crests. Lakes and rivers stay calm.
+option.WATER_ROLL.comment=Still water rolls in long, blocky waves with white foam on the crests. Off by default; best on oceans.
 option.WATER_ROLL_HEIGHT=Wave Height

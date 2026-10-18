@@ -19,8 +19,8 @@ void main() {
 	vec3 rollVP = vec3(0.0); bool rolled = false;
 #ifdef WATER_ROLL
 	// optional rolling swell on ocean surfaces: still water tops sink by up to 0.6 blocks in long waves,
-	// stepped to 1/8 block for a blocky look (lakes and rivers stay flat)
-	if (int(mc_Entity.x + 0.5) == 10001 && gl_Normal.y > 0.9 && (biome_category == CAT_OCEAN || biome_category == CAT_BEACH)) {
+	// stepped to 1/8 block for a blocky look (applies to all still water when enabled)
+	if (int(mc_Entity.x + 0.5) == 10001 && gl_Normal.y > 0.9) {
 		vec4 vp = gl_ModelViewMatrix * gl_Vertex;
 		vec3 wp = (gbufferModelViewInverse * vp).xyz + cameraPosition;
 		vec2 rq = wp.xz - cameraPosition.xz + mod(cameraPosition.xz, 4096.0); // same frame as composite

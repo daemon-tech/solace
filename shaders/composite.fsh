@@ -470,7 +470,7 @@ void main() {
 			col = mix(col, foamC, clamp(max(sheet * 0.90, streak * 1.0), 0.0, 1.0) * (1.0 - fall) * fday * WATER_FOAM_AMT);
 #ifdef WATER_ROLL
 			// rolling swell: blocky white foam caps on the crests (1/8-block cells, ocean only)
-			if ((biome_category == CAT_OCEAN || biome_category == CAT_BEACH) && fall < 0.5) {
+			if (fall < 0.5) {
 				vec2 fc = floor(wxz * 8.0) / 8.0;
 				float cr = rollWave(fc, t);
 				float cap = step(0.86 - 0.10 * hash12(floor(wxz * 8.0)), cr) * (1.0 - farF * 0.5);

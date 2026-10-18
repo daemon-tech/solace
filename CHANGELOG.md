@@ -3,6 +3,18 @@
 Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All Rights Reserved.
 All builds tested in the real client with screenshots.
 
+## 0.24-dev – 2026-10-19 (prerelease)
+Water release.
+
+**New**
+- *Night Light Reflections*: lanterns, torches and other lights reflect on night water as vivid coloured streaks (lights must be on screen).
+- *Bright Night Wakes*: boat wakes, splashes and waterfall foam stay bright white against dark water at night.
+- *Water Sparkles*: small cross-shaped sparkles twinkle where the sun reflects on the water (needs Sun Glint).
+- *Rolling Ocean Waves* (off by default): still water rolls in long, blocky waves with white foam on the crests. Wave height slider.
+
+**Known issues**
+- Tinted glass light still does not show on the tested setup: stained glass is missing from the shadow map there, even with translucent shadows enabled.
+
 ## 0.23-dev – 2026-10-18 (prerelease)
 Polish release: outlines, sandstorm, glass, Nether.
 
