@@ -37,6 +37,9 @@
 #define STYLE_K 0.55
 #endif
 //#define OUTLINE_NORMALS // inner block edges (normal Sobel)
+#define EDGE_KERNEL 1 // [0 1] depth edge detector: 0 gradient (legacy), 1 second difference (no false lines on flat ground)
+//#define GRASS_LEDGE_LINES // outline small grass ledges too (off: no light lines across flat-looking grass)
+//#define OUTLINE_DEBUG // debug: paint outline pixels red
 #define INNER_STRENGTH 0.40 // [0.2 0.3 0.4 0.55 0.7]
 #define INNER_FADE 48.0 // [24.0 32.0 48.0 64.0 96.0]
 #define OUTLINE_THICKNESS 1.0 // [0.5 1.0 1.5 2.0 3.0]
@@ -124,6 +127,7 @@ const float sunPathRotation = -25.0;
 #define MILKY_WAY 1.0 // [0.0 0.5 1.0 1.5] faint Milky Way band at night
 #define SHADOW_DIST_SOFT 0.6 // [0.0 0.3 0.6 1.0] shadows get softer with distance
 #define GLASS_TINT_LIGHT // sunlight through stained glass takes its colour
+//#define GLASS_DEBUG // debug: paint the tinted-glass light path magenta
 #define CAUSTICS // banded light net under water
 #define CAUSTICS_STRENGTH 1.0 // [0.0 0.5 1.0 1.5]
 #define UNDERWATER_RAYS 1.0 // [0.0 0.5 1.0 1.5] light shafts from the surface when diving

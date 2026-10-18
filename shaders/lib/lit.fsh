@@ -77,12 +77,16 @@ float shadowAt(vec4 clip, float ndl) {
 	lit /= 24.0;
 	lit = smoothstep(0.08, 0.92, lit); // creamy falloff, clean full shadow / full light
 #ifdef GLASS_TINT_LIGHT
-	// light through stained glass: blocked by translucents only -> take the glass colour
-	float opq = step(p.z - bias, texture(shadowtex1, p.xy).r);
+	// light through stained glass: the nearest shadow caster is translucent -> take the glass colour.
+	// (shadowtex1, the opaque-only depth, reads empty on this Iris build, so the caster's alpha in
+	// shadowcolor0 decides: opaque casters write alpha 1, glass < 0.95, clear stays 1)
 	float all0 = step(p.z - bias, texture(shadowtex0, p.xy).r);
-	if (opq > 0.5 && all0 < 0.5) {
-		vec4 sc = texture(shadowcolor0, p.xy);
+	vec4 sc = texture(shadowcolor0, p.xy);
+	if (all0 < 0.5 && sc.a > 0.05 && sc.a < 0.95) {
 		glassTint = mix(vec3(1.0), clamp(sc.rgb * 1.5, 0.0, 1.2), clamp(sc.a, 0.0, 1.0) * 0.85);
+#ifdef GLASS_DEBUG
+		glassTint = vec3(3.0, 0.0, 3.0);
+#endif
 		return 1.0;
 	}
 #endif
@@ -272,5 +276,7 @@ void main() {
 #ifndef FLAT_NORMAL
 	if (isEyeInWater == 0 && ndl > 0.0) outShadow = vec4(cOut[1] - cOut[0], lb);
 #endif
-	outNormal = vec4(n * 0.5 + 0.5, isFoliage == 1 ? 0.5 : 1.0); // alpha 0.5 = foliage flag for outlines
+	// alpha 0.5 = foliage, 0.85 = graded grass ground (outlines skip small grass ledges), 1.0 = other
+	bool grassG = isFoliage == 2 && vcolor.g > vcolor.b * 1.15 && vcolor.g > vcolor.r * 1.05;
+	outNormal = vec4(n * 0.5 + 0.5, isFoliage == 1 ? 0.5 : (grassG ? 0.85 : 1.0));
 }

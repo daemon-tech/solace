@@ -48,6 +48,7 @@ uniform int isEyeInWater;
 uniform mat4 gbufferProjection;
 uniform vec3 moonPosition;
 uniform float bTemp;
+uniform int biome;
 uniform float bRain;
 uniform float bSwamp;
 uniform float bDark;
@@ -104,7 +105,16 @@ float outlineMask(vec2 c, float centerLin) {
 	// Sobel on linear depth, relative to distance
 	float gx = (dz[2] + 2.0 * dz[5] + dz[8]) - (dz[0] + 2.0 * dz[3] + dz[6]);
 	float gy = (dz[6] + 2.0 * dz[7] + dz[8]) - (dz[0] + 2.0 * dz[1] + dz[2]);
+#if EDGE_KERNEL == 0
 	float de = length(vec2(gx, gy)) / max(centerLin, 0.5);
+#else
+	// second-difference depth edge: zero on any flat surface however grazing or far,
+	// so only real breaks (silhouettes, ledges) ink - first-derivative Sobel lit up flat ground
+	// where the depth gradient alone crossed the threshold (thin light polygons on grass)
+	float l2x = abs(dz[3] + dz[5] - 2.0 * dz[4]), l2y = abs(dz[1] + dz[7] - 2.0 * dz[4]);
+	float l2a = abs(dz[0] + dz[8] - 2.0 * dz[4]), l2b = abs(dz[2] + dz[6] - 2.0 * dz[4]);
+	float de = 2.5 * max(max(l2x, l2y), max(l2a, l2b)) / max(centerLin, 0.5);
+#endif
 	vec3 ngx = (nz[2] + 2.0 * nz[5] + nz[8]) - (nz[0] + 2.0 * nz[3] + nz[6]);
 	vec3 ngy = (nz[6] + 2.0 * nz[7] + nz[8]) - (nz[0] + 2.0 * nz[1] + nz[2]);
 	float ne = sqrt(max(dot(ngx, ngx) + dot(ngy, ngy), 0.0));
@@ -112,6 +122,12 @@ float outlineMask(vec2 c, float centerLin) {
 	float e = step(0.12, de);
 	// leaves: only ink silhouettes against the sky or a big depth jump, not every cut-out hole
 	if (foliage) e *= max(skyN, step(0.6, de));
+#ifndef GRASS_LEDGE_LINES
+	// graded grass ground: top and side faces share one flat tone, so a 1-block ledge has no visible
+	// face and its outline reads as a stray light line across flat grass. Only ink big drops / sky there.
+	float ca = texture(colortex1, c).a;
+	if (ca > 0.8 && ca < 0.9) e *= max(skyN, step(1.5, de));
+#endif
 	e *= 1.0 - smoothstep(OUTLINE_FADE * 0.6, OUTLINE_FADE, centerLin);
 #ifdef OUTLINE_NORMALS
 	// inner block edges: normal Sobel, lighter ink, near range only, never on leaves
@@ -516,6 +532,9 @@ void main() {
 	// no ink underwater (avoids dark rings around bubbles/particles)
 	if (isEyeInWater == 0) {
 		float e = outlineMask(uv, lin);
+#ifdef OUTLINE_DEBUG
+		col = mix(col, vec3(1.0, 0.0, 0.0), clamp(e, 0.0, 1.0));
+#endif
 		#if EDGE_STYLE == 2
 		col = mix(col, vec3(OUTLINE_R, OUTLINE_G, OUTLINE_B), clamp(e, 0.0, 1.0) * OUTLINE_STRENGTH);
 #else
@@ -560,14 +579,16 @@ void main() {
 		}
 	}
 #endif
+	// hot dry biomes (deserts, badlands, savanna plateaus): no rain there, dust instead
+	float dryB = smoothstep(1.3, 1.8, bTemp) * (1.0 - smoothstep(0.05, 0.3, bRain));
 #ifdef RAIN_STREAKS
-	if (rainStrength > 0.01 && isEyeInWater == 0) {
+	if (rainStrength * (1.0 - dryB) > 0.01 && isEyeInWater == 0) {
 		// slanted rain streaks over the scene + darker blue mood at night
 		vec2 rq = vec2(uv.x * viewWidth / viewHeight * 60.0 + uv.y * 8.0, uv.y * 6.0 + frameTimeCounter * 9.0);
 		float cell = hash12(floor(rq));
 		float rs = step(0.93, cell) * smoothstep(0.0, 0.3, fract(rq.y)) * (1.0 - smoothstep(0.3, 0.9, fract(rq.y)));
-		col = mix(col, vec3(0.80, 0.86, 0.95) * mix(0.45, 1.0, dayG), rs * 0.35 * rainStrength * RAIN_STREAKS);
-		col = mix(col, col * vec3(0.62, 0.72, 0.98), rainStrength * (1.0 - dayG) * 0.6 * RAIN_STREAKS);
+		col = mix(col, vec3(0.80, 0.86, 0.95) * mix(0.45, 1.0, dayG), rs * 0.35 * rainStrength * (1.0 - dryB) * RAIN_STREAKS);
+		col = mix(col, col * vec3(0.62, 0.72, 0.98), rainStrength * (1.0 - dryB) * (1.0 - dayG) * 0.6 * RAIN_STREAKS);
 	}
 #endif
 #ifdef BLOOM
@@ -685,9 +706,30 @@ void main() {
 			vec3 wpS = mat3(gbufferModelViewInverse) * vpos + cameraPosition;
 			vec2 sq = wpS.xz * 0.08 + wpS.y * 0.05 - windDir() * frameTimeCounter * 2.0;
 			float streak = vnoise(sq * vec2(1.0, 4.0)) * 0.6 + vnoise(sq * 3.0) * 0.4;
-			float sf = celBandSoft(smoothstep(1.0, 40.0, lin), 4, 0.4) * (0.75 + 0.25 * streak);
-			col = mix(col, vec3(0.86, 0.70, 0.46) * mix(0.4, 1.0, dayG), clamp(sf * sand, 0.0, 0.92));
+			// thinner far wall (terrain shapes stay readable), broken by rolling gust clouds
+			float gust = vnoise(wpS.xz * 0.03 - windDir() * frameTimeCounter * 0.6) * 0.6 + vnoise(wpS.xz * 0.09 + 3.1) * 0.4;
+			float sf = celBandSoft(smoothstep(2.0, 70.0, lin), 4, 0.4) * (0.55 + 0.30 * streak + 0.25 * gust);
+			vec3 dustC = vec3(0.86, 0.70, 0.46) * mix(0.4, 1.0, dayG);
+			col = mix(col, dustC * mix(0.82, 1.08, gust), clamp(sf * sand, 0.0, 0.80));
+			// fast wind-blown dust streaks over the whole view (sky included): long thin bands along the wind
+			vec3 vw = safeNormalize(mat3(gbufferModelViewInverse) * vpos, vec3(0, 0, 1));
+			vec2 wd = windDir();
+			float along = dot(vw.xz, wd), across = dot(vw.xz, vec2(-wd.y, wd.x));
+			vec2 dq = vec2(along * 6.0 - frameTimeCounter * 3.5, across * 40.0 + vw.y * 55.0);
+			float ds = smoothstep(0.62, 0.80, vnoise(dq) * 0.7 + vnoise(dq * vec2(2.0, 1.3) + 5.0) * 0.3);
+			float dk = smoothstep(0.55, 0.75, vnoise(dq * vec2(0.5, 0.35) + 9.0)); // darker drifting sheets
+			col = mix(col, dustC * 1.18 + 0.04, ds * sand * 0.45);
+			col = mix(col, dustC * 0.62, dk * sand * 0.22 * smoothstep(1.0, 12.0, lin));
 		}
+	}
+#endif
+#ifdef WEATHER_FX
+	// sandstorm sky: the whole sky turns dusty orange, denser toward the horizon
+	if (sky && isEyeInWater == 0 && dryB * rainStrength * SANDSTORM > 0.001) {
+		vec3 vS = safeNormalize(mat3(gbufferModelViewInverse) * vpos, vec3(0, 0, 1));
+		float hz = 1.0 - smoothstep(-0.05, 0.6, vS.y);
+		vec3 dustSky = mix(vec3(0.78, 0.52, 0.30), vec3(0.95, 0.72, 0.46), hz) * mix(0.35, 1.0, dayG);
+		col = mix(col, dustSky, clamp(dryB * rainStrength * SANDSTORM, 0.0, 1.0) * mix(0.70, 0.95, hz));
 	}
 #endif
 	// near-white haze band where the sea meets the sky (water far field + sky just above horizon)
@@ -715,6 +757,11 @@ void main() {
 		float dz = (d0 >= 1.0) ? far : lin;
 #ifdef DIM_NETHER
 		vec3 nf = mix(vec3(0.55, 0.16, 0.10), fogColor * 1.25 + vec3(0.06, 0.02, 0.0), 0.6);
+		// per-biome accents: warped forest gets a cyan fog, soul sand valley a cool teal, basalt deltas grey ash
+		if (biome == BIOME_WARPED_FOREST) nf = mix(nf, vec3(0.10, 0.42, 0.44), 0.75);
+		else if (biome == BIOME_SOUL_SAND_VALLEY) nf = mix(nf, vec3(0.20, 0.40, 0.44), 0.55);
+		else if (biome == BIOME_BASALT_DELTAS) nf = mix(nf, vec3(0.42, 0.38, 0.44), 0.5);
+		else if (biome == BIOME_CRIMSON_FOREST) nf = mix(nf, vec3(0.62, 0.10, 0.08), 0.4);
 		float nfK = celBandSoft(smoothstep(far * 0.04, far * 0.75, dz), 5, 0.35) * NETHER_FOG;
 		col = mix(col, nf, nfK);
 		// heat: fog turns red-orange around lava (blurred light field)

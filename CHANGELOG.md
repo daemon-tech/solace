@@ -3,6 +3,21 @@
 Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All Rights Reserved.
 All builds tested in the real client with screenshots.
 
+## 0.23-dev – 2026-10-18 (prerelease)
+Polish release: outlines, sandstorm, glass, Nether.
+
+**Fixed**
+- Thin light lines across flat-looking grass. Grass tops and sides share one flat tone, so the outline of a one-block grass ledge showed up as a stray line with no visible step. Small grass ledges are no longer outlined; silhouettes against the sky and big drops still are. New option *Grass Ledge Lines* restores the old behaviour.
+- Sandstorms: the sky turns dusty orange and no rain streaks fall in deserts and other dry biomes.
+
+**New**
+- *Edge Detector* option: a second-difference depth edge test that ignores flat ground at any angle (default). The older gradient detector stays available.
+- Nether fog accents per biome: cyan in warped forests, teal in soul sand valleys, grey ash in basalt deltas, deeper red in crimson forests.
+- Tinted glass light now reads the glass colour from the shadow colour buffer.
+
+**Known issues**
+- Tinted glass light and coloured shadows from stained glass do not show on the tested setup: translucent blocks are missing from the shadow map there. Still under investigation.
+
 ## 0.22.1-dev – 2026-10-18 (prerelease)
 Fix release.
 
