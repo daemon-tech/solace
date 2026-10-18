@@ -113,7 +113,7 @@ void main() {
 		col = mix(vec3(wl), col, WATER_SAT) * WATER_BRIGHT;
 		// banded highlights: bright sky/sun glints step up to near-white (widens value range)
 		float hl = luma(col);
-		col = mix(col, mix(col, vec3(0.92, 0.98, 1.0), 0.55), step(0.70, hl));
+		col = mix(col, mix(col, vec3(0.92, 0.98, 1.0), 0.40), step(0.78, hl));
 #ifdef WATER_FOAM
 		// shore foam: solid edge band plus a broken second band
 		float wob = vnoise(uv * vec2(viewWidth, viewHeight) * 0.03 + frameTimeCounter * 0.6) * 0.35;
