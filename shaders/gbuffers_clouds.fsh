@@ -10,6 +10,9 @@ in vec3 vnormal;
 /* RENDERTARGETS: 0 */
 layout(location = 0) out vec4 outColor;
 void main() {
+#ifdef SOFT_CLOUDS
+	discard;
+#endif
 	vec3 up = safeNormalize(upPosition, vec3(0, 1, 0));
 	float ny = dot(safeNormalize(vnormal, up), up);
 	float sunH = dot(safeNormalize(sunPosition, up), up);

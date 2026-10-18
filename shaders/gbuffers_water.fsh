@@ -51,10 +51,11 @@ void main() {
 		col = mix(col, refl, fres * 0.38);
 		// darker deep patches drifting slowly (banded, world-space)
 		float patch = vnoise(p * 0.06 + vec2(t * 0.02, 0.0));
-		col *= mix(1.0, 0.68, step(0.58, patch)) * mix(1.0, 0.85, step(0.45, patch));
+		float deepPatch = step(0.58, patch) * 0.6 + step(0.45, patch) * 0.4;
 		// soft wave crest lines drifting across the surface
 		float wv = sin(p.x * 0.55 + p.y * 0.25 + t * 0.9 + vnoise(p * 0.15) * 4.0);
-		col = mix(col, bright * 1.08, step(0.85, wv) * 0.55 * mix(0.4, 1.0, day));
+		float crest = step(0.86, wv) + step(0.93, wv); // two-step stylized crest line
+		col = mix(col, vec3(0.86, 0.98, 1.0), clamp(crest, 0.0, 1.0) * mix(0.50, 0.85, step(1.5, crest)) * mix(0.4, 1.0, day));
 		float spec = dot(reflect(-safeNormalize(shadowLightPosition, up), n), v);
 		// banded sun glint: warm halo band + white core
 		if (day > 0.3) {
@@ -68,8 +69,8 @@ void main() {
 		              + step(0.965, vnoise(p * 1.6 + vec2(t * 0.35, -t * 0.2))) * day; // scattered small glints
 		col = mix(col, vec3(1.0), clamp(sparkle, 0.0, 1.0) * 0.9 * mix(0.4, 1.0, day));
 #endif
-		outColor = vec4(col * mix(light, 1.0, 0.5 * day), mix(0.30, 0.85, fres) * WATER_OPACITY);
-		outFlag = vec4(1.0, 0.0, 0.0, 1.0);
+		outColor = vec4(col * mix(light, 1.0, 0.5 * day), max(mix(0.30, 0.85, fres) * WATER_OPACITY, clamp(crest, 0.0, 1.0) * 0.80));
+		outFlag = vec4(1.0, 0.0, deepPatch, 1.0);
 	} else {
 		vec4 albedo = texture(gtexture, texcoord) * vcolor;
 		if (albedo.a < 0.05) discard;

@@ -27,6 +27,31 @@ uniform float far;
 uniform int isEyeInWater;
 uniform mat4 gbufferProjection;
 uniform vec3 moonPosition;
+uniform float bTemp;
+uniform float bRain;
+uniform float bSwamp;
+uniform float bDark;
+// biome mood: smooth weights from temperature/rainfall (custom smoothed uniforms)
+vec3 biomeTint(out float extraHaze) {
+	float hot = smoothstep(1.0, 1.8, bTemp) * (1.0 - smoothstep(0.2, 0.5, bRain));
+	float cold = 1.0 - smoothstep(0.05, 0.35, bTemp);
+	float lush = smoothstep(0.75, 0.95, bRain) * smoothstep(0.6, 0.9, bTemp);
+	float plains = smoothstep(0.6, 0.85, bTemp) * (1.0 - smoothstep(0.5, 0.8, bRain)) * (1.0 - hot);
+	vec3 t = vec3(1.0);
+	t = mix(t, vec3(1.05, 1.02, 0.92), plains);
+	t = mix(t, vec3(0.94, 1.05, 0.92), lush);
+	t = mix(t, vec3(1.08, 0.99, 0.84), hot);
+	t = mix(t, vec3(0.90, 0.97, 1.10), cold);
+	t = mix(t, vec3(0.90, 1.00, 0.95), bSwamp);
+	t = mix(t, vec3(0.93, 0.97, 0.96), bDark);
+	extraHaze = 0.35 * bSwamp + 0.30 * bDark + 0.15 * cold;
+	return mix(vec3(1.0), t, BIOME_MOOD * 1.5);
+}
+#ifdef DISTANT_HORIZONS
+uniform sampler2D dhDepthTex0;
+uniform float dhNearPlane;
+uniform float dhFarPlane;
+#endif
 in vec2 uv;
 /* RENDERTARGETS: 0 */
 layout(location = 0) out vec4 outColor;
@@ -80,7 +105,7 @@ vec3 grade(vec3 c) {
 	// push greens towards lime (#9dc832)
 	float g = clamp((c.g - max(c.r, c.b)) * 4.0, 0.0, 1.0);
 	c.r += (c.g - c.r) * (LIME_GREENS * STYLE_K) * g;
-	c *= 1.0 + 0.30 * g * (LIME_GREENS * STYLE_K) / 0.25; // brighter, glowing greens
+	c *= 1.0 + 0.16 * g * (LIME_GREENS * STYLE_K) / 0.25; // lush greens, no glow boost
 	c *= mix(vec3(1.0), vec3(1.06, 1.0, 0.90), WARMTH * smoothstep(0.2, 0.8, l));
 	// sand-like (pale warm, low sat): brighter and more yellow
 	float sand = smoothstep(0.42, 0.55, l) * step(c.b, c.g * 0.92) * step(c.g, c.r * 1.02) * (1.0 - smoothstep(0.35, 0.5, (c.r - c.b) / max(c.r, 1e-3)));
@@ -96,10 +121,18 @@ void main() {
 	vec3 col = texture(colortex0, uv).rgb;
 	if (any(isnan(col)) || any(isinf(col))) col = vec3(0.0);
 	float d0 = texture(depthtex0, uv).r;
+	float bHaze; vec3 bTint = biomeTint(bHaze);
 	float lin = linDepth(d0);
+	bool isDH = false;
+#ifdef DISTANT_HORIZONS
+	if (d0 >= 1.0) {
+		float dd0 = texture(dhDepthTex0, uv).r;
+		if (dd0 < 1.0) { isDH = true; lin = 2.0 * dhNearPlane * dhFarPlane / max(dhFarPlane + dhNearPlane - (2.0 * dd0 - 1.0) * (dhFarPlane - dhNearPlane), 1e-4); }
+	}
+#endif
 	bool water = texture(colortex2, uv).r > 0.5;
 
-	if (water && isEyeInWater == 0) {
+	if (water && isEyeInWater == 0 && d0 < 1.0) {
 		float behind = max(linDepth(texture(depthtex1, uv).r) - lin, 0.0);
 		// deeper water -> banded deeper blue
 		// clear shallows -> teal -> deep blue-green, in soft bands (bottom visible near shore)
@@ -107,10 +140,12 @@ void main() {
 		float wday = dayFactor(sunPosition, upPosition);
 		// strong turquoise: clear tinted shallows -> turquoise -> dark blue depths (banded)
 		vec3 midC = mix(vec3(0.05, 0.24, 0.32), vec3(0.14, 0.68, 0.72), wday);
+		midC = mix(midC, vec3(0.20, 0.44, 0.34) * wday + 0.04, bSwamp * BIOME_MOOD);
 		vec3 deepC = mix(vec3(0.03, 0.12, 0.20), vec3(0.05, 0.36, 0.46), wday); // dark teal, never navy
 		vec3 hiPre = max(col - vec3(0.80), 0.0); // keep localized glints/foam lines from the surface pass
 		col = mix(col * vec3(0.62, 1.02, 0.98), midC, clamp(dd * 2.0, 0.0, 1.0) * 0.75);
 		col = mix(col, deepC, clamp(dd * 2.0 - 1.0, 0.0, 1.0) * WATER_DEPTH_TINT);
+		col *= 1.0 - 0.38 * texture(colortex2, uv).b; // drifting deep patches (clearly visible)
 		float wl = dot(col, vec3(0.299, 0.587, 0.114));
 		col = mix(vec3(wl), col, WATER_SAT) * WATER_BRIGHT + hiPre * 2.5;
 #ifdef WATER_FOAM
@@ -126,10 +161,11 @@ void main() {
 	}
 
 #ifdef DISTANCE_FOG
-	if (isEyeInWater == 0 && d0 < 1.0) {
+	if (isEyeInWater == 0 && (d0 < 1.0 || isDH)) {
 		float day = dayFactor(sunPosition, upPosition);
 		vec3 fogCol = mix(vec3(0.18, 0.20, 0.50), vec3(0.42, 0.72, 0.85), day); // blue-teal
 		float f = celBand(smoothstep(far * 0.12, far * 0.9, lin), 4) * FOG_STRENGTH;
+		fogCol *= bTint;
 		col = mix(col, fogCol, f * (water ? 0.35 : 1.0));
 	}
 #endif
@@ -141,11 +177,16 @@ void main() {
 		col = mix(col, vec3(OUTLINE_R, OUTLINE_G, OUTLINE_B), clamp(e, 0.0, 1.0) * OUTLINE_STRENGTH);
 #else
 		// soft coloured edge: a darker, cooler shade of the surface itself (no black ink)
+#ifdef LIGHT_OUTLINES
+		// very subtle thin light line (low opacity) instead of a dark edge
+		col = mix(col, mix(col, vec3(1.0, 0.99, 0.95), 0.6), clamp(e, 0.0, 1.0) * LIGHT_OUTLINE_OPACITY);
+#else
 		col = mix(col, col * vec3(0.66, 0.70, 0.84), clamp(e, 0.0, 1.0) * SOFT_EDGE_STRENGTH);
+#endif
 #endif
 	}
 #endif
-	bool sky = d0 >= 1.0;
+	bool sky = d0 >= 1.0 && !isDH;
 	float sunHg = dot(safeNormalize(sunPosition, safeNormalize(upPosition, vec3(0,1,0))), safeNormalize(upPosition, vec3(0,1,0)));
 	float duskG = clamp(1.0 - abs(sunHg) * 4.0, 0.0, 1.0);
 	float dayG = dayFactor(sunPosition, upPosition);
@@ -158,7 +199,8 @@ void main() {
 			float a = float(i) * 2.39996;
 			float r = (4.0 + float(i) * 2.2);
 			vec3 s = texture(colortex0, uv + vec2(cos(a), sin(a)) * r * px).rgb;
-			glow += max(s - 0.55, 0.0);
+			float gr = clamp((s.g - max(s.r, s.b)) * 3.0, 0.0, 1.0); // green surfaces (sunlit grass) barely bloom
+			glow += s * max(luma(s) - 0.62, 0.0) * 1.6 * (1.0 - 0.5 * gr);
 		}
 		glow /= 12.0;
 		col += glow * (BLOOM_STRENGTH * STYLE_K) * mix(0.5, 1.6, max(duskG, 0.0));
@@ -204,10 +246,10 @@ void main() {
 	if (!sky && isEyeInWater == 0) {
 		float hz = smoothstep(3.0, far * 0.6, lin);
 		vec3 hzc = mix(vec3(0.85, 0.95, 0.55), vec3(1.0, 0.62, 0.22), duskG);
-		col = mix(col, hzc, hz * HAZE * STYLE_K * dayG * (water ? 0.25 : 1.0) * (1.0 - 0.5 * duskG));
+		col = mix(col, hzc, hz * (HAZE + bHaze * BIOME_MOOD * 0.5) * STYLE_K * dayG * (water ? 0.25 : 1.0) * (1.0 - 0.5 * duskG));
 	}
 	// the sky is authored in its final palette: no grading / scene cast on sky pixels
-	if (!sky) col = grade(col);
+	if (!sky) col = grade(col) * bTint;
 	// whole-scene cast: orange at sunset, indigo/purple at night (never black)
 	{
 		vec3 up = safeNormalize(upPosition, vec3(0, 1, 0));
@@ -225,7 +267,7 @@ void main() {
 	if (isEyeInWater == 1) {
 		// light cyan underwater fog, applied after grading so it is not over-saturated.
 		// Sky pixels (seen through the surface) only get a light tint, not full fog.
-		float dist = d0 >= 1.0 ? 12.0 : lin;
+		float dist = (d0 >= 1.0 && !isDH) ? 12.0 : lin;
 		float f = celBand(clamp(dist / 36.0, 0.0, 1.0), 4) * UNDERWATER_FOG;
 		vec3 uw = mix(vec3(0.16, 0.52, 0.90), vec3(0.04, 0.17, 0.42), f);
 		col = mix(col * vec3(0.55, 0.85, 1.15) + vec3(0.0, 0.05, 0.14), uw, clamp(f * 0.95 + 0.18, 0.0, 0.9));

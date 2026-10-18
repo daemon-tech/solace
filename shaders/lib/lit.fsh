@@ -94,8 +94,8 @@ void main() {
 	vec3 sunCol = mix(sunNight, sunDay, day);
 	// torch light: warm orange pool with a sharp-ish falloff
 	// two hard-ish rings: wide pool + bright core
-	float torch = smoothstep(0.14, 0.26, lm.x) * 0.35 + smoothstep(0.38, 0.50, lm.x) * 0.40 + smoothstep(0.62, 0.72, lm.x) * 0.55;
-	vec3 block = vec3(1.0, 0.56, 0.20) * torch * mix(1.25, 0.40, day * lm.y);
+	float torch = celBand(pow(lm.x, 1.8), 4) * TORCH_STRENGTH; // softer falloff, 4 gentle bands
+	vec3 block = vec3(1.0, 0.78, 0.55) * torch * mix(0.95, 0.35, day * lm.y); // neutral warm
 	vec3 lighting = ambient + sunCol * lb + block + vec3(0.03);
 	// underwater: kelp/seagrass/floor stay readable (light, not black)
 	if (isEyeInWater == 1) lighting = max(lighting, vec3(0.62, 0.78, 0.95) * mix(0.6, 1.0, day));
@@ -117,7 +117,7 @@ void main() {
 	if (grassTex && isEyeInWater == 0) {
 		// pull toward the target grass: hue ~113, S ~0.66, V ~0.73, keep texture detail as luma
 		float gl = luma(col), lf = gl / max(luma(vec3(0.31, 0.73, 0.25)), 1e-3);
-		vec3 target = vec3(0.42, 0.80, 0.40) * mix(0.80, 1.18, clamp(lf, 0.0, 1.0)) * mix(0.45, 1.0, day) * (lb * 0.35 + 0.65);
+		vec3 target = vec3(0.34, 0.72, 0.32) * 0.82 * mix(0.82, 1.10, clamp(lf, 0.0, 1.0)) * mix(0.45, 1.0, day) * (lb * 0.35 + 0.65);
 		// subtle colour-wave sway: slow lighter bands rolling over the field
 		float wave = sin(dot(cwpos.xz, vec2(0.21, 0.13)) + frameTimeCounter * GRASS_SWAY_SPEED);
 		target *= 1.0 + GRASS_SWAY * smoothstep(0.6, 1.0, wave);
@@ -127,11 +127,14 @@ void main() {
 	if (isFoliage == 1) {
 		// lime-leaning, brighter foliage (#9dc832 direction)
 		float l = luma(col);
-		col = mix(col, vec3(l) * (isEyeInWater == 1 ? vec3(0.55, 1.05, 1.0) : mix(vec3(0.50, 0.78, 1.15), vec3(0.82, 1.30, 0.72) * 1.08, day)), FOLIAGE_LIME * STYLE_K * mix(1.0, 1.0 - torch * 0.6, 1.0 - day));
+		col = mix(col, vec3(l) * (isEyeInWater == 1 ? vec3(0.55, 1.05, 1.0) : mix(vec3(0.50, 0.78, 1.15), vec3(0.82, 1.30, 0.72) * 0.96, day)), FOLIAGE_LIME * STYLE_K * mix(1.0, 1.0 - torch * 0.6, 1.0 - day));
 	}
 	// warm torch pool painted over the surface (reads orange even on dark green leaves)
 	float pool = torch * (1.0 - day * lm.y);
-	col = mix(col, vec3(luma(albedo.rgb) * 0.7 + 0.40) * vec3(1.0, 0.52, 0.18), clamp(pool * 0.55, 0.0, 0.6));
+	col = mix(col, vec3(luma(albedo.rgb) * 0.7 + 0.35) * vec3(1.0, 0.70, 0.42), clamp(pool * 0.30, 0.0, 0.35));
+#ifdef EMISSIVE_BLOCKS
+	if (isFoliage == 4) col = max(col, albedo.rgb * EMISSIVE_STRENGTH); // self-lit in its own colour (blooms)
+#endif
 	outColor = vec4(clamp(col, 0.0, 4.0), albedo.a);
 	outFlag = vec4(0.0, clamp(pool, 0.0, 1.0), 0.0, 1.0);
 	outNormal = vec4(n * 0.5 + 0.5, isFoliage == 1 ? 0.5 : 1.0); // alpha 0.5 = foliage flag for outlines

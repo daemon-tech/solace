@@ -16,6 +16,16 @@
 #define HIDE_LEAF_LITTER // leaf litter specks off (smooth even ground)
 #define GRASS_SWAY 0.10 // [0.0 0.05 0.10 0.15]
 #define GRASS_SWAY_SPEED 1.2 // [0.6 1.2 2.0]
+#define TORCH_STRENGTH 0.75 // [0.5 0.6 0.75 0.9 1.0]
+#define SOFT_CLOUDS // puffy cel-shaded clouds instead of blocky vanilla clouds
+#define CLOUD_COVER 0.5 // [0.2 0.35 0.5 0.65 0.8]
+#define WAVING_FOLIAGE // gentle wind sway for leaves and plants
+#define WAVING_STRENGTH 1.0 // [0.5 0.75 1.0 1.5 2.0]
+#define LIGHT_OUTLINES // very subtle thin light outlines
+#define LIGHT_OUTLINE_OPACITY 0.25 // [0.1 0.15 0.25 0.35 0.5]
+#define BIOME_MOOD 0.8 // [0.0 0.4 0.6 0.8 1.0] biome-aware grading, fog and water
+#define EMISSIVE_BLOCKS // light-emitting blocks render self-lit in their colour
+#define EMISSIVE_STRENGTH 1.15 // [0.8 1.0 1.15 1.4]
 #define WATER_OPACITY 1.0 // [0.6 0.8 1.0 1.2]
 #define WATER_DEPTH_TINT 0.70 // [0.40 0.55 0.70 0.85]
 #define EDGE_STYLE 1 // [0 1 2] 0 off, 1 soft coloured edges, 2 black ink
@@ -50,10 +60,10 @@
 #define DUSK_TINT 1.0 // [0.0 0.25 0.5 0.85 1.0]
 #define BLOOM
 #define GODRAYS
-#define GODRAYS_STRENGTH 0.35 // [0.0 0.2 0.35 0.5 0.7]
+#define GODRAYS_STRENGTH 0.5 // [0.0 0.2 0.35 0.5 0.7]
 #define CANOPY_GLOW 0.20 // [0.0 0.06 0.12 0.20 0.30]
 #define BLOOM_STRENGTH 0.6 // [0.0 0.3 0.6 0.9 1.2]
-#define HAZE 0.22 // [0.0 0.1 0.18 0.22 0.3 0.45]
+#define HAZE 0.3 // [0.0 0.1 0.18 0.22 0.3 0.45]
 #define SAND_BOOST 0.8 // [0.0 0.4 0.8 1.0]
 #define DISTANCE_FOG
 #define FOG_STRENGTH 0.55 // [0.0 0.25 0.55 0.75 1.0]
