@@ -48,7 +48,7 @@ void main() {
 		col = mix(col, far, celBand(smoothstep(24.0, 96.0, length(viewPos)), 3) * 0.45);
 		// banded sky reflection (stronger at grazing angles)
 		vec3 refl = celSky(reflect(-v, n), sunPosition, upPosition, rainStrength);
-		// sky mirror grows with distance (far water reads as the sky, as in the )
+		// sky mirror grows with distance (far water reads as the sky, the target look)
 		float farR = smoothstep(12.0, 72.0, length(viewPos));
 		// bright mirror toward the horizon (lifted a touch so it reads as sheen, not a copy of the sky)
 		col = mix(col, refl * 1.06 + vec3(0.05), clamp(fres * 0.40 + farR * 0.60 * WATER_REFLECT, 0.0, 0.88));

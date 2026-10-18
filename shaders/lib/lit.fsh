@@ -115,7 +115,7 @@ void main() {
 	vec3 col = albedo.rgb * lighting;
 #ifdef GROUND_GRADE
 	if (grassTex && isEyeInWater == 0) {
-		// pull toward the target grass: hue ~113, S ~0.66, V ~0.73, keep texture detail as luma
+		// pull toward the target-look grass: hue ~113, S ~0.66, V ~0.73, keep texture detail as luma
 		float gl = luma(col), lf = gl / max(luma(vec3(0.31, 0.73, 0.25)), 1e-3);
 		vec3 target = vec3(0.27, 0.72, 0.38) * 1.02 * mix(0.82, 1.10, clamp(lf, 0.0, 1.0)) * mix(0.45, 1.0, day) * (lb * 0.35 + 0.65);
 		// subtle colour-wave sway: slow lighter bands rolling over the field

@@ -4,7 +4,7 @@ Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All 
 All builds tested in the real client with screenshots.
 
 ## 0.18-dev – 2026-10-18 (prerelease)
-Water: horizon haze, night water.
+Water closer to the target look, horizon haze, night water.
 - Flowing streak foam: bright foam lines ride the wave crests (same phase as the surface waves) and move with them; broken up by rotated noise so no grid-aligned cuts.
 - Foam sheets now only along shores: open lakes seen from above no longer get pale patches.
 - Near-white haze where the sea meets the sky (far water + sky just above the horizon); new **Horizon Haze** slider (0 / 0.5 / 1 / 1.5), weaker at night and in rain.
@@ -12,7 +12,6 @@ Water: horizon haze, night water.
 - Shoreline: crisp white edge line plus soft rim kept.
 - QA: no NaN/black/magenta pixels in ocean, river, lake and night captures; no reflection or stream artifacts seen; composite pass additionally compiled on a real Mesa driver before in-client test.
 - Known: night ripples still subtle; foam brightness at distance fades out by design.
-- Captures: `compare/v018` (0.17-dev vs 0.18-dev pairs).
 
 ## 0.17-dev – 2026-10-18 (prerelease)
 Water rework.
@@ -24,7 +23,6 @@ Water rework.
 - Fixed: foam artifact from 0.16-dev.
 - Softer sun horizon glow (fixes the washed-out swamp sky), lighter swamp fog.
 - Known: foam not yet as bright/flowing as targeted, horizon not yet near-white (planned for 0.18).
-- Captures: `compare/v017` (sea, river, lake, night, sunrise, noon, sunset).
 
 ## 0.16-dev – 2026-10-18
 Atmosphere and time of day.
@@ -33,7 +31,6 @@ Atmosphere and time of day.
 - Hazier swamp, dark forest and snowy biomes.
 - Clearer water with distant sky reflection, surf wash at the shore.
 - New sliders for the above in the shader settings.
-- Captures: `compare/v016` (0.15 vs 0.16-dev pairs).
 
 ## 0.15 – 2026-10-18
 Bug-fix and polish release (Modrinth draft basis).
@@ -47,7 +44,7 @@ Bug-fix and polish release (Modrinth draft basis).
 - Emissive blocks, Distant Horizons programs (only remove the "incompatible" message; DH still shows blue patches → Bobby recommended).
 - `pack.png` included in the zip; new Monocraft-lettering icon (SIL OFL 1.1).
 - Gallery `gallery/final` 1920×1080; QA scenes and cleanup functions (glass, torch, night).
-- QA (`compare/v015/QA.md`): no NaN/black pixels, no z-fighting, no flicker, transparency sorting OK; reload done via K toggle (Iris R key did not reload).
+- QA: no NaN/black pixels, no z-fighting, no flicker, transparency sorting OK; reload done via K toggle (Iris R key did not reload).
 
 ## 0.14 – 2026-10-18
 - Brighter, less saturated grass with texture detail restored.
