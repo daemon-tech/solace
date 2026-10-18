@@ -106,6 +106,7 @@ vec3 grade(vec3 c) {
 	float g = clamp((c.g - max(c.r, c.b)) * 4.0, 0.0, 1.0);
 	c.r += (c.g - c.r) * (LIME_GREENS * STYLE_K) * g;
 	c *= 1.0 + 0.16 * g * (LIME_GREENS * STYLE_K) / 0.25; // lush greens, no glow boost
+	c.r *= 1.0 - 0.04 * g; // hue toward ~114
 	c *= mix(vec3(1.0), vec3(1.06, 1.0, 0.90), WARMTH * smoothstep(0.2, 0.8, l));
 	// sand-like (pale warm, low sat): brighter and more yellow
 	float sand = smoothstep(0.42, 0.55, l) * step(c.b, c.g * 0.92) * step(c.g, c.r * 1.02) * (1.0 - smoothstep(0.35, 0.5, (c.r - c.b) / max(c.r, 1e-3)));

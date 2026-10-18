@@ -51,7 +51,7 @@
 #define WARM_SAT_LIMIT 0.55 // [0.0 0.25 0.55 0.8 1.0]
 #define LUMA_CAP 0.86 // [0.76 0.82 0.86 0.92 1.00]
 #define VIBRANCE 0.30 // [0.0 0.15 0.30 0.50 0.75]
-#define LIME_GREENS 0.20 // [0.0 0.06 0.12 0.20 0.25 0.30 0.38 0.45]
+#define LIME_GREENS 0.12 // [0.0 0.06 0.08 0.12 0.20 0.25 0.30 0.38 0.45]
 #define WARMTH 0.15 // [0.0 0.08 0.15 0.30 0.45]
 #define WATER_WAVES
 #define WATER_FOAM
