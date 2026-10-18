@@ -49,6 +49,9 @@ void main() {
 		// banded sky reflection (stronger at grazing angles)
 		vec3 refl = celSky(reflect(-v, n), sunPosition, upPosition, rainStrength);
 		col = mix(col, refl, fres * 0.38);
+		// darker deep patches drifting slowly (banded, world-space)
+		float patch = vnoise(p * 0.06 + vec2(t * 0.02, 0.0));
+		col *= mix(1.0, 0.68, step(0.58, patch)) * mix(1.0, 0.85, step(0.45, patch));
 		// soft wave crest lines drifting across the surface
 		float wv = sin(p.x * 0.55 + p.y * 0.25 + t * 0.9 + vnoise(p * 0.15) * 4.0);
 		col = mix(col, bright * 1.08, step(0.85, wv) * 0.55 * mix(0.4, 1.0, day));
@@ -61,8 +64,9 @@ void main() {
 #ifdef WATER_SPARKLE
 		// white sparkle streaks drifting with the waves
 		vec2 sp = p * vec2(0.8, 3.0) + vec2(t * 0.4, 0.0);
-		float sparkle = step(0.90, vnoise(sp)) * step(0.55, vnoise(p * 0.2 + t * 0.07)) * step(0.80, spec);
-		col = mix(col, vec3(1.0), sparkle * 0.9 * mix(0.4, 1.0, day));
+		float sparkle = step(0.86, vnoise(sp)) * step(0.50, vnoise(p * 0.2 + t * 0.07)) * step(0.50, spec)
+		              + step(0.965, vnoise(p * 1.6 + vec2(t * 0.35, -t * 0.2))) * day; // scattered small glints
+		col = mix(col, vec3(1.0), clamp(sparkle, 0.0, 1.0) * 0.9 * mix(0.4, 1.0, day));
 #endif
 		outColor = vec4(col * mix(light, 1.0, 0.5 * day), mix(0.30, 0.85, fres) * WATER_OPACITY);
 		outFlag = vec4(1.0, 0.0, 0.0, 1.0);

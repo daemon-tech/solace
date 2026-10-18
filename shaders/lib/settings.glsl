@@ -10,8 +10,8 @@
 #define WATER_SAT 0.95 // [0.6 0.75 0.85 0.95 1.1]
 #define WATER_BRIGHT 1.0 // [0.85 1.0 1.15 1.3]
 #define GROUND_GRADE // grass ground graded toward target hue, flat soft light
-#define GROUND_GRADE_STRENGTH 0.6 // [0.3 0.45 0.6 0.75 0.9]
-#define GRASS_SMOOTH 0.5 // [0.0 0.3 0.5 0.7 0.9] low-pass grass top texture detail
+#define GROUND_GRADE_STRENGTH 0.75 // [0.3 0.45 0.6 0.75 0.9]
+#define GRASS_SMOOTH 0.3 // [0.0 0.3 0.5 0.7 0.9] low-pass grass top texture detail
 #define FOLIAGE_SMOOTH 0.5 // [0.0 0.35 0.5 0.65 0.85] smooth leaf masses instead of checker noise
 #define HIDE_LEAF_LITTER // leaf litter specks off (smooth even ground)
 #define GRASS_SWAY 0.10 // [0.0 0.05 0.10 0.15]

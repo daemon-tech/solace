@@ -117,7 +117,7 @@ void main() {
 	if (grassTex && isEyeInWater == 0) {
 		// pull toward the target grass: hue ~113, S ~0.66, V ~0.73, keep texture detail as luma
 		float gl = luma(col), lf = gl / max(luma(vec3(0.31, 0.73, 0.25)), 1e-3);
-		vec3 target = vec3(0.27, 0.72, 0.28) * mix(0.78, 1.15, clamp(lf, 0.0, 1.0)) * mix(0.45, 1.0, day) * (lb * 0.6 + 0.4);
+		vec3 target = vec3(0.42, 0.80, 0.40) * mix(0.80, 1.18, clamp(lf, 0.0, 1.0)) * mix(0.45, 1.0, day) * (lb * 0.35 + 0.65);
 		// subtle colour-wave sway: slow lighter bands rolling over the field
 		float wave = sin(dot(cwpos.xz, vec2(0.21, 0.13)) + frameTimeCounter * GRASS_SWAY_SPEED);
 		target *= 1.0 + GRASS_SWAY * smoothstep(0.6, 1.0, wave);
