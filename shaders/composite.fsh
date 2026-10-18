@@ -49,6 +49,7 @@ uniform mat4 gbufferProjection;
 uniform vec3 moonPosition;
 uniform float bTemp;
 uniform int biome;
+uniform int biome_category;
 uniform float bRain;
 uniform float bSwamp;
 uniform float bDark;
@@ -370,6 +371,24 @@ void main() {
 				vec3 refl = texture(colortex0, hitUV).rgb;
 				refl = mix(refl, wc, 0.25); // reflections take a little of the water colour
 				col = mix(col, refl, fres * e.x * e.y * WATER_SSR_STRENGTH * (1.0 - 0.6 * farF));
+#ifdef NIGHT_LIGHT_REFLECT
+				// night: light sources reflect as vivid coloured glows, stretched into a short vertical streak
+				{
+					float nk = (1.0 - wday) * e.x * e.y;
+					if (nk > 0.01) {
+						vec3 Ls = vec3(0.0);
+						for (int k = -3; k <= 3; k++) {
+							vec4 l4 = textureLod(colortex3, hitUV + vec2(0.0, float(k) * 0.012), 2.0);
+							Ls += l4.rgb * (1.0 - abs(float(k)) / 4.0);
+						}
+						Ls /= 4.0;
+						float ll = max(Ls.r, max(Ls.g, Ls.b));
+						vec3 vivid = Ls / max(ll, 1e-3); // full-saturation hue of the light
+						float brk = 0.6 + 0.4 * step(0.4, vnoise(vec2(uv.x * 60.0, uv.y * 220.0 + t * 1.5)));
+						col += vivid * celBandSoft(clamp(ll * 1.6, 0.0, 1.0), 3, 0.4) * brk * nk * 0.9 * NIGHT_LIGHT_REFLECT_STRENGTH;
+					}
+				}
+#endif
 			}
 #ifdef GLOW_SHALLOWS
 			{
@@ -407,6 +426,30 @@ void main() {
 			g = celBand(clamp(g * 2.5, 0.0, 1.0), 3) * cells;
 			col = mix(col, vec3(1.0, 0.97, 0.88), clamp(g, 0.0, 1.0) * 0.9 * wday * (1.0 - rainStrength));
 #endif
+#ifdef WATER_STARS
+			{
+				// stylized '+' sparkles twinkling in the sunlit part of the water (sun reflection zone)
+				vec3 Rc = reflect(V, upV);
+				float zone = pow(max(dot(Rc, Lsun), 0.0), 10.0) * wday * (1.0 - rainStrength) * (1.0 - farF);
+				if (zone > 0.02) {
+					vec2 pxy = uv * vec2(viewWidth, viewHeight);
+					float cs = 26.0;
+					vec2 cell = floor(pxy / cs);
+					float tw = floor(t * 2.5 + hash12(cell) * 7.0);
+					float pick = hash12(cell + tw * 0.37);
+					if (pick > 0.80) {
+						vec2 cen = (cell + 0.25 + 0.5 * vec2(hash12(cell + 1.7), hash12(cell + 4.3))) * cs;
+						vec2 d = abs(pxy - cen);
+						float L = mix(5.0, 11.0, hash12(cell + 9.1));
+						float arm = max(step(d.y, 0.6) * smoothstep(L, 0.0, d.x), step(d.x, 0.6) * smoothstep(L, 0.0, d.y));
+						float core = step(max(d.x, d.y), 1.2);
+						float ph = fract(t * 2.5 + hash12(cell) * 7.0);
+						float amp = sin(ph * 3.14159);
+						col = mix(col, vec3(1.0, 0.98, 0.90), clamp(max(arm, core) * amp * smoothstep(0.02, 0.3, zone), 0.0, 1.0) * WATER_STARS_STRENGTH);
+					}
+				}
+			}
+#endif
 		}
 #endif
 #ifdef WATER_FOAM
@@ -425,6 +468,15 @@ void main() {
 			float brk = smoothstep(0.30, 0.62, vnoise(rq * 0.45 + vec2(t * 0.2, 0.0)) * 0.7 + vnoise(rq * 1.3) * 0.3);
 			float streak = smoothstep(mix(0.82, 0.90, farF), 0.94, sin(ph)) * brk * (1.0 - farF * 0.35) * mix(0.60, 1.0, shore); // far sea keeps thin foam
 			col = mix(col, foamC, clamp(max(sheet * 0.90, streak * 1.0), 0.0, 1.0) * (1.0 - fall) * fday * WATER_FOAM_AMT);
+#ifdef WATER_ROLL
+			// rolling swell: blocky white foam caps on the crests (1/8-block cells, ocean only)
+			if ((biome_category == CAT_OCEAN || biome_category == CAT_BEACH) && fall < 0.5) {
+				vec2 fc = floor(wxz * 8.0) / 8.0;
+				float cr = rollWave(fc, t);
+				float cap = step(0.86 - 0.10 * hash12(floor(wxz * 8.0)), cr) * (1.0 - farF * 0.5);
+				col = mix(col, foamC, cap * 0.92 * fday);
+			}
+#endif
 			// foam rings around blocks standing in the water (posts, rocks, plants)
 			{
 				vec2 px = 5.0 / vec2(viewWidth, viewHeight) * clamp(16.0 / max(lin, 1.0), 0.35, 2.0);
@@ -441,6 +493,13 @@ void main() {
 #ifdef WATER_SPLASH
 			// splashes: rings + white bursts around the player when wading/swimming, and foam where falling water lands
 			{
+#ifdef NIGHT_WAKE_BRIGHT
+				// wakes and splashes stay bright white at night (no night dimming)
+				vec3 foamW = vec3(0.96, 1.0, 1.0) * mix(0.90, 1.0, wday);
+				float fW = mix(0.85, 1.0, wday);
+#else
+				vec3 foamW = foamC; float fW = fday;
+#endif
 				vec3 wpw = mat3(gbufferModelViewInverse) * wv;
 				vec2 rel = wpw.xz + cameraPosition.xz - eyePosition.xz; // player-relative xz (works in third person and in boats)
 				float feetY = eyePosition.y - 1.62;
@@ -450,7 +509,7 @@ void main() {
 				float d = length(rel);
 				float rings = smoothstep(0.82, 0.96, sin(d * 7.5 - t * 6.0 + wob * 2.0)) * smoothstep(2.6, 0.5, d);
 				float burst = smoothstep(0.55, 0.62, vnoise(rel * 5.0 + t * 3.0) * smoothstep(1.4, 0.3, d) + 0.25 * smoothstep(1.0, 0.0, d));
-				col = mix(col, foamC, clamp(rings * (0.22 + 0.78 * mv) + burst * mv, 0.0, 1.0) * inW * fday * WATER_SPLASH_AMT);
+				col = mix(col, foamW, clamp(rings * (0.22 + 0.78 * mv) + burst * mv, 0.0, 1.0) * inW * fW * WATER_SPLASH_AMT);
 #ifdef WATER_WAKE
 				// V-shaped wake behind the player or the player's boat (direction from camera motion)
 				{
@@ -464,7 +523,7 @@ void main() {
 						float wk = (1.0 - smoothstep(0.10, 0.35, arm + vnoise(rel * 2.0 + t) * 0.15)) * step(0.0, along) * (1.0 - smoothstep(4.0, 14.0, along));
 						float trail = (1.0 - smoothstep(0.2, 0.9, perp)) * step(0.0, along) * (1.0 - smoothstep(2.0, 7.0, along)) * step(0.5, vnoise(rel * 3.0 - fwd * t * 3.0));
 						float wakeW = smoothstep(2.5, 0.0, abs(feetY - surfY + 0.4)) * clamp(sp / 5.0, 0.0, 1.0);
-						col = mix(col, foamC, celBand(clamp(max(wk, trail * 0.8), 0.0, 1.0), 3) * wakeW * fday * WATER_SPLASH_AMT);
+						col = mix(col, foamW, celBand(clamp(max(wk, trail * 0.8), 0.0, 1.0), 3) * wakeW * fW * WATER_SPLASH_AMT);
 					}
 				}
 #endif
@@ -478,8 +537,8 @@ void main() {
 						hitF = max(hitF, step(0.5, texture(colortex2, o).r) * smoothstep(0.3, 0.6, fO));
 					}
 					float churn = smoothstep(0.45, 0.6, vnoise(wxz * 3.0 + vec2(0.0, t * 2.5)) * 0.7 + vnoise(wxz * 7.0 - t * 4.0) * 0.3 + hitF * 0.25);
-					col = mix(col, foamC, hitF * churn * fday * WATER_SPLASH_AMT);
-					col = mix(col, vec3(0.95, 1.0, 1.0), hitF * 0.35 * fday * WATER_SPLASH_AMT); // white mist over the pool
+					col = mix(col, foamW, hitF * churn * fW * WATER_SPLASH_AMT);
+					col = mix(col, vec3(0.95, 1.0, 1.0), hitF * 0.35 * fW * WATER_SPLASH_AMT); // white mist over the pool
 				}
 			}
 #endif

@@ -9,6 +9,7 @@ in vec4 mc_Entity;
 in vec2 mc_midTexCoord;
 out vec2 texcoord;
 out vec4 vcolor;
+flat out int sWater;
 void main() {
 	vec4 vp = shadowModelViewInverse * (gl_ModelViewMatrix * gl_Vertex);
 #ifdef WAVING_FOLIAGE
@@ -23,4 +24,5 @@ void main() {
 	gl_Position.xyz = celDistort(gl_Position.xyz);
 	texcoord = gl_MultiTexCoord0.xy;
 	vcolor = gl_Color;
+	sWater = int(mc_Entity.x + 0.5) == 10001 ? 1 : 0;
 }

@@ -107,3 +107,10 @@ vec2 windOffset(int kind, vec3 wp, float top, float t) {
 	          + vec2(sin(t * 3.7 + wp.y * 1.3 + wp.x), sin(t * 3.1 + wp.z * 1.1)) * 0.012;
 	return (sway * (1.0 + 0.8 * gust) + wd * 0.03 * gust) * WAVING_STRENGTH;
 }
+
+// rolling ocean swell (WATER_ROLL): 0..1, 1 = crest; long waves travelling along one direction
+float rollWave(vec2 xz, float t) {
+	float a = dot(xz, vec2(0.83, 0.56)) * 0.571 - t * 1.1;  // ~11-block wavelength
+	float b = dot(xz, vec2(-0.35, 0.94)) * 0.42 - t * 0.7; // cross swell breaks the pattern up
+	return clamp(0.5 + 0.38 * sin(a) + 0.12 * sin(b), 0.0, 1.0);
+}

@@ -108,6 +108,13 @@ const float sunPathRotation = -25.0;
 #define GOLDEN_HOUR_TINT 0.6 // [0.0 0.3 0.6 0.9] warm low-sun light on grass and leaves
 #define WATER_SSR // screen-space reflections of terrain on water
 #define WATER_SSR_STRENGTH 0.8 // [0.4 0.6 0.8 1.0]
+#define NIGHT_LIGHT_REFLECT // vivid coloured reflections of light sources on night water
+#define NIGHT_LIGHT_REFLECT_STRENGTH 1.0 // [0.5 1.0 1.5 2.0]
+#define NIGHT_WAKE_BRIGHT // wakes and splashes stay bright white at night
+#define WATER_STARS // cross-shaped twinkling sparkles on sunlit water
+#define WATER_STARS_STRENGTH 0.9 // [0.5 0.7 0.9 1.0]
+//#define WATER_ROLL // rolling ocean swell with blocky foam caps (oceans only)
+#define WATER_ROLL_HEIGHT 1.0 // [0.5 1.0 1.5]
 #define WATER_SUN_GLINT // banded sun glint path on water
 #define SSAO // soft contact shading in corners (banded)
 #define SSAO_STRENGTH 0.35 // [0.15 0.25 0.35 0.5 0.65]

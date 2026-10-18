@@ -82,6 +82,10 @@ float shadowAt(vec4 clip, float ndl) {
 	// shadowcolor0 decides: opaque casters write alpha 1, glass < 0.95, clear stays 1)
 	float all0 = step(p.z - bias, texture(shadowtex0, p.xy).r);
 	vec4 sc = texture(shadowcolor0, p.xy);
+#ifdef GLASS_DEBUG
+	glassTint = all0 < 0.5 ? (sc.a < 0.95 ? vec3(3.0, 0.0, 3.0) : vec3(3.0, 0.0, 0.0)) : vec3(0.0, 3.0, 0.0);
+	return 1.0;
+#endif
 	if (all0 < 0.5 && sc.a > 0.05 && sc.a < 0.95) {
 		glassTint = mix(vec3(1.0), clamp(sc.rgb * 1.5, 0.0, 1.2), clamp(sc.a, 0.0, 1.0) * 0.85);
 #ifdef GLASS_DEBUG
