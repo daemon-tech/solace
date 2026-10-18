@@ -146,7 +146,7 @@ void main() {
 		vec3 hiPre = max(col - vec3(0.80), 0.0); // keep localized glints/foam lines from the surface pass
 		col = mix(col * vec3(0.62, 1.02, 0.98), midC, clamp(dd * 2.0, 0.0, 1.0) * 0.75);
 		col = mix(col, deepC, clamp(dd * 2.0 - 1.0, 0.0, 1.0) * WATER_DEPTH_TINT);
-		col *= 1.0 - 0.38 * texture(colortex2, uv).b; // drifting deep patches (clearly visible)
+		col *= 1.0 - 0.24 * texture(colortex2, uv).b; // drifting deep patches (clearly visible)
 		float wl = dot(col, vec3(0.299, 0.587, 0.114));
 		col = mix(vec3(wl), col, WATER_SAT) * WATER_BRIGHT + hiPre * 2.5;
 #ifdef WATER_FOAM

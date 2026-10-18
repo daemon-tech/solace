@@ -50,8 +50,8 @@ void main() {
 		vec3 refl = celSky(reflect(-v, n), sunPosition, upPosition, rainStrength);
 		col = mix(col, refl, fres * 0.38);
 		// darker deep patches drifting slowly (banded, world-space)
-		float patch = vnoise(p * 0.06 + vec2(t * 0.02, 0.0));
-		float deepPatch = step(0.58, patch) * 0.6 + step(0.45, patch) * 0.4;
+		float patch = vnoise(p * 0.10 + vec2(t * 0.02, 0.0)) * 0.7 + vnoise(p * 0.23 - vec2(0.0, t * 0.03)) * 0.3;
+		float deepPatch = smoothstep(0.56, 0.64, patch) * 0.55 + smoothstep(0.44, 0.52, patch) * 0.45;
 		// soft wave crest lines drifting across the surface
 		float wv = sin(p.x * 0.55 + p.y * 0.25 + t * 0.9 + vnoise(p * 0.15) * 4.0);
 		float crest = step(0.86, wv) + step(0.93, wv); // two-step stylized crest line
