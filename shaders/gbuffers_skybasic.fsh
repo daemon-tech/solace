@@ -13,7 +13,12 @@ uniform float frameTimeCounter;
 float fbm(vec2 p) { float s = 0.0, a = 0.5; for (int i = 0; i < 5; i++) { s += a * vnoise(p); p = p * 2.03 + 17.1; a *= 0.5; } return s; }
 /* RENDERTARGETS: 0 */
 layout(location = 0) out vec4 outColor;
+uniform int renderStage;
 void main() {
+	// vanilla star quads would draw over our clouds (white dots at sunrise): Solace draws its own stars
+#ifdef MC_RENDER_STAGE_STARS
+	if (renderStage == MC_RENDER_STAGE_STARS) discard;
+#endif
 	vec4 p = gbufferProjectionInverse * vec4(gl_FragCoord.xy / vec2(viewWidth, viewHeight) * 2.0 - 1.0, 1.0, 1.0);
 	vec3 dir = safeNormalize(p.xyz / max(abs(p.w), 1e-5), vec3(0, 0, -1));
 	vec3 col = celSky(dir, sunPosition, upPosition, rainStrength);

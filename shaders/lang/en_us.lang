@@ -93,3 +93,5 @@ option.WATER_CLARITY=Water Clarity
 option.WATER_CLARITY.comment=Clearer, paler shallows.
 option.WATER_REFLECT=Distant Sky Reflection
 option.WATER_REFLECT.comment=How strongly far water mirrors the sky.
+option.WATER_FOAM_AMT=Foam Sheets
+option.WATER_FOAM_AMT.comment=Amount of soft foam on shores and open water.

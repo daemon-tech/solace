@@ -142,28 +142,42 @@ void main() {
 		float behind = max(linDepth(texture(depthtex1, uv).r) - lin, 0.0);
 		// deeper water -> banded deeper blue
 		// clear shallows -> teal -> deep blue-green, in soft bands (bottom visible near shore)
-		float dd = celBand(smoothstep(0.3, 12.0, behind), 4);
+		// 0.17 water: pale clear turquoise, near-white shallows, soft foam sheets
 		float wday = dayFactor(sunPosition, upPosition);
-		// strong turquoise: clear tinted shallows -> turquoise -> dark blue depths (banded)
-		vec3 midC = mix(vec3(0.05, 0.24, 0.32), vec3(0.20, 0.74, 0.80), wday);
-		midC = mix(midC, vec3(0.20, 0.44, 0.34) * wday + 0.04, bSwamp * BIOME_MOOD);
-		vec3 deepC = mix(vec3(0.03, 0.12, 0.20), vec3(0.05, 0.36, 0.46), wday); // dark teal, never navy
-		vec3 hiPre = max(col - vec3(0.80), 0.0); // keep localized glints/foam lines from the surface pass
-		col = mix(mix(col * vec3(0.70, 1.04, 1.00), vec3(0.70, 0.96, 0.94) * mix(0.35, 1.0, wday), 0.32 * WATER_CLARITY), midC, clamp(dd * 2.0, 0.0, 1.0) * 0.75);
-		col = mix(col, deepC, clamp(dd * 2.0 - 1.0, 0.0, 1.0) * WATER_DEPTH_TINT);
-		col *= 1.0 - 0.24 * texture(colortex2, uv).b; // drifting deep patches (clearly visible)
+		float t = frameTimeCounter;
+		vec4 wp4 = gbufferProjectionInverse * vec4(uv * 2.0 - 1.0, d0 * 2.0 - 1.0, 1.0);
+		vec3 wv = wp4.xyz / max(abs(wp4.w), 1e-5);
+		vec2 wxz = (mat3(gbufferModelViewInverse) * wv).xz + mod(cameraPosition.xz, 4096.0);
+		float dd = celBand(smoothstep(0.3, 14.0 * mix(0.8, 1.4, WATER_CLARITY * 0.5), behind), 4);
+		vec3 shoreC = vec3(0.80, 0.98, 0.96);
+		vec3 midC = vec3(0.38, 0.84, 0.88);
+		vec3 deepC = vec3(0.14, 0.54, 0.68);
+		midC = mix(midC, vec3(0.34, 0.60, 0.46), bSwamp * BIOME_MOOD);
+		deepC = mix(deepC, vec3(0.16, 0.36, 0.30), bSwamp * BIOME_MOOD);
+		// night: same hues, darker and bluer (never navy-black)
+		vec3 nightK = mix(vec3(0.30, 0.40, 0.64), vec3(1.0), wday);
+		vec3 wc = (dd < 0.5 ? mix(shoreC, midC, dd * 2.0) : mix(midC, deepC, dd * 2.0 - 1.0)) * nightK;
+		float farF = smoothstep(24.0, far * 0.7, lin); // far water keeps the surface sky mirror
+		vec3 hiPre = max(col - vec3(0.80), 0.0);
+		col = mix(col, wc, mix(0.55, 0.88, dd) * (1.0 - 0.65 * farF) * WATER_DEPTH_TINT / 0.70);
+		col *= 1.0 - 0.10 * texture(colortex2, uv).b * (1.0 - farF);
 		float wl = dot(col, vec3(0.299, 0.587, 0.114));
-		col = mix(vec3(wl), col, WATER_SAT) * WATER_BRIGHT + hiPre * 2.5;
+		col = mix(vec3(wl), col, WATER_SAT) * WATER_BRIGHT + hiPre * 2.0;
 #ifdef WATER_FOAM
-		// shore foam: solid edge band plus a broken second band
-		float wob = vnoise(uv * vec2(viewWidth, viewHeight) * 0.03 + frameTimeCounter * 0.6) * 0.35;
-		float fday = mix(0.45, 1.0, dayFactor(sunPosition, upPosition));
-		// shoreline foam lines: solid edge line + a thinner wavy line pulsing outward
-		float pulse = fract(frameTimeCounter * 0.15);
-		if (behind < 0.55 + wob * 0.5) col = mix(col, vec3(0.98, 1.0, 1.0), 0.97 * fday);
-		else if (behind < 0.70 + wob * 0.5) col = mix(col, vec3(0.90, 0.97, 1.0), 0.55 * fday);
-		else if (behind < 1.10 + wob) col = mix(col, vec3(0.88, 0.97, 1.0), 0.22 * fday); // wide soft surf wash // soft foam rim
-		else if (abs(behind - (0.75 + pulse * 0.6 + wob)) < 0.16) col = mix(col, vec3(0.97, 1.0, 1.0), 0.90 * fday * (1.0 - 0.6 * pulse));
+		{
+			float fday = mix(0.35, 1.0, wday);
+			vec3 foamC = vec3(0.96, 1.0, 1.0) * nightK;
+			float wob = vnoise(wxz * 1.7 + t * 0.5) * 0.35;
+			float shore = 1.0 - smoothstep(0.0, 4.5, behind);
+			// large soft foam sheets: world-space noise, denser at the shore, drifting slowly
+			float n = vnoise(wxz * vec2(0.16, 0.45) + vec2(t * 0.05, t * 0.02)) * 0.6 + vnoise(wxz * vec2(0.5, 1.3) - vec2(t * 0.07, 0.0)) * 0.4; // streaky
+			float sheet = smoothstep(0.66, 0.70, n + shore * 0.30) * (1.0 - farF);
+			float open = step(0.80, n) * 0.35 * (1.0 - farF); // sparse whitecaps on open water
+			col = mix(col, foamC, max(sheet * mix(0.45, 0.85, shore), open) * fday * WATER_FOAM_AMT);
+			// crisp shoreline line + soft rim
+			if (behind < 0.50 + wob * 0.5) col = mix(col, foamC, 0.95 * fday);
+			else if (behind < 0.95 + wob) col = mix(col, foamC, 0.45 * fday);
+		}
 #endif
 	}
 
@@ -182,7 +196,7 @@ void main() {
 		vec3 fogCol = mix(vec3(0.18, 0.20, 0.50), vec3(0.42, 0.72, 0.85), day) * bTint;
 		fogCol = mix(fogCol, fogSky, FOG_SKY_MATCH);
 		float fs = far * mix(0.12, 0.02, bFog), fe = far * mix(0.9, 0.6, bFog);
-		float f = celBand(smoothstep(fs, fe, lin), 4) * min(FOG_STRENGTH * (1.0 + bFog * 0.6), 1.0);
+		float f = celBand(smoothstep(fs, fe, lin), 4) * min(FOG_STRENGTH * (1.0 + bFog * 0.3), 1.0);
 		col = mix(col, fogCol, f * (water ? 0.35 : 1.0));
 	}
 #endif
