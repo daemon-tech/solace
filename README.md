@@ -1,7 +1,7 @@
-# Solace (prototype 0.14)
+# Solace Shaders (prototype 0.14)
 
 An original cartoon / cel-shading shaderpack for **Minecraft 26.3** with **Iris 1.11.x + Sodium 0.9.x**.
-All GLSL is written from scratch (MIT). Prototype codename; the final name is not decided.
+All GLSL is written from scratch. Closed source, All Rights Reserved.
 
 ## Features
 - Cel-shaded lighting: quantized N·L + lightmap, 2–5 bands with adjustable smoothstep edge
@@ -28,7 +28,7 @@ All GLSL is written from scratch (MIT). Prototype codename; the final name is no
 Drop the zip into `.minecraft/shaderpacks/` and select it in Iris' shader menu.
 
 ## License
-MIT, see LICENSE.
+All Rights Reserved. Free for personal use and for videos/screenshots. No re-uploading, no redistribution, no modified versions for distribution. See LICENSE.
 - 0.6: crisp 1px silhouette outlines, glow/bloom + atmospheric haze, stronger sunset cast, torch pools, night indigo shift, brighter sand + foam band, brighter cyan water, underwater depth fog.
 - 0.7: brighter indigo night ambient, teal-blue night foliage, stronger dusk lift.
 - 0.8: torch-pool flag keeps torch light warm at night, hue-preserving night shift, brighter lime greens, closer haze, full dusk cast.
