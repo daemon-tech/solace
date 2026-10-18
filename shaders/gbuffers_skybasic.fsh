@@ -33,6 +33,16 @@ void main() {
 		vec3 cell = floor(sd * 180.0);
 		float h = hash12(cell.xy + cell.z * 37.1);
 		if (h > 0.9965) col = mix(col, vec3(0.95, 0.95, 1.0), night * (1.0 - rainStrength));
+#ifdef MILKY_WAY
+		// faint painted Milky Way band across the night sky (soft, two-tone, banded)
+		float band = 1.0 - abs(dot(normalize(sd), normalize(vec3(0.35, 0.25, 0.90))));
+		// soft falloff + cloudy breakup so the band never shows straight edges
+		float core = smoothstep(0.80, 1.0, band);
+		float mw = core * core * smoothstep(0.35, 0.75, fbm(sd.xy * 5.0 + sd.z * 3.0) + core * 0.25);
+		mw = clamp(mw, 0.0, 1.0) * 0.7;
+		col = mix(col, col + vec3(0.16, 0.14, 0.26), mw * MILKY_WAY * night * (1.0 - rainStrength));
+		if (h > 0.985 && mw > 0.3) col = mix(col, vec3(0.92, 0.92, 1.0), 0.6 * night * (1.0 - rainStrength)); // denser stars in the band
+#endif
 	}
 #ifdef SOFT_CLOUDS
 	// soft, puffy cel cumulus on a sky plane (replaces blocky vanilla clouds)

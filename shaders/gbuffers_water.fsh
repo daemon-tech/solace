@@ -51,7 +51,7 @@ void main() {
 		// banded sky reflection (stronger at grazing angles)
 		vec3 rd = reflect(-v, n);
 		vec3 refl = celSky(rd, sunPosition, upPosition, rainStrength);
-#ifdef SOFT_CLOUDS
+#if 1 // reflected soft cloud pattern (any cloud style)
 		{
 			// cheap reflected clouds (same sky-plane mapping as the sky pass, 3 octaves)
 			vec3 rw = mat3(gbufferModelViewInverse) * rd;
@@ -95,6 +95,13 @@ void main() {
 			float fl = vnoise(vec2((p.x + p.y) * 2.0, worldPos.y * 0.7 + t * 2.6));
 			col = mix(col, vec3(0.92, 0.99, 1.0), (step(0.62, fl) * 0.55 + step(0.80, fl) * 0.4) * mix(0.4, 1.0, day));
 			crest = max(crest, step(0.62, fl));
+#ifdef WATERFALL_BLOBS
+			// big stylized cel blobs tumbling down: white cores with pale blue rims, two tones
+			float bl = vnoise(vec2((p.x + p.y) * 0.9, worldPos.y * 0.35 + t * 1.8)) * 0.7 + vnoise(vec2((p.x + p.y) * 2.2, worldPos.y * 0.9 + t * 3.0)) * 0.3;
+			col = mix(col, vec3(0.62, 0.86, 1.0), step(0.48, bl) * 0.7 * mix(0.45, 1.0, day));
+			col = mix(col, vec3(0.97, 1.0, 1.0), step(0.60, bl) * 0.9 * mix(0.45, 1.0, day));
+			crest = max(crest, step(0.48, bl));
+#endif
 		}
 		// rain: expanding ripple rings on the surface
 		if (rainStrength > 0.01) {
@@ -117,7 +124,21 @@ void main() {
 	} else {
 		vec4 albedo = texture(gtexture, texcoord) * vcolor;
 		if (albedo.a < 0.05) discard;
-		outColor = vec4(albedo.rgb * light, albedo.a);
+		vec3 gc = albedo.rgb * light;
+#ifdef GLASS_REFLECT
+		// glass: fresnel sky sheen + a stylized diagonal highlight streak (only on see-through blocks)
+		if (albedo.a < 0.95) {
+			vec3 V = safeNormalize(viewPos, vec3(0, 0, -1));
+			float fr = pow(1.0 - clamp(abs(dot(V, n)), 0.0, 1.0), 3.0);
+			vec3 skyC = mix(vec3(0.20, 0.24, 0.45), vec3(0.62, 0.80, 0.98), day);
+			gc = mix(gc, skyC, fr * 0.45 * GLASS_REFLECT_STRENGTH);
+			float diag = fract((worldPos.x + worldPos.z) * 0.5 + worldPos.y * 0.5);
+			float streak = step(0.18, diag) * step(diag, 0.26) + step(0.32, diag) * step(diag, 0.35);
+			gc = mix(gc, vec3(1.0), streak * 0.25 * GLASS_REFLECT_STRENGTH * mix(0.3, 1.0, day));
+			albedo.a = max(albedo.a, fr * 0.5 * GLASS_REFLECT_STRENGTH);
+		}
+#endif
+		outColor = vec4(gc, albedo.a);
 		outFlag = vec4(0.0, 0.0, 0.0, 1.0);
 	}
 	outLight = isWater == 2 ? vec4(lightColor(4), 1.0) : vec4(0.0);

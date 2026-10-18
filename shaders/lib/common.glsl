@@ -1,4 +1,22 @@
 // Solace - shared helpers
+// Nether / End builds (generated folders define DIM_NETHER / DIM_END): no sun, sky or weather effects there
+#if defined DIM_NETHER || defined DIM_END
+#undef SHADOWS
+#undef GODRAYS
+#undef LIGHT_SHAFTS
+#undef VOLUMETRIC_OUTDOOR
+#undef CLOUD_SHADOWS
+#undef WEATHER_FX
+#undef DISTANCE_BLUE
+#undef TIME_GRADING
+#undef CAVE_FOG
+#undef SOFT_CLOUDS
+#undef MILKY_WAY
+#undef WET_GROUND
+#undef DISTANCE_FOG
+#undef GROUND_GRADE
+#undef GLASS_TINT_LIGHT
+#endif
 vec3 celDistort(vec3 p) {
 	// Radial shadow-map distortion: more resolution near the player.
 	float d = length(p.xy);

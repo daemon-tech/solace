@@ -3,6 +3,75 @@
 Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All Rights Reserved.
 All builds tested in the real client with screenshots.
 
+## 0.21-dev – 2026-10-18 (prerelease)
+Big feature update: reflections, splashes, ambient occlusion, weather, caustics, glass, own Nether and End looks, new profiles. Outlines and cel bands unchanged. Every new feature has its own toggle or slider.
+
+**Shadows**
+- Contact-hardening soft shadows: a blocker search measures how far the caster is, and the filter widens with that distance (24-tap rotated disk, world-anchored so it does not crawl). Wide, creamy edges away from the caster, tight contact at the base; soft cel transition kept. New **Shadow Penumbra** slider.
+- Shadows also soften with view distance (**Distance Softness**); wider taps get a slightly larger bias against acne.
+- Grain-free shadow interiors: wide taps on sloped surfaces get receiver-plane bias; small plant shadows are kept.
+- Temporal shadow smoothing: shadow edges are blended over several frames through a history buffer (reprojected with the camera motion, rejected on disocclusion and clamped to the current neighbourhood, so swaying plants and moving mobs leave no trails). The shadow sampling pattern rotates every frame, so the history adds up to a much finer filter. **Temporal Shadow Smoothing**.
+- Shadow edge smoothing: a depth- and normal-aware screen-space filter removes the stair-steps along long straight shadow edges and the fine noise at the penumbra in close-ups, without touching outlines or block edges. **Shadow Edge Smoothing** + **Edge Smoothing Size**.
+- The shadow term is now shaded fully lit and fully shadowed and blended, so the smoothing stays colour-correct on graded grass and foliage.
+
+**Water**
+- Screen-space reflections: terrain, trees and buildings mirror in the water (calm-normal, fresnel weighted, edge-faded; falls back to the sky/cloud mirror off screen). **Water Reflections** + strength.
+- Sun glint: banded glint path broken into small glinting cells. **Sun Glint** toggle.
+- Foam rings around blocks, plants, mobs and players standing in the water.
+- Splashes: expanding rings and white foam bursts around you while wading or swimming (stronger when moving); churning foam pools where falling water lands. **Water Splashes** + amount. Splash particles themselves still come from the game.
+- Underwater caustics on surfaces under water, and faintly on the bottom seen from above. **Caustics** + strength.
+- Underwater light rays from the surface while diving. **Underwater Rays**.
+- Wakes: a V-shaped white wake behind you while swimming or in a boat. **Wakes**.
+- Waterfalls: big stylized white and blue foam blobs tumbling down, white mist over the pool at the base. **Waterfall Foam**.
+- Glowing cyan shallows with white wavy bands on the bottom, also at night. **Glowing Shallows** + amount.
+- Calmer, mirror-clear reflections on still water; long bright sun streak on the water at sunrise and sunset. **Sun Streak**.
+- Bubble particles directly in front of the camera are hidden (no dark rings underwater).
+- Splash rings and wakes follow the player, also in third person and while riding a boat; idle rings are fainter and tighter.
+- Kelp and seagrass reaching the surface no longer read as glowing shallows.
+
+**Light**
+- Ambient occlusion: soft, banded contact shading in corners and under overhangs. **Ambient Occlusion** + strength.
+- Cloud shadows drifting across the land with the same wind as the grass gusts. **Cloud Shadows** + strength.
+- Light shafts outdoors: through forest canopies, morning mist and rain, only where the canopy breaks the light. **Outdoor Light Shafts**.
+- Shadows get softer with distance. **Distance Softness**.
+- Sunlight through stained glass takes the glass colour. **Tinted Glass Light**.
+- Leaf translucency: backlit leaves and grass glow warm-green toward the sun. **Leaf Translucency**.
+- Faint glow on flowers at night. **Night Flower Glow**.
+- Soft radial glow around lanterns, torches, lava and other lights. **Light Glow**.
+- Glowing halo around the sun disk. **Sun Halo**.
+- Stronger god rays in forests and under canopies. **Forest Rays**.
+- Blue depth haze between trees. **Forest Haze**.
+- Foliage light: yellow-green sunlit tops and cool shade on grass, bright sunlit leaf edges against darker inner shade. **Foliage Light**.
+- Cherry leaves keep their pink (no longer pulled toward lime).
+
+**Sky, colour and weather**
+- Time-of-day grading: separate moods for sunrise, noon, golden hour, blue hour and night. **Time-of-Day Grading** + strength.
+- Aerial perspective: far terrain and mountains fade to soft blue. **Distance Blue**.
+- Rain fog (banded), white haze in snowfall, sandstorms in hot dry biomes during bad weather. **Weather Effects**, **Rain Fog**, **Sandstorm**.
+- Wet ground: darker, glossier ground and puddle sheen while it rains. **Wet Ground** + strength.
+- Rain streaks and a darker blue mood for night rain. **Rain Mood**.
+- Faint painted Milky Way with denser stars in the band, soft cloudy edges. **Milky Way**.
+- Clouds: cubic block clouds by default, shaded with sun-side bands, dusk tint and distance fade; painted sky-plane clouds selectable. **Painted Clouds**.
+
+**Glass**
+- Fresnel sky sheen and a stylized highlight streak on glass. **Glass Reflections** + strength.
+
+**Nether and End**
+- Own Nether look: warm ember ambient, banded fog in the biome's fog colour, rising embers. **Nether Look**.
+- Lava and fire burn hotter orange with a slow shimmer; fog turns red near lava; Nether biome fog colours (warped forest cyan, crimson red, soul valley blue) come through.
+- Light outlines glow pink-purple in the Nether.
+- Own End look: violet ambient and fog, painted End sky with nebula bands and stars. **End Look**.
+- No sun, sky or weather effects run in those dimensions.
+
+**Image quality and profiles**
+- Light FXAA that smooths geometry stair-steps and leaves outlines crisp. **Anti-Aliasing (FXAA)**.
+- Optional distance blur, off by default. **Distance Blur** + strength.
+- Profiles: Low, Medium, High and new Ultra (Ultra: 4096 shadows, strongest AO and light shafts).
+
+**Testing**
+- Tested in the client: soft shadows (close-ups, long edges, low sun, fast camera turns), water (ocean, shore, lake glint, coast sunset, river reflections, night shallows, waterfall, wading, swimming wake, boat wake, underwater caustics and rays), forest, rain, desert storm, snowfall, night sky, Nether and End. No NaN, black or magenta pixels from the shader in the captures.
+- Known limits: reflections are screen-space (what is off screen cannot reflect); splash rings and wakes react to the player only, other entities get foam rings where they touch the water; splash particles come from the game.
+
 ## 0.20-dev – 2026-10-18 (prerelease)
 Smooth shadows, wind across the fields, golden-hour grass, darker water, coloured light.
 

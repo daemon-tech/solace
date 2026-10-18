@@ -70,7 +70,7 @@ option.GRASS_SMOOTH=Grass Smoothing
 option.FOLIAGE_SMOOTH=Leaf Smoothing
 option.HIDE_LEAF_LITTER=Hide Leaf Litter
 option.TORCH_STRENGTH=Torch Light Strength
-option.SOFT_CLOUDS=Soft Clouds
+option.SOFT_CLOUDS=Painted Clouds
 option.CLOUD_COVER=Cloud Cover
 option.WAVING_FOLIAGE=Waving Foliage
 option.WAVING_STRENGTH=Waving Strength
@@ -120,3 +120,90 @@ value.GRASS_TONE.0=Cool
 value.GRASS_TONE.1=Warm Meadow
 option.GOLDEN_HOUR_TINT=Golden Hour Light
 option.GOLDEN_HOUR_TINT.comment=Warm low-sun light on grass and leaves at sunrise and sunset.
+option.WATER_SSR=Water Reflections
+option.WATER_SSR.comment=Screen-space reflections of terrain, trees and buildings on water.
+option.WATER_SSR_STRENGTH=Reflection Strength
+option.WATER_SUN_GLINT=Sun Glint
+option.WATER_SUN_GLINT.comment=Banded sun glint path on the water surface.
+option.SSAO=Ambient Occlusion
+option.SSAO.comment=Soft, banded contact shading in corners and under overhangs.
+option.SSAO_STRENGTH=AO Strength
+option.CLOUD_SHADOWS=Cloud Shadows
+option.CLOUD_SHADOWS.comment=Soft cloud shadows drifting across the land with the wind.
+option.CLOUD_SHADOW_STRENGTH=Cloud Shadow Strength
+option.VOLUMETRIC_OUTDOOR=Outdoor Light Shafts
+option.VOLUMETRIC_OUTDOOR.comment=Light shafts through forest canopies, morning mist and rain. 0 = off.
+option.WATER_SPLASH=Water Splashes
+option.WATER_SPLASH.comment=Rings and foam bursts around you in water, foam pools where falling water lands. Splash particles themselves come from the game.
+option.WATER_SPLASH_AMT=Splash Amount
+option.TIME_GRADING=Time-of-Day Grading
+option.TIME_GRADING.comment=Separate colour moods for sunrise, noon, golden hour, blue hour and night.
+option.TIME_GRADING_STRENGTH=Grading Strength
+option.DISTANCE_BLUE=Distance Blue
+option.DISTANCE_BLUE.comment=Far terrain and mountains fade to a soft blue. 0 = off.
+option.WEATHER_FX=Weather Effects
+option.WEATHER_FX.comment=Rain fog, sandstorms in deserts and badlands, white haze in snowfall.
+option.RAIN_FOG=Rain Fog
+option.SANDSTORM=Sandstorm
+option.SANDSTORM.comment=Warm dust wall in hot dry biomes during bad weather. 0 = off.
+option.WET_GROUND=Wet Ground
+option.WET_GROUND.comment=Darker ground and puddle sheen while it rains.
+option.WET_GROUND_STRENGTH=Wetness Strength
+option.MILKY_WAY=Milky Way
+option.MILKY_WAY.comment=Faint painted Milky Way band in the night sky. 0 = off.
+option.CAUSTICS=Caustics
+option.CAUSTICS.comment=Banded, drifting light net on surfaces under water.
+option.CAUSTICS_STRENGTH=Caustics Strength
+option.UNDERWATER_RAYS=Underwater Rays
+option.UNDERWATER_RAYS.comment=Soft light shafts from the surface while diving. 0 = off.
+option.GLASS_REFLECT=Glass Reflections
+option.GLASS_REFLECT.comment=Sky sheen at grazing angles and a highlight streak on glass.
+option.GLASS_REFLECT_STRENGTH=Glass Reflection Strength
+option.GLASS_TINT_LIGHT=Tinted Glass Light
+option.GLASS_TINT_LIGHT.comment=Sunlight passing through stained glass takes its colour.
+option.SHADOW_DIST_SOFT=Distance Softness
+option.SHADOW_DIST_SOFT.comment=Shadows become softer further away. 0 = off.
+option.NETHER_FOG=Nether Look
+option.NETHER_FOG.comment=Banded Nether fog in the biome colour with rising embers.
+option.END_FOG=End Look
+option.END_FOG.comment=Violet End fog and a painted End sky with nebula bands.
+profile.ULTRA=Ultra
+option.FXAA=Anti-Aliasing (FXAA)
+option.FXAA.comment=Light anti-aliasing on geometry edges; outlines stay crisp.
+option.DISTANCE_BLUR=Distance Blur
+option.DISTANCE_BLUR.comment=Optional soft blur of far terrain (off by default).
+option.DISTANCE_BLUR_STRENGTH=Distance Blur Strength
+option.LEAF_TRANSLUCENCY=Leaf Translucency
+option.LEAF_TRANSLUCENCY.comment=Leaves and grass glow softly when backlit by the sun. 0 = off.
+option.NIGHT_GLOW=Night Flower Glow
+option.NIGHT_GLOW.comment=Faint glow on flowers at night. 0 = off.
+option.WATER_WAKE=Wakes
+option.WATER_WAKE.comment=V-shaped white wake behind you while swimming or in a boat.
+option.WATERFALL_BLOBS=Waterfall Foam
+option.WATERFALL_BLOBS.comment=Big stylized white and blue foam blobs tumbling down waterfalls.
+option.GLOW_SHALLOWS=Glowing Shallows
+option.GLOW_SHALLOWS.comment=Bright cyan shallows with white wave bands, also at night.
+option.GLOW_SHALLOWS_AMT=Shallows Glow
+option.SUNSET_STREAK=Sun Streak
+option.SUNSET_STREAK.comment=Long bright sun streak on the water at sunrise and sunset.
+option.LIGHT_HALO=Light Glow
+option.LIGHT_HALO.comment=Soft radial glow around lanterns, torches, lava and other lights. 0 = off.
+option.SUN_HALO=Sun Halo
+option.SUN_HALO.comment=Glowing halo around the sun disk. 0 = off.
+option.RAIN_STREAKS=Rain Mood
+option.RAIN_STREAKS.comment=Rain streaks and a darker blue mood for night rain. 0 = off.
+option.FOREST_RAYS=Forest Rays
+option.FOREST_RAYS.comment=Stronger god rays in forests and under canopies.
+option.FOREST_HAZE=Forest Haze
+option.FOREST_HAZE.comment=Blue depth haze between trees. 0 = off.
+option.FOLIAGE_CONTRAST=Foliage Light
+option.FOLIAGE_CONTRAST.comment=Yellow-green sunlit tops and cool shade on grass and leaves.
+option.SHADOW_PENUMBRA=Shadow Penumbra
+option.SHADOW_PENUMBRA.comment=How quickly shadows get wider and softer away from the object casting them.
+option.SOFT_CLOUDS.comment=On: soft painted clouds on a sky plane. Off: cubic block clouds with soft lit faces (default).
+option.SHADOW_TEMPORAL=Temporal Shadow Smoothing
+option.SHADOW_TEMPORAL.comment=Blends shadow edges over several frames for a smoother, noise-free penumbra.
+option.SHADOW_FILTER=Shadow Edge Smoothing
+option.SHADOW_FILTER.comment=Smooths stair-steps along long shadow edges without blurring outlines.
+option.SHADOW_FILTER_SIZE=Edge Smoothing Size
+option.SHADOW_FILTER_SIZE.comment=How wide the shadow edge smoothing reaches.

@@ -17,7 +17,7 @@
 #define GRASS_SWAY 0.10 // [0.0 0.05 0.10 0.15]
 #define GRASS_SWAY_SPEED 1.2 // [0.6 1.2 2.0]
 #define TORCH_STRENGTH 0.9 // [0.5 0.6 0.75 0.9 1.0]
-#define SOFT_CLOUDS // puffy cel-shaded clouds instead of blocky vanilla clouds
+//#define SOFT_CLOUDS // cloud style: on = painted soft clouds on a sky plane, off = cubic block clouds (default)
 #define CLOUD_COVER 0.5 // [0.2 0.35 0.5 0.65 0.8]
 #define WAVING_FOLIAGE // gentle wind sway for leaves and plants
 #define WAVING_STRENGTH 1.0 // [0.5 0.75 1.0 1.5 2.0]
@@ -103,3 +103,51 @@ const float sunPathRotation = -25.0;
 #define WIND_SHEEN 0.15 // [0.0 0.05 0.10 0.15 0.2] light sheen where gusts bend the grass
 #define GRASS_TONE 1 // [0 1] 0 = cool green, 1 = warm meadow green
 #define GOLDEN_HOUR_TINT 0.6 // [0.0 0.3 0.6 0.9] warm low-sun light on grass and leaves
+#define WATER_SSR // screen-space reflections of terrain on water
+#define WATER_SSR_STRENGTH 0.8 // [0.4 0.6 0.8 1.0]
+#define WATER_SUN_GLINT // banded sun glint path on water
+#define SSAO // soft contact shading in corners (banded)
+#define SSAO_STRENGTH 0.35 // [0.15 0.25 0.35 0.5 0.65]
+#define CLOUD_SHADOWS // soft cloud shadows drifting with the wind
+#define CLOUD_SHADOW_STRENGTH 0.35 // [0.15 0.25 0.35 0.5]
+#define VOLUMETRIC_OUTDOOR 0.6 // [0.0 0.3 0.6 1.0] light shafts in forests, mist and rain
+#define WATER_SPLASH // rings and foam bursts around the player in water, foam where falling water lands
+#define WATER_SPLASH_AMT 1.0 // [0.0 0.5 1.0 1.5]
+#define DISTANCE_BLUE 0.35 // [0.0 0.2 0.35 0.5] far mountains fade to soft blue
+#define TIME_GRADING // per time-of-day colour grading (sunrise, noon, golden hour, blue hour, night)
+#define TIME_GRADING_STRENGTH 1.0 // [0.0 0.5 1.0 1.5]
+#define WEATHER_FX // rain fog, sandstorms in hot dry biomes, snow haze
+#define RAIN_FOG 1.0 // [0.0 0.5 1.0 1.5]
+#define SANDSTORM 1.0 // [0.0 0.5 1.0]
+#define WET_GROUND // darker glossy ground and puddle sheen in rain
+#define WET_GROUND_STRENGTH 1.0 // [0.0 0.5 1.0 1.5]
+#define MILKY_WAY 1.0 // [0.0 0.5 1.0 1.5] faint Milky Way band at night
+#define SHADOW_DIST_SOFT 0.6 // [0.0 0.3 0.6 1.0] shadows get softer with distance
+#define GLASS_TINT_LIGHT // sunlight through stained glass takes its colour
+#define CAUSTICS // banded light net under water
+#define CAUSTICS_STRENGTH 1.0 // [0.0 0.5 1.0 1.5]
+#define UNDERWATER_RAYS 1.0 // [0.0 0.5 1.0 1.5] light shafts from the surface when diving
+#define GLASS_REFLECT // fresnel sky sheen and highlight streak on glass
+#define GLASS_REFLECT_STRENGTH 1.0 // [0.0 0.5 1.0 1.5]
+#define NETHER_FOG 1.0 // [0.0 0.5 1.0 1.5] banded Nether fog in the biome colour, rising embers
+#define END_FOG 1.0 // [0.0 0.5 1.0 1.5] violet End fog and painted End sky
+#define LEAF_TRANSLUCENCY 0.35 // [0.0 0.2 0.35 0.5] backlit leaves glow toward the sun
+#define NIGHT_GLOW 1.0 // [0.0 0.5 1.0] faint glow on flowers at night
+#define FXAA // light anti-aliasing that keeps outlines crisp
+//#define DISTANCE_BLUR // optional soft blur of far terrain
+#define DISTANCE_BLUR_STRENGTH 1.0 // [0.5 1.0 1.5 2.0]
+#define WATER_WAKE // V-shaped wake behind you and your boat
+#define WATERFALL_BLOBS // big stylized foam blobs on falling water
+#define GLOW_SHALLOWS // glowing cyan shallows with white wave bands (also at night)
+#define GLOW_SHALLOWS_AMT 1.0 // [0.0 0.5 1.0 1.5]
+#define SUNSET_STREAK // long sun streak on water at sunrise/sunset
+#define LIGHT_HALO 0.6 // [0.0 0.3 0.6 1.0] soft glow around lanterns, torches and lava
+#define SUN_HALO 0.6 // [0.0 0.3 0.6 1.0] glowing sun disk halo
+#define RAIN_STREAKS 1.0 // [0.0 0.5 1.0] rain streaks and darker blue night rain mood
+#define FOREST_RAYS 0.8 // [0.0 0.4 0.8 1.2] stronger god rays in forests
+#define FOREST_HAZE 0.35 // [0.0 0.2 0.35 0.5] blue depth haze between trees
+#define FOLIAGE_CONTRAST 0.6 // [0.0 0.3 0.6 1.0] sunlit yellow-green vs cool shade on grass and leaves
+#define SHADOW_PENUMBRA 1.0 // [0.5 1.0 1.5 2.0] how fast shadows soften away from the caster
+#define SHADOW_TEMPORAL // temporal shadow smoothing (history buffer, reprojection + clamp)
+#define SHADOW_FILTER // screen-space edge smoothing of shadows (depth/normal aware)
+#define SHADOW_FILTER_SIZE 1.0 // [0.5 1.0 1.5 2.0] size of the shadow edge smoothing
