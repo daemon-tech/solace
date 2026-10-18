@@ -48,7 +48,7 @@ void main() {
 		col = mix(col, far, celBand(smoothstep(24.0, 96.0, length(viewPos)), 3) * 0.45);
 		// banded sky reflection (stronger at grazing angles)
 		vec3 refl = celSky(reflect(-v, n), sunPosition, upPosition, rainStrength);
-		col = mix(col, refl, fres * 0.65);
+		col = mix(col, refl, fres * 0.38);
 		// soft wave crest lines drifting across the surface
 		float wv = sin(p.x * 0.55 + p.y * 0.25 + t * 0.9 + vnoise(p * 0.15) * 4.0);
 		col = mix(col, bright * 1.08, step(0.85, wv) * 0.55 * mix(0.4, 1.0, day));

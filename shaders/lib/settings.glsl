@@ -7,14 +7,17 @@
 #define SHADOW_TINT_G 0.43 // [0.34 0.40 0.43 0.48 0.52]
 #define SHADOW_TINT_B 0.54 // [0.44 0.50 0.54 0.62 0.70]
 #define OUTLINES
-#define WATER_SAT 0.62 // [0.5 0.62 0.72 0.85 1.0]
-#define WATER_BRIGHT 1.32 // [1.0 1.15 1.32 1.5]
+#define WATER_SAT 0.95 // [0.6 0.75 0.85 0.95 1.1]
+#define WATER_BRIGHT 1.0 // [0.85 1.0 1.15 1.3]
 #define GROUND_GRADE // grass ground graded toward target hue, flat soft light
 #define GROUND_GRADE_STRENGTH 0.6 // [0.3 0.45 0.6 0.75 0.9]
+#define GRASS_SMOOTH 0.8 // [0.0 0.4 0.6 0.8 1.0] low-pass grass top texture detail
+#define FOLIAGE_SMOOTH 0.65 // [0.0 0.35 0.5 0.65 0.85] smooth leaf masses instead of checker noise
+#define HIDE_LEAF_LITTER // leaf litter specks off (smooth even ground)
 #define GRASS_SWAY 0.10 // [0.0 0.05 0.10 0.15]
 #define GRASS_SWAY_SPEED 1.2 // [0.6 1.2 2.0]
 #define WATER_OPACITY 1.0 // [0.6 0.8 1.0 1.2]
-#define WATER_DEPTH_TINT 0.55 // [0.4 0.55 0.7 0.85]
+#define WATER_DEPTH_TINT 0.85 // [0.4 0.55 0.7 0.85]
 #define EDGE_STYLE 1 // [0 1 2] 0 off, 1 soft coloured edges, 2 black ink
 #define SOFT_EDGE_STRENGTH 0.45 // [0.2 0.3 0.45 0.6 0.8]
 #define STYLE 1 // [0 1] 0 Normal (vanilla-like packs), 1 Cartoony
@@ -34,7 +37,7 @@
 #define OUTLINE_FADE 128.0 // [32.0 64.0 96.0 128.0 160.0 256.0]
 #define AMBIENT_BOOST 1.50 // [1.0 1.15 1.35 1.50 1.7 1.9]
 #define FOLIAGE_LIME 0.60 // [0.0 0.2 0.45 0.60 0.8]
-#define SATURATION 1.35 // [1.0 1.1 1.25 1.35 1.4 1.6]
+#define SATURATION 1.2 // [1.0 1.1 1.2 1.25 1.35 1.4 1.6]
 #define WARM_SAT_LIMIT 0.55 // [0.0 0.25 0.55 0.8 1.0]
 #define LUMA_CAP 0.86 // [0.76 0.82 0.86 0.92 1.00]
 #define VIBRANCE 0.30 // [0.0 0.15 0.30 0.50 0.75]

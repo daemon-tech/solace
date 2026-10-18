@@ -105,15 +105,14 @@ void main() {
 		// clear shallows -> teal -> deep blue-green, in soft bands (bottom visible near shore)
 		float dd = celBand(smoothstep(0.3, 12.0, behind), 4);
 		float wday = dayFactor(sunPosition, upPosition);
-		vec3 shallowC = vec3(0.80, 0.97, 1.0), deepC = mix(vec3(0.05, 0.13, 0.28), vec3(0.20, 0.50, 0.72), wday);
-		col = mix(col, col * shallowC * 1.12, (1.0 - dd) * 0.45);
-		col = mix(col, deepC, dd * WATER_DEPTH_TINT);
-		// calmer, less saturated water body; highlights keep their brightness
+		// strong turquoise: clear tinted shallows -> turquoise -> dark blue depths (banded)
+		vec3 midC = mix(vec3(0.04, 0.20, 0.30), vec3(0.08, 0.60, 0.68), wday);
+		vec3 deepC = mix(vec3(0.02, 0.06, 0.16), vec3(0.03, 0.17, 0.38), wday);
+		vec3 hiPre = max(col - vec3(0.80), 0.0); // keep localized glints/foam lines from the surface pass
+		col = mix(col * vec3(0.62, 1.02, 0.98), midC, clamp(dd * 2.0, 0.0, 1.0) * 0.75);
+		col = mix(col, deepC, clamp(dd * 2.0 - 1.0, 0.0, 1.0) * WATER_DEPTH_TINT);
 		float wl = dot(col, vec3(0.299, 0.587, 0.114));
-		col = mix(vec3(wl), col, WATER_SAT) * WATER_BRIGHT;
-		// banded highlights: bright sky/sun glints step up to near-white (widens value range)
-		float hl = luma(col);
-		col = mix(col, mix(col, vec3(0.92, 0.98, 1.0), 0.40), step(0.78, hl));
+		col = mix(vec3(wl), col, WATER_SAT) * WATER_BRIGHT + hiPre * 2.5;
 #ifdef WATER_FOAM
 		// shore foam: solid edge band plus a broken second band
 		float wob = vnoise(uv * vec2(viewWidth, viewHeight) * 0.03 + frameTimeCounter * 0.6) * 0.35;
@@ -131,7 +130,7 @@ void main() {
 		float day = dayFactor(sunPosition, upPosition);
 		vec3 fogCol = mix(vec3(0.18, 0.20, 0.50), vec3(0.42, 0.72, 0.85), day); // blue-teal
 		float f = celBand(smoothstep(far * 0.12, far * 0.9, lin), 4) * FOG_STRENGTH;
-		col = mix(col, fogCol, f);
+		col = mix(col, fogCol, f * (water ? 0.35 : 1.0));
 	}
 #endif
 #if defined OUTLINES && EDGE_STYLE > 0
@@ -205,7 +204,7 @@ void main() {
 	if (!sky && isEyeInWater == 0) {
 		float hz = smoothstep(3.0, far * 0.6, lin);
 		vec3 hzc = mix(vec3(0.85, 0.95, 0.55), vec3(1.0, 0.62, 0.22), duskG);
-		col = mix(col, hzc, hz * HAZE * STYLE_K * dayG * (1.0 - 0.5 * duskG));
+		col = mix(col, hzc, hz * HAZE * STYLE_K * dayG * (water ? 0.25 : 1.0) * (1.0 - 0.5 * duskG));
 	}
 	// the sky is authored in its final palette: no grading / scene cast on sky pixels
 	if (!sky) col = grade(col);

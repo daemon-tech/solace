@@ -48,6 +48,19 @@ void main() {
 #else
 	if (albedo.a < 0.1) discard;
 #endif
+#ifdef HIDE_LEAF_LITTER
+	if (isFoliage == 3) discard;
+#endif
+	// low-pass texture detail: smooth even grass tops and leaf masses (mip bias, alpha-corrected)
+	{
+		bool tinted = vcolor.g > vcolor.b * 1.15 && vcolor.g > vcolor.r * 1.05;
+		float sm = (isFoliage == 2 && tinted) ? GRASS_SMOOTH : (isFoliage == 1 ? FOLIAGE_SMOOTH : 0.0);
+		if (sm > 0.0) {
+			vec4 lo = texture(gtexture, texcoord, 4.0);
+			lo.rgb /= max(lo.a, 0.25);
+			albedo.rgb = mix(albedo.rgb, lo.rgb * vcolor.rgb, sm);
+		}
+	}
 	albedo.rgb = mix(albedo.rgb, entityColor.rgb, entityColor.a);
 
 	vec2 lm = clamp((lmcoord - 1.0 / 32.0) * 16.0 / 15.0, 0.0, 1.0);
@@ -114,7 +127,7 @@ void main() {
 	if (isFoliage == 1) {
 		// lime-leaning, brighter foliage (#9dc832 direction)
 		float l = luma(col);
-		col = mix(col, vec3(l) * (isEyeInWater == 1 ? vec3(0.55, 1.05, 1.0) : mix(vec3(0.50, 0.78, 1.15), vec3(1.08, 1.30, 0.22) * 1.18, day)), FOLIAGE_LIME * STYLE_K * mix(1.0, 1.0 - torch * 0.6, 1.0 - day));
+		col = mix(col, vec3(l) * (isEyeInWater == 1 ? vec3(0.55, 1.05, 1.0) : mix(vec3(0.50, 0.78, 1.15), vec3(0.82, 1.30, 0.72) * 1.08, day)), FOLIAGE_LIME * STYLE_K * mix(1.0, 1.0 - torch * 0.6, 1.0 - day));
 	}
 	// warm torch pool painted over the surface (reads orange even on dark green leaves)
 	float pool = torch * (1.0 - day * lm.y);

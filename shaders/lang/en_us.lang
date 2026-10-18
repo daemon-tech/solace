@@ -66,3 +66,6 @@ option.GROUND_GRADE=Grass Ground Grade
 option.GROUND_GRADE_STRENGTH=Grass Grade Strength
 option.GRASS_SWAY=Grass Colour Wave
 option.GRASS_SWAY_SPEED=Grass Wave Speed
+option.GRASS_SMOOTH=Grass Smoothing
+option.FOLIAGE_SMOOTH=Leaf Smoothing
+option.HIDE_LEAF_LITTER=Hide Leaf Litter

@@ -14,7 +14,7 @@ in vec4 mc_Entity;
 void main() {
 	gl_Position = ftransform();
 	int eid = int(mc_Entity.x + 0.5);
-	isFoliage = eid == 10002 ? 1 : (eid == 10003 ? 2 : 0);
+	isFoliage = eid == 10002 ? 1 : (eid == 10003 ? 2 : (eid == 10004 ? 3 : 0));
 	texcoord = (gl_TextureMatrix[0] * gl_MultiTexCoord0).xy;
 	lmcoord = (gl_TextureMatrix[1] * gl_MultiTexCoord1).xy;
 	vcolor = gl_Color;
