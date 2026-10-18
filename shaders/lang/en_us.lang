@@ -95,3 +95,5 @@ option.WATER_REFLECT=Distant Sky Reflection
 option.WATER_REFLECT.comment=How strongly far water mirrors the sky.
 option.WATER_FOAM_AMT=Foam Sheets
 option.WATER_FOAM_AMT.comment=Amount of soft foam on shores and open water.
+option.HORIZON_HAZE=Horizon Haze
+option.HORIZON_HAZE.comment=Soft near-white haze where the sea meets the sky.

@@ -82,3 +82,4 @@ const float sunPathRotation = -25.0;
 #define WATER_CLARITY 1.0 // [0.0 0.5 1.0 1.5] clearer, paler shallows
 #define WATER_REFLECT 1.0 // [0.0 0.5 1.0 1.5] distant sky reflection
 #define WATER_FOAM_AMT 1.0 // [0.0 0.5 1.0 1.3] foam sheets
+#define HORIZON_HAZE 1.0 // [0.0 0.5 1.0 1.5] white haze where sea meets sky

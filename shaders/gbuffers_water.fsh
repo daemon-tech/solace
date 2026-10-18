@@ -58,12 +58,18 @@ void main() {
 		// soft wave crest lines drifting across the surface
 		float wv = sin(p.x * 0.55 + p.y * 0.25 + t * 0.9 + vnoise(p * 0.15) * 4.0);
 		float crest = step(0.86, wv) + step(0.93, wv); // two-step stylized crest line
-		col = mix(col, vec3(0.86, 0.98, 1.0), clamp(crest, 0.0, 1.0) * mix(0.50, 0.85, step(1.5, crest)) * mix(0.4, 1.0, day));
+		col = mix(col, vec3(0.86, 0.98, 1.0), clamp(crest, 0.0, 1.0) * mix(0.50, 0.85, step(1.5, crest)) * mix(0.75, 1.0, day));
 		float spec = dot(reflect(-safeNormalize(shadowLightPosition, up), n), v);
 		// banded sun glint: warm halo band + white core
 		if (day > 0.3) {
 			col = mix(col, vec3(1.0, 0.93, 0.72), step(0.955, spec) * 0.45);
 			if (spec > 0.988) col = vec3(1.0);
+		} else {
+			// night: banded moon glint path and moonlit ripple highlights
+			col = mix(col, vec3(0.70, 0.80, 1.0), step(0.94, spec) * 0.45);
+			if (spec > 0.985) col = vec3(0.90, 0.94, 1.0);
+			float rip = step(0.90, sin(p.x * 1.1 - p.y * 0.6 + t * 1.3 + vnoise(p * 0.3) * 3.0));
+			col = mix(col, vec3(0.55, 0.68, 0.95), rip * 0.35 * (1.0 - day));
 		}
 #ifdef WATER_SPARKLE
 		// white sparkle streaks drifting with the waves

@@ -169,11 +169,15 @@ void main() {
 			vec3 foamC = vec3(0.96, 1.0, 1.0) * nightK;
 			float wob = vnoise(wxz * 1.7 + t * 0.5) * 0.35;
 			float shore = 1.0 - smoothstep(0.0, 4.5, behind);
-			// large soft foam sheets: world-space noise, denser at the shore, drifting slowly
-			float n = vnoise(wxz * vec2(0.16, 0.45) + vec2(t * 0.05, t * 0.02)) * 0.6 + vnoise(wxz * vec2(0.5, 1.3) - vec2(t * 0.07, 0.0)) * 0.4; // streaky
-			float sheet = smoothstep(0.66, 0.70, n + shore * 0.30) * (1.0 - farF);
-			float open = step(0.80, n) * 0.35 * (1.0 - farF); // sparse whitecaps on open water
-			col = mix(col, foamC, max(sheet * mix(0.45, 0.85, shore), open) * fday * WATER_FOAM_AMT);
+			// soft foam sheets only along shores (open lakes seen from above stay clean)
+			float n = vnoise(wxz * vec2(0.16, 0.45) + vec2(t * 0.05, t * 0.02)) * 0.6 + vnoise(wxz * vec2(0.5, 1.3) - vec2(t * 0.07, 0.0)) * 0.4;
+			float sheet = smoothstep(0.62, 0.66, n + shore * 0.25) * shore * (1.0 - farF);
+			// flowing streak foam riding the wave crests (same phase as the surface waves)
+			float ph = wxz.x * 0.55 + wxz.y * 0.25 + t * 0.9 + vnoise(wxz * 0.15) * 4.0;
+			vec2 rq = mat2(0.8, -0.6, 0.6, 0.8) * wxz; // rotated so breaks are not grid-aligned
+			float brk = smoothstep(0.30, 0.62, vnoise(rq * 0.45 + vec2(t * 0.2, 0.0)) * 0.7 + vnoise(rq * 1.3) * 0.3);
+			float streak = smoothstep(0.82, 0.92, sin(ph)) * brk * (1.0 - farF * 0.8) * mix(0.55, 1.0, shore);
+			col = mix(col, foamC, clamp(max(sheet * 0.80, streak * 0.85), 0.0, 1.0) * fday * WATER_FOAM_AMT);
 			// crisp shoreline line + soft rim
 			if (behind < 0.50 + wob * 0.5) col = mix(col, foamC, 0.95 * fday);
 			else if (behind < 0.95 + wob) col = mix(col, foamC, 0.45 * fday);
@@ -286,6 +290,14 @@ void main() {
 		float hz = smoothstep(3.0, far * 0.6, lin);
 		vec3 hzc = mix(mix(vec3(0.85, 0.95, 0.55), fogSky * 1.08, FOG_SKY_MATCH * 0.6), vec3(1.0, 0.62, 0.22), duskG);
 		col = mix(col, hzc, hz * (HAZE + bHaze * BIOME_MOOD * 0.5) * STYLE_K * dayG * (water ? 0.25 : 1.0) * (1.0 - 0.5 * duskG));
+	}
+	// near-white haze band where the sea meets the sky (water far field + sky just above horizon)
+	if (isEyeInWater == 0) {
+		vec3 upH = safeNormalize(upPosition, vec3(0, 1, 0));
+		float hh = dot(vdir, upH);
+		float hzW = sky ? (1.0 - smoothstep(0.0, 0.07, abs(hh))) * 0.55 : (water ? pow(smoothstep(24.0, far * 0.8, lin), 1.5) * 0.65 : 0.0);
+		vec3 hzC = mix(fogSky, vec3(0.97, 0.99, 1.0), 0.6);
+		col = mix(col, hzC, hzW * HORIZON_HAZE * mix(0.25, 1.0, dayG) * (1.0 - rainStrength * 0.5));
 	}
 	// the sky is authored in its final palette: no grading / scene cast on sky pixels
 	if (!sky) col = grade(col) * bTint;

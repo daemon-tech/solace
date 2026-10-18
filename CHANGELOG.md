@@ -3,6 +3,17 @@
 Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All Rights Reserved.
 All builds tested in the real client with screenshots.
 
+## 0.18-dev – 2026-10-18 (prerelease)
+Water: horizon haze, night water.
+- Flowing streak foam: bright foam lines ride the wave crests (same phase as the surface waves) and move with them; broken up by rotated noise so no grid-aligned cuts.
+- Foam sheets now only along shores: open lakes seen from above no longer get pale patches.
+- Near-white haze where the sea meets the sky (far water + sky just above the horizon); new **Horizon Haze** slider (0 / 0.5 / 1 / 1.5), weaker at night and in rain.
+- Night water: banded moon glint path, moonlit ripple highlights, wave crests stay visible at night.
+- Shoreline: crisp white edge line plus soft rim kept.
+- QA: no NaN/black/magenta pixels in ocean, river, lake and night captures; no reflection or stream artifacts seen; composite pass additionally compiled on a real Mesa driver before in-client test.
+- Known: night ripples still subtle; foam brightness at distance fades out by design.
+- Captures: `compare/v018` (0.17-dev vs 0.18-dev pairs).
+
 ## 0.17-dev – 2026-10-18 (prerelease)
 Water rework.
 - Water colour: pale, clear turquoise instead of dark teal; near-white shallows at the shore.
