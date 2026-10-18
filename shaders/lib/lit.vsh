@@ -8,15 +8,19 @@ out vec4 vcolor;
 out vec3 vnormal;
 out vec4 shadowClip;
 flat out int isFoliage;
+flat out int lightId;
+out float windG; // gust strength at this vertex (sheen) // 0 none, 1 warm, 2 soul, 3 red, 4 purple, 5 cool, 6 green
 out vec3 cwpos;
 uniform vec3 cameraPosition;
 uniform mat4 gbufferModelView;
 uniform float frameTimeCounter;
 in vec4 mc_Entity;
+in vec2 mc_midTexCoord;
 void main() {
 	gl_Position = ftransform();
 	int eid = int(mc_Entity.x + 0.5);
-	isFoliage = eid == 10002 ? 1 : (eid == 10003 ? 2 : (eid == 10004 ? 3 : (eid == 10010 ? 4 : 0)));
+	lightId = (eid >= 10010 && eid <= 10015) ? eid - 10009 : 0;
+	isFoliage = (eid == 10002 || eid == 10006) ? 1 : (eid == 10003 ? 2 : (eid == 10004 ? 3 : (lightId > 0 ? 4 : 0)));
 	texcoord = (gl_TextureMatrix[0] * gl_MultiTexCoord0).xy;
 	lmcoord = (gl_TextureMatrix[1] * gl_MultiTexCoord1).xy;
 	vcolor = gl_Color;
@@ -28,16 +32,17 @@ void main() {
 	playerPos.xyz += mat3(gbufferModelViewInverse) * vnormal * 0.05;
 	cwpos = playerPos.xyz + cameraPosition;
 #ifdef WAVING_FOLIAGE
-	if (isFoliage == 1) {
-		// gentle wind sway: slow main wave + small flutter, phase from world position
-		vec3 wp = cwpos;
-		float t = frameTimeCounter;
-		vec2 sway = vec2(sin(t * 1.4 + wp.x * 0.45 + wp.z * 0.20), cos(t * 1.1 + wp.z * 0.40 + wp.x * 0.15)) * 0.045
-		          + vec2(sin(t * 3.7 + wp.y * 1.3 + wp.x), sin(t * 3.1 + wp.z * 1.1)) * 0.012;
+	bool plant = eid == 10006 || eid == 10007;
+	if (isFoliage == 1 || plant) {
 		vec4 vp = gbufferModelViewInverse * (gl_ModelViewMatrix * gl_Vertex);
-		vp.xz += sway * WAVING_STRENGTH;
+		float top = (gl_MultiTexCoord0.y < mc_midTexCoord.y) ? 1.0 : 0.0;
+		vp.xz += windOffset(plant ? 1 : 2, cwpos, top, frameTimeCounter);
 		gl_Position = gl_ProjectionMatrix * (gbufferModelView * vp);
 	}
+#endif
+	windG = 0.0;
+#ifdef WIND_GUSTS
+	windG = windGust(cwpos.xz, frameTimeCounter);
 #endif
 	shadowClip = shadowProjection * (shadowModelView * playerPos);
 }

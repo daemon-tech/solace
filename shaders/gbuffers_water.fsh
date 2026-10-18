@@ -18,10 +18,11 @@ in vec3 vnormal;
 in vec3 viewPos;
 in vec3 worldPos;
 flat in int isWater;
-/* RENDERTARGETS: 0,1,2 */
+/* RENDERTARGETS: 0,1,2,3 */
 layout(location = 0) out vec4 outColor;
 layout(location = 1) out vec4 outNormal;
 layout(location = 2) out vec4 outFlag;
+layout(location = 3) out vec4 outLight;
 
 void main() {
 	vec2 lm = clamp((lmcoord - 1.0 / 32.0) * 16.0 / 15.0, 0.0, 1.0);
@@ -119,5 +120,6 @@ void main() {
 		outColor = vec4(albedo.rgb * light, albedo.a);
 		outFlag = vec4(0.0, 0.0, 0.0, 1.0);
 	}
+	outLight = isWater == 2 ? vec4(lightColor(4), 1.0) : vec4(0.0);
 	outNormal = vec4(n * 0.5 + 0.5, 1.0);
 }

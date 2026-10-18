@@ -19,5 +19,6 @@ void main() {
 	vnormal = safeNormalize(gl_NormalMatrix * gl_Normal, vec3(0.0, 0.0, 1.0));
 	viewPos = (gl_ModelViewMatrix * gl_Vertex).xyz;
 	worldPos = (gbufferModelViewInverse * vec4(viewPos, 1.0)).xyz + cameraPosition;
-	isWater = int(mc_Entity.x + 0.5) == 10001 ? 1 : 0;
+	int eid = int(mc_Entity.x + 0.5);
+	isWater = eid == 10001 ? 1 : (eid == 10013 ? 2 : 0); // 2 = purple light source (nether portal)
 }

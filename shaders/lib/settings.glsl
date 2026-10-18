@@ -2,7 +2,7 @@
 #define CEL_BANDS 3 // [2 3 4 5]
 #define CEL_EDGE 0.06 // [0.01 0.03 0.06 0.1 0.15 0.2]
 #define SHADOWS
-#define SHADOW_SOFTNESS 1 // [0 1 2]
+#define SHADOW_SOFTNESS 2 // [0 1 2 3]
 #define SHADOW_TINT_R 0.40 // [0.30 0.36 0.40 0.46 0.50]
 #define SHADOW_TINT_G 0.43 // [0.34 0.40 0.43 0.48 0.52]
 #define SHADOW_TINT_B 0.54 // [0.44 0.50 0.54 0.62 0.70]
@@ -70,7 +70,7 @@
 #define UNDERWATER_FOG 0.6 // [0.2 0.4 0.6 0.8 1.0]
 #define SKY_BANDS 6 // [3 4 6 8 12]
 
-const int shadowMapResolution = 1024; // [512 1024 2048]
+const int shadowMapResolution = 2048; // [512 1024 2048 4096]
 const float shadowDistance = 64.0; // [48.0 64.0 96.0 128.0]
 const float sunPathRotation = -25.0;
 // 0.16 atmosphere
@@ -83,3 +83,23 @@ const float sunPathRotation = -25.0;
 #define WATER_REFLECT 1.0 // [0.0 0.5 1.0 1.5] distant sky reflection
 #define WATER_FOAM_AMT 1.0 // [0.0 0.5 1.0 1.3] foam sheets
 #define HORIZON_HAZE 1.0 // [0.0 0.5 1.0 1.5] white haze where sea meets sky
+// 0.20 lighting
+#define COLORED_LIGHT // light sources tint nearby block light in their own colour
+#define COLORED_LIGHT_STRENGTH 0.8 // [0.4 0.6 0.8 1.0]
+#define CAVE_FOG // darker, denser fog underground
+#ifdef CAVE_FOG
+#define CAVE_FOG_ON 1.0
+#else
+#define CAVE_FOG_ON 0.0
+#endif
+#define CAVE_FOG_DENSITY 1.0 // [0.5 0.75 1.0 1.5 2.0]
+#define LIGHT_SHAFTS // sun shafts through windows, doors and canopies
+#define LIGHT_SHAFTS_STRENGTH 1.0 // [0.5 0.75 1.0 1.5]
+// 0.20 shadows + wind
+#define SHADOW_EDGE 0.18 // [0.06 0.12 0.18 0.25 0.35] softness of the shadow band edge
+#define WIND_GUSTS // breeze waves rolling across grass fields and trees
+#define WIND_GUST_STRENGTH 1.0 // [0.5 0.75 1.0 1.5 2.0]
+#define WIND_SPEED 1.0 // [0.5 0.75 1.0 1.5]
+#define WIND_SHEEN 0.15 // [0.0 0.05 0.10 0.15 0.2] light sheen where gusts bend the grass
+#define GRASS_TONE 1 // [0 1] 0 = cool green, 1 = warm meadow green
+#define GOLDEN_HOUR_TINT 0.6 // [0.0 0.3 0.6 0.9] warm low-sun light on grass and leaves

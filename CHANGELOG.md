@@ -3,6 +3,35 @@
 Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All Rights Reserved.
 All builds tested in the real client with screenshots.
 
+## 0.20-dev – 2026-10-18 (prerelease)
+Smooth shadows, wind across the fields, golden-hour grass, darker water, coloured light.
+
+**Shadows**
+- Soft PCF filtering: 12 rotated Poisson taps per pixel, rotation fixed in world space so edges stay stable while moving (no crawling or flicker).
+- Slope-scaled bias against acne; no peter-panning on block bases.
+- Soft cel-banded shadow transition (new **Shadow Edge** slider); cel bands themselves unchanged.
+- Shadow map 2048 by default, 4096 option; **Shadow Softness** 0-3 (default 2). Profiles: Medium 2048 / softness 2, High 4096 / softness 3.
+- Swaying plants and leaves now move in the shadow pass too, so their shadows follow the plants.
+
+**Wind and grass**
+- One shared wind field: gusts roll visibly across fields (slower, narrower fronts), tall grass, flowers and leaves follow it with a gentle base sway.
+- Subtle sheen where a gust bends the grass (no glow); new toggles/sliders **Wind Gusts**, **Gust Strength**, **Wind Speed**, **Wind Sheen**.
+- New **Grass Tone** (cool / warm meadow, default warm): warmer, yellow-leaning ground green with smoother texel contrast.
+- New **Golden Hour Light**: low sun warms lit grass and leaves at sunrise/sunset and deepens the shade side.
+
+**Water**
+- Slightly darker body (deeper mid and deep colours) for stronger contrast with the foam.
+
+**Light and atmosphere**
+- Coloured block light: surfaces near soul, redstone, amethyst, portal and other coloured sources take their colour; brightness preserved (no dark halos). **Coloured Light** toggle + strength.
+- Cave fog: darker, slightly cool fog underground with soft band steps. **Cave Fog** toggle + density.
+- Interior light shafts through windows and openings (subtle). **Light Shafts** toggle + strength.
+
+**Fixes**
+- Outlines menu entry resolves correctly again.
+- QA: no NaN/black/magenta pixels in plains noon/sunset, forest edge, close shadow edges, torch room, cave, interior and water captures. Outlines and cel bands unchanged.
+- Known: interior light shafts are subtle; coloured light is a screen-space effect (sources off screen do not tint).
+
 ## 0.19-dev – 2026-10-18 (prerelease)
 Water closer to the target look.
 - Cloud reflections: the water mirror now reflects the soft clouds (same sky-plane mapping as the sky pass), not only the sky gradient.

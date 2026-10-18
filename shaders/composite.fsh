@@ -7,6 +7,10 @@
 const int colortex0Format = RGBA16;
 const int colortex1Format = RGBA8;
 const int colortex2Format = RGBA8;
+const int colortex3Format = RGBA8;
+const vec4 colortex3ClearColor = vec4(0.0, 0.0, 0.0, 0.0);
+const bool colortex3Clear = true;
+const bool colortex3MipmapEnabled = true;
 const vec4 colortex1ClearColor = vec4(0.5, 0.5, 1.0, 0.0);
 const vec4 colortex2ClearColor = vec4(0.0, 0.0, 0.0, 0.0);
 const bool colortex0Clear = true;
@@ -16,6 +20,11 @@ const bool colortex2Clear = true;
 uniform sampler2D colortex0;
 uniform sampler2D colortex1;
 uniform sampler2D colortex2;
+uniform sampler2D colortex3;
+uniform sampler2D shadowtex0;
+uniform mat4 shadowModelView;
+uniform mat4 shadowProjection;
+uniform ivec2 eyeBrightnessSmooth;
 uniform sampler2D depthtex0;
 uniform sampler2D depthtex1;
 uniform vec3 sunPosition;
@@ -137,6 +146,27 @@ void main() {
 	}
 #endif
 	bool water = texture(colortex2, uv).r > 0.5;
+#ifdef COLORED_LIGHT
+	// coloured block light (screen space): light sources write their emitted colour to colortex3;
+	// lit surfaces nearby take the average colour of the sources around them instead of plain warm.
+	{
+		float poolC = texture(colortex2, uv).g;
+		if (poolC > 0.01 && texture(colortex3, uv).a < 0.5 && !water) {
+			// blurred light-colour field from the mip chain (smooth, no speckles)
+			vec4 L4 = textureLod(colortex3, uv, 4.0), L5 = textureLod(colortex3, uv, 5.0), L6 = textureLod(colortex3, uv, 6.0);
+			vec4 Ls = L4 * 0.6 + L5 * 0.3 + L6 * 0.1;
+			vec3 acc = Ls.rgb; float wsum = Ls.a * 12.0;
+			if (Ls.a > 0.0003) {
+				vec3 warm = vec3(1.00, 0.72, 0.42);
+				vec3 tint = acc / max(Ls.a, 1e-3);
+				vec3 ratio = clamp((tint / max(luma(tint), 0.15)) / (warm / luma(warm)), vec3(0.25), vec3(2.6));
+				ratio /= max(luma(ratio), 0.5); // keep brightness, change only hue (no dark halos)
+				float k = clamp(poolC * 1.8, 0.0, 1.0) * smoothstep(0.001, 0.04, Ls.a) * COLORED_LIGHT_STRENGTH;
+				col = mix(col, col * ratio, k);
+			}
+		}
+	}
+#endif
 
 	if (water && isEyeInWater == 0 && d0 < 1.0) {
 		float behind = max(linDepth(texture(depthtex1, uv).r) - lin, 0.0);
@@ -150,8 +180,8 @@ void main() {
 		vec2 wxz = (mat3(gbufferModelViewInverse) * wv).xz + mod(cameraPosition.xz, 4096.0);
 		float dd = celBand(smoothstep(0.3, 14.0 * mix(0.8, 1.4, WATER_CLARITY * 0.5), behind), 4);
 		vec3 shoreC = vec3(0.80, 0.98, 0.96);
-		vec3 midC = vec3(0.32, 0.80, 0.86);
-		vec3 deepC = vec3(0.09, 0.42, 0.60); // deeper end of the shallow-to-deep gradient
+		vec3 midC = vec3(0.27, 0.74, 0.82);
+		vec3 deepC = vec3(0.07, 0.36, 0.54); // deeper end of the shallow-to-deep gradient
 		midC = mix(midC, vec3(0.34, 0.60, 0.46), bSwamp * BIOME_MOOD);
 		deepC = mix(deepC, vec3(0.16, 0.36, 0.30), bSwamp * BIOME_MOOD);
 		// night: same hues, darker and bluer (never navy-black)
@@ -180,7 +210,7 @@ void main() {
 			vec2 rq = mat2(0.8, -0.6, 0.6, 0.8) * wxz; // rotated so breaks are not grid-aligned
 			float brk = smoothstep(0.30, 0.62, vnoise(rq * 0.45 + vec2(t * 0.2, 0.0)) * 0.7 + vnoise(rq * 1.3) * 0.3);
 			float streak = smoothstep(mix(0.82, 0.90, farF), 0.94, sin(ph)) * brk * (1.0 - farF * 0.35) * mix(0.60, 1.0, shore); // far sea keeps thin foam
-			col = mix(col, foamC, clamp(max(sheet * 0.85, streak * 0.95), 0.0, 1.0) * (1.0 - fall) * fday * WATER_FOAM_AMT);
+			col = mix(col, foamC, clamp(max(sheet * 0.90, streak * 1.0), 0.0, 1.0) * (1.0 - fall) * fday * WATER_FOAM_AMT);
 			// crisp shoreline line + soft rim
 			if (behind < 0.50 + wob * 0.5) col = mix(col, foamC, 0.95 * fday);
 			else if (behind < 0.95 + wob) col = mix(col, foamC, 0.45 * fday);
@@ -197,6 +227,8 @@ void main() {
 	float sunHf = dot(safeNormalize(sunPosition, safeNormalize(upPosition, vec3(0,1,0))), safeNormalize(upPosition, vec3(0,1,0)));
 	float morningW = ((sunAngle < 0.25 || sunAngle > 0.75) ? 1.0 : 0.0) * clamp(1.0 - abs(sunHf - 0.05) * 4.0, 0.0, 1.0);
 	float bFog = clamp(bHaze * BIOME_MOOD * BIOME_FOG, 0.0, 1.0);
+	// underground / enclosed: eye sky light (smoothed) -> 0 open sky .. 1 deep cave
+	float cave = smoothstep(0.55, 0.05, float(eyeBrightnessSmooth.y) / 240.0) * smoothstep(60.0, 48.0, cameraPosition.y); // dark AND below the surface (not a closed house)
 #ifdef DISTANCE_FOG
 	if (isEyeInWater == 0 && (d0 < 1.0 || isDH)) {
 		float day = dayFactor(sunPosition, upPosition);
@@ -204,7 +236,15 @@ void main() {
 		fogCol = mix(fogCol, fogSky, FOG_SKY_MATCH);
 		float fs = far * mix(0.12, 0.02, bFog), fe = far * mix(0.9, 0.6, bFog);
 		float f = celBand(smoothstep(fs, fe, lin), 4) * min(FOG_STRENGTH * (1.0 + bFog * 0.3), 1.0);
-		col = mix(col, fogCol, f * (water ? 0.35 : 1.0));
+		col = mix(col, fogCol, f * (water ? 0.35 : 1.0) * (1.0 - 0.85 * cave * CAVE_FOG_ON));
+	}
+#endif
+#ifdef CAVE_FOG
+	// cave fog: darker, denser, slightly cool-tinted; banded like the rest of the fog
+	if (isEyeInWater == 0 && d0 < 1.0 && cave > 0.01) {
+		float cf = celBandSoft(1.0 - exp(-lin * 0.045 * CAVE_FOG_DENSITY), 4, 0.6); // soft band steps (no hard box on far walls)
+		vec3 caveC = vec3(0.040, 0.046, 0.070) + vec3(0.010, 0.020, 0.030) * dayFactor(sunPosition, upPosition);
+		col = mix(col, caveC, cf * cave * 0.85);
 	}
 #endif
 	// low ground mist: sunrise everywhere, swamps all day; hugs the ground, never on near water
@@ -215,7 +255,8 @@ void main() {
 		vec3 mc = mix(fogSky, vec3(1.0), 0.15);
 		col = mix(col, mc, clamp(m, 0.0, 0.5) * (water ? 0.4 : 1.0));
 	}
-#if defined OUTLINES && EDGE_STYLE > 0
+#ifdef OUTLINES
+#if EDGE_STYLE > 0
 	// no ink underwater (avoids dark rings around bubbles/particles)
 	if (isEyeInWater == 0) {
 		float e = outlineMask(uv, lin);
@@ -231,6 +272,7 @@ void main() {
 #endif
 #endif
 	}
+#endif
 #endif
 	bool sky = d0 >= 1.0 && !isDH;
 	float sunHg = dot(safeNormalize(sunPosition, safeNormalize(upPosition, vec3(0,1,0))), safeNormalize(upPosition, vec3(0,1,0)));
@@ -273,6 +315,30 @@ void main() {
 			vec3 rc = useSun ? mix(vec3(1.0, 0.96, 0.70), vec3(1.0, 0.62, 0.22), duskG) : vec3(0.45, 0.55, 1.0);
 			float str = GODRAYS_STRENGTH * (useSun ? mix(0.55, 1.0, duskG) * (1.0 + 0.4 * morningW * MORNING_MIST) : 0.35);
 			col += rc * celBand(acc * fall, 4) * str * (sky ? 0.35 : 0.55);
+		}
+	}
+#endif
+#ifdef LIGHT_SHAFTS
+	// light shafts indoors / under canopies: march the view ray through the shadow map
+	{
+		float interior = smoothstep(0.99, 0.70, float(eyeBrightnessSmooth.y) / 240.0) * (1.0 - cave * 0.7);
+		if (isEyeInWater == 0 && interior * dayG > 0.01) {
+			vec3 endP = mat3(gbufferModelViewInverse) * vpos;
+			float L = min(length(endP), 32.0);
+			vec3 dP = endP / max(length(endP), 1e-4);
+			float acc = 0.0;
+			for (int i = 0; i < 20; i++) {
+				vec3 pp = dP * L * (float(i) + 0.5) / 20.0;
+				vec4 sc = shadowProjection * (shadowModelView * vec4(pp, 1.0));
+				vec3 sp = celDistort(sc.xyz / max(sc.w, 1e-4)) * 0.5 + 0.5;
+				if (all(greaterThan(sp, vec3(0.0))) && all(lessThan(sp, vec3(1.0))))
+					acc += step(sp.z - 0.0008, texture(shadowtex0, sp.xy).r);
+			}
+			acc /= 20.0;
+			vec3 sunV = safeNormalize(sunPosition, vec3(0, 1, 0));
+			float mie = 0.45 + 0.55 * pow(max(dot(vdir, sunV), 0.0), 3.0);
+			vec3 shC = mix(vec3(1.0, 0.93, 0.74), vec3(1.0, 0.64, 0.30), duskG);
+			col += shC * celBand(smoothstep(0.0, 0.16, acc * sqrt(L / 32.0)), 4) * mie * interior * dayG * LIGHT_SHAFTS_STRENGTH * 0.35;
 		}
 	}
 #endif

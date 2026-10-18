@@ -1,10 +1,25 @@
 #version 330 compatibility
 #include "/lib/settings.glsl"
 #include "/lib/common.glsl"
+uniform mat4 shadowModelViewInverse;
+uniform mat4 shadowModelView;
+uniform vec3 cameraPosition;
+uniform float frameTimeCounter;
+in vec4 mc_Entity;
+in vec2 mc_midTexCoord;
 out vec2 texcoord;
 out vec4 vcolor;
 void main() {
-	gl_Position = ftransform();
+	vec4 vp = shadowModelViewInverse * (gl_ModelViewMatrix * gl_Vertex);
+#ifdef WAVING_FOLIAGE
+	int eid = int(mc_Entity.x + 0.5);
+	bool plant = eid == 10006 || eid == 10007;
+	if (plant || eid == 10002) {
+		float top = (gl_MultiTexCoord0.y < mc_midTexCoord.y) ? 1.0 : 0.0;
+		vp.xz += windOffset(plant ? 1 : 2, vp.xyz + cameraPosition, top, frameTimeCounter);
+	}
+#endif
+	gl_Position = gl_ProjectionMatrix * (shadowModelView * vp);
 	gl_Position.xyz = celDistort(gl_Position.xyz);
 	texcoord = gl_MultiTexCoord0.xy;
 	vcolor = gl_Color;
