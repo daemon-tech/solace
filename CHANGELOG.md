@@ -3,12 +3,25 @@
 Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All Rights Reserved.
 All builds tested in the real client with screenshots.
 
-## Unreleased
-**Light and atmosphere polish**
+## 0.22-dev – 2026-10-18 (prerelease)
+Sign-off release for light, atmosphere, weather and foliage. Outlines and cel bands unchanged.
+
+**Light and atmosphere**
 - Sky bands now have soft edges; at night they blend almost fully, so no hard rings around the zenith.
 - Milky Way is wider and breaks up into dust lanes and star clumps instead of a straight beam.
 - Splash mist, smoke and other pale particles stay neutral white instead of turning beige over sand.
-- Tested in the client: forest god rays and sun halo, blue distance haze, ambient occlusion, bloom, cloud shadows, lantern and torch glow, time-of-day grading (sunrise, noon, golden hour, blue hour, night), biome skies and fog, sunset sky and sun disk, night sky, cubic clouds.
+- Checked: forest god rays and sun halo, blue distance haze, ambient occlusion, bloom, cloud shadows, lantern and torch glow, time-of-day grading (sunrise, noon, golden hour, blue hour, night), biome skies and fog, sunset sky and sun disk, night sky, cubic clouds.
+
+**Weather**
+- Rain and snow have their own pass: soft, slightly cool streaks that no longer disturb the water below (before, every raindrop over water left a foam ring and the sea looked shredded).
+- Wet ground now also works on grass: lawns turn darker and glossier in the rain, with soft puddle sheen on open flat ground, and dry out again afterwards.
+- Checked: rain streaks, rain fog, darker blue mood for night rain, sandstorm in deserts, white snow haze.
+
+**Foliage**
+- Checked: lush grass with yellow-green sunlit tips and cool shade, grass, flowers and leaves swaying with the wind gusts, bright sunlit leaf edges, backlit leaf translucency, faint flower glow at night.
+
+**Testing**
+- Tested in the client with connected grass: rain over land, water and at night, wet vs. dry ground, desert sandstorm, snowfall, meadow at noon, golden hour and night, sway over time, sunrise through a grove, plus all light and atmosphere scenes. No NaN, black or magenta pixels from the shader.
 
 ## 0.21-dev – 2026-10-18 (prerelease)
 Big feature update: reflections, splashes, ambient occlusion, weather, caustics, glass, own Nether and End looks, new profiles. Outlines and cel bands unchanged. Every new feature has its own toggle or slider.

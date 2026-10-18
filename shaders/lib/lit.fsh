@@ -188,20 +188,7 @@ void main() {
 		}
 	#endif
 		vec3 col = albedo.rgb * lighting;
-	#ifdef WET_GROUND
-		{
-			// rain: darker, glossier ground with soft puddle sheen on open flat surfaces
-			float upF = smoothstep(0.85, 0.98, dot(safeNormalize(n, up), up));
-			float open = smoothstep(0.85, 0.97, lm.y);
-			float wetK = wetness * open * WET_GROUND_STRENGTH;
-			if (wetK > 0.001 && isFoliage != 1) {
-				col *= 1.0 - 0.18 * wetK;
-				float pd = smoothstep(0.58, 0.66, vnoise(cwpos.xz * 0.35) * 0.7 + vnoise(cwpos.xz * 1.1) * 0.3) * upF;
-				col = mix(col, vec3(luma(col)) * 0.6 + vec3(0.30, 0.36, 0.46) * mix(0.3, 1.0, day), pd * wetK * 0.55);
-			}
-		}
-	#endif
-	#ifdef GROUND_GRADE
+		#ifdef GROUND_GRADE
 		if (grassTex && isEyeInWater == 0) {
 			// pull toward the target-look grass: hue ~113, S ~0.66, V ~0.73, keep texture detail as luma
 			float gl = luma(col), lf = gl / max(luma(vec3(0.31, 0.73, 0.25)), 1e-3);
@@ -223,6 +210,19 @@ void main() {
 			// wind sheen: bent grass catches a little more light where a gust passes (subtle, no glow)
 			target *= 1.0 + WIND_SHEEN * windGust(cwpos.xz, frameTimeCounter) * mix(0.4, 1.0, day);
 			col = mix(col, target, GROUND_GRADE_STRENGTH * mix(1.0, 0.4, torch));
+		}
+	#endif
+#ifdef WET_GROUND
+		{
+			// rain: darker, glossier ground with soft puddle sheen on open flat surfaces
+			float upF = smoothstep(0.85, 0.98, dot(safeNormalize(n, up), up));
+			float open = smoothstep(0.85, 0.97, lm.y);
+			float wetK = wetness * open * WET_GROUND_STRENGTH;
+			if (wetK > 0.001 && isFoliage != 1) {
+				col *= 1.0 - 0.24 * wetK; // after the grass grade, so lawns get wet too
+				float pd = smoothstep(0.58, 0.66, vnoise(cwpos.xz * 0.35) * 0.7 + vnoise(cwpos.xz * 1.1) * 0.3) * upF;
+				col = mix(col, vec3(luma(col)) * 0.6 + vec3(0.30, 0.36, 0.46) * mix(0.3, 1.0, day), pd * wetK * 0.55);
+			}
 		}
 	#endif
 		if (isFoliage == 1) col *= mix(vec3(1.0), vec3(1.14, 0.98, 0.78), golden * lb); // warm low sun on blades/leaves
