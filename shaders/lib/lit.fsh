@@ -264,6 +264,9 @@ void main() {
 	vec3 col = mix(cOut[0], cOut[1], lb);
 	outColor = vec4(clamp(col, 0.0, 4.0), albedo.a);
 	outFlag = vec4(0.0, clamp(pool, 0.0, 1.0), 0.0, 1.0);
+#ifdef FLAT_NORMAL
+	outFlag.a = 0.6; // particle flag: composite keeps white mist/smoke neutral (no sand/warm grading)
+#endif
 	outLight = lightId > 0 ? vec4(lightColor(lightId), 1.0) : vec4(0.0); // premultiplied: only sources write colour
 	outShadow = vec4(-1.0);
 #ifndef FLAT_NORMAL

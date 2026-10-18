@@ -3,6 +3,13 @@
 Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All Rights Reserved.
 All builds tested in the real client with screenshots.
 
+## Unreleased
+**Light and atmosphere polish**
+- Sky bands now have soft edges; at night they blend almost fully, so no hard rings around the zenith.
+- Milky Way is wider and breaks up into dust lanes and star clumps instead of a straight beam.
+- Splash mist, smoke and other pale particles stay neutral white instead of turning beige over sand.
+- Tested in the client: forest god rays and sun halo, blue distance haze, ambient occlusion, bloom, cloud shadows, lantern and torch glow, time-of-day grading (sunrise, noon, golden hour, blue hour, night), biome skies and fog, sunset sky and sun disk, night sky, cubic clouds.
+
 ## 0.21-dev – 2026-10-18 (prerelease)
 Big feature update: reflections, splashes, ambient occlusion, weather, caustics, glass, own Nether and End looks, new profiles. Outlines and cel bands unchanged. Every new feature has its own toggle or slider.
 

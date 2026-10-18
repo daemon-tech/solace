@@ -37,9 +37,10 @@ void main() {
 		// faint painted Milky Way band across the night sky (soft, two-tone, banded)
 		float band = 1.0 - abs(dot(normalize(sd), normalize(vec3(0.35, 0.25, 0.90))));
 		// soft falloff + cloudy breakup so the band never shows straight edges
-		float core = smoothstep(0.80, 1.0, band);
-		float mw = core * core * smoothstep(0.35, 0.75, fbm(sd.xy * 5.0 + sd.z * 3.0) + core * 0.25);
-		mw = clamp(mw, 0.0, 1.0) * 0.7;
+		float core = smoothstep(0.62, 1.0, band);
+		float cl = fbm(sd.xy * 2.6 + sd.z * 1.7) * 0.65 + fbm(sd.yz * 6.0 + 3.0) * 0.35; // dust lanes and clumps
+		float mw = core * smoothstep(0.30, 0.78, cl + core * 0.22);
+		mw = clamp(mw, 0.0, 1.0) * 0.6;
 		col = mix(col, col + vec3(0.16, 0.14, 0.26), mw * MILKY_WAY * night * (1.0 - rainStrength));
 		if (h > 0.985 && mw > 0.3) col = mix(col, vec3(0.92, 0.92, 1.0), 0.6 * night * (1.0 - rainStrength)); // denser stars in the band
 #endif

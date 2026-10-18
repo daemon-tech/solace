@@ -699,7 +699,16 @@ void main() {
 		col = mix(col, hzC, hzW * HORIZON_HAZE * mix(0.25, 1.0, dayG) * (1.0 - rainStrength * 0.5));
 	}
 	// the sky is authored in its final palette: no grading / scene cast on sky pixels
-	if (!sky) col = grade(col) * bTint;
+	if (!sky) {
+		vec3 pre = col;
+		col = grade(col) * bTint;
+		// particles (splash mist, smoke, clouds of dust): pale ones stay neutral white, never sand-beige
+		float pf = texture(colortex2, uv).a;
+		if (pf > 0.4 && pf < 0.8) {
+			float pale = 1.0 - smoothstep(0.08, 0.25, max(pre.r, max(pre.g, pre.b)) - min(pre.r, min(pre.g, pre.b)));
+			col = mix(col, vec3(luma(col)) * vec3(0.97, 1.0, 1.03), pale);
+		}
+	}
 #if defined DIM_NETHER || defined DIM_END
 	// own Nether / End looks: banded dimension fog in the biome's fog colour, soft glow
 	if (isEyeInWater == 0) {

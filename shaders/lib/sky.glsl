@@ -38,7 +38,10 @@ vec3 celSkyImpl(vec3 dir, vec3 sunView, vec3 upView, float rain, bool discs) {
 	hor = mix(hor, hor * 1.12 + vec3(0.03, 0.03, 0.06), night * 0.6);
 
 	float t = clamp(h, 0.0, 1.0);
-	t = floor(pow(t, 0.6) * float(SKY_BANDS) + 0.5) / float(SKY_BANDS);
+	// soft-edged cel bands (no hard rings); at night the steps blend almost fully
+	float bx = pow(t, 0.6) * float(SKY_BANDS);
+	float bw = mix(0.18, 0.48, night);
+	t = (floor(bx) + smoothstep(0.5 - bw, 0.5 + bw, fract(bx))) / float(SKY_BANDS);
 	vec3 col = t < 0.5 ? mix(hor, mid, t * 2.0) : mix(mid, zen, t * 2.0 - 1.0);
 	if (h < 0.0) col = hor * mix(1.0, 0.92, clamp(-h * 3.0, 0.0, 1.0));
 
