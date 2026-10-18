@@ -1,6 +1,7 @@
 #version 330 compatibility
 #include "/lib/settings.glsl"
 #include "/lib/common.glsl"
+#include "/lib/sky.glsl"
 // Solace - outlines, water depth/foam, fog and colour grading.
 /*
 const int colortex0Format = RGBA16;
@@ -31,6 +32,10 @@ uniform float bTemp;
 uniform float bRain;
 uniform float bSwamp;
 uniform float bDark;
+uniform float rainStrength;
+uniform mat4 gbufferProjectionInverse;
+uniform mat4 gbufferModelViewInverse;
+uniform vec3 cameraPosition;
 // biome mood: smooth weights from temperature/rainfall (custom smoothed uniforms)
 vec3 biomeTint(out float extraHaze) {
 	float hot = smoothstep(1.0, 1.8, bTemp) * (1.0 - smoothstep(0.2, 0.5, bRain));
@@ -140,11 +145,11 @@ void main() {
 		float dd = celBand(smoothstep(0.3, 12.0, behind), 4);
 		float wday = dayFactor(sunPosition, upPosition);
 		// strong turquoise: clear tinted shallows -> turquoise -> dark blue depths (banded)
-		vec3 midC = mix(vec3(0.05, 0.24, 0.32), vec3(0.14, 0.68, 0.72), wday);
+		vec3 midC = mix(vec3(0.05, 0.24, 0.32), vec3(0.20, 0.74, 0.80), wday);
 		midC = mix(midC, vec3(0.20, 0.44, 0.34) * wday + 0.04, bSwamp * BIOME_MOOD);
 		vec3 deepC = mix(vec3(0.03, 0.12, 0.20), vec3(0.05, 0.36, 0.46), wday); // dark teal, never navy
 		vec3 hiPre = max(col - vec3(0.80), 0.0); // keep localized glints/foam lines from the surface pass
-		col = mix(col * vec3(0.62, 1.02, 0.98), midC, clamp(dd * 2.0, 0.0, 1.0) * 0.75);
+		col = mix(mix(col * vec3(0.70, 1.04, 1.00), vec3(0.70, 0.96, 0.94) * mix(0.35, 1.0, wday), 0.32 * WATER_CLARITY), midC, clamp(dd * 2.0, 0.0, 1.0) * 0.75);
 		col = mix(col, deepC, clamp(dd * 2.0 - 1.0, 0.0, 1.0) * WATER_DEPTH_TINT);
 		col *= 1.0 - 0.24 * texture(colortex2, uv).b; // drifting deep patches (clearly visible)
 		float wl = dot(col, vec3(0.299, 0.587, 0.114));
@@ -156,20 +161,39 @@ void main() {
 		// shoreline foam lines: solid edge line + a thinner wavy line pulsing outward
 		float pulse = fract(frameTimeCounter * 0.15);
 		if (behind < 0.55 + wob * 0.5) col = mix(col, vec3(0.98, 1.0, 1.0), 0.97 * fday);
-		else if (behind < 0.70 + wob * 0.5) col = mix(col, vec3(0.90, 0.97, 1.0), 0.55 * fday); // soft foam rim
+		else if (behind < 0.70 + wob * 0.5) col = mix(col, vec3(0.90, 0.97, 1.0), 0.55 * fday);
+		else if (behind < 1.10 + wob) col = mix(col, vec3(0.88, 0.97, 1.0), 0.22 * fday); // wide soft surf wash // soft foam rim
 		else if (abs(behind - (0.75 + pulse * 0.6 + wob)) < 0.16) col = mix(col, vec3(0.97, 1.0, 1.0), 0.90 * fday * (1.0 - 0.6 * pulse));
 #endif
 	}
 
+	// view ray and world height of this pixel (for sky-matched fog and ground mist)
+	vec4 vp4 = gbufferProjectionInverse * vec4(uv * 2.0 - 1.0, d0 * 2.0 - 1.0, 1.0);
+	vec3 vpos = vp4.xyz / max(abs(vp4.w), 1e-5);
+	vec3 vdir = safeNormalize(vpos, vec3(0, 0, -1));
+	vec3 fogSky = celHorizon(vdir, sunPosition, upPosition, rainStrength);
+	float wY = (mat3(gbufferModelViewInverse) * vpos).y + cameraPosition.y;
+	float sunHf = dot(safeNormalize(sunPosition, safeNormalize(upPosition, vec3(0,1,0))), safeNormalize(upPosition, vec3(0,1,0)));
+	float morningW = ((sunAngle < 0.25 || sunAngle > 0.75) ? 1.0 : 0.0) * clamp(1.0 - abs(sunHf - 0.05) * 4.0, 0.0, 1.0);
+	float bFog = clamp(bHaze * BIOME_MOOD * BIOME_FOG, 0.0, 1.0);
 #ifdef DISTANCE_FOG
 	if (isEyeInWater == 0 && (d0 < 1.0 || isDH)) {
 		float day = dayFactor(sunPosition, upPosition);
-		vec3 fogCol = mix(vec3(0.18, 0.20, 0.50), vec3(0.42, 0.72, 0.85), day); // blue-teal
-		float f = celBand(smoothstep(far * 0.12, far * 0.9, lin), 4) * FOG_STRENGTH;
-		fogCol *= bTint;
+		vec3 fogCol = mix(vec3(0.18, 0.20, 0.50), vec3(0.42, 0.72, 0.85), day) * bTint;
+		fogCol = mix(fogCol, fogSky, FOG_SKY_MATCH);
+		float fs = far * mix(0.12, 0.02, bFog), fe = far * mix(0.9, 0.6, bFog);
+		float f = celBand(smoothstep(fs, fe, lin), 4) * min(FOG_STRENGTH * (1.0 + bFog * 0.6), 1.0);
 		col = mix(col, fogCol, f * (water ? 0.35 : 1.0));
 	}
 #endif
+	// low ground mist: sunrise everywhere, swamps all day; hugs the ground, never on near water
+	if (isEyeInWater == 0 && d0 < 1.0 && MORNING_MIST > 0.0) {
+		float amt = MORNING_MIST * max(morningW, bSwamp * BIOME_MOOD * 0.35);
+		float hgt = exp(-max(wY - 63.0, 0.0) / 7.0);
+		float m = celBand(smoothstep(6.0, 56.0, lin) * hgt, 4) * amt;
+		vec3 mc = mix(fogSky, vec3(1.0), 0.15);
+		col = mix(col, mc, clamp(m, 0.0, 0.5) * (water ? 0.4 : 1.0));
+	}
 #if defined OUTLINES && EDGE_STYLE > 0
 	// no ink underwater (avoids dark rings around bubbles/particles)
 	if (isEyeInWater == 0) {
@@ -226,7 +250,7 @@ void main() {
 			acc /= 20.0;
 			float fall = 1.0 - smoothstep(0.0, 0.85, length((suv - uv) * vec2(viewWidth / viewHeight, 1.0)));
 			vec3 rc = useSun ? mix(vec3(1.0, 0.96, 0.70), vec3(1.0, 0.62, 0.22), duskG) : vec3(0.45, 0.55, 1.0);
-			float str = GODRAYS_STRENGTH * (useSun ? mix(0.55, 1.0, duskG) : 0.35);
+			float str = GODRAYS_STRENGTH * (useSun ? mix(0.55, 1.0, duskG) * (1.0 + 0.4 * morningW * MORNING_MIST) : 0.35);
 			col += rc * celBand(acc * fall, 4) * str * (sky ? 0.35 : 0.55);
 		}
 	}
@@ -246,7 +270,7 @@ void main() {
 	// warm atmospheric haze with distance (sunset orange, daytime soft yellow-green in forests)
 	if (!sky && isEyeInWater == 0) {
 		float hz = smoothstep(3.0, far * 0.6, lin);
-		vec3 hzc = mix(vec3(0.85, 0.95, 0.55), vec3(1.0, 0.62, 0.22), duskG);
+		vec3 hzc = mix(mix(vec3(0.85, 0.95, 0.55), fogSky * 1.08, FOG_SKY_MATCH * 0.6), vec3(1.0, 0.62, 0.22), duskG);
 		col = mix(col, hzc, hz * (HAZE + bHaze * BIOME_MOOD * 0.5) * STYLE_K * dayG * (water ? 0.25 : 1.0) * (1.0 - 0.5 * duskG));
 	}
 	// the sky is authored in its final palette: no grading / scene cast on sky pixels

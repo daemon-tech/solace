@@ -73,3 +73,11 @@
 const int shadowMapResolution = 1024; // [512 1024 2048]
 const float shadowDistance = 64.0; // [48.0 64.0 96.0 128.0]
 const float sunPathRotation = -25.0;
+// 0.16 atmosphere
+#define SKY_SUN_GLOW 1.0 // [0.0 0.5 1.0 1.5]
+#define DUSK_SKY 1.0 // [0.5 0.75 1.0]
+#define FOG_SKY_MATCH 0.8 // [0.0 0.4 0.6 0.8 1.0] fog takes the sky horizon colour
+#define MORNING_MIST 0.6 // [0.0 0.3 0.6 0.9] low ground mist at sunrise and in swamps
+#define BIOME_FOG 1.0 // [0.0 0.5 1.0 1.5] denser fog in swamps, dark forests, cold biomes
+#define WATER_CLARITY 1.0 // [0.0 0.5 1.0 1.5] clearer, paler shallows
+#define WATER_REFLECT 1.0 // [0.0 0.5 1.0 1.5] distant sky reflection

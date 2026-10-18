@@ -9,7 +9,6 @@ uniform float rainStrength;
 uniform float viewWidth;
 uniform float viewHeight;
 uniform mat4 gbufferModelViewInverse;
-uniform float sunAngle;
 uniform float frameTimeCounter;
 float fbm(vec2 p) { float s = 0.0, a = 0.5; for (int i = 0; i < 5; i++) { s += a * vnoise(p); p = p * 2.03 + 17.1; a *= 0.5; } return s; }
 /* RENDERTARGETS: 0 */

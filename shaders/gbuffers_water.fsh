@@ -48,7 +48,9 @@ void main() {
 		col = mix(col, far, celBand(smoothstep(24.0, 96.0, length(viewPos)), 3) * 0.45);
 		// banded sky reflection (stronger at grazing angles)
 		vec3 refl = celSky(reflect(-v, n), sunPosition, upPosition, rainStrength);
-		col = mix(col, refl, fres * 0.38);
+		// sky mirror grows with distance (far water reads as the sky, as in the )
+		float farR = smoothstep(16.0, 80.0, length(viewPos));
+		col = mix(col, refl, clamp(fres * 0.38 + farR * 0.38 * WATER_REFLECT, 0.0, 0.7));
 		// darker deep patches drifting slowly (banded, world-space)
 		float patch = vnoise(p * 0.10 + vec2(t * 0.02, 0.0)) * 0.7 + vnoise(p * 0.23 - vec2(0.0, t * 0.03)) * 0.3;
 		float deepPatch = smoothstep(0.56, 0.64, patch) * 0.55 + smoothstep(0.44, 0.52, patch) * 0.45;
@@ -69,7 +71,7 @@ void main() {
 		              + step(0.965, vnoise(p * 1.6 + vec2(t * 0.35, -t * 0.2))) * day; // scattered small glints
 		col = mix(col, vec3(1.0), clamp(sparkle, 0.0, 1.0) * 0.9 * mix(0.4, 1.0, day));
 #endif
-		outColor = vec4(col * mix(light, 1.0, 0.5 * day), max(mix(0.30, 0.85, fres) * WATER_OPACITY, clamp(crest, 0.0, 1.0) * 0.80));
+		outColor = vec4(col * mix(light, 1.0, 0.5 * day), max(mix(mix(0.30, 0.20, WATER_CLARITY), 0.85, fres) * WATER_OPACITY, clamp(crest, 0.0, 1.0) * 0.80));
 		outFlag = vec4(1.0, 0.0, deepPatch, 1.0);
 	} else {
 		vec4 albedo = texture(gtexture, texcoord) * vcolor;
