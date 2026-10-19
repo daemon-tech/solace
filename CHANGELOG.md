@@ -3,6 +3,22 @@
 Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All Rights Reserved.
 All builds tested in the real client with screenshots.
 
+## 0.29-dev
+
+### Lighting
+- **Soft rim light** (new option Lighting > Rim Light, with Strength and Width sliders). Edges facing away from the sun get a very soft, bright fringe when backlit: warm at golden hour, cool at night, with no grain. Water and foliage in front of gaps are left out.
+
+### Sunrise
+- **Softer sunrise.** The strong golden wash over everything in the morning is gone. Sunrise is now a gentle peach-pink tint.
+- The morning and evening tint fades out when little sky is visible, so digging down or standing in caves no longer turns everything yellow. Sunsets look the same as before.
+
+### Torches
+- **Only the flame glows.** Torches, lanterns and soul torches now light up only at the flame; the stick is lit normally.
+- The glow around the flame is small and tight and no longer smears or jumps when you move the camera.
+
+### Nether portal
+- **Nether portals glow in their own purple** instead of being treated like glass: no white streaks or milky sheen, and the purple light they cast is softer.
+
 ## 0.28-dev
 
 ### Clouds
