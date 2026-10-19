@@ -844,7 +844,7 @@ void main() {
 				hc = mix(hc, fogSky, 0.35 + 0.4 * smoothstep(400.0, 2000.0, th)); // pale and airy
 				float soft = clCover(q, 0.18, 1);
 				hc += rimC * soft * (1.0 - soft) * 2.5 * pow(toSun, 3.0) * 0.6;
-				col = mix(col, hc, cov * fade * 0.5);
+				col = mix(col, hc, cov * fade * 0.42);
 			}
 		}
 #endif
@@ -866,7 +866,7 @@ void main() {
 				float cov = clamp(cA + side, 0.0, 1.0);
 				if (cov > 0.002) {
 					// softer-lit than the vanilla layer: lower face contrast
-					vec3 faceC = fromBelow ? mix(cShade, cLit, 0.45) : mix(cShade, cLit, 0.95);
+					vec3 faceC = fromBelow ? mix(cShade, cLit, 0.72) : mix(cShade, cLit, 0.95); // soft, bright undersides
 					vec3 sideC = mix(cShade, cLit, 0.62 + 0.2 * toSun);
 					vec3 lc = mix(sideC, faceC, cA / max(cov, 1e-3));
 					float fz = smoothstep(150.0, 600.0, tA);
@@ -875,7 +875,7 @@ void main() {
 					float soft = clCover(qA, 0.2, 0);
 					lc += rimC * soft * (1.0 - soft) * 2.5 * pow(toSun, 3.0) * 0.7;
 					float fade = 1.0 - smoothstep(800.0, 2000.0, tA);
-					col = mix(col, lc, cov * fade * 0.88);
+					col = mix(col, lc, cov * fade * 0.80);
 				}
 			}
 		}

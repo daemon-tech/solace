@@ -8,7 +8,7 @@ vec2 clDir(float deg) { float a = radians(deg); vec2 d = vec2(1.0, 0.0); return 
 // cell occupancy (0/1 per block cell), from a smooth low-frequency field
 float clLowCell(vec2 c) {
 	float f = vnoise(c * 0.23) * 0.65 + vnoise(c * 0.61 + 13.7) * 0.35;
-	return step(mix(0.66, 0.54, CLOUD_COVER), f);
+	return step(mix(0.72, 0.62, CLOUD_COVER), f); // sparse big puffs
 }
 float clHighCell(vec2 c) {
 	// stretched along the wind: thin, wispy-blocky streaks
