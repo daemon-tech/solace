@@ -815,7 +815,8 @@ void main() {
 			col = mix(col, vec3(luma(col)) * vec3(0.97, 1.0, 1.03), pale);
 		}
 	}
-#if defined FIREFLIES && !defined DIM_NETHER && !defined DIM_END
+#ifdef FIREFLIES
+#if !defined DIM_NETHER && !defined DIM_END
 	// fireflies: warm green lights drifting and blinking near the player at night (world-space cells)
 	{
 		float nightF = (1.0 - smoothstep(0.15, 0.45, dayG)) * (1.0 - rainStrength)
@@ -848,6 +849,7 @@ void main() {
 			col += ffC * celBandSoft(clamp(halo, 0.0, 1.0), 3, 0.4) * 0.35 * nightF;
 		}
 	}
+#endif
 #endif
 #if defined DIM_NETHER || defined DIM_END
 	// own Nether / End looks: banded dimension fog in the biome's fog colour, soft glow
