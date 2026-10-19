@@ -3,6 +3,13 @@
 Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All Rights Reserved.
 All builds tested in the real client with screenshots.
 
+## 0.26-dev
+
+### Added
+- **Biome sky colours**: the daytime sky now takes on the character of the biome you are in. Deserts get a pale, warm, hazy horizon. Badlands glow with a dusty terracotta haze. Snowy biomes turn crisp and icy blue. Swamps turn murky green-grey. Jungles turn deep, saturated turquoise. Cherry groves turn soft pink-lavender.
+- Colours blend smoothly when you cross biome borders and fade out towards sunrise and sunset, so dusk colours stay untouched.
+- New slider **Sky > Biome Sky Colours** (0 = off, 0.5, 1.0 default, 1.5).
+
 ## 0.25-dev – 2026-10-19 (prerelease)
 
 **Fixed**
