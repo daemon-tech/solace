@@ -21,6 +21,8 @@ flat in int isFoliage;
 flat in int lightId;
 in float windG;
 in vec3 cwpos;
+in float vTop;
+flat in int isGrassPlant;
 uniform float frameTimeCounter;
 /* RENDERTARGETS: 0,1,2,3,4 */
 layout(location = 0) out vec4 outColor;
@@ -113,6 +115,9 @@ void main() {
 	{
 		bool tinted = vcolor.g > vcolor.b * 1.15 && vcolor.g > vcolor.r * 1.05;
 		float sm = (isFoliage == 2 && tinted) ? GRASS_SMOOTH : (isFoliage == 1 ? FOLIAGE_SMOOTH : 0.0);
+#ifdef SOFT_GRASS
+		if (isFoliage == 2 && tinted) sm = min(sm + 0.25 * SOFT_GRASS_STRENGTH, 0.9); // calmer grass surface, texels fade out
+#endif
 		if (sm > 0.0) {
 			vec4 lo = texture(gtexture, texcoord, 4.0);
 			lo.rgb /= max(lo.a, 0.25);
@@ -212,7 +217,19 @@ void main() {
 			target *= mix(vec3(0.90, 0.98, 1.08), vec3(1.06, 1.04, 0.86), lb * FOLIAGE_CONTRAST); // yellow-green sunlit, cool shade
 			// subtle colour-wave sway: slow lighter bands rolling over the field
 			float wave = sin(dot(cwpos.xz, vec2(0.21, 0.13)) + frameTimeCounter * GRASS_SWAY_SPEED);
+#ifdef SOFT_GRASS
+			target *= 1.0 + GRASS_SWAY * smoothstep(0.2, 1.0, wave) * 0.35; // wider window: no moving stripes
+			{
+				// very gentle large-scale tone drift (period ~40 blocks), so lawns are not one flat colour
+				float drift = vnoise(cwpos.xz * 0.025) * 0.7 + vnoise(cwpos.xz * 0.06 + 3.7) * 0.3;
+				target *= 1.0 + (drift - 0.5) * 0.05 * SOFT_GRASS_STRENGTH;
+				// sides: soft contact shade toward the bottom of the face
+				float side = 1.0 - abs(dot(n, up));
+				target *= 1.0 - 0.07 * SOFT_GRASS_STRENGTH * smoothstep(0.5, 0.9, side) * (1.0 - smoothstep(0.0, 1.0, fract(cwpos.y)));
+			}
+#else
 			target *= 1.0 + GRASS_SWAY * smoothstep(0.6, 1.0, wave) * 0.5;
+#endif
 			// wind sheen: bent grass catches a little more light where a gust passes (subtle, no glow)
 			target *= 1.0 + WIND_SHEEN * windGust(cwpos.xz, frameTimeCounter) * mix(0.4, 1.0, day);
 			col = mix(col, target, GROUND_GRADE_STRENGTH * mix(1.0, 0.4, torch * (1.0 - day * lm.y)));
@@ -232,8 +249,16 @@ void main() {
 		}
 	#endif
 		if (isFoliage == 1) col *= mix(vec3(1.0), vec3(1.14, 0.98, 0.78), golden * lb); // warm low sun on blades/leaves
-		if (isFoliage == 1) col *= mix(mix(vec3(1.0), vec3(0.78, 0.86, 0.98), FOLIAGE_CONTRAST), mix(vec3(1.0), vec3(1.10, 1.08, 0.90), FOLIAGE_CONTRAST), lb); // bright sunlit leaves, dark cool inner shade
-		if (isFoliage == 1) col *= 1.0 + WIND_SHEEN * 0.6 * windG * day * lb; // grass blades / leaves in gusts
+		float fcK = FOLIAGE_CONTRAST, shK = 1.0;
+#ifdef SOFT_GRASS
+		if (isGrassPlant == 1) { fcK *= 1.0 - 0.4 * min(SOFT_GRASS_STRENGTH, 1.5); shK = 0.5; } // blades never pop out
+#endif
+		if (isFoliage == 1) col *= mix(mix(vec3(1.0), vec3(0.78, 0.86, 0.98), fcK), mix(vec3(1.0), vec3(1.10, 1.08, 0.90), fcK), lb); // bright sunlit leaves, dark cool inner shade
+		if (isFoliage == 1) col *= 1.0 + WIND_SHEEN * 0.6 * windG * day * lb * shK; // grass blades / leaves in gusts
+#ifdef SOFT_GRASS
+		// grass plants: soft contact shade at the base fading out by mid-height (tips unchanged, no glow)
+		if (isGrassPlant == 1) col *= 1.0 - 0.12 * SOFT_GRASS_STRENGTH * (1.0 - smoothstep(0.0, 0.6, vTop));
+#endif
 		if (isFoliage == 1) {
 			// lime-leaning, brighter foliage (#9dc832 direction)
 			float l = luma(col);

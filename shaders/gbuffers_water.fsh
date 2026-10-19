@@ -119,7 +119,7 @@ void main() {
 		// footprint fade: glints never get smaller than a few pixels (no far shimmer)
 		float fpS = length(fwidth(p));
 		float sparkle = smoothstep(0.84, 0.88, vnoise(sp)) * smoothstep(0.45, 0.55, vnoise(p * 0.2 + t * 0.07)) * step(0.50, spec) * (1.0 - smoothstep(0.15, 0.35, fpS))
-		              + smoothstep(0.955, 0.975, vnoise(p * 1.6 + vec2(t * 0.35, -t * 0.2))) * day * (1.0 - smoothstep(0.08, 0.2, fpS)); // scattered small glints
+		              + smoothstep(0.955, 0.975, vnoise(p * 1.6 + vec2(t * 0.35, -t * 0.2))) * day * 0.5 * (1.0 - smoothstep(0.04, 0.10, fpS)); // scattered small glints: near water only, gentle
 		col = mix(col, vec3(1.0), clamp(sparkle, 0.0, 1.0) * 0.9 * mix(0.4, 1.0, day));
 #endif
 		outColor = vec4(col * mix(light, 1.0, 0.5 * day), max(max(mix(mix(0.30, 0.20, WATER_CLARITY), 0.85, fres), farR * 0.9 * min(WATER_REFLECT, 1.0)) * WATER_OPACITY, clamp(crest, 0.0, 1.0) * 0.80));

@@ -11,6 +11,8 @@ flat out int isFoliage;
 flat out int lightId;
 out float windG; // gust strength at this vertex (sheen) // 0 none, 1 warm, 2 soul, 3 red, 4 purple, 5 cool, 6 green
 out vec3 cwpos;
+out float vTop; // 1 at the top vertices of a plant sprite, 0 at the base
+flat out int isGrassPlant;
 uniform vec3 cameraPosition;
 uniform mat4 gbufferModelView;
 uniform float frameTimeCounter;
@@ -31,6 +33,8 @@ void main() {
 	// small normal offset against shadow acne
 	playerPos.xyz += mat3(gbufferModelViewInverse) * vnormal * 0.05;
 	cwpos = playerPos.xyz + cameraPosition;
+	vTop = (gl_MultiTexCoord0.y < mc_midTexCoord.y) ? 1.0 : 0.0;
+	isGrassPlant = eid == 10006 ? 1 : 0;
 #ifdef WAVING_FOLIAGE
 	bool plant = eid == 10006 || eid == 10007;
 	if (isFoliage == 1 || plant) {

@@ -3,8 +3,10 @@
 // Solace - wake map update: a world-anchored history of where the player moved through water.
 // colortex6: 256x256 texels = 64x64 blocks (4 per block), toroidal addressing by world XZ,
 // row 256 holds state (previous eye position, smoothed velocity). Nothing here depends on the camera.
+/*
 const int colortex6Format = RGBA32F;
 const bool colortex6Clear = false;
+*/
 uniform sampler2D colortex6;
 uniform vec3 eyePosition;
 uniform vec3 cameraPosition;
