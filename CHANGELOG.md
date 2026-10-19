@@ -3,6 +3,31 @@
 Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All Rights Reserved.
 All builds tested in the real client with screenshots.
 
+## 0.27-dev
+
+### Smoothness pass
+- **No more grain or noise anywhere.**
+  - Shadows, the shadow smoothing filter and ambient occlusion now use fixed sampling patterns. They no longer change per pixel or per frame, so there is no crawling grain inside shadows or in corners.
+  - Shadow edges use more samples with soft depth comparisons, which makes penumbrae smooth instead of stepped.
+  - Light shafts use more steps with soft comparisons.
+- **Calmer water far away.** Small glints and sun sparkles fade out with distance instead of turning into shimmering pixels. The '+' sparkles are sparser and gentler. Light-reflection streaks and the sunset streak on water are broken up smoothly in world space.
+- **Painted clouds and cloud reflections** no longer alias near the horizon (detail fades out smoothly with distance).
+
+### Clouds
+- **Smooth far cubic clouds** (new option Sky > Smooth Far Clouds, on by default):
+  - Distant clouds get even shading.
+  - Edge-on cloud faces fade out softly.
+  - Clouds fade gently with distance.
+  - No more scratchy or stair-stepped clouds on the horizon.
+
+### Wakes
+- **Wakes rebuilt from scratch.** Boat and swim trails are now drawn into a map of the water around you. They stay where you left them on the water and fade out over a few seconds.
+  - Turning the camera or switching to third person no longer moves or reshapes the trail.
+  - The trail no longer depends on camera movement at all, and it is softer and subtler than before.
+
+### Grass
+- **Soft grass** (new option Colour > Soft Grass, with a strength slider). A very gentle softening of grass: calmer grass tops with less texture pattern, a faint large-scale tone variation, soft contact shading at the bottom of grass block sides and at the base of grass plants, and less contrast on grass blades. Nothing new that draws the eye.
+
 ## 0.26-dev
 
 ### Added
