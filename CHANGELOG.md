@@ -3,6 +3,14 @@
 Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All Rights Reserved.
 All builds tested in the real client with screenshots.
 
+## 0.25-dev – 2026-10-19 (prerelease)
+
+**Fixed**
+- Wakes and splashes behind a boat or a swimming player flickered while moving. Their direction and strength came from the camera movement of a single frame, which jumps between zero and double speed because the game moves the player 20 times per second, not every frame. They now use a smoothed speed, and the foam pattern of the wake stays fixed in the water instead of sliding with the player.
+
+**New**
+- *Fireflies*: small yellow-green lights drift and blink near the ground around you on warm, clear nights (meadows, forests, cherry groves). Not in deserts, snow, rain or caves. Amount slider; off on Low.
+
 ## 0.24-dev – 2026-10-19 (prerelease)
 Water release.
 
