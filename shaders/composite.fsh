@@ -437,7 +437,7 @@ void main() {
 					vec2 cell = floor(pxy / cs);
 					float tw = floor(t * 2.5 + hash12(cell) * 7.0);
 					float pick = hash12(cell + tw * 0.37);
-					if (pick > 0.80) {
+					if (pick > 0.88) { // sparse and gentle
 						vec2 cen = (cell + 0.25 + 0.5 * vec2(hash12(cell + 1.7), hash12(cell + 4.3))) * cs;
 						vec2 d = abs(pxy - cen);
 						float L = mix(5.0, 11.0, hash12(cell + 9.1));
@@ -535,10 +535,12 @@ void main() {
 					// only where the trail was laid at this water level (no ghost wakes on water far above/below)
 					float lvl = smoothstep(2.5, 0.4, abs(hgt - surfY));
 					// the spread field grows outward over time; its contour reads as two diverging arms
-					float edge = 1.0 - smoothstep(0.0, 0.22, abs(spread - 0.45));
-					float fill = smoothstep(0.12, 0.35, spread) * (1.0 - smoothstep(0.55, 0.85, spread)) * 0.25;
-					float k = clamp(max(core, max(edge, fill)) * lvl, 0.0, 1.0);
-					col = mix(col, foamW, celBand(k, 3) * fW * WATER_SPLASH_AMT);
+					float edge = (1.0 - smoothstep(0.0, 0.18, abs(spread - 0.4))) * 0.55;
+					float fill = smoothstep(0.12, 0.35, spread) * (1.0 - smoothstep(0.55, 0.85, spread)) * 0.15;
+					// soft core: bright right behind the player, thinning out as it ages (no flat white band)
+					float cr = smoothstep(0.15, 1.0, core) * 0.6 * (0.8 + 0.2 * vnoise(wxz * 0.9 + t * 0.15));
+					float k = clamp(max(cr, max(edge, fill)) * lvl, 0.0, 1.0);
+					col = mix(col, foamW, celBandSoft(k, 3, 0.5) * 0.85 * fW * WATER_SPLASH_AMT);
 				}
 #endif
 				// falling water hitting a flat surface: a churning foam pool below the stream

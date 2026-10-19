@@ -61,7 +61,7 @@ void main() {
 	float d = length(w - a - ab * h);
 	float spd = length(st1.xy);
 	float amt = smoothstep(0.6, 2.5, spd);
-	float dep = (1.0 - smoothstep(0.35, 0.75, d)) * amt;
+	float dep = (1.0 - smoothstep(0.15, 0.6, d)) * amt;
 	float feet = eyePosition.y - 1.62;
 	float hgt = p.g;
 	if (dep > 0.01) hgt = mix(p.g > 0.0 ? p.g : feet, feet, clamp(dep, 0.0, 1.0));

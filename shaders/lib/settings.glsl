@@ -115,7 +115,7 @@ const float sunPathRotation = -25.0;
 #define NIGHT_LIGHT_REFLECT_STRENGTH 1.0 // [0.5 1.0 1.5 2.0]
 #define NIGHT_WAKE_BRIGHT // wakes and splashes stay bright white at night
 #define WATER_STARS // cross-shaped twinkling sparkles on sunlit water
-#define WATER_STARS_STRENGTH 0.9 // [0.5 0.7 0.9 1.0]
+#define WATER_STARS_STRENGTH 0.45 // [0.25 0.45 0.6 0.9]
 //#define WATER_ROLL // rolling ocean swell with blocky foam caps (oceans only)
 #define WATER_ROLL_HEIGHT 1.0 // [0.5 1.0 1.5]
 #define FIREFLIES // drifting, blinking fireflies near the player on warm nights
