@@ -3,6 +3,17 @@
 Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All Rights Reserved.
 All builds tested in the real client with screenshots.
 
+## 0.28-dev
+
+### Clouds
+- **Three blocky cloud layers** (new option Sky > Cloud Layers, on by default). Clouds now sit at three different heights, each drifting at its own speed, which gives the sky real depth:
+  - **Low layer:** big, softly lit blocky clouds well below the main layer. They drift a little faster and cast soft shadows on the ground.
+  - **Main layer:** the familiar Minecraft clouds, unchanged.
+  - **High layer:** thin, pale, slow-moving blocky streaks high above everything else.
+- Each layer moves in a slightly different direction, so the sky never looks like one flat sheet.
+- Every layer fades smoothly with distance and stays clean on the horizon, with no grain or stair-stepping.
+- New options: **Cloud Layers** (turn all extra layers on or off), **Low Cloud Layer**, **High Cloud Layer** and a **Cloud Layer Speed** slider.
+
 ## 0.27-dev
 
 ### Smoothness pass
