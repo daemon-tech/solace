@@ -1,9 +1,11 @@
 // Solace - shared cel-shaded fragment stage
+#include "/lib/clouds.glsl"
 uniform sampler2D gtexture;
 uniform sampler2D shadowtex0;
 uniform vec3 shadowLightPosition;
 uniform vec3 sunPosition;
 uniform mat4 gbufferModelViewInverse;
+uniform float cloudHeight;
 uniform vec3 upPosition;
 uniform float rainStrength;
 uniform float wetness;
@@ -144,9 +146,20 @@ void main() {
 #ifdef CLOUD_SHADOWS
 	{
 		// soft cloud shadows drifting with the wind field (same direction and pace as the gust fronts)
+#if defined CLOUD_LAYERS && defined CLOUD_LOW && !defined DIM_NETHER && !defined DIM_END
+		// shadows of the low cloud layer: project along the sun onto the layer, wide soft edges
+		vec3 sW = safeNormalize(mat3(gbufferModelViewInverse) * sunPosition, vec3(0, 1, 0));
+		if (sW.y > 0.05) {
+			float Hl = (cloudHeight > 1.0 ? cloudHeight : 192.0) + CL_LOW_OFF + CL_LOW_THICK * 0.5;
+			vec2 pc = cwpos.xz + sW.xz * (Hl - cwpos.y) / sW.y;
+			float cs = clCover(clLowQ(pc, frameTimeCounter * 0.6), 0.45, 0);
+			light *= 1.0 - smoothstep(0.1, 0.9, cs) * CLOUD_SHADOW_STRENGTH;
+		}
+#else
 		vec2 cq = cwpos.xz * 0.011 - windDir() * frameTimeCounter * WIND_SPEED * 0.07;
 		float cn = vnoise(cq) * 0.65 + vnoise(cq * 2.3 + 7.1) * 0.35;
 		light *= 1.0 - smoothstep(0.56, 0.68, cn) * CLOUD_SHADOW_STRENGTH;
+#endif
 	}
 #endif
 	float lb = celBandSoft(light, CEL_BANDS, SHADOW_EDGE); // cel bands with soft shadow edges

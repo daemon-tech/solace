@@ -2,6 +2,8 @@
 #include "/lib/settings.glsl"
 #include "/lib/common.glsl"
 #include "/lib/sky.glsl"
+#include "/lib/clouds.glsl"
+uniform float cloudHeight;
 // Solace - outlines, water depth/foam, fog and colour grading.
 /*
 const int colortex0Format = RGBA16;
@@ -809,6 +811,75 @@ void main() {
 		float hz = 1.0 - smoothstep(-0.05, 0.6, vS.y);
 		vec3 dustSky = mix(vec3(0.78, 0.52, 0.30), vec3(0.95, 0.72, 0.46), hz) * mix(0.35, 1.0, dayG);
 		col = mix(col, dustSky, clamp(dryB * rainStrength * SANDSTORM, 0.0, 1.0) * mix(0.70, 0.95, hz));
+	}
+#endif
+#if defined CLOUD_LAYERS && !defined DIM_NETHER && !defined DIM_END
+	// extra cubic cloud layers: high (thin, slow, behind the vanilla layer) and low (big, faster, in front)
+	if (isEyeInWater == 0) {
+		vec3 rd = safeNormalize(mat3(gbufferModelViewInverse) * vpos, vec3(0, 0, 1));
+		float sceneD = sky ? 1e9 : length(vpos);
+		float Hc = cloudHeight > 1.0 ? cloudHeight : 192.0;
+		float tC = frameTimeCounter * 0.6;
+		vec3 sunW = safeNormalize(mat3(gbufferModelViewInverse) * sunPosition, vec3(0, 1, 0));
+		float cDay = clamp(sunW.y * 4.0 + 0.4, 0.0, 1.0), cDusk = clamp(1.0 - abs(sunW.y) * 5.0, 0.0, 1.0);
+		vec3 cLit = mix(vec3(0.20, 0.22, 0.46), vec3(1.0, 1.0, 0.98), cDay);
+		vec3 cShade = mix(vec3(0.13, 0.14, 0.32), vec3(0.72, 0.80, 0.94), cDay);
+		cLit = mix(cLit, vec3(1.0, 0.80, 0.55), cDusk * 0.75);
+		cShade = mix(cShade, vec3(0.80, 0.56, 0.62), cDusk * 0.6);
+		cLit = mix(cLit, vec3(luma(cLit)) * 0.75, rainStrength * 0.6);
+		cShade = mix(cShade, vec3(luma(cShade)) * 0.75, rainStrength * 0.6);
+		float toSun = max(dot(rd, sunW), 0.0);
+		vec3 rimC = vec3(1.0, 0.72, 0.42) * cDusk * (1.0 - rainStrength);
+		float pxA = 2.0 / (gbufferProjection[1][1] * viewHeight); // angle of one pixel
+#ifdef CLOUD_HIGH
+		if (sky) {
+			float h = Hc + CL_HIGH_OFF - cameraPosition.y;
+			if (rd.y * h > 0.0) {
+				float th = h / rd.y;
+				vec2 q = clHighQ(cameraPosition.xz + rd.xz * th, tC);
+				float e = clamp(th * pxA / max(abs(rd.y), 0.03) / CL_HIGH_CELL * 0.75, 0.03, 0.5);
+				float cov = clCover(q, e, 1);
+				float fade = (1.0 - smoothstep(900.0, 2400.0, th)) * smoothstep(0.02, 0.15, abs(rd.y));
+				vec3 hc = mix(cLit, vec3(1.0), 0.25 * cDay);
+				hc = mix(hc, fogSky, 0.35 + 0.4 * smoothstep(400.0, 2000.0, th)); // pale and airy
+				float soft = clCover(q, 0.18, 1);
+				hc += rimC * soft * (1.0 - soft) * 2.5 * pow(toSun, 3.0) * 0.6;
+				col = mix(col, hc, cov * fade * 0.5);
+			}
+		}
+#endif
+#ifdef CLOUD_LOW
+		{
+			float h0 = Hc + CL_LOW_OFF - cameraPosition.y, h1 = h0 + CL_LOW_THICK;
+			float tA = -1.0, tB = -1.0; bool fromBelow = true;
+			if (h0 > 0.0 && rd.y > 0.0) { tA = h0 / rd.y; tB = h1 / rd.y; }
+			else if (h1 < 0.0 && rd.y < 0.0) { tA = h1 / rd.y; tB = h0 / rd.y; fromBelow = false; }
+			else if (h0 <= 0.0 && h1 >= 0.0) { tA = 0.0; tB = (rd.y > 0.0 ? h1 : h0) / (abs(rd.y) > 1e-3 ? rd.y : 1e-3); if (tB < 0.0) tB = 600.0; }
+			if (tA >= 0.0 && tA < min(sceneD, 2200.0)) {
+				tB = min(min(tB, tA + 160.0), sceneD);
+				float e = clamp(tA * pxA / max(abs(rd.y), 0.03) / CL_LOW_CELL * 0.75, 0.03, 0.5);
+				vec2 qA = clLowQ(cameraPosition.xz + rd.xz * tA, tC);
+				vec2 qM = clLowQ(cameraPosition.xz + rd.xz * mix(tA, tB, 0.5), tC);
+				vec2 qB = clLowQ(cameraPosition.xz + rd.xz * tB, tC);
+				float cA = clCover(qA, e, 0), cM = clCover(qM, e, 0), cB = clCover(qB, e, 0);
+				float side = max(cM, cB) * (1.0 - cA);
+				float cov = clamp(cA + side, 0.0, 1.0);
+				if (cov > 0.002) {
+					// softer-lit than the vanilla layer: lower face contrast
+					vec3 faceC = fromBelow ? mix(cShade, cLit, 0.45) : mix(cShade, cLit, 0.95);
+					vec3 sideC = mix(cShade, cLit, 0.62 + 0.2 * toSun);
+					vec3 lc = mix(sideC, faceC, cA / max(cov, 1e-3));
+					float fz = smoothstep(150.0, 600.0, tA);
+					lc = mix(lc, mix(cShade, cLit, 0.62), fz * 0.6);
+					lc = mix(lc, fogSky, smoothstep(300.0, 1800.0, tA) * 0.55);
+					float soft = clCover(qA, 0.2, 0);
+					lc += rimC * soft * (1.0 - soft) * 2.5 * pow(toSun, 3.0) * 0.7;
+					float fade = 1.0 - smoothstep(800.0, 2000.0, tA);
+					col = mix(col, lc, cov * fade * 0.88);
+				}
+			}
+		}
+#endif
 	}
 #endif
 	// near-white haze band where the sea meets the sky (water far field + sky just above horizon)
