@@ -182,13 +182,10 @@ vec3 smoothShadow(vec3 col, float d0, float lin) {
 #ifdef SHADOW_FILTER
 	// radius ~0.18 blocks in world size, in pixels
 	float rp = clamp(0.18 * SHADOW_FILTER_SIZE * gbufferProjection[1][1] * 0.5 * viewHeight / max(lin, 0.1), 1.5, 14.0 * SHADOW_FILTER_SIZE);
-	float ang = hash12(gl_FragCoord.xy) * 6.2831853;
-#ifdef SHADOW_TEMPORAL
-	ang += fract(float(frameCounter) * 0.7548777) * 6.2831853;
-#endif
+	const float ang = 0.6; // fixed pattern: no per-pixel hash, no per-frame jitter
 	float ws = 1.0, sum = lb;
-	for (int i = 0; i < 12; i++) {
-		float r = sqrt((float(i) + 0.5) / 12.0);
+	for (int i = 0; i < 16; i++) {
+		float r = sqrt((float(i) + 0.5) / 16.0);
 		float a = float(i) * 2.39996 + ang;
 		vec2 o = uv + vec2(cos(a), sin(a)) * r * rp * px;
 		vec4 s2 = texture(colortex4, o);
@@ -253,10 +250,10 @@ void main() {
 		vec3 Nn = safeNormalize(texture(colortex1, uv).xyz * 2.0 - 1.0, vec3(0, 0, 1));
 		float occ = 0.0;
 		float rr = 0.55;
-		float jit = fract(sin(dot(floor(uv * vec2(viewWidth, viewHeight)), vec2(12.9898, 78.233))) * 43758.5);
-		for (int i = 0; i < 8; i++) {
-			float a = (float(i) + jit) * 2.39996;
-			float r = rr * sqrt((float(i) + 0.5) / 8.0);
+		// fixed tap pattern (no per-pixel jitter), smooth falloff per tap
+		for (int i = 0; i < 12; i++) {
+			float a = float(i) * 2.39996;
+			float r = rr * sqrt((float(i) + 0.5) / 12.0);
 			vec3 tng = safeNormalize(cross(Nn, abs(Nn.y) < 0.9 ? vec3(0, 1, 0) : vec3(1, 0, 0)), vec3(1, 0, 0));
 			vec3 btg = cross(Nn, tng);
 			vec3 S = P + (tng * cos(a) + btg * sin(a)) * r + Nn * r * 0.6;
@@ -264,9 +261,9 @@ void main() {
 			vec2 so = c.xy / c.w * 0.5 + 0.5;
 			vec4 q = gbufferProjectionInverse * vec4(so * 2.0 - 1.0, texture(depthtex0, so).r * 2.0 - 1.0, 1.0);
 			float sz = q.z / q.w;
-			occ += step(S.z + 0.04, sz) * smoothstep(1.2, 0.0, abs(sz - P.z));
+			occ += smoothstep(S.z + 0.02, S.z + 0.12, sz) * smoothstep(1.2, 0.0, abs(sz - P.z));
 		}
-		float ao = 1.0 - celBandSoft(occ / 8.0, 4, 0.4) * SSAO_STRENGTH;
+		float ao = 1.0 - celBandSoft(occ / 12.0, 4, 0.4) * SSAO_STRENGTH;
 		col *= mix(1.0, ao, smoothstep(far * 0.6, 8.0, lin));
 	}
 #endif
@@ -386,7 +383,7 @@ void main() {
 						Ls /= 4.0;
 						float ll = max(Ls.r, max(Ls.g, Ls.b));
 						vec3 vivid = Ls / max(ll, 1e-3); // full-saturation hue of the light
-						float brk = 0.6 + 0.4 * step(0.4, vnoise(vec2(uv.x * 60.0, uv.y * 220.0 + t * 1.5)));
+						float brk = 0.6 + 0.4 * smoothstep(0.3, 0.6, vnoise(wxz * vec2(0.8, 0.3) + vec2(0.0, t * 0.4))); // world-space, smooth
 						col += vivid * celBandSoft(clamp(ll * 1.6, 0.0, 1.0), 3, 0.4) * brk * nk * 0.9 * NIGHT_LIGHT_REFLECT_STRENGTH;
 					}
 				}
@@ -412,7 +409,7 @@ void main() {
 					float below = suv.y - uv.y;
 					float w = 0.012 + 0.05 * clamp(below, 0.0, 1.0);
 					float xs = 1.0 - smoothstep(w * 0.4, w, abs(uv.x - suv.x) * viewWidth / viewHeight);
-					float brk = step(0.35, vnoise(vec2(uv.x * 90.0, uv.y * 260.0 + t * 2.0)));
+					float brk = smoothstep(0.25, 0.55, vnoise(wxz * vec2(0.9, 0.35) + vec2(0.0, t * 0.5))); // world-space, smooth
 					float k = xs * step(0.0, below) * brk * sunLow;
 					col = mix(col, vec3(1.0, 0.86, 0.55), celBand(clamp(k, 0.0, 1.0), 3) * 0.9);
 				}
@@ -424,7 +421,9 @@ void main() {
 			vec3 Rw = reflect(V, safeNormalize(mix(upV, safeNormalize(nV, upV), 0.8), upV));
 			float g = pow(max(dot(Rw, Lsun), 0.0), 120.0);
 			// broken into small glinting cells, not a solid blob
-			float cells = smoothstep(0.62, 0.70, vnoise(wxz * 3.5 + vec2(t * 0.8, -t * 0.5)) * 0.6 + vnoise(wxz * 9.0 - t * 1.3) * 0.4);
+			float fpG = length(fwidth(wxz)); // texel footprint: high-frequency cells fade before they turn into pixel shimmer
+			float cells = smoothstep(0.62, 0.70, vnoise(wxz * 3.5 + vec2(t * 0.8, -t * 0.5)) * 0.6 + mix(vnoise(wxz * 9.0 - t * 1.3), 0.5, smoothstep(0.03, 0.08, fpG)) * 0.4);
+			cells = mix(cells, 0.35, smoothstep(0.08, 0.2, fpG));
 			g = celBand(clamp(g * 2.5, 0.0, 1.0), 3) * cells;
 			col = mix(col, vec3(1.0, 0.97, 0.88), clamp(g, 0.0, 1.0) * 0.9 * wday * (1.0 - rainStrength));
 #endif
@@ -708,14 +707,14 @@ void main() {
 			float L = min(length(endP), 32.0);
 			vec3 dP = endP / max(length(endP), 1e-4);
 			float acc = 0.0;
-			for (int i = 0; i < 20; i++) {
-				vec3 pp = dP * L * (float(i) + 0.5) / 20.0;
+			for (int i = 0; i < 24; i++) {
+				vec3 pp = dP * L * (float(i) + 0.5) / 24.0;
 				vec4 sc = shadowProjection * (shadowModelView * vec4(pp, 1.0));
 				vec3 sp = celDistort(sc.xyz / max(sc.w, 1e-4)) * 0.5 + 0.5;
 				if (all(greaterThan(sp, vec3(0.0))) && all(lessThan(sp, vec3(1.0))))
-					acc += step(sp.z - 0.0008, texture(shadowtex0, sp.xy).r);
+					acc += clamp((texture(shadowtex0, sp.xy).r - sp.z) / 0.0016 + 0.5, 0.0, 1.0);
 			}
-			acc /= 20.0;
+			acc /= 24.0;
 			vec3 sunV = safeNormalize(sunPosition, vec3(0, 1, 0));
 			float mie = 0.45 + 0.55 * pow(max(dot(vdir, sunV), 0.0), 3.0);
 			vec3 shC = mix(vec3(1.0, 0.93, 0.74), vec3(1.0, 0.64, 0.30), duskG);

@@ -45,12 +45,8 @@ float shadowAt(vec4 clip, float ndl) {
 	float texel = 1.0 / float(shadowMapResolution);
 	// slope-scaled bias in distorted space (no acne on grazing faces, no peter-panning on flat ones)
 	float bias = (0.00025 + 0.0009 * (1.0 - clamp(ndl, 0.0, 1.0))) * dist;
-	// rotation anchored to the world (stable while the camera moves, no crawling noise)
-	float ang = hash12(floor(cwpos.xz * 16.0) + floor(cwpos.y * 16.0) * 17.0) * 6.2831853;
-#ifdef SHADOW_TEMPORAL
-	ang += fract(float(frameCounter) * 0.61803399) * 6.2831853; // new tap directions each frame, resolved by the history
-#endif
-	mat2 rot = mat2(cos(ang), -sin(ang), sin(ang), cos(ang));
+	// fixed tap pattern: no per-pixel or per-frame rotation (no grain, nothing crawls)
+	const mat2 rot = mat2(0.8, -0.6, 0.6, 0.8);
 	// PCSS-style: blocker search -> penumbra grows with caster distance; wide rotated vogel-disk filter
 	float baseR = (2.0 + float(SHADOW_SOFTNESS) * 1.4) * texel * mix(1.0, 1.6, dist);
 	float searchR = baseR * 6.0;
@@ -66,15 +62,17 @@ float shadowAt(vec4 clip, float ndl) {
 	float rad = baseR * (1.0 + pen);
 	rad *= 1.0 + SHADOW_DIST_SOFT * clamp(length(cwpos - cameraPosition) / 48.0, 0.0, 2.0); // softer with view distance
 	float lit = 0.0;
-	for (int i = 0; i < 24; i++) {
-		float r = sqrt((float(i) + 0.5) / 24.0);
+	for (int i = 0; i < 32; i++) {
+		float r = sqrt((float(i) + 0.5) / 32.0);
 		float a = float(i) * 2.39996;
 		vec2 o = rot * vec2(cos(a), sin(a)) * r * rad;
 		// slightly larger bias for wide taps (no acne at the penumbra edge)
 		// receiver-plane bias: wide taps on sloped receivers need more bias (no grain inside shadows)
-		lit += step(p.z - bias - r * rad * (0.12 + 0.8 * (1.0 - clamp(ndl, 0.0, 1.0))), texture(shadowtex0, p.xy + o).r);
+		// smooth depth ramp per tap instead of a hard step: no stair-stepped penumbra
+		float ref = p.z - bias - r * rad * (0.12 + 0.8 * (1.0 - clamp(ndl, 0.0, 1.0)));
+		lit += clamp((texture(shadowtex0, p.xy + o).r - ref) / (bias * 1.5) + 0.5, 0.0, 1.0);
 	}
-	lit /= 24.0;
+	lit /= 32.0;
 	lit = smoothstep(0.08, 0.92, lit); // creamy falloff, clean full shadow / full light
 #ifdef GLASS_TINT_LIGHT
 	// light through stained glass: the nearest shadow caster is translucent -> take the glass colour.

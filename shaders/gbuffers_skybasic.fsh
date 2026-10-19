@@ -11,6 +11,12 @@ uniform float viewHeight;
 uniform mat4 gbufferModelViewInverse;
 uniform float frameTimeCounter;
 float fbm(vec2 p) { float s = 0.0, a = 0.5; for (int i = 0; i < 5; i++) { s += a * vnoise(p); p = p * 2.03 + 17.1; a *= 0.5; } return s; }
+// filtered fbm: an octave whose period drops below ~2 px fades to its mean (no aliasing near the horizon)
+float fbmAA(vec2 p) {
+	float fw = max(length(fwidth(p)), 1e-5), s = 0.0, a = 0.5;
+	for (int i = 0; i < 5; i++) { s += a * mix(vnoise(p), 0.5, smoothstep(0.25, 0.5, fw)); p = p * 2.03 + 17.1; fw *= 2.03; a *= 0.5; }
+	return s;
+}
 /* RENDERTARGETS: 0 */
 layout(location = 0) out vec4 outColor;
 uniform int renderStage;
@@ -51,13 +57,13 @@ void main() {
 		vec3 w = mat3(gbufferModelViewInverse) * dir;
 		if (w.y > 0.015) {
 			vec2 cp = w.xz / w.y * 1.6 + vec2(frameTimeCounter * 0.006, 0.0);
-			float d = fbm(cp * 1.3);
+			float d = fbmAA(cp * 1.3);
 			float cov = mix(0.56, 0.44, CLOUD_COVER);
-			float mask = smoothstep(cov, cov + 0.06, d) * smoothstep(0.015, 0.12, w.y);
+			float mask = smoothstep(cov, cov + 0.06 + 0.25 * smoothstep(0.1, 1.0, length(fwidth(cp))), d) * smoothstep(0.015, 0.12, w.y);
 			if (mask > 0.0) {
 				vec3 sunW = normalize(mat3(gbufferModelViewInverse) * sunPosition);
 				// self-shadow: density a little toward the sun -> lit tops, soft undersides
-				float d2 = fbm(cp * 1.3 + sunW.xz * 0.10 + vec2(0.0, 0.06));
+				float d2 = fbmAA(cp * 1.3 + sunW.xz * 0.10 + vec2(0.0, 0.06));
 				float lit = celBand(clamp((d - d2) * 5.0 + 0.55 + (d - cov) * 1.5, 0.0, 1.0), 3);
 				float sunH = dot(safeNormalize(sunPosition, up), up);
 				float dayC = clamp(sunH * 4.0 + 0.4, 0.0, 1.0);

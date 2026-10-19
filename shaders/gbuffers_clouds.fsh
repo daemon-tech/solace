@@ -28,9 +28,23 @@ void main() {
 	lit = mix(lit, vec3(1.0, 0.80, 0.55), dusk * 0.75);
 	shade = mix(shade, vec3(0.80, 0.56, 0.62), dusk * 0.6);
 	float k = ny > 0.5 ? 1.0 : (ny < -0.5 ? 0.0 : celBand(sl, 3) * 0.8 + 0.1);
+	float dist = length(viewPosC);
+#ifdef CLOUD_SMOOTH
+	// far clouds: faces converge to one tone, so sub-pixel side faces no longer flicker as stair-steps
+	float fz = smoothstep(96.0, 320.0, dist);
+	k = mix(k, 0.62, fz);
+#endif
 	vec3 c = mix(shade, lit, k);
 	c = mix(c, vec3(luma(c)) * 0.75, rainStrength * 0.6);
-	float dist = length(viewPosC);
 	float a = vcolor.a * 0.92 * (1.0 - smoothstep(180.0, 420.0, dist) * 0.5);
+#ifdef CLOUD_SMOOTH
+	// grazing faces (edge-on slivers) fade smoothly; the window widens with distance
+	vec3 vd = normalize(-viewPosC);
+	float ndv = abs(dot(nn, vd));
+	a *= smoothstep(0.0, mix(0.05, 0.35, fz), ndv);
+	// smooth mip-like fade toward the cloud edge
+	a *= 1.0 - smoothstep(220.0, 520.0, dist) * 0.75;
+	c = mix(c, mix(shade, lit, 0.62), fz * 0.5);
+#endif
 	outColor = vec4(c, a);
 }

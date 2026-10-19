@@ -57,7 +57,8 @@ void main() {
 			vec3 rw = mat3(gbufferModelViewInverse) * rd;
 			if (rw.y > 0.02) {
 				vec2 cp = rw.xz / rw.y * 1.6 + vec2(t * 0.006, 0.0);
-				float cd = vnoise(cp * 1.3) * 0.5 + vnoise(cp * 2.64 + 17.1) * 0.25 + vnoise(cp * 5.36 + 51.0) * 0.125;
+				float fwc = length(fwidth(cp * 1.3)); // octave filtering: no aliasing in far reflections
+				float cd = mix(vnoise(cp * 1.3), 0.5, smoothstep(0.25, 0.5, fwc)) * 0.5 + mix(vnoise(cp * 2.64 + 17.1), 0.5, smoothstep(0.12, 0.25, fwc)) * 0.25 + mix(vnoise(cp * 5.36 + 51.0), 0.5, smoothstep(0.06, 0.12, fwc)) * 0.125;
 				float cov = mix(0.56, 0.44, CLOUD_COVER) * 0.875;
 				float cm = smoothstep(cov, cov + 0.06, cd) * smoothstep(0.02, 0.12, rw.y);
 				vec3 cc = mix(vec3(0.20, 0.22, 0.45), vec3(1.0, 1.0, 0.98), day);
@@ -115,8 +116,10 @@ void main() {
 #ifdef WATER_SPARKLE
 		// white sparkle streaks drifting with the waves
 		vec2 sp = p * vec2(0.8, 3.0) + vec2(t * 0.4, 0.0);
-		float sparkle = step(0.86, vnoise(sp)) * step(0.50, vnoise(p * 0.2 + t * 0.07)) * step(0.50, spec)
-		              + step(0.965, vnoise(p * 1.6 + vec2(t * 0.35, -t * 0.2))) * day; // scattered small glints
+		// footprint fade: glints never get smaller than a few pixels (no far shimmer)
+		float fpS = length(fwidth(p));
+		float sparkle = smoothstep(0.84, 0.88, vnoise(sp)) * smoothstep(0.45, 0.55, vnoise(p * 0.2 + t * 0.07)) * step(0.50, spec) * (1.0 - smoothstep(0.15, 0.35, fpS))
+		              + smoothstep(0.955, 0.975, vnoise(p * 1.6 + vec2(t * 0.35, -t * 0.2))) * day * (1.0 - smoothstep(0.08, 0.2, fpS)); // scattered small glints
 		col = mix(col, vec3(1.0), clamp(sparkle, 0.0, 1.0) * 0.9 * mix(0.4, 1.0, day));
 #endif
 		outColor = vec4(col * mix(light, 1.0, 0.5 * day), max(max(mix(mix(0.30, 0.20, WATER_CLARITY), 0.85, fres), farR * 0.9 * min(WATER_REFLECT, 1.0)) * WATER_OPACITY, clamp(crest, 0.0, 1.0) * 0.80));

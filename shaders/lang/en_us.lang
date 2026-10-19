@@ -229,3 +229,5 @@ option.FIREFLIES.comment=Small yellow-green lights drift and blink near you on w
 option.FIREFLY_AMOUNT=Firefly Amount
 option.BIOME_SKY=Biome Sky Colours
 option.BIOME_SKY.comment=The day sky takes on the colours of the biome: sandy haze in deserts, orange over badlands, icy blue over snow, grey-green over swamps, turquoise over jungles, pink over cherry groves.
+option.CLOUD_SMOOTH=Smooth Far Clouds
+option.CLOUD_SMOOTH.comment=Far cubic clouds get even shading, faded edge-on faces and a soft distance fade (no scratchy far clouds).
