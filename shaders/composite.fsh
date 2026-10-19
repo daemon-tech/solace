@@ -422,7 +422,7 @@ void main() {
 			// broken into small glinting cells, not a solid blob
 			float fpG = length(fwidth(wxz)); // texel footprint: high-frequency cells fade before they turn into pixel shimmer
 			float cells = smoothstep(0.62, 0.70, vnoise(wxz * 3.5 + vec2(t * 0.8, -t * 0.5)) * 0.6 + mix(vnoise(wxz * 9.0 - t * 1.3), 0.5, smoothstep(0.03, 0.08, fpG)) * 0.4);
-			cells = mix(cells, 0.35, smoothstep(0.08, 0.2, fpG));
+			cells *= 1.0 - smoothstep(0.08, 0.2, fpG); // far: fade out instead of a flat patch
 			g = celBand(clamp(g * 2.5, 0.0, 1.0), 3) * cells;
 			col = mix(col, vec3(1.0, 0.97, 0.88), clamp(g, 0.0, 1.0) * 0.9 * wday * (1.0 - rainStrength));
 #endif
@@ -538,9 +538,13 @@ void main() {
 					float edge = (1.0 - smoothstep(0.0, 0.18, abs(spread - 0.4))) * 0.55;
 					float fill = smoothstep(0.12, 0.35, spread) * (1.0 - smoothstep(0.55, 0.85, spread)) * 0.15;
 					// soft core: bright right behind the player, thinning out as it ages (no flat white band)
-					float cr = smoothstep(0.15, 1.0, core) * 0.6 * (0.8 + 0.2 * vnoise(wxz * 0.9 + t * 0.15));
-					float k = clamp(max(cr, max(edge, fill)) * lvl, 0.0, 1.0);
-					col = mix(col, foamW, celBandSoft(k, 3, 0.5) * 0.85 * fW * WATER_SPLASH_AMT);
+					float cr = smoothstep(0.15, 1.0, core) * 0.45 * (0.8 + 0.2 * vnoise(wxz * 0.9 + t * 0.15));
+					// fade out well before the edge of the 64-block wake window (no straight cut-offs)
+					vec2 eW = eyePosition.xz - cameraPosition.xz + mod(cameraPosition.xz, 4096.0);
+					vec2 dW = abs(wxz - eW);
+					float win = 1.0 - smoothstep(22.0, 29.0, max(dW.x, dW.y));
+					float k = clamp(max(cr, max(edge * 0.65, fill)) * lvl * win, 0.0, 1.0);
+					col = mix(col, foamW, celBandSoft(k, 3, 0.5) * 0.7 * fW * WATER_SPLASH_AMT);
 				}
 #endif
 				// falling water hitting a flat surface: a churning foam pool below the stream
