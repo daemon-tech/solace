@@ -130,7 +130,7 @@ void main() {
 		vec3 gc = albedo.rgb * light;
 #ifdef GLASS_REFLECT
 		// glass: fresnel sky sheen + a stylized diagonal highlight streak (only on see-through blocks)
-		if (albedo.a < 0.95) {
+		if (albedo.a < 0.95 && isWater != 2) {
 			vec3 V = safeNormalize(viewPos, vec3(0, 0, -1));
 			float fr = pow(1.0 - clamp(abs(dot(V, n)), 0.0, 1.0), 3.0);
 			vec3 skyC = mix(vec3(0.20, 0.24, 0.45), vec3(0.62, 0.80, 0.98), day);
@@ -141,9 +141,11 @@ void main() {
 			albedo.a = max(albedo.a, fr * 0.5 * GLASS_REFLECT_STRENGTH);
 		}
 #endif
+		// nether portal: self-lit swirl in its own colour (no glass sheen, no white streaks, not dimmed by night)
+		if (isWater == 2) gc = mix(albedo.rgb * light, albedo.rgb * EMISSIVE_STRENGTH, 0.85);
 		outColor = vec4(gc, albedo.a);
 		outFlag = vec4(0.0, 0.0, 0.0, 1.0);
 	}
-	outLight = isWater == 2 ? vec4(lightColor(4), 1.0) : vec4(0.0);
+	outLight = isWater == 2 ? vec4(lightColor(4) * 0.5, 0.5) : vec4(0.0); // portal: gentle purple light, a big panel needs less per pixel
 	outNormal = vec4(n * 0.5 + 0.5, 1.0);
 }
