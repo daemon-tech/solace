@@ -172,3 +172,7 @@ const float sunPathRotation = -25.0;
 #define SHADOW_TEMPORAL // temporal shadow smoothing (history buffer, reprojection + clamp)
 #define SHADOW_FILTER // screen-space edge smoothing of shadows (depth/normal aware)
 #define SHADOW_FILTER_SIZE 1.0 // [0.5 1.0 1.5 2.0] size of the shadow edge smoothing
+//#define RIM_DEBUG
+#define RIM_LIGHT // soft bright fringe on silhouettes, mainly against the sun or moon
+#define RIM_STRENGTH 0.6 // [0.3 0.6 1.0 1.5]
+#define RIM_WIDTH 1.0 // [0.6 1.0 1.4]

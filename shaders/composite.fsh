@@ -143,6 +143,8 @@ float outlineMask(vec2 c, float centerLin) {
 	return e;
 }
 
+float duskW(float h) { return clamp(1.0 - abs(h) * 4.0, 0.0, 1.0); }
+
 vec3 grade(vec3 c) {
 	float l = luma(c);
 	// warm/red hues (sand, terracotta) get less saturation boost
@@ -582,6 +584,53 @@ void main() {
 	float bFog = clamp(bHaze * BIOME_MOOD * BIOME_FOG, 0.0, 1.0);
 	// underground / enclosed: eye sky light (smoothed) -> 0 open sky .. 1 deep cave
 	float cave = smoothstep(0.55, 0.05, float(eyeBrightnessSmooth.y) / 240.0) * smoothstep(60.0, 48.0, cameraPosition.y); // dark AND below the surface (not a closed house)
+#ifdef RIM_LIGHT
+	// rim light: a soft, wide fringe on silhouettes that sit in front of something far away
+	// (sky or distant terrain), strongest when looking towards the sun or moon. Fixed tap ring,
+	// no jitter, so the fringe is a smooth gradient and never sparkles.
+	if (isEyeInWater == 0 && d0 < 1.0 && d0 >= 0.56 && !water && lin < 110.0) {
+		vec3 upV = safeNormalize(upPosition, vec3(0, 1, 0));
+		float dayR = dayFactor(sunPosition, upPosition);
+		vec3 Lv = safeNormalize(dayR > 0.15 ? sunPosition : moonPosition, upV);
+		float lightH = dot(Lv, upV);
+		float facing = dot(vdir, Lv); // > 0: looking towards the light (backlit)
+		float back = smoothstep(-0.15, 0.85, facing);
+		float strength = mix(0.18, 1.0, back) * mix(0.30, 1.0, dayR) * smoothstep(-0.05, 0.06, lightH);
+		strength *= (1.0 - rainStrength * 0.7) * (1.0 - cave);
+		strength *= 1.0 - smoothstep(48.0, 110.0, lin);
+		if (strength > 0.002) {
+			bool folR = texture(colortex1, uv).a < 0.75;
+			vec3 nR = safeNormalize(texture(colortex1, uv).xyz * 2.0 - 1.0, vec3(0, 0, 1));
+			float rp = clamp(2.2 * RIM_WIDTH * 10.0 / max(lin, 1.0), 1.5, 4.5 * RIM_WIDTH);
+			vec2 pxR = rp / vec2(viewWidth, viewHeight);
+			float sil = 0.0;
+			// two rings (full and half radius, offset angles): the fringe fades out smoothly inwards
+			for (int i = 0; i < 16; i++) {
+				float a = float(i) * 0.785398 + (i >= 8 ? 0.392699 : 0.0);
+				vec2 o = clamp(uv + vec2(cos(a), sin(a)) * pxR * (i >= 8 ? 0.5 : 1.0), vec2(0.001), vec2(0.999));
+				float dt = texture(depthtex1, o).r;
+				float lt = dt >= 1.0 ? far * 4.0 : linDepth(dt);
+				// how far the background behind the edge is, relative to this pixel
+				float gap = (lt - lin) / max(lin, 1.0);
+				float w = smoothstep(0.35, 1.6, gap);
+				if (folR) w *= step(1.0, dt) * 0.6; // leaves: only against open sky, no cut-out holes
+				sil += w;
+			}
+			sil = smoothstep(0.0, 0.55, sil / 16.0);
+			// faces turned away from the camera carry more rim (entity curves, block sides)
+			float side = mix(0.55, 1.0, smoothstep(0.2, 0.9, 1.0 - abs(nR.z)));
+			vec3 sunC = mix(vec3(1.0, 0.95, 0.84), vec3(1.0, 0.70, 0.42), duskW(lightH));
+			vec3 rimC = mix(mix(fogSky, vec3(1.0), 0.35), sunC, back * dayR);
+			rimC = mix(rimC, vec3(0.62, 0.72, 1.0) * 0.8, 1.0 - dayR); // cool moonlit rim
+			float a = sil * side * strength * RIM_STRENGTH * 0.30;
+			// lift towards the rim colour (screen-like, cannot clip or turn white)
+			col = mix(col, max(col, rimC * 0.95), clamp(a, 0.0, 0.32));
+#ifdef RIM_DEBUG
+			col = mix(col, vec3(1.0, 0.0, 1.0), clamp(a * 6.0, 0.0, 1.0));
+#endif
+		}
+	}
+#endif
 #ifdef DISTANCE_FOG
 	if (isEyeInWater == 0 && (d0 < 1.0 || isDH)) {
 		float day = dayFactor(sunPosition, upPosition);
