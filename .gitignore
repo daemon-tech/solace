@@ -1,3 +1,9 @@
+# local-only working material (not part of the public repo)
 compare/
-gallery/resource pack/
-docs/design/
+docs/
+dist/
+tools/
+gallery/*
+!gallery/final/
+gallery/final/vanilla_*
+*.zip
