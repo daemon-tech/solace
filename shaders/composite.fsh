@@ -61,6 +61,8 @@ uniform vec3 fogColor;
 uniform vec3 previousCameraPosition;
 uniform vec3 eyePosition; // player eye (differs from the camera in third person)
 uniform float frameTime;
+uniform float wakeVX;
+uniform float wakeVZ;
 // biome mood: smooth weights from temperature/rainfall (custom smoothed uniforms)
 vec3 biomeTint(out float extraHaze) {
 	float hot = smoothstep(1.0, 1.8, bTemp) * (1.0 - smoothstep(0.2, 0.5, bRain));
@@ -505,23 +507,26 @@ void main() {
 				float feetY = eyePosition.y - 1.62;
 				float surfY = wpw.y + cameraPosition.y;
 				float inW = smoothstep(1.0, 0.2, abs(feetY - surfY + 0.4)); // player standing/swimming at the surface
-				float mv = clamp(length(cameraPosition - previousCameraPosition) / max(frameTime, 1e-3) / 4.0, 0.0, 1.0);
+				// smoothed velocity (custom uniform): the raw per-frame camera delta is zero on some frames and
+				// doubled on others (20 Hz ticks vs render frames), which made wakes and splashes flicker
+				vec2 vel = vec2(wakeVX, wakeVZ);
+				float mv = clamp(length(vel) / 4.0, 0.0, 1.0);
 				float d = length(rel);
 				float rings = smoothstep(0.82, 0.96, sin(d * 7.5 - t * 6.0 + wob * 2.0)) * smoothstep(2.6, 0.5, d);
-				float burst = smoothstep(0.55, 0.62, vnoise(rel * 5.0 + t * 3.0) * smoothstep(1.4, 0.3, d) + 0.25 * smoothstep(1.0, 0.0, d));
+				float burst = smoothstep(0.55, 0.62, vnoise(wxz * 5.0 + t * 1.5) * smoothstep(1.4, 0.3, d) + 0.25 * smoothstep(1.0, 0.0, d));
 				col = mix(col, foamW, clamp(rings * (0.22 + 0.78 * mv) + burst * mv, 0.0, 1.0) * inW * fW * WATER_SPLASH_AMT);
 #ifdef WATER_WAKE
 				// V-shaped wake behind the player or the player's boat (direction from camera motion)
 				{
-					vec2 mvd = (cameraPosition - previousCameraPosition).xz;
-					float sp = length(mvd) / max(frameTime, 1e-3);
+					float sp = length(vel);
 					if (sp > 0.8) {
-						vec2 fwd = mvd / max(length(mvd), 1e-5);
+						vec2 fwd = vel / sp;
 						float along = -dot(rel, fwd);
 						float perp = abs(dot(rel, vec2(-fwd.y, fwd.x)));
 						float arm = abs(perp - along * 0.36 - 0.3);
-						float wk = (1.0 - smoothstep(0.10, 0.35, arm + vnoise(rel * 2.0 + t) * 0.15)) * step(0.0, along) * (1.0 - smoothstep(4.0, 14.0, along));
-						float trail = (1.0 - smoothstep(0.2, 0.9, perp)) * step(0.0, along) * (1.0 - smoothstep(2.0, 7.0, along)) * step(0.5, vnoise(rel * 3.0 - fwd * t * 3.0));
+						float wk = (1.0 - smoothstep(0.10, 0.35, arm + vnoise(wxz * 2.0 + t * 0.4) * 0.15)) * step(0.0, along) * (1.0 - smoothstep(4.0, 14.0, along));
+						// trail foam texture anchored to the water (world xz), not to the player: no jumping pattern
+						float trail = (1.0 - smoothstep(0.2, 0.9, perp)) * step(0.0, along) * (1.0 - smoothstep(2.0, 7.0, along)) * step(0.5, vnoise(wxz * 3.0 + vec2(t * 0.25, -t * 0.18)));
 						float wakeW = smoothstep(2.5, 0.0, abs(feetY - surfY + 0.4)) * clamp(sp / 5.0, 0.0, 1.0);
 						col = mix(col, foamW, celBand(clamp(max(wk, trail * 0.8), 0.0, 1.0), 3) * wakeW * fW * WATER_SPLASH_AMT);
 					}
