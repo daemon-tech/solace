@@ -142,10 +142,26 @@ void main() {
 		}
 #endif
 		// nether portal: self-lit swirl in its own colour (no glass sheen, no white streaks, not dimmed by night)
-		if (isWater == 2) gc = mix(albedo.rgb * light, albedo.rgb * EMISSIVE_STRENGTH, 0.85);
+		// nether portal: self-lit swirl in its own colour (no glass sheen, no white streaks, not dimmed by night).
+		// Nearly opaque and slightly deepened so the world behind does not wash it out (no milky veil).
+		if (isWater == 2) {
+			// the thin edge faces of the portal sheet lie on the block boundary against the obsidian and
+			// read as a bright rim: drop them, keep only the two broad faces in the middle of the block
+			vec3 wn = abs(mat3(gbufferModelViewInverse) * safeNormalize(vnormal, vec3(0.0, 0.0, 1.0)));
+			float along = wn.x > 0.5 ? worldPos.x : (wn.y > 0.5 ? worldPos.y : worldPos.z);
+			float fb = abs(fract(along + 0.5) - 0.5);
+			if (fb < 0.02) discard;
+			vec3 pc = texture(gtexture, texcoord).rgb * EMISSIVE_STRENGTH; // no vertex AO/shade: a light source has no dark corners
+			// very bright pink texels (frame rings of connected-texture portal packs) settle into a calm purple:
+			// no light line along the obsidian. Normal swirl texels are darker and stay as they are.
+			float hiK = smoothstep(0.30, 0.50, dot(pc, vec3(0.299, 0.587, 0.114)));
+			pc = mix(pc, vec3(0.48, 0.08, 0.77), hiK * 0.92);
+			gc = clamp(mix(vec3(dot(pc, vec3(0.299, 0.587, 0.114))), pc, 1.12), 0.0, 1.0);
+			albedo.a = max(albedo.a, 0.94);
+		}
 		outColor = vec4(gc, albedo.a);
 		outFlag = vec4(0.0, 0.0, 0.0, 1.0);
 	}
-	outLight = isWater == 2 ? vec4(lightColor(4) * 0.5, 0.5) : vec4(0.0); // portal: gentle purple light, a big panel needs less per pixel
-	outNormal = vec4(n * 0.5 + 0.5, 1.0);
+	outLight = isWater == 2 ? vec4(lightColor(4), 1.0) * 0.14 : vec4(0.0); // portal: hue for nearby light pools; low weight so the big panel adds no glow veil over itself
+	outNormal = vec4(n * 0.5 + 0.5, isWater == 2 ? 0.95 : 1.0); // 0.95 marks the portal sheet (no outline at its frame)
 }

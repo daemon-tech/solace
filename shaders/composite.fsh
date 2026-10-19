@@ -96,13 +96,15 @@ float outlineMask(vec2 c, float centerLin) {
 	vec2 px = OUTLINE_THICKNESS / vec2(viewWidth, viewHeight);
 	float dz[9]; vec3 nz[9];
 	bool foliage = texture(colortex1, c).a < 0.75;
-	float skyN = 0.0;
+	float skyN = 0.0, portalN = 0.0;
 	int k = 0;
 	for (int y = -1; y <= 1; y++)
 	for (int x = -1; x <= 1; x++) {
 		vec2 o = c + vec2(x, y) * px;
 		dz[k] = linDepth(texture(depthtex0, o).r);
-		nz[k] = texture(colortex1, o).xyz * 2.0 - 1.0;
+		vec4 nt = texture(colortex1, o);
+		nz[k] = nt.xyz * 2.0 - 1.0;
+		portalN = max(portalN, step(0.93, nt.a) * step(nt.a, 0.97));
 		skyN = max(skyN, step(1.0, texture(depthtex0, o).r));
 		k++;
 	}
@@ -133,6 +135,7 @@ float outlineMask(vec2 c, float centerLin) {
 	if (ca > 0.8 && ca < 0.9) e *= max(skyN, step(1.5, de));
 #endif
 	e *= 1.0 - smoothstep(OUTLINE_FADE * 0.6, OUTLINE_FADE, centerLin);
+	if (portalN > 0.5) return 0.0; // portal sheet sits inside its frame: no line along the obsidian
 #ifdef OUTLINE_NORMALS
 	// inner block edges: normal Sobel, lighter ink, near range only, never on leaves
 	if (!foliage) {
@@ -229,6 +232,9 @@ vec3 smoothShadow(vec3 col, float d0, float lin) {
 void main() {
 	vec3 col = texture(colortex0, uv).rgb;
 	if (any(isnan(col)) || any(isinf(col))) col = vec3(0.0);
+	// nether portal sheet (normal alpha 0.95): self-lit, so haze, fog lift and grading must not veil it
+	float portalPx = step(abs(texture(colortex1, uv).a - 0.95), 0.02);
+	vec3 portalBase = col;
 	float d0 = texture(depthtex0, uv).r;
 	float bHaze; vec3 bTint = biomeTint(bHaze);
 	float lin = linDepth(d0);
@@ -1094,5 +1100,6 @@ void main() {
 		}
 #endif
 	}
+	col = mix(col, portalBase, portalPx * (isEyeInWater == 0 ? 0.8 : 0.0));
 	outColor = vec4(clamp(col, 0.0, 1.0), 1.0);
 }
