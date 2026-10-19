@@ -115,6 +115,8 @@ const float sunPathRotation = -25.0;
 #define WATER_STARS_STRENGTH 0.9 // [0.5 0.7 0.9 1.0]
 //#define WATER_ROLL // rolling ocean swell with blocky foam caps (oceans only)
 #define WATER_ROLL_HEIGHT 1.0 // [0.5 1.0 1.5]
+#define FIREFLIES // drifting, blinking fireflies near the player on warm nights
+#define FIREFLY_AMOUNT 1.0 // [0.5 1.0 1.5 2.0]
 #define WATER_SUN_GLINT // banded sun glint path on water
 #define SSAO // soft contact shading in corners (banded)
 #define SSAO_STRENGTH 0.35 // [0.15 0.25 0.35 0.5 0.65]

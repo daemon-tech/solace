@@ -810,6 +810,40 @@ void main() {
 			col = mix(col, vec3(luma(col)) * vec3(0.97, 1.0, 1.03), pale);
 		}
 	}
+#if defined FIREFLIES && !defined DIM_NETHER && !defined DIM_END
+	// fireflies: warm green lights drifting and blinking near the player at night (world-space cells)
+	{
+		float nightF = (1.0 - smoothstep(0.15, 0.45, dayG)) * (1.0 - rainStrength)
+		             * smoothstep(0.45, 0.75, float(eyeBrightnessSmooth.y) / 240.0)
+		             * smoothstep(0.25, 0.45, bTemp) * (1.0 - smoothstep(1.25, 1.6, bTemp));
+		if (nightF > 0.01 && isEyeInWater == 0) {
+			vec3 rd = safeNormalize(mat3(gbufferModelViewInverse) * vpos, vec3(0, 0, 1));
+			float maxD = min(sky ? 28.0 : lin, 28.0);
+			vec3 cp = mod(cameraPosition, 1024.0);
+			float glow = 0.0, halo = 0.0;
+			for (int i = 0; i < 19; i++) {
+				float s0 = 0.75 + float(i) * 1.5;
+				if (s0 > maxD + 1.5) break;
+				vec3 cell = floor((cp + rd * s0) / 3.0);
+				float h = hash12(cell.xz + cell.y * 17.31);
+				if (h > 0.45 * FIREFLY_AMOUNT) continue;
+				vec3 fp = (cell + vec3(hash12(cell.xz + 3.7), hash12(cell.xz + cell.y + 8.1), hash12(cell.zx + 1.3))) * 3.0;
+				fp += vec3(sin(frameTimeCounter * 0.31 + h * 40.0), sin(frameTimeCounter * 0.23 + h * 70.0) * 0.6, cos(frameTimeCounter * 0.27 + h * 55.0)) * 0.7;
+				vec3 rel = fp - cp;
+				float tc = dot(rel, rd);
+				if (tc < 0.3 || tc > maxD) continue;
+				float d = length(rel - rd * tc);
+				float r = 0.035 + 0.0035 * tc;
+				float blink = smoothstep(0.35, 0.9, sin(frameTimeCounter * (0.8 + h * 1.5) + h * 30.0) * 0.5 + 0.5);
+				glow = max(glow, step(d, r) * blink);
+				halo = max(halo, exp(-d / (r * 2.2)) * blink);
+			}
+			vec3 ffC = vec3(0.86, 1.0, 0.38);
+			col = mix(col, ffC * 1.05, clamp(glow, 0.0, 1.0) * nightF);
+			col += ffC * celBandSoft(clamp(halo, 0.0, 1.0), 3, 0.4) * 0.35 * nightF;
+		}
+	}
+#endif
 #if defined DIM_NETHER || defined DIM_END
 	// own Nether / End looks: banded dimension fog in the biome's fog colour, soft glow
 	if (isEyeInWater == 0) {

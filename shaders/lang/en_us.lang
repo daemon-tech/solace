@@ -224,3 +224,6 @@ option.WATER_STARS_STRENGTH=Sparkle Strength
 option.WATER_ROLL=Rolling Ocean Waves
 option.WATER_ROLL.comment=Still water rolls in long, blocky waves with white foam on the crests. Off by default; best on oceans.
 option.WATER_ROLL_HEIGHT=Wave Height
+option.FIREFLIES=Fireflies
+option.FIREFLIES.comment=Small yellow-green lights drift and blink near you on warm, clear nights.
+option.FIREFLY_AMOUNT=Firefly Amount
