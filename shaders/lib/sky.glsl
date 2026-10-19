@@ -37,8 +37,8 @@ vec3 celSkyImpl(vec3 dir, vec3 sunView, vec3 upView, float rain, bool discs) {
 	vec3 mid = mix(zen, hor, 0.5);
 	// sunset gold/orange vs sunrise peach/rose; replaces (not averages) the blue palette
 	vec3 dZen = mix(vec3(0.965, 0.700, 0.090), vec3(0.78, 0.62, 0.78), morning);
-	vec3 dMid = mix(vec3(0.930, 0.500, 0.090), vec3(0.98, 0.62, 0.50), morning);
-	vec3 dHor = mix(vec3(0.840, 0.430, 0.070), vec3(1.00, 0.74, 0.42), morning);
+	vec3 dMid = mix(vec3(0.930, 0.500, 0.090), vec3(0.95, 0.66, 0.64), morning);
+	vec3 dHor = mix(vec3(0.840, 0.430, 0.070), vec3(1.00, 0.76, 0.62), morning);
 	// anti-sun side at dusk: soft violet/rose band ("belt of Venus")
 	vec3 belt = mix(vec3(0.62, 0.42, 0.66), vec3(0.70, 0.58, 0.80), morning);
 	float duskW = smoothstep(0.0, 0.6, dusk) * DUSK_SKY;
@@ -91,7 +91,7 @@ vec3 celHorizon(vec3 dir, vec3 sunView, vec3 upView, float rain) {
 	vec3 hor = mix(vec3(0.250, 0.330, 0.720), vec3(0.435, 0.749, 0.953), day);
 	hor = mix(hor, vec3(0.80, 0.88, 0.96), SKY_SUN_GLOW * day * (1.0 - dusk) * facing * facing * facing * facing * 0.45);
 	{ vec3 zDummy = hor; biomeSky(zDummy, hor, day * (1.0 - smoothstep(0.0, 0.6, dusk) * 0.7)); }
-	vec3 dHor = mix(vec3(0.840, 0.430, 0.070), vec3(1.00, 0.74, 0.42), morning);
+	vec3 dHor = mix(vec3(0.840, 0.430, 0.070), vec3(1.00, 0.76, 0.62), morning);
 	vec3 belt = mix(vec3(0.62, 0.42, 0.66), vec3(0.70, 0.58, 0.80), morning);
 	hor = mix(hor, mix(belt * 1.05, dHor, facing), smoothstep(0.0, 0.6, dusk) * DUSK_SKY);
 	float night = clamp(-sunH * 4.0, 0.0, 1.0);

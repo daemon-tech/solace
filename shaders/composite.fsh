@@ -687,6 +687,7 @@ void main() {
 	float sunHg = dot(safeNormalize(sunPosition, safeNormalize(upPosition, vec3(0,1,0))), safeNormalize(upPosition, vec3(0,1,0)));
 	float duskG = clamp(1.0 - abs(sunHg) * 4.0, 0.0, 1.0);
 	float dayG = dayFactor(sunPosition, upPosition);
+	#define MORN_K ((sunAngle > 0.75 || sunAngle < 0.25) ? 1.0 : 0.0)
 #ifdef LIGHT_HALO
 	// soft radial glow around lanterns, torches, lava and other light sources (blurred light-colour field)
 	{
@@ -704,7 +705,7 @@ void main() {
 			float dS = length((uv - suv) * vec2(viewWidth / viewHeight, 1.0));
 			float vis = step(1.0, texture(depthtex0, clamp(suv, 0.001, 0.999)).r);
 			float hal = exp(-dS * 7.0) * 0.55 + exp(-dS * 22.0) * 0.6;
-			vec3 hc = mix(vec3(1.0, 0.97, 0.82), vec3(1.0, 0.66, 0.30), duskG);
+			vec3 hc = mix(vec3(1.0, 0.97, 0.82), mix(vec3(1.0, 0.66, 0.30), vec3(1.0, 0.80, 0.70), MORN_K), duskG);
 			col += hc * celBandSoft(clamp(hal, 0.0, 1.0), 4, 0.4) * vis * dayG * SUN_HALO * (1.0 - rainStrength);
 		}
 	}
@@ -755,7 +756,7 @@ void main() {
 			}
 			acc /= 20.0;
 			float fall = 1.0 - smoothstep(0.0, 0.85, length((suv - uv) * vec2(viewWidth / viewHeight, 1.0)));
-			vec3 rc = useSun ? mix(vec3(1.0, 0.96, 0.70), vec3(1.0, 0.62, 0.22), duskG) : vec3(0.45, 0.55, 1.0);
+			vec3 rc = useSun ? mix(vec3(1.0, 0.96, 0.70), mix(vec3(1.0, 0.62, 0.22), vec3(1.0, 0.78, 0.68), MORN_K), duskG) : vec3(0.45, 0.55, 1.0);
 			float str = GODRAYS_STRENGTH * (1.0 + FOREST_RAYS * bDark + FOREST_RAYS * 0.5 * smoothstep(0.9, 0.6, float(eyeBrightnessSmooth.y) / 240.0)) * (useSun ? mix(0.55, 1.0, duskG) * (1.0 + 0.4 * morningW * MORNING_MIST) : 0.35);
 			col += rc * celBand(acc * fall, 4) * str * (sky ? 0.35 : 0.55);
 		}
@@ -784,7 +785,7 @@ void main() {
 			acc /= 24.0;
 			vec3 sunV = safeNormalize(sunPosition, vec3(0, 1, 0));
 			float mie = 0.45 + 0.55 * pow(max(dot(vdir, sunV), 0.0), 3.0);
-			vec3 shC = mix(vec3(1.0, 0.93, 0.74), vec3(1.0, 0.64, 0.30), duskG);
+			vec3 shC = mix(vec3(1.0, 0.93, 0.74), mix(vec3(1.0, 0.64, 0.30), vec3(1.0, 0.80, 0.72), MORN_K), duskG);
 			float openK = smoothstep(0.99, 0.70, float(eyeBrightnessSmooth.y) / 240.0); // indoors: full; outdoors: only broken light
 			float brokenK = mix(clamp(4.0 * acc * (1.0 - acc), 0.0, 1.0), 1.0, openK);
 			col += shC * celBand(smoothstep(0.0, 0.16, acc * sqrt(L / 32.0)), 4) * mie * interior * dayG * LIGHT_SHAFTS_STRENGTH * 0.35 * brokenK;
@@ -800,13 +801,13 @@ void main() {
 		}
 		open /= 8.0;
 		bool fol = texture(colortex1, uv).a < 0.75;
-		vec3 glowC = mix(vec3(0.85, 1.0, 0.45), vec3(1.0, 0.70, 0.30), duskG) * dayG + vec3(0.10, 0.14, 0.30) * (1.0 - dayG);
+		vec3 glowC = mix(vec3(0.85, 1.0, 0.45), mix(vec3(1.0, 0.70, 0.30), vec3(1.0, 0.82, 0.74), MORN_K), duskG) * dayG + vec3(0.10, 0.14, 0.30) * (1.0 - dayG);
 		col += glowC * open * (fol ? CANOPY_GLOW : CANOPY_GLOW * 0.4);
 	}
 	// warm atmospheric haze with distance (sunset orange, daytime soft yellow-green in forests)
 	if (!sky && isEyeInWater == 0) {
 		float hz = smoothstep(3.0, far * 0.6, lin);
-		vec3 hzc = mix(mix(vec3(0.85, 0.95, 0.55), fogSky * 1.08, FOG_SKY_MATCH * 0.6), vec3(1.0, 0.62, 0.22), duskG);
+		vec3 hzc = mix(mix(vec3(0.85, 0.95, 0.55), fogSky * 1.08, FOG_SKY_MATCH * 0.6), mix(vec3(1.0, 0.62, 0.22), vec3(1.0, 0.78, 0.68), MORN_K), duskG);
 		col = mix(col, hzc, hz * (HAZE + bHaze * BIOME_MOOD * 0.5) * STYLE_K * dayG * (water ? 0.25 : 1.0) * (1.0 - 0.5 * duskG));
 	}
 #ifdef DISTANCE_BLUE
@@ -1034,7 +1035,13 @@ void main() {
 		float dusk = clamp(1.0 - abs(sunH) * 5.0, 0.0, 1.0);
 		float night = clamp(-sunH * 4.0, 0.0, 1.0);
 		if (!sky) {
-			col = mix(col, col * vec3(1.30, 0.92, 0.55) + vec3(0.07, 0.03, 0.0), dusk * DUSK_TINT);
+			// dusk cast: gold-orange at sunset, soft peach-rose at sunrise. It is sky light, so it fades
+			// where the eye has little sky (pits, dug holes, caves) instead of washing the whole view yellow.
+			float mornT = (sunAngle > 0.75 || sunAngle < 0.25) ? 1.0 : 0.0;
+			float skyEye = smoothstep(0.25, 0.85, float(eyeBrightnessSmooth.y) / 240.0);
+			vec3 dMul = mix(vec3(1.30, 0.92, 0.55), vec3(1.14, 0.98, 0.84), mornT);
+			vec3 dAdd = mix(vec3(0.07, 0.03, 0.0), vec3(0.035, 0.018, 0.022), mornT);
+			col = mix(col, col * dMul + dAdd, dusk * DUSK_TINT * mix(0.70, 1.0, skyEye) * (1.0 - cave));
 #ifdef TIME_GRADING
 			// per time of day: sunrise (soft pink-gold), noon (clean, slightly crisper), blue hour (cool), night handled below
 			float morn = (sunAngle > 0.75 || sunAngle < 0.25) ? 1.0 : 0.0;

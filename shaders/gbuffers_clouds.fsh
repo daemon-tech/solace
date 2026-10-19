@@ -5,6 +5,7 @@
 uniform vec3 sunPosition;
 uniform vec3 upPosition;
 uniform float rainStrength;
+uniform float sunAngle;
 in vec4 vcolor;
 in vec3 vnormal;
 in vec3 viewPosC;
@@ -25,7 +26,7 @@ void main() {
 	float sl = clamp(dot(nn, sunD) * 0.5 + 0.5, 0.0, 1.0);
 	vec3 lit = mix(vec3(0.20, 0.22, 0.46), vec3(1.0, 1.0, 0.98), day);
 	vec3 shade = mix(vec3(0.13, 0.14, 0.32), vec3(0.72, 0.80, 0.94), day);
-	lit = mix(lit, vec3(1.0, 0.80, 0.55), dusk * 0.75);
+	lit = mix(lit, (sunAngle > 0.75 || sunAngle < 0.25) ? vec3(1.0, 0.84, 0.78) : vec3(1.0, 0.80, 0.55), dusk * 0.75); // sunrise: peach-rose
 	shade = mix(shade, vec3(0.80, 0.56, 0.62), dusk * 0.6);
 	float k = ny > 0.5 ? 1.0 : (ny < -0.5 ? 0.0 : celBand(sl, 3) * 0.8 + 0.1);
 	float dist = length(viewPosC);
