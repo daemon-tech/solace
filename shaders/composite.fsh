@@ -836,6 +836,7 @@ void main() {
 				vec3 fp = (cell + vec3(hash12(cell.xz + 3.7), hash12(cell.xz + cell.y + 8.1), hash12(cell.zx + 1.3))) * 3.0;
 				fp += vec3(sin(frameTimeCounter * 0.31 + h * 40.0), sin(frameTimeCounter * 0.23 + h * 70.0) * 0.6, cos(frameTimeCounter * 0.27 + h * 55.0)) * 0.7;
 				vec3 rel = fp - cp;
+				if (rel.y > 3.5 || rel.y < -2.5) continue; // keep them low, over the grass, not up in the sky
 				float tc = dot(rel, rd);
 				if (tc < 0.3 || tc > maxD) continue;
 				float d = length(rel - rd * tc);
