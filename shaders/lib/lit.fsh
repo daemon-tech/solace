@@ -295,7 +295,9 @@ void main() {
 		pool = torch * (1.0 - day * lm.y);
 		col = mix(col, vec3(luma(albedo.rgb) * 0.7 + 0.35) * vec3(1.0, 0.70, 0.42), clamp(pool * 0.30, 0.0, 0.35));
 	#ifdef EMISSIVE_BLOCKS
-		if (isFoliage == 4) col = max(col, albedo.rgb * EMISSIVE_STRENGTH); // self-lit in its own colour (blooms)
+		// self-lit only where the texture itself glows (flame tip, lantern glass, lava); the torch stick,
+		// lantern frame and dark parts keep normal lighting instead of glowing as a whole block
+		if (isFoliage == 4) col = mix(col, max(col, albedo.rgb * EMISSIVE_STRENGTH), emitMask(albedo.rgb));
 		if (isFoliage == 4 && lightId == 1 && albedo.r > 0.7 && albedo.b < 0.3) {
 			// lava / fire: hotter orange, slow shimmer
 			float sh = vnoise(cwpos.xz * 0.8 + vec2(frameTimeCounter * 0.4, -frameTimeCounter * 0.3));
@@ -311,7 +313,9 @@ void main() {
 #ifdef FLAT_NORMAL
 	outFlag.a = 0.6; // particle flag: composite keeps white mist/smoke neutral (no sand/warm grading)
 #endif
-	outLight = lightId > 0 ? vec4(lightColor(lightId), 1.0) : vec4(0.0); // premultiplied: only sources write colour
+	// premultiplied: only the glowing texels of a source write colour (no light from the torch stick)
+	float em = lightId > 0 ? emitMask(albedo.rgb) : 0.0;
+	outLight = em > 0.01 ? vec4(lightColor(lightId) * em, em) : vec4(0.0);
 	outShadow = vec4(-1.0);
 #ifndef FLAT_NORMAL
 	if (isEyeInWater == 0 && ndl > 0.0) outShadow = vec4(cOut[1] - cOut[0], lb);

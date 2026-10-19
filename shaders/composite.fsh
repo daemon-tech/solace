@@ -691,8 +691,10 @@ void main() {
 #ifdef LIGHT_HALO
 	// soft radial glow around lanterns, torches, lava and other light sources (blurred light-colour field)
 	{
-		vec4 h3 = textureLod(colortex3, uv, 3.0), h5 = textureLod(colortex3, uv, 5.0);
-		vec3 halo = h3.rgb * 0.6 + h5.rgb * 1.4;
+		// small, tight glow from fine mips only: the coarse 32-px mip made a big smeared blob that
+		// jumped between mip texels while the camera moved
+		vec4 h2 = textureLod(colortex3, uv, 2.0), h3 = textureLod(colortex3, uv, 3.0);
+		vec3 halo = (h2.rgb * 0.5 + h3.rgb * 0.5) * 0.9;
 		col += halo * LIGHT_HALO * mix(1.0, 0.35, dayG * (1.0 - cave));
 	}
 #endif

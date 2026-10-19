@@ -114,3 +114,10 @@ float rollWave(vec2 xz, float t) {
 	float b = dot(xz, vec2(-0.35, 0.94)) * 0.42 - t * 0.7; // cross swell breaks the pattern up
 	return clamp(0.5 + 0.38 * sin(a) + 0.12 * sin(b), 0.0, 1.0);
 }
+
+// how much a texel of a light-source block glows: bright / saturated texels (flame, glass, lava) yes,
+// dull brown sticks and grey metal frames no. Smooth so the edge of the flame never flickers.
+float emitMask(vec3 a) {
+	float mx = max(a.r, max(a.g, a.b)), mn = min(a.r, min(a.g, a.b));
+	return smoothstep(0.50, 0.72, mx) * smoothstep(0.08, 0.30, mx - mn + max(mx - 0.85, 0.0) * 2.0);
+}
