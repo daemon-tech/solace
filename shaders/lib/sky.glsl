@@ -1,5 +1,19 @@
 // Solace - stylized banded sky with time-of-day palettes. dir/sun/up in view space.
 uniform float sunAngle; // 0 sunrise, 0.25 noon, 0.5 sunset, 0.75 midnight
+uniform float sbHot, sbMesa, sbCold, sbSwamp, sbJungle, sbCherry; // smoothed biome weights (shaders.properties)
+// biome sky: pull the day zenith / horizon colours toward a per-biome pair (k = day weight)
+void biomeSky(inout vec3 zen, inout vec3 hor, float k) {
+#ifdef BIOME_SKY
+	k *= BIOME_SKY;
+	if (k < 0.001) return;
+	zen = mix(zen, vec3(0.30, 0.52, 0.78), sbHot * 0.55 * k);   hor = mix(hor, vec3(0.92, 0.84, 0.66), sbHot * 0.65 * k);
+	zen = mix(zen, vec3(0.32, 0.50, 0.78), sbMesa * 0.50 * k);  hor = mix(hor, vec3(0.96, 0.68, 0.46), sbMesa * 0.70 * k);
+	zen = mix(zen, vec3(0.34, 0.54, 0.84), sbCold * 0.55 * k);  hor = mix(hor, vec3(0.84, 0.92, 0.99), sbCold * 0.65 * k);
+	zen = mix(zen, vec3(0.26, 0.40, 0.46), sbSwamp * 0.60 * k); hor = mix(hor, vec3(0.60, 0.68, 0.56), sbSwamp * 0.65 * k);
+	zen = mix(zen, vec3(0.05, 0.42, 0.74), sbJungle * 0.55 * k); hor = mix(hor, vec3(0.40, 0.86, 0.88), sbJungle * 0.60 * k);
+	zen = mix(zen, vec3(0.42, 0.54, 0.90), sbCherry * 0.55 * k); hor = mix(hor, vec3(0.97, 0.80, 0.89), sbCherry * 0.65 * k);
+#endif
+}
 // discs=false: no sun/moon discs (used for fog / aerial colour so the fog never shows a sun spot)
 vec3 celSkyImpl(vec3 dir, vec3 sunView, vec3 upView, float rain, bool discs) {
 	vec3 up = safeNormalize(upView, vec3(0, 1, 0));
@@ -19,6 +33,7 @@ vec3 celSkyImpl(vec3 dir, vec3 sunView, vec3 upView, float rain, bool discs) {
 	vec3 hor = mix(vec3(0.250, 0.330, 0.720), vec3(0.435, 0.749, 0.953), day);
 	// daytime: pale warm glow on the horizon under the sun (atmospheric scattering)
 	hor = mix(hor, vec3(0.80, 0.88, 0.96), SKY_SUN_GLOW * day * (1.0 - dusk) * facing * facing * facing * facing * 0.45);
+	biomeSky(zen, hor, day * (1.0 - smoothstep(0.0, 0.6, dusk) * 0.7));
 	vec3 mid = mix(zen, hor, 0.5);
 	// sunset gold/orange vs sunrise peach/rose; replaces (not averages) the blue palette
 	vec3 dZen = mix(vec3(0.965, 0.700, 0.090), vec3(0.78, 0.62, 0.78), morning);
@@ -75,6 +90,7 @@ vec3 celHorizon(vec3 dir, vec3 sunView, vec3 upView, float rain) {
 	float facing = smoothstep(0.0, 1.0, dot(safeNormalize(dh, up), safeNormalize(sh, up)) * 0.5 + 0.5);
 	vec3 hor = mix(vec3(0.250, 0.330, 0.720), vec3(0.435, 0.749, 0.953), day);
 	hor = mix(hor, vec3(0.80, 0.88, 0.96), SKY_SUN_GLOW * day * (1.0 - dusk) * facing * facing * facing * facing * 0.45);
+	{ vec3 zDummy = hor; biomeSky(zDummy, hor, day * (1.0 - smoothstep(0.0, 0.6, dusk) * 0.7)); }
 	vec3 dHor = mix(vec3(0.840, 0.430, 0.070), vec3(1.00, 0.74, 0.42), morning);
 	vec3 belt = mix(vec3(0.62, 0.42, 0.66), vec3(0.70, 0.58, 0.80), morning);
 	hor = mix(hor, mix(belt * 1.05, dHor, facing), smoothstep(0.0, 0.6, dusk) * DUSK_SKY);

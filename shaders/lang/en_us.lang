@@ -227,3 +227,5 @@ option.WATER_ROLL_HEIGHT=Wave Height
 option.FIREFLIES=Fireflies
 option.FIREFLIES.comment=Small yellow-green lights drift and blink near you on warm, clear nights.
 option.FIREFLY_AMOUNT=Firefly Amount
+option.BIOME_SKY=Biome Sky Colours
+option.BIOME_SKY.comment=The day sky takes on the colours of the biome: sandy haze in deserts, orange over badlands, icy blue over snow, grey-green over swamps, turquoise over jungles, pink over cherry groves.
