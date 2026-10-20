@@ -5,6 +5,9 @@ All builds tested in the real client with screenshots.
 
 ## 0.30-dev
 
+### Features
+- **Aerial perspective**: distant land now loses its detail and fades to a soft light blue, so far hills read as calm layered shapes.
+
 ### Fixes
 - **Pale ground at night** (sand, snow) stays calm under the moon instead of glowing white-lavender.
 - **Water at noon** has a softer, calmer sun glint with gentle edges and fewer scattered sparkles.

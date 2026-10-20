@@ -901,9 +901,14 @@ void main() {
 #ifdef DISTANCE_BLUE
 	// aerial perspective: far terrain (mountains) turns soft blue toward the sky colour
 	if (!sky && isEyeInWater == 0 && !water) {
-		float hb = smoothstep(far * 0.22, far * 0.95, lin);
-		vec3 blueC = mix(fogSky, vec3(0.55, 0.70, 0.92), 0.45) * mix(0.55, 1.0, dayG);
-		col = mix(col, blueC, celBandSoft(hb, 4, 0.45) * DISTANCE_BLUE * (1.0 - 0.6 * duskG));
+		float hb = smoothstep(far * 0.10, far * 0.85, lin);
+		hb = hb * hb * (3.0 - 2.0 * hb);
+		vec3 blueC = mix(fogSky, vec3(0.66, 0.80, 0.97), 0.55) * mix(0.55, 1.0, dayG);
+		// far land first loses its detail (contrast pulled toward a calm mid tone), then turns light blue
+		float apK = DISTANCE_BLUE * (1.0 - 0.6 * duskG);
+		vec3 flatC = mix(vec3(luma(col)), col, 0.55) * 0.5 + blueC * 0.5;
+		col = mix(col, flatC, smoothstep(0.0, 0.6, hb) * min(apK * 1.4, 0.8));
+		col = mix(col, blueC, hb * min(apK * 1.15, 0.85));
 		// forests: blue depth haze already between nearby trunks
 		float forestK = clamp(bDark + smoothstep(0.7, 0.95, bRain) * 0.6 + 0.2, 0.0, 1.0);
 		col = mix(col, blueC * vec3(0.85, 0.95, 1.05), celBandSoft(smoothstep(10.0, 70.0, lin), 4, 0.45) * FOREST_HAZE * forestK * dayG * (1.0 - hb));

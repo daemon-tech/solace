@@ -138,7 +138,7 @@ const float sunPathRotation = -25.0;
 #define VOLUMETRIC_OUTDOOR 0.6 // [0.0 0.3 0.6 1.0] light shafts in forests, mist and rain
 #define WATER_SPLASH // rings and foam bursts around the player in water, foam where falling water lands
 #define WATER_SPLASH_AMT 1.0 // [0.0 0.5 1.0 1.5]
-#define DISTANCE_BLUE 0.35 // [0.0 0.2 0.35 0.5] far mountains fade to soft blue
+#define DISTANCE_BLUE 0.6 // [0.0 0.2 0.35 0.5 0.6 0.75] far mountains fade to soft blue
 #define TIME_GRADING // per time-of-day colour grading (sunrise, noon, golden hour, blue hour, night)
 #define TIME_GRADING_STRENGTH 1.0 // [0.0 0.5 1.0 1.5]
 #define WEATHER_FX // rain fog, sandstorms in hot dry biomes, snow haze
