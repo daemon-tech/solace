@@ -7,6 +7,8 @@
 #define SHADOW_TINT_G 0.43 // [0.34 0.40 0.43 0.48 0.52]
 #define SHADOW_TINT_B 0.54 // [0.44 0.50 0.54 0.62 0.70]
 #define OUTLINES
+#define WATER_PAINTERLY // brighter turquoise water with soft brush-stroke highlights
+#define WATER_PAINTERLY_K 1.0 // [0.5 0.75 1.0]
 #define WATER_SAT 0.95 // [0.6 0.75 0.85 0.95 1.1]
 #define WATER_BRIGHT 1.0 // [0.85 1.0 1.15 1.3]
 #define GROUND_GRADE // grass ground graded toward the target-look hue, flat soft light

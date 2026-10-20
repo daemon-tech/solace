@@ -41,10 +41,19 @@ void main() {
 #endif
 		vec3 v = safeNormalize(-viewPos, up);
 		// banded fresnel: 4 clearly visible steps
+#ifdef WATER_PAINTERLY
+		float fres = celBandSoft(pow(1.0 - clamp(dot(n, v), 0.0, 1.0), 2.0), 4, 0.7); // soft painted steps
+#else
 		float fres = celBand(pow(1.0 - clamp(dot(n, v), 0.0, 1.0), 2.0), 4);
+#endif
 		// softer teal surface; the depth colour is added in composite (shore -> deep gradient)
 		vec3 base = vec3(0.30, 0.68, 0.85);
 		vec3 bright = vec3(0.62, 0.86, 0.96);
+#ifdef WATER_PAINTERLY
+		// brighter, clearer turquoise body and a luminous pale rim (painted, sunny water)
+		base = mix(base, vec3(0.30, 0.78, 0.88), 0.7 * WATER_PAINTERLY_K);
+		bright = mix(bright, vec3(0.74, 0.94, 0.98), 0.7 * WATER_PAINTERLY_K);
+#endif
 		vec3 far = vec3(0.18, 0.46, 0.72);
 		vec3 col = mix(base, bright, fres);
 		col = mix(col, far, celBand(smoothstep(24.0, 96.0, length(viewPos)), 3) * 0.45);
@@ -79,6 +88,16 @@ void main() {
 		// soft wave crest lines drifting across the surface
 		float wv = sin(p.x * 0.55 + p.y * 0.25 + t * 0.9 + vnoise(p * 0.15) * 4.0);
 		float crest = step(0.86, wv) + step(0.93, wv); // two-step stylized crest line
+#ifdef WATER_PAINTERLY
+		{
+			// broad soft brush strokes instead of thin hard crest lines: long, slow, fading in and out
+			float wv2 = sin(p.x * 0.32 + p.y * 0.14 + t * 0.6 + vnoise(p * 0.07) * 3.0);
+			float stroke = smoothstep(0.55, 0.95, wv2) * smoothstep(0.35, 0.65, vnoise(p * vec2(0.05, 0.12) + vec2(t * 0.03, 0.0)));
+			stroke *= 1.0 - smoothstep(20.0, 60.0, length(viewPos)); // far water stays a calm mirror
+			col = mix(col, vec3(0.88, 0.98, 1.0), stroke * 0.42 * WATER_PAINTERLY_K * mix(0.6, 1.0, day));
+			crest = mix(crest, 0.0, WATER_PAINTERLY_K * 0.85); // thin hard lines fade out
+		}
+#endif
 		col = mix(col, vec3(0.86, 0.98, 1.0), clamp(crest, 0.0, 1.0) * mix(0.50, 0.85, step(1.5, crest)) * mix(0.75, 1.0, day));
 		float spec = dot(reflect(-safeNormalize(shadowLightPosition, up), n), v);
 		// banded sun glint: warm halo band + white core

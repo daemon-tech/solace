@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.31-dev
 
 ### Features
+- **Painted water**: water is a brighter, clearer turquoise with a softer pale rim, and the thin hard crest lines become broad, slow, soft brush-stroke highlights near the camera. Far water stays a calm mirror (Water > Painted Water + strength slider).
 - **Sunbeams through trees**: when the sun sits behind a broken canopy, long soft warm beams now fan out of the gaps in the leaves, strongest in the morning and evening (Lighting > Sunbeams Through Trees, 0 turns them off).
 - **Wind lines ride the gusts**: wind lines now only appear while a gust is rolling through, and they travel at the same pace as the wave bending the grass below. Gust fronts move a little slower and calmer overall.
 - **Clearer field waves**: the light bands rolling over meadows are broader, slower and easier to see, with a soft shade between crests (default raised, new strongest step).

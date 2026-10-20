@@ -412,3 +412,7 @@ option.CLOUD_PUFFY=Puffy Clouds
 option.CLOUD_PUFFY.comment=The low cloud layer forms big, rounded, soft puffs instead of block cells.
 option.CANOPY_RAYS=Sunbeams Through Trees
 option.CANOPY_RAYS.comment=Long soft sun beams fanning out of gaps in the leaves when the sun sits behind trees. 0 turns them off.
+option.WATER_PAINTERLY=Painted Water
+option.WATER_PAINTERLY.comment=Brighter turquoise water with broad, soft brush-stroke highlights instead of thin lines.
+option.WATER_PAINTERLY_K=Painted Water Strength
+option.WATER_PAINTERLY_K.comment=How strongly the painted water look is applied.
