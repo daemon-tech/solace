@@ -305,7 +305,7 @@ void main() {
 			float dark = 1.0 - smoothstep(0.25, 0.75, dayFactor(sunPosition, upPosition) * eyeSky);
 			dark *= 1.0 - clamp(texture(colortex2, uv).g * 1.2, 0.0, 0.6);
 			dark *= 1.0 - smoothstep(0.55, 0.9, luma(col));
-			vec3 hc = vec3(1.0, 0.60, 0.30);
+			vec3 hc = vec3(1.0, 0.64, 0.36);
 			float k = fall * dark * (hl / 15.0) * HELD_LIGHT_STRENGTH;
 			heldK = clamp(k * 1.5, 0.0, 1.0);
 			col = mix(col, col * (1.0 + hc * 1.6) + hc * 0.05, clamp(k, 0.0, 1.0));

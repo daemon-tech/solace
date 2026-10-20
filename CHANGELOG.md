@@ -11,7 +11,7 @@ All builds tested in the real client with screenshots.
 - **Sunrise** river streak, sun glint, clouds and sun glow are peach-rose instead of gold.
 
 ### Lighting
-- **Held Light** (Cel Lighting > Held Light): a torch or lantern in your hand casts a soft warm pool of light around you at night and in caves, with a smooth round falloff around your hand (surfaces facing you catch a little more); daylight is untouched.
+- **Held Light** (Cel Lighting > Held Light): a torch or lantern in your hand casts a soft warm pool of light around you at night and in caves, with a smooth round falloff around your hand (surfaces facing you catch a little more) in a warm, slightly softer orange; daylight is untouched.
 - **Stylised Lava** (Cel Lighting > Stylised Lava): lava is a calm, deep orange with large, slowly drifting bright veins instead of a busy pale texture. At night it is slightly dimmer, so its glow stays orange instead of washing out.
 
 ### Clouds
