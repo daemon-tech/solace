@@ -775,7 +775,7 @@ void main() {
 	{
 		vec3 glow = vec3(0.0);
 		vec2 px = 1.0 / vec2(viewWidth, viewHeight);
-		for (int l = 0; l < 3; l++) {
+		for (int l = 0; l < 4; l++) {
 			float lod = 3.0 + float(l);
 			vec2 o = px * exp2(lod) * 0.75;
 			vec3 lg = vec3(0.0);
@@ -785,9 +785,9 @@ void main() {
 				float gr = clamp((s.g - max(s.r, s.b)) * 3.0, 0.0, 1.0); // sunlit grass barely glows
 				lg += s * smoothstep(0.56, 0.95, luma(s)) * (1.0 - 0.5 * gr);
 			}
-			glow += lg * 0.25 * (l == 0 ? 0.30 : (l == 1 ? 0.35 : 0.35));
+			glow += lg * 0.25 * (l == 0 ? 0.30 : (l == 1 ? 0.35 : (l == 2 ? 0.35 : 0.45))); // widest level: soft sun glow
 		}
-		col += glow * 0.55 * (BLOOM_STRENGTH * STYLE_K) * mix(0.5, 1.6, max(duskG, 0.0));
+		col += glow * 0.70 * (BLOOM_STRENGTH * STYLE_K) * mix(0.5, 1.6, max(duskG, 0.0));
 	}
 #endif
 #ifdef GODRAYS

@@ -25,7 +25,7 @@ All builds tested in the real client with screenshots.
 - **Valley fog** (Sky & Fog > Valley Fog): a calm low-lying fog layer in valleys and over rivers.
 
 ### Bloom
-- **Smoother bloom:** the glow around bright areas is now built from soft blurred layers instead of scattered samples, so it is wide and even with no specks or rings, and it no longer puts a faint veil over the whole picture.
+- **Smoother bloom:** the glow around bright areas is now built from soft blurred layers instead of scattered samples, so it is wide and even with no specks or rings, and it no longer puts a faint veil over the whole picture. An extra wide layer keeps the soft glow around the sun as strong as before.
 
 ### Colour
 - **Soft highlights:** the brightest spots drift toward a soft white instead of clipping to saturated yellow, so the sky around a rising or setting sun stays clean.
