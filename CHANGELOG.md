@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.31-dev
 
 ### Features
+- **Wet ground in rain**: open ground slowly turns a little darker and richer while it rains, with a soft sheen at low angles and calm puddle patches on flat spots that mirror the grey sky. Dries again after the rain (Weather > Wetness Strength).
 - **No more rain streaks on the screen**: rain is only the falling drops in the world now; night rain keeps its calm blue mood.
 - **Puffy clouds**: the low cloud layer now forms big, rounded, soft puffs instead of block cells (new option, Sky > Clouds > Puffy Clouds).
 - **Clearer settings menu**: the main page now holds the key sliders (look, saturation, clouds, fog, water, glow, shadows, field waves) plus clear categories. Crowded pages are split into sub-pages (for example Sky > Clouds / Fog & Haze / Sun, Moon & Night / Weather), fine-tuning lives in Advanced pages, and every option has a short name and a tooltip. Defaults and look are unchanged.
