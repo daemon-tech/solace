@@ -13,6 +13,7 @@ All builds tested in the real client with screenshots.
 - **Backlit foliage**: at sunrise and sunset, grass and leaves seen against the low sun get a soft warm glow.
 - **Caves**: darker where no sky reaches, so torches, lanterns and lava form warm, soft pools of light.
 - **Sculk**: glows a soft blue in the dark and casts a faint cool light.
+- **Sunrise and sunset sky**: richer, calmer gradients, a warm glowing horizon rising through coral into soft rose and blue.
 
 ## 0.31
 
