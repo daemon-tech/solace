@@ -237,6 +237,15 @@ void main() {
 	// two hard-ish rings: wide pool + bright core
 	float torch = celBandSoft(smoothstep(0.0, 1.0, pow(lm.x, 1.8)), 4, 0.45) * TORCH_STRENGTH; // smooth falloff: no ring at a fixed distance around held/dynamic lights
 	vec3 block = vec3(1.0, 0.76, 0.50) * torch * mix(0.95, 0.15, day * lm.y); // neutral warm
+#if !defined DIM_NETHER && !defined DIM_END
+	{
+		// caves: where no sky reaches the ambient sinks lower, so torches, lanterns and lava
+		// become warm, soft islands of light in the dark (smooth falloff, never pitch black)
+		float caveK = 1.0 - smoothstep(0.02, 0.4, lm.y);
+		ambient *= mix(1.0, 0.42, caveK);
+		block *= mix(1.0, 1.18, caveK) * mix(vec3(1.0), vec3(1.04, 0.97, 0.88), caveK);
+	}
+#endif
 	// shade twice: fully shadowed (lb=0) and fully lit (lb=1); the real band value blends them, so composite can
 	// re-blend with a smoothed shadow term (soft shadows part 2) without re-running the lighting
 	float lbReal = lb; float pool = 0.0;
