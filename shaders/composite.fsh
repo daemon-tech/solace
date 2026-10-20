@@ -644,7 +644,19 @@ void main() {
 	// ground reference for the low layers: sea level in normal worlds; on maps whose land sits far below
 	// sea level the layers follow the viewer instead (stay below the eye), so low valleys do not wash out
 	float lowMapK = smoothstep(56.0, 40.0, cameraPosition.y);
-	float gRef = mix(63.0, min(63.0, cameraPosition.y - 14.0), lowMapK);
+	float gRef = 63.0;
+	if (lowMapK > 0.0) {
+		// estimate the ground from a few fixed taps in the lower screen (the same for every pixel, so no seams)
+		float gEst = cameraPosition.y - 14.0;
+		const vec2 gTaps[5] = vec2[5](vec2(0.2, 0.12), vec2(0.5, 0.08), vec2(0.8, 0.12), vec2(0.35, 0.3), vec2(0.65, 0.3));
+		for (int i = 0; i < 5; i++) {
+			float dg = texture(depthtex0, gTaps[i]).r;
+			if (dg >= 1.0) continue;
+			vec4 g4 = gbufferProjectionInverse * vec4(gTaps[i] * 2.0 - 1.0, dg * 2.0 - 1.0, 1.0);
+			gEst = min(gEst, (mat3(gbufferModelViewInverse) * (g4.xyz / max(abs(g4.w), 1e-5))).y + cameraPosition.y);
+		}
+		gRef = mix(63.0, min(63.0, gEst), lowMapK);
+	}
 	float sunHf = dot(safeNormalize(sunPosition, safeNormalize(upPosition, vec3(0,1,0))), safeNormalize(upPosition, vec3(0,1,0)));
 	float morningW = ((sunAngle < 0.25 || sunAngle > 0.75) ? 1.0 : 0.0) * clamp(1.0 - abs(sunHf - 0.05) * 4.0, 0.0, 1.0);
 	float bFog = clamp(bHaze * BIOME_MOOD * BIOME_FOG, 0.0, 1.0);
