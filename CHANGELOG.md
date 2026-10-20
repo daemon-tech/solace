@@ -22,7 +22,7 @@ All builds tested in the real client with screenshots.
 - **Soft Characters** (Colour > Soft Characters): mobs and players get soft two-tone cartoon shading with a gently wrapped light and a brighter shade side, so they never look muddy.
 
 ### Water
-- **No more bright streaks over seagrass:** seagrass and kelp under the surface no longer show up as pale vertical stripes; the water keeps its calm depth colour over them.
+- **No more bright streaks over seagrass:** seagrass and kelp under the surface no longer show up as pale vertical stripes; the water keeps its calm depth colour over them. Kelp tips just below the surface no longer show as bright specks either.
 
 ### Atmosphere
 - **Overcast sun:** in rain the sun stays a soft pale glow behind the clouds.

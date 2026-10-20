@@ -335,9 +335,10 @@ void main() {
 			// two rings (near + wide, shrinking with distance) so whole seagrass blades are bridged, not just their edges
 			vec2 tp = mix(10.0, 3.0, smoothstep(8.0, 64.0, lin)) / vec2(viewWidth, viewHeight);
 			float bmax = behind;
-			for (int k = 0; k < 8; k++) {
-				float a = float(k) * 0.785398 + 0.39;
-				vec2 o = uv + tp * vec2(cos(a), sin(a)) * (k < 4 ? 0.45 : 1.0) * (k % 2 == 0 ? 1.0 : 0.8);
+			// third, wider ring: kelp tips just below the surface are bridged to the deep water around them
+			for (int k = 0; k < 12; k++) {
+				float a = float(k) * 0.785398 + 0.39 + (k >= 8 ? 0.2 : 0.0);
+				vec2 o = uv + tp * vec2(cos(a), sin(a)) * (k < 4 ? 0.45 : (k < 8 ? 1.0 : 2.0)) * (k % 2 == 0 ? 1.0 : 0.8);
 				if (texture(colortex2, o).r > 0.5) bmax = max(bmax, max(linDepth(texture(depthtex1, o).r) - linDepth(texture(depthtex0, o).r), 0.0));
 			}
 			behind = mix(behind, bmax, 0.95);
