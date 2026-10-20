@@ -10,6 +10,9 @@ All builds tested in the real client with screenshots.
 - **Pits and caves at sunrise** keep neutral stone colours instead of a lavender cast.
 - **Sunrise** river streak, sun glint, clouds and sun glow are peach-rose instead of gold.
 
+### Water
+- **No more bright streaks over seagrass:** seagrass and kelp under the surface no longer show up as pale vertical stripes; the water keeps its calm depth colour over them.
+
 ### Atmosphere
 - **Valley fog** (Sky & Fog > Valley Fog): a calm low-lying fog layer in valleys and over rivers.
 
