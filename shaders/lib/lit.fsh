@@ -330,6 +330,19 @@ void main() {
 			float sh = vnoise(cwpos.xz * 0.8 + vec2(frameTimeCounter * 0.4, -frameTimeCounter * 0.3));
 			col *= vec3(1.25, 1.0, 0.7) * (0.9 + 0.25 * celBand(sh, 3));
 		}
+	#ifdef STYLISED_LAVA
+		if (lightId == 7) {
+			// stylised lava: a deep saturated orange body with calm, slowly drifting bright veins.
+			// Large world-space blobs replace the busy texture; soft two-band edges, never pale or white.
+			vec2 lq = cwpos.xz * 0.35;
+			float t = frameTimeCounter * 0.06;
+			float fl = vnoise(lq + vec2(t, t * 0.7)) * 0.65 + vnoise(lq * 2.1 - vec2(t * 0.8, -t)) * 0.35;
+			fl = mix(fl, luma(albedo.rgb), 0.15);
+			float v = celBandSoft(smoothstep(0.42, 0.78, fl), 2, 0.5);
+			vec3 lavaC = mix(vec3(0.86, 0.24, 0.04), vec3(1.0, 0.62, 0.16), v);
+			col = lavaC * LAVA_BRIGHT;
+		}
+	#endif
 	#endif
 		cOut[it] = col;
 	}

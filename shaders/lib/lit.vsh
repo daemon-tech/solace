@@ -21,7 +21,7 @@ in vec2 mc_midTexCoord;
 void main() {
 	gl_Position = ftransform();
 	int eid = int(mc_Entity.x + 0.5);
-	lightId = (eid >= 10010 && eid <= 10015) ? eid - 10009 : 0;
+	lightId = (eid >= 10010 && eid <= 10016) ? eid - 10009 : 0;
 	isFoliage = (eid == 10002 || eid == 10006) ? 1 : (eid == 10003 ? 2 : (eid == 10004 ? 3 : (lightId > 0 ? 4 : (eid == 10007 ? 5 : 0))));
 	texcoord = (gl_TextureMatrix[0] * gl_MultiTexCoord0).xy;
 	lmcoord = (gl_TextureMatrix[1] * gl_MultiTexCoord1).xy;

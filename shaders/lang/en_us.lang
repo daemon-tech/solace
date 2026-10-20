@@ -261,3 +261,7 @@ option.HELD_LIGHT=Held Light
 option.HELD_LIGHT.comment=A torch or lantern in your hand softly lights up the dark around you.
 option.HELD_LIGHT_STRENGTH=Held Light Strength
 option.HELD_LIGHT_STRENGTH.comment=How bright the light from a held torch or lantern is.
+option.STYLISED_LAVA=Stylised Lava
+option.STYLISED_LAVA.comment=Calm cartoon lava: a deep orange body with slowly drifting bright veins.
+option.LAVA_BRIGHT=Lava Brightness
+option.LAVA_BRIGHT.comment=How bright stylised lava is.
