@@ -392,6 +392,21 @@ void main() {
 		col += vec3(1.0, 0.66, 0.30) * clamp(rimG * GOLDEN_RIM_STRENGTH, 0.0, 1.5) * 0.34;
 	}
 #endif
+#if defined ENTITY_PASS && CHAR_RIM > 0
+	// character rim: all day, a soft light fringe along the silhouette so mobs and players stand
+	// out from the scene like painted figures (wide smooth falloff, never a hard white line)
+	{
+		vec4 vQ4 = gbufferProjectionInverse * vec4(gl_FragCoord.xy / vec2(viewWidth, viewHeight) * 2.0 - 1.0, gl_FragCoord.z * 2.0 - 1.0, 1.0);
+		vec3 vQ = vQ4.xyz / vQ4.w;
+		vec3 vW = safeNormalize(vQ, vec3(0, 0, -1));
+		vec3 nR = safeNormalize(cross(dFdx(vQ), dFdy(vQ)), n);
+		if (dot(nR, vW) > 0.0) nR = -nR;
+		float fr = 1.0 - clamp(dot(nR, -vW), 0.0, 1.0);
+		float rimK = smoothstep(0.15, 0.85, fr) * mix(0.35, 1.0, lm.y);
+		vec3 rimC = mix(vec3(0.42, 0.50, 0.85), vec3(0.92, 0.96, 1.0), day);
+		col = mix(col, max(col, rimC * (luma(col) * 0.7 + 0.55)), rimK * float(CHAR_RIM) * 0.085);
+	}
+#endif
 	outColor = vec4(clamp(col, 0.0, 4.0), albedo.a);
 	outFlag = vec4(0.0, clamp(pool, 0.0, 1.0), 0.0, 1.0);
 #ifdef FLAT_NORMAL
