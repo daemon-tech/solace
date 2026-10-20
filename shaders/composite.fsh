@@ -1018,6 +1018,9 @@ void main() {
 					lc += rimC * soft * (1.0 - soft) * 2.5 * pow(toSun, 3.0) * 0.7;
 					// calm horizon: far cells melt into the sky colour and thin out low over the horizon (no busy confetti)
 					lc = mix(lc, fogSky, smoothstep(250.0, 1100.0, tA) * 0.35);
+					// dusk: low cells take the warm sky tone behind them (no pale grey-lavender patches near the sun)
+					lc = mix(lc, max(col, vec3(0.0)) * vec3(1.06, 0.97, 0.93), cDusk * (1.0 - rainStrength) * 0.8);
+					lc = min(lc, vec3(max(luma(col) * 1.25, 0.6)));
 					float fade = (1.0 - smoothstep(500.0, 1500.0, tA)) * smoothstep(0.02, 0.16, abs(rd.y));
 					col = mix(col, lc, cov * fade * 0.80);
 				}

@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.30-dev
 
 ### Fixes
+- **Dusk clouds** near the sun take on the warm evening sky tone instead of pale grey patches.
 - **Nether portals** are a clear deep purple, without a milky veil or a light line along the obsidian.
 - **Pits and caves at sunrise** keep neutral stone colours instead of a lavender cast.
 - **Sunrise** river streak, sun glint, clouds and sun glow are peach-rose instead of gold.
