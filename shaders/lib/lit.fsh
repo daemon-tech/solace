@@ -128,9 +128,9 @@ void main() {
 	// low-pass texture detail: smooth even grass tops and leaf masses (mip bias, alpha-corrected)
 	{
 		bool tinted = vcolor.g > vcolor.b * 1.15 && vcolor.g > vcolor.r * 1.05;
-		float sm = (isFoliage == 2 && tinted) ? GRASS_SMOOTH : (isFoliage == 1 ? FOLIAGE_SMOOTH : 0.0);
+		float sm = ((isFoliage == 2 || isGrassPlant == 1) && tinted) ? GRASS_SMOOTH : (isFoliage == 1 ? FOLIAGE_SMOOTH : 0.0);
 #ifdef SOFT_GRASS
-		if (isFoliage == 2 && tinted) sm = min(sm + 0.25 * SOFT_GRASS_STRENGTH, 0.9); // calmer grass surface, texels fade out
+		if ((isFoliage == 2 || isGrassPlant == 1) && tinted) sm = min(sm + 0.25 * SOFT_GRASS_STRENGTH, 0.9); // calmer grass surface, texels fade out
 #endif
 #ifdef TERRAIN_PASS
 		// texture calm: stone, dirt, sand, wood keep their blocky pattern but lose harsh texel contrast
@@ -274,7 +274,7 @@ void main() {
 	#endif
 	#ifdef GROUND_GRADE
 		// grass ground: tinted texels (grass top / side overlay) get flat, soft lighting
-		bool grassTex = isFoliage == 2 && vcolor.g > vcolor.b * 1.15 && vcolor.g > vcolor.r * 1.05;
+		bool grassTex = (isFoliage == 2 || isGrassPlant == 1) && vcolor.g > vcolor.b * 1.15 && vcolor.g > vcolor.r * 1.05;
 		if (grassTex) {
 			lb = mix(lb, 1.0, 0.55 * smoothstep(0.1, 0.4, light)); // fewer, softer steps in sun
 			lighting = ambient + sunCol * glassTint * lb + block + vec3(0.03);
@@ -316,6 +316,22 @@ void main() {
 			target *= 1.0 + WIND_SHEEN * windGust(cwpos.xz, frameTimeCounter) * mix(0.4, 1.0, day);
 			col = mix(col, target, GROUND_GRADE_STRENGTH * mix(1.0, 0.4, torch * (1.0 - day * lm.y)));
 		}
+	#if defined TERRAIN_PASS && !defined FLAT_NORMAL
+		else if (isFoliage == 2 && isEyeInWater == 0 && abs(dot(n, up)) < 0.3) {
+			// soft grass fringe: the top of a grass block's side fades from grass green into the dirt,
+			// in calm blocky steps (quarter-texel bands) instead of a ragged pixel edge
+			float fy = floor(fract(cwpos.y + 0.001) * 16.0) / 16.0;
+			float fr = smoothstep(0.42, 0.78, fy);
+	#if GRASS_TONE == 1
+			vec3 toneF = vec3(0.33, 0.73, 0.27);
+	#else
+			vec3 toneF = vec3(0.27, 0.72, 0.38);
+	#endif
+			vec3 fc = toneF * 0.96 * mix(0.45, 1.0, day) * (lb * 0.35 + 0.65) * (0.9 + 0.1 * lb);
+			col = mix(col, fc * mix(0.82, 1.0, fr), min(fr * 1.15 * GROUND_GRADE_STRENGTH, 0.92));
+		}
+	#endif
+		vec3 colGround = col;
 	#endif
 #ifdef WET_GROUND
 		{
@@ -364,6 +380,10 @@ void main() {
 			float pinkLeaf = smoothstep(0.02, 0.12, albedo.r - albedo.g); // cherry leaves keep their pink
 			col = mix(col, vec3(l) * (isEyeInWater == 1 ? vec3(0.55, 1.05, 1.0) : mix(vec3(0.60, 0.80, 0.70) * 0.92, vec3(0.82, 1.30, 0.72) * 0.96, day)), FOLIAGE_LIME * STYLE_K * mix(1.0, 1.0 - torch * 0.6, 1.0 - day) * (1.0 - pinkLeaf));
 		}
+	#ifdef GROUND_GRADE
+		// grass plants: the root is exactly the grass top colour, only a soft gradient toward the tip
+		if (isGrassPlant == 1 && grassTex && isEyeInWater == 0) col = mix(colGround, col, 0.35 * smoothstep(0.25, 1.0, vTop));
+	#endif
 	#ifdef LEAF_TRANSLUCENCY
 		if (isFoliage == 1 || isFoliage == 5) {
 			// backlit leaves and blades glow warm-green when looking toward the sun
