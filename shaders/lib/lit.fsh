@@ -394,7 +394,8 @@ void main() {
 			// low sun: a soft warm rim of light through grass and leaves seen against the sun
 			float lowSun = smoothstep(-0.03, 0.05, sW.y) * (1.0 - smoothstep(0.18, 0.42, sW.y)) * (1.0 - rainStrength);
 			float blLow = smoothstep(0.55, 1.0, dot(vW, sW)) * lowSun * smoothstep(0.6, 0.95, lm.y);
-			col += albedo.rgb * vec3(1.25, 0.88, 0.42) * blLow * blLow * (isFoliage == 5 ? 0.6 : 0.38) * LEAF_TRANSLUCENCY / 0.35;
+			col += albedo.rgb * vec3(1.25, 0.88, 0.42) * blLow * blLow * (isFoliage == 5 ? 0.6 : 0.30) * LEAF_TRANSLUCENCY / 0.35
+			     * (1.0 - 0.7 * smoothstep(0.45, 0.85, luma(col))); // already bright (pale) leaves never wash out
 		}
 	#endif
 	#ifdef NIGHT_GLOW

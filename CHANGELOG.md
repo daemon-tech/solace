@@ -10,7 +10,7 @@ All builds tested in the real client with screenshots.
 - **Low maps**: valley fog and morning mist follow the visible ground on maps whose land sits far below sea level, instead of burying the whole landscape.
 - **Wind lines**: more wind lines are in view at once; they taper from a thin tail to a soft body, rise and fall gently, show mostly with gusts, take a warm tint at golden hour, stay out of rain and thin out at the centre of the view.
 - **Colour**: overall saturation and vibrance are a little lower by default, for a calmer look.
-- **Backlit foliage**: at sunrise and sunset, grass and leaves seen against the low sun get a soft warm glow.
+- **Backlit foliage**: at sunrise and sunset, grass and leaves seen against the low sun get a soft warm glow; pale leaves such as birch stay textured instead of washing out.
 - **Grass**: tall grass and ferns share the grass top colour, smoothing and lighting at the root, so the blades melt into the lawn; only a soft gradient toward the tip remains. Grass block sides get a soft green fringe below the top edge.
 - **Caves**: darker where no sky reaches, so torches, lanterns and lava form warm, soft pools of light.
 - **Sculk**: glows a soft blue in the dark and casts a faint cool light.
