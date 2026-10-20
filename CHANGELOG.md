@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.30-dev
 
 ### Fixes
+- **Pale ground at night** (sand, snow) stays calm under the moon instead of glowing white-lavender.
 - **Water at noon** has a softer, calmer sun glint with gentle edges and fewer scattered sparkles.
 - **Forest at dusk** reads calmer from a few blocks away, with softer light and dark leaf patches.
 - **Dusk clouds near the sun** melt softly into the glow instead of showing pale blocky cells.

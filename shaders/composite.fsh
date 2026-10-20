@@ -1188,6 +1188,8 @@ void main() {
 			// so shapes, grass and paths stay readable, while the darkest shadows stay calm and deep
 			vec3 ind = mix(vec3(luma(col)) * vec3(0.78, 0.88, 1.22), col * vec3(0.84, 0.97, 1.16), 0.55) + vec3(0.032, 0.038, 0.066);
 			ind = pow(max(ind, vec3(0.0)), vec3(0.90)) * 1.06;
+			// pale ground (sand, snow, quartz) under the moon: a calm shoulder so it never glows white-lavender
+			ind *= 1.0 - 0.26 * smoothstep(0.42, 0.85, luma(ind));
 			// foliage keeps more of its own green at night (the blue lift turned close leaves teal)
 			if (texture(colortex1, uv).a < 0.75) ind = mix(ind, ind * vec3(1.02, 1.04, 0.88), 0.8);
 			col = mix(col, ind, night * SCENE_TINT * (1.0 - max(warmPix, heldK)));
