@@ -172,6 +172,14 @@ void main() {
 	}
 #endif
 	float lb = celBandSoft(light, CEL_BANDS, SHADOW_EDGE); // cel bands with soft shadow edges
+#if defined ENTITY_PASS && ENTITY_SOFT > 0
+	// mobs and players: soft two-tone cartoon shading (wrapped light, one wide soft step, brighter shade side)
+	{
+		float wrapL = clamp((ndl + 0.35) / 1.1, 0.0, 1.0) * clamp(light * 4.0, 0.0, 1.0);
+		float soft2 = smoothstep(0.25, 0.65, max(light, wrapL * 0.85));
+		lb = mix(lb, soft2, float(ENTITY_SOFT) * 0.1);
+	}
+#endif
 	// foliage: flat fields with a single shadow tone (2 bands)
 	if (isFoliage == 1) lb = step(0.35, light) * 0.9 + 0.1 * lb;
 
@@ -192,6 +200,9 @@ void main() {
 		ambient = mix(ambient, ambN, twA * 0.8);
 	}
 	vec3 sunCol = mix(sunNight, sunDay, day);
+#if defined ENTITY_PASS && ENTITY_SOFT > 0
+	ambient *= 1.0 + 0.012 * float(ENTITY_SOFT); // lifted shade side: soft, never muddy
+#endif
 #ifdef DIM_NETHER
 	// Nether: warm ember ambient, no sun; block light does the rest
 	ambient = vec3(0.70, 0.46, 0.38) * mix(0.8, 1.0, celBand(lm.x, 3)) * AMBIENT_BOOST; sunCol = vec3(0.0); day = 0.0;

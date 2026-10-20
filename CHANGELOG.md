@@ -13,6 +13,9 @@ All builds tested in the real client with screenshots.
 ### Clouds
 - **Calmer horizon:** the low cloud layer now melts softly into the sky far away and thins out just above the horizon, so the distance no longer looks busy.
 
+### Characters
+- **Soft Characters** (Colour > Soft Characters): mobs and players get soft two-tone cartoon shading with a gently wrapped light and a brighter shade side, so they never look muddy.
+
 ### Water
 - **No more bright streaks over seagrass:** seagrass and kelp under the surface no longer show up as pale vertical stripes; the water keeps its calm depth colour over them.
 
