@@ -780,6 +780,21 @@ void main() {
 		}
 	}
 #endif
+#ifdef MOON_HALO
+	{
+		// soft moon halo: a calm silver-blue glow and a faint wide ring around the moon on clear nights
+		vec4 mhp = gbufferProjection * vec4(moonPosition, 1.0);
+		float nK = (1.0 - smoothstep(0.05, 0.3, dayG)) * (1.0 - rainStrength);
+		if (mhp.w > 0.0 && isEyeInWater == 0 && nK > 0.01) {
+			vec2 muv = mhp.xy / mhp.w * 0.5 + 0.5;
+			float dM = length((uv - muv) * vec2(viewWidth / viewHeight, 1.0));
+			float visM = step(1.0, texture(depthtex0, clamp(muv, 0.001, 0.999)).r);
+			float glowM = exp(-dM * 9.0) * 0.32 + exp(-dM * 3.5) * 0.10;
+			float ring = exp(-pow((dM - 0.16) / 0.035, 2.0)) * 0.06;
+			col += vec3(0.72, 0.82, 1.0) * (glowM + ring) * visM * nK * MOON_HALO;
+		}
+	}
+#endif
 	// hot dry biomes (deserts, badlands, savanna plateaus): no rain there, dust instead
 	float dryB = smoothstep(1.3, 1.8, bTemp) * (1.0 - smoothstep(0.05, 0.3, bRain));
 #ifdef RAIN_STREAKS

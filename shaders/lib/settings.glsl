@@ -179,6 +179,7 @@ const float sunPathRotation = -25.0;
 #define GLOW_SHALLOWS_AMT 1.0 // [0.0 0.5 1.0 1.5]
 #define SUNSET_STREAK // long sun streak on water at sunrise/sunset
 #define LIGHT_HALO 0.6 // [0.0 0.3 0.6 1.0] soft glow around lanterns, torches and lava
+#define MOON_HALO 1.0 // [0.0 0.5 1.0 1.5] soft silver glow and faint ring around the moon
 #define SUN_HALO 0.6 // [0.0 0.3 0.6 1.0] glowing sun disk halo
 #define RAIN_STREAKS 1.0 // [0.0 0.5 1.0] rain streaks and darker blue night rain mood
 #define FOREST_RAYS 0.8 // [0.0 0.4 0.8 1.2] stronger god rays in forests
