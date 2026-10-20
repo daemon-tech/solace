@@ -892,6 +892,15 @@ void main() {
 		vec3 glowC = mix(mix(vec3(0.85, 1.0, 0.45), vec3(1.0, 0.90, 0.86), MORN_K), mix(vec3(1.0, 0.70, 0.30), vec3(1.0, 0.82, 0.74), MORN_K), duskG) * dayG + vec3(0.10, 0.14, 0.30) * (1.0 - dayG);
 		col += glowC * open * (fol ? CANOPY_GLOW : CANOPY_GLOW * 0.4);
 	}
+	// rolling field waves: broad soft light bands drift slowly across open green ground in the wind
+	if (!sky && !water && isEyeInWater == 0 && FIELD_WAVES > 0.0) {
+		vec3 wpF = mat3(gbufferModelViewInverse) * vpos + cameraPosition;
+		float greenK = smoothstep(0.05, 0.18, col.g - max(col.r, col.b));
+		float folK = texture(colortex1, uv).a < 0.75 ? 0.45 : 1.0; // canopies sway much less than meadows
+		float fwK = greenK * folK * (1.0 - smoothstep(far * 0.35, far * 0.6, lin)) * (1.0 - cave) * mix(0.3, 1.0, dayG);
+		vec3 sheen = vec3(0.88, 0.97, 0.64) * (luma(col) + 0.24);
+		col = mix(col, sheen, 0.55 * FIELD_WAVES * fwK * fieldWave(mod(wpF.xz, 4096.0), frameTimeCounter));
+	}
 	// warm atmospheric haze with distance (sunset orange, daytime soft yellow-green in forests)
 	if (!sky && isEyeInWater == 0) {
 		float hz = smoothstep(3.0, far * 0.6, lin);

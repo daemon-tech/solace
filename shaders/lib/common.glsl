@@ -121,3 +121,12 @@ float emitMask(vec3 a) {
 	float mx = max(a.r, max(a.g, a.b)), mn = min(a.r, min(a.g, a.b));
 	return smoothstep(0.50, 0.72, mx) * smoothstep(0.08, 0.30, mx - mn + max(mx - 0.85, 0.0) * 2.0);
 }
+
+// broad rolling wind wave over fields: two slow, wide sine fronts, smooth 0..1 (no noise)
+float fieldWave(vec2 p, float t) {
+	vec2 d = normalize(vec2(0.8, 0.6));
+	float x = dot(p, d) * 0.30 + sin(dot(p, vec2(-0.6, 0.8)) * 0.07) * 1.6 - t * 0.9;
+	float w = 0.5 + 0.5 * sin(x);
+	float w2 = 0.5 + 0.5 * sin(x * 0.53 + 1.3);
+	return smoothstep(0.35, 1.0, w) * mix(0.55, 1.0, w2);
+}

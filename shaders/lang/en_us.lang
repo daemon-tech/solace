@@ -269,3 +269,5 @@ option.GOLDEN_RIM=Golden Hour Rim
 option.GOLDEN_RIM.comment=At sunrise and sunset, mobs and players get a soft warm fringe along their outline.
 option.GOLDEN_RIM_STRENGTH=Golden Hour Rim Strength
 option.GOLDEN_RIM_STRENGTH.comment=How strong the warm fringe on characters is.
+option.FIELD_WAVES=Field Waves
+option.FIELD_WAVES.comment=Soft bright waves that roll slowly across grass fields in the wind.
