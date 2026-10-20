@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.30-dev
 
 ### Fixes
+- **Block sides at noon** get a soft sky light, so walls read as two calm tones instead of one flat shade.
 - **Water at dusk** mirrors a soft rose sky and keeps some teal instead of turning into a flat orange sheet.
 - **Dusk clouds** near the sun take on the warm evening sky tone instead of pale grey patches.
 - **Nether portals** are a clear deep purple, without a milky veil or a light line along the obsidian.

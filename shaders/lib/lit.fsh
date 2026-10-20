@@ -226,6 +226,17 @@ void main() {
 	for (int it = 0; it < 2; it++) {
 		lb = float(it);
 		vec3 lighting = ambient + sunCol * glassTint * lb + block + vec3(0.03);
+	#if defined TERRAIN_PASS && !defined FLAT_NORMAL
+		// high sun: block sides get a soft sky key (east/west a touch brighter than north/south),
+		// so walls read as two calm tones instead of one flat shade
+		if (isFoliage == 0) {
+			float sH = dot(safeNormalize(sunPosition, up), up);
+			float noonK = smoothstep(0.45, 0.85, sH) * (1.0 - rainStrength) * smoothstep(0.5, 0.9, lm.y);
+			float sideK = smoothstep(0.6, 0.95, 1.0 - abs(dot(n, up)));
+			vec3 nw = mat3(gbufferModelViewInverse) * n;
+			lighting += sunDay * (0.16 + 0.14 * abs(nw.x)) * noonK * sideK * (1.0 - lb * 0.5);
+		}
+	#endif
 		// underwater: kelp/seagrass/floor stay readable (light, not black)
 		if (isEyeInWater == 1) lighting = max(lighting, vec3(0.62, 0.78, 0.95) * mix(0.6, 1.0, day));
 
