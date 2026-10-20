@@ -170,13 +170,16 @@ vec3 grade(vec3 c) {
 	c *= mix(vec3(1.0), vec3(1.06, 1.0, 0.90), WARMTH * smoothstep(0.2, 0.8, l));
 	// sand-like (pale warm, low sat): brighter and more yellow
 	float sand = smoothstep(0.42, 0.55, l) * step(c.b, c.g * 0.92) * step(c.g, c.r * 1.02) * (1.0 - smoothstep(0.35, 0.5, (c.r - c.b) / max(c.r, 1e-3)));
-	c = mix(c, c * vec3(1.18, 1.12, 0.78), sand * SAND_BOOST);
+	c = mix(c, c * vec3(1.07, 1.03, 0.84), sand * SAND_BOOST); // warm, not glaring: sand stays below the white clouds
 	c = max(c, 0.0);
 	// soft luminance cap: compress highlights above LUMA_CAP
 	float nl = luma(c);
 	// highlight shoulder: the brightest tones drift toward soft white instead of clipping to saturated yellow
 	c = mix(c, vec3(nl) * vec3(1.02, 0.99, 0.97), smoothstep(LUMA_CAP - 0.04, 1.05, nl) * 0.4);
 	if (nl > LUMA_CAP) c *= (LUMA_CAP + (nl - LUMA_CAP) * 0.35) / nl;
+	// bright pale-warm ground (sand, sandstone, birch) at noon: one calm step down, so it never glares white
+	float paleW = step(c.b, c.g) * step(c.g, c.r * 1.05) * (1.0 - smoothstep(0.25, 0.45, (c.r - c.b) / max(c.r, 1e-3)));
+	c *= 1.0 - 0.16 * smoothstep(0.6, 0.92, luma(c)) * paleW;
 	return c;
 }
 

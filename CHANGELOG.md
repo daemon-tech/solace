@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.30-dev
 
 ### Fixes
+- **Sand at noon** is a warm calm tone instead of glaring near-white.
 - **Daytime clouds** have soft pale undersides instead of grey-blue blocks.
 - **Dusk clouds** away from the sun stay a soft dusty rose instead of olive.
 - **Far trees** close their leaf gaps smoothly into calm canopy shapes, without jagged cut-out edges.
