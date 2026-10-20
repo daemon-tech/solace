@@ -1034,6 +1034,12 @@ void main() {
 #endif
 	}
 #endif
+	// dusk: distant land calms into the evening air (less red/green texel contrast on far cliffs)
+	if (!sky && !water && isEyeInWater == 0) {
+		float dfK = smoothstep(40.0, 150.0, lin) * duskG * (1.0 - rainStrength);
+		vec3 calmC = mix(vec3(luma(col)), col, 0.55) * mix(vec3(1.0), fogSky / max(luma(fogSky), 1e-3), 0.25);
+		col = mix(col, calmC, dfK * 0.5);
+	}
 	// near-white haze band where the sea meets the sky (water far field + sky just above horizon)
 	if (isEyeInWater == 0) {
 		vec3 upH = safeNormalize(upPosition, vec3(0, 1, 0));
