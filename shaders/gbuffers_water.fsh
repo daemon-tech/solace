@@ -85,8 +85,8 @@ void main() {
 		if (day > 0.3) {
 			// high sun: soft-edged, calmer glint (no hard white blot at noon)
 			float noonG = 1.0 - smoothstep(0.06, 0.16, abs(sunAngle - 0.25));
-			float gw = mix(0.0015, 0.010, noonG);
-			col = mix(col, mix(vec3(1.0, 0.93, 0.72), vec3(1.0, 0.90, 0.84), ((sunAngle > 0.75 || sunAngle < 0.25) ? 1.0 : 0.0)), smoothstep(0.955 - gw, 0.955 + gw, spec) * mix(0.45, 0.32, noonG));
+			float gw = mix(0.0015, 0.016, noonG);
+			col = mix(col, mix(vec3(1.0, 0.93, 0.72), vec3(1.0, 0.90, 0.84), ((sunAngle > 0.75 || sunAngle < 0.25) ? 1.0 : 0.0)), smoothstep(0.955 - gw, 0.955 + gw, spec) * mix(0.45, 0.16, noonG));
 			col = mix(col, vec3(1.0, 0.99, 0.96), smoothstep(0.988 - gw * 0.6, 0.988 + gw * 0.6, spec) * mix(1.0, 0.78, noonG));
 		} else {
 			// night: banded moon glint path and moonlit ripple highlights
