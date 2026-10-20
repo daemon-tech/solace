@@ -69,7 +69,10 @@ void main() {
 		// sky mirror grows with distance (far water reads as the sky, the target look)
 		float farR = smoothstep(12.0, 72.0, length(viewPos));
 		// bright mirror toward the horizon (lifted a touch so it reads as sheen, not a copy of the sky)
-		col = mix(col, refl * 1.06 + vec3(0.05), clamp(fres * 0.40 + farR * 0.60 * WATER_REFLECT, 0.0, 0.88));
+		// dusk: the mirrored sky keeps a soft rose tone and the water keeps some teal (no flat orange sheet)
+		float wDusk = clamp(1.0 - abs(dot(safeNormalize(sunPosition, vec3(0, 1, 0)), safeNormalize(upPosition, vec3(0, 1, 0)))) * 5.0, 0.0, 1.0) * (1.0 - rainStrength);
+		refl = mix(refl, vec3(luma(refl)) * vec3(1.04, 0.86, 0.90), wDusk * 0.4);
+		col = mix(col, refl * 1.06 + vec3(0.05), clamp(fres * 0.40 + farR * 0.60 * WATER_REFLECT, 0.0, 0.88) * (1.0 - wDusk * 0.3));
 		// darker deep patches drifting slowly (banded, world-space)
 		float patch = vnoise(p * 0.10 + vec2(t * 0.02, 0.0)) * 0.7 + vnoise(p * 0.23 - vec2(0.0, t * 0.03)) * 0.3;
 		float deepPatch = smoothstep(0.56, 0.64, patch) * 0.55 + smoothstep(0.44, 0.52, patch) * 0.45;
