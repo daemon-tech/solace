@@ -32,6 +32,7 @@ All builds tested in the real client with screenshots.
 - **Soft world border:** the last stretch before the render distance melts smoothly into the horizon sky, so the end of the loaded world (also far water) no longer shows as a hard line. The pale haze band at the horizon is wider and softer and continues over far land, so it no longer sits as a flat strip above the terrain.
 - **Night leaves:** trees at night are a calm muted blue-green instead of bright cyan.
 - **Softer sun rays at dusk:** the rays around the low sun blend in soft steps and fall less on near clouds, so they no longer draw pale fans across the sunset sky.
+- **Calmer fireflies:** fewer fireflies with a slower, gentler pulse, so night meadows look calm instead of speckled.
 - **Valley fog** (Sky & Fog > Valley Fog): a calm low-lying fog layer in valleys and over rivers.
 
 ### Bloom

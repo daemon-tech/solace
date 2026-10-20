@@ -1065,7 +1065,7 @@ void main() {
 				if (s0 > maxD + 1.5) break;
 				vec3 cell = floor((cp + rd * s0) / 3.0);
 				float h = hash12(cell.xz + cell.y * 17.31);
-				if (h > 0.45 * FIREFLY_AMOUNT) continue;
+				if (h > 0.26 * FIREFLY_AMOUNT) continue; // sparse: a few calm lights, not a field of specks
 				vec3 fp = (cell + vec3(hash12(cell.xz + 3.7), hash12(cell.xz + cell.y + 8.1), hash12(cell.zx + 1.3))) * 3.0;
 				fp += vec3(sin(frameTimeCounter * 0.31 + h * 40.0), sin(frameTimeCounter * 0.23 + h * 70.0) * 0.6, cos(frameTimeCounter * 0.27 + h * 55.0)) * 0.7;
 				vec3 rel = fp - cp;
@@ -1074,7 +1074,7 @@ void main() {
 				if (tc < 0.3 || tc > maxD) continue;
 				float d = length(rel - rd * tc);
 				float r = 0.035 + 0.0035 * tc;
-				float blink = smoothstep(0.35, 0.9, sin(frameTimeCounter * (0.8 + h * 1.5) + h * 30.0) * 0.5 + 0.5);
+				float blink = smoothstep(0.35, 0.9, sin(frameTimeCounter * (0.5 + h * 0.8) + h * 30.0) * 0.5 + 0.5); // slow, gentle pulse
 				glow = max(glow, step(d, r) * blink);
 				halo = max(halo, exp(-d / (r * 2.2)) * blink);
 			}
