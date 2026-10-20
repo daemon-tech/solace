@@ -322,6 +322,14 @@ void main() {
 #ifdef SOFT_GRASS
 		// grass plants: soft contact shade at the base fading out by mid-height (tips unchanged, no glow)
 		if (isGrassPlant == 1) col *= 1.0 - 0.12 * SOFT_GRASS_STRENGTH * (1.0 - smoothstep(0.0, 0.6, vTop));
+#if GRASS_GRADIENT > 0
+		// blade gradient: deep cool green at the root rising to a bright, warm sunlit tip
+		if (isGrassPlant == 1) {
+			float gg = float(GRASS_GRADIENT) * 0.1;
+			col *= mix(mix(vec3(1.0), vec3(0.74, 0.82, 0.86), gg), vec3(1.0), smoothstep(0.0, 0.7, vTop));
+			col = mix(col, vec3(0.88, 0.97, 0.58) * (luma(col) + 0.25), smoothstep(0.55, 1.0, vTop) * gg * 0.45 * mix(0.3, 1.0, day));
+		}
+#endif
 #endif
 		if (isFoliage == 1) {
 			// lime-leaning, brighter foliage (#9dc832 direction)

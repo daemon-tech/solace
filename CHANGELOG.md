@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.30-dev
 
 ### Features
+- **Grass gradient**: grass blades shade from deep roots to bright, warm sunlit tips (new option, Grass Gradient).
 - **Character rim**: mobs and players get a soft light fringe along their edges all day and softer shading, so they stand out like painted figures (new option, Character Rim).
 - **Bright sky**: the clear day sky is brighter and more open, with one long smooth gradient and a luminous glow along the horizon (new option, Bright Sky).
 - **Painterly distance**: far land and water melt into soft, brush-like patches while keeping their shapes (new option, Painterly Distance).

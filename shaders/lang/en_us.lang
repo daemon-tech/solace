@@ -277,3 +277,5 @@ option.SKY_BRIGHT=Bright Sky
 option.SKY_BRIGHT.comment=A bright, open day sky with a long smooth gradient and a luminous horizon.
 option.CHAR_RIM=Character Rim
 option.CHAR_RIM.comment=A soft light fringe along mobs and players, so they stand out like painted figures. 0 turns it off.
+option.GRASS_GRADIENT=Grass Gradient
+option.GRASS_GRADIENT.comment=Grass blades shade from dark roots to bright sunlit tips. 0 turns it off.
