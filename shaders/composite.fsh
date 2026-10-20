@@ -1129,7 +1129,10 @@ void main() {
 #endif
 			// night: hue-shift towards indigo but keep warm torch pools warm
 			float warmPix = clamp(texture(colortex2, uv).g * 1.5, 0.0, 1.0);
-			vec3 ind = mix(vec3(luma(col)) * vec3(0.62, 0.70, 1.45), col * vec3(0.70, 0.95, 1.30), 0.5) + vec3(0.03, 0.03, 0.08);
+			// moonlit night: a soft silver-blue instead of deep saturated indigo; the mids are lifted gently
+			// so shapes, grass and paths stay readable, while the darkest shadows stay calm and deep
+			vec3 ind = mix(vec3(luma(col)) * vec3(0.78, 0.88, 1.22), col * vec3(0.84, 0.97, 1.16), 0.55) + vec3(0.032, 0.038, 0.066);
+			ind = pow(max(ind, vec3(0.0)), vec3(0.90)) * 1.06;
 			col = mix(col, ind, night * SCENE_TINT * (1.0 - warmPix));
 			// twilight white balance where the eye sees little sky (pits, dug holes, caves): the still-indigo
 			// dawn/dusk ambient read lavender on grey stone there. Neutralise its hue, keep its brightness.
