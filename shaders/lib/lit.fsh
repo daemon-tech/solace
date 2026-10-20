@@ -23,6 +23,7 @@ in vec4 vcolor;
 in vec3 vnormal;
 in vec4 shadowClip;
 flat in int isFoliage;
+flat in int isLeaf;
 flat in int lightId;
 in float windG;
 in vec3 cwpos;
@@ -111,6 +112,14 @@ void main() {
 	if (albedo.a < 0.3) discard; // particles: drop soft/empty texels (no square halos)
 	if (isEyeInWater == 1 && length(cwpos - cameraPosition) < 3.0) discard; // no big bubble rings in front of the camera underwater
 #else
+#ifdef TERRAIN_PASS
+	// far leaves: the gaps close smoothly into one calm canopy mass (no jagged, crawling cut-out edges far away)
+	if (isLeaf == 1 && albedo.a < 0.1) {
+		float fillK = smoothstep(18.0, 56.0, length(cwpos - cameraPosition));
+		vec4 avg = textureLod(gtexture, texcoord, 2.0);
+		if (fillK > 0.0 && avg.a > 1.0 - fillK * 0.95 && luma(avg.rgb / max(avg.a, 1e-3)) < 0.7) albedo = vec4(avg.rgb / max(avg.a, 1e-3), 1.0) * vcolor;
+	}
+#endif
 	if (albedo.a < 0.1) discard;
 #endif
 #ifdef HIDE_LEAF_LITTER
