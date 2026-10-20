@@ -26,6 +26,7 @@ All builds tested in the real client with screenshots.
 
 ### Atmosphere
 - **Overcast sun:** in rain the sun stays a soft pale glow behind the clouds.
+- **Softer close rain:** raindrops right in front of the camera fade out gently, so rain reads as a calm veil instead of hard streaks across the view.
 - **Gentle lightning flash:** a lightning strike briefly lifts the whole scene in a calm cool light instead of nothing at all; nearby strikes are a little stronger. The flash rises quickly and fades out softly over about a second, so several strikes in a row never flicker.
 - **Moonlit nights:** nights are a soft silver-blue instead of deep saturated indigo, with gently lifted mid tones so grass, paths and shapes stay readable while the deepest shadows stay calm.
 - **Soft world border:** the last stretch before the render distance melts smoothly into the horizon sky, so the end of the loaded world (also far water) no longer shows as a hard line.
