@@ -124,6 +124,10 @@ void main() {
 		// texture calm: stone, dirt, sand, wood keep their blocky pattern but lose harsh texel contrast
 		// (pulled toward the block's own average tone). Light sources keep full detail.
 		if (isFoliage == 0 && lightId == 0) sm = max(sm, TEXTURE_CALM);
+#if FAR_SOFTEN > 0
+		// painterly distance: far blocks flatten toward their own average tone (calm, no shimmering texels)
+		if (lightId == 0) sm = max(sm, smoothstep(24.0, 110.0, length(cwpos - cameraPosition)) * float(FAR_SOFTEN) * 0.1);
+#endif
 #endif
 		if (sm > 0.0) {
 			vec4 lo = texture(gtexture, texcoord, 4.0);

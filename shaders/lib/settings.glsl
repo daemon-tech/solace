@@ -15,6 +15,7 @@
 #define SOFT_GRASS_STRENGTH 1.0 // [0.5 1.0 1.5]
 #define GRASS_SMOOTH 0.45 // [0.0 0.3 0.45 0.5 0.7 0.9] low-pass grass top texture detail
 #define TEXTURE_CALM 0.25 // [0.0 0.15 0.25 0.35 0.5] smooth cartoon textures: less harsh texel noise on blocks
+#define FAR_SOFTEN 6 // [0 3 6 8 10] painterly distance: far blocks flatten to soft tones (x10 percent)
 #define FOLIAGE_SMOOTH 0.5 // [0.0 0.35 0.5 0.65 0.85] smooth leaf masses instead of checker noise
 #define HIDE_LEAF_LITTER // leaf litter specks off (smooth even ground)
 #define GRASS_SWAY 0.07 // [0.0 0.05 0.07 0.10 0.15]

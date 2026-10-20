@@ -15,6 +15,7 @@ All builds tested in the real client with screenshots.
 
 ### Textures
 - **Texture Calm** (Colour > Texture Calm): smoother cartoon block textures that keep their blocky pattern.
+- **Far Soften** (Colour > Far Soften): distant blocks and tree tops melt into soft, flat tones like a painted background, so far terrain no longer shimmers.
 - **Softer grass:** calmer grass-top detail and a gentler colour sway.
 
 ### Nether
