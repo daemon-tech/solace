@@ -38,7 +38,26 @@ void main() {
 		vec3 sd = vec3(w.x * cos(a) + w.y * sin(a), -w.x * sin(a) + w.y * cos(a), w.z);
 		vec3 cell = floor(sd * 180.0);
 		float h = hash12(cell.xy + cell.z * 37.1);
+#if SOFT_STARS > 0
+		{
+			// soft round stars: a jittered point per cell, smooth disc with a faint halo, a few slightly warm or cool,
+			// with a very slow gentle breathing (no flicker)
+			vec3 sc3 = floor(sd * 60.0); float h3 = hash12(sc3.xy + sc3.z * 37.1); cell = sc3;
+			vec3 fp = fract(sd * 60.0) - 0.5;
+			vec3 jit = (vec3(hash12(cell.xy + 3.1), hash12(cell.yz + 7.7), hash12(cell.zx + 1.3)) - 0.5) * 0.4;
+			vec3 dv = fp - jit; vec3 nS = normalize(sd); dv -= dot(dv, nS) * nS; float d = length(dv);
+			float sz = mix(0.13, 0.26, hash12(cell.yx + 11.0));
+			float disc = 1.0 - smoothstep(sz * 0.35, sz, d);
+			float halo = (1.0 - smoothstep(sz, sz * 2.6, d)) * 0.3;
+			float breathe = 0.85 + 0.15 * sin(frameTimeCounter * 0.6 + h3 * 60.0);
+			float on = step(1.0 - 0.05 * float(SOFT_STARS), h3);
+			h = 0.0; // no square band dots with soft stars
+			vec3 sc = mix(vec3(0.86, 0.90, 1.0), vec3(1.0, 0.93, 0.82), step(0.7, hash12(cell.zy + 5.0)));
+			col = mix(col, sc, clamp((disc + halo) * breathe * on, 0.0, 1.0) * night * (1.0 - rainStrength));
+		}
+#else
 		if (h > 0.9965) col = mix(col, vec3(0.95, 0.95, 1.0), night * (1.0 - rainStrength));
+#endif
 #ifdef MILKY_WAY
 		// faint painted Milky Way band across the night sky (soft, two-tone, banded)
 		float band = 1.0 - abs(dot(normalize(sd), normalize(vec3(0.35, 0.25, 0.90))));
