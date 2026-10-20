@@ -59,6 +59,7 @@ uniform float bDark;
 uniform float rainStrength;
 uniform float thunderStrength;
 uniform vec4 lightningBoltPosition;
+uniform float lFlash;
 uniform mat4 gbufferProjectionInverse;
 uniform mat4 gbufferModelViewInverse;
 uniform vec3 cameraPosition;
@@ -764,9 +765,9 @@ void main() {
 		col += vec3(0.86, 0.89, 0.93) * og * 0.22 * rainStrength * (1.0 - dryB) * dayG * (sky ? 1.0 : 0.35);
 	}
 	// gentle lightning flash: a calm cool lift of the whole scene while a bolt exists (no harsh white-out)
-	if (lightningBoltPosition.w > 0.5) {
-		float fl = 0.16 * (1.0 - smoothstep(60.0, 240.0, length(lightningBoltPosition.xyz)));
-		fl += 0.06;
+	// lFlash: smoothed bolt presence (fast rise, ~1 s fade out), so several bolts never flicker
+	if (lFlash > 0.002) {
+		float fl = (0.16 * (1.0 - smoothstep(60.0, 240.0, length(lightningBoltPosition.xyz))) + 0.06) * lFlash;
 		col = mix(col, col * 1.25 + vec3(0.30, 0.34, 0.46) * (sky ? 1.0 : 0.6), fl);
 	}
 #endif
