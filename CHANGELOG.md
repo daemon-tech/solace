@@ -21,6 +21,10 @@ All builds tested in the real client with screenshots.
 - **Calmer Nether look:** far fog sinks into a deep maroon so cavern layers separate, the hottest surfaces are slightly less saturated, and thin edge lines only show up close by.
 - **Soft embers:** a few round embers that slowly fade in and out instead of square blinking specks.
 
+### End
+- **Softer End sky:** a gentle violet glow low on the horizon so the islands sit in light instead of a flat black void.
+- **Calm stars:** fewer, soft round stars that hold still instead of shimmering single-pixel dots.
+
 ## 0.29-dev
 
 ### Lighting

@@ -1053,12 +1053,20 @@ void main() {
 			vec3 sk = mix(vec3(0.20, 0.12, 0.30), vec3(0.06, 0.04, 0.14), celBand(hE, 4));
 			float neb = vnoise(wdE.xz / (abs(wdE.y) + 0.4) * 2.0 + frameTimeCounter * 0.01) * vnoise(wdE.xy * 3.0 + 1.7);
 			sk += vec3(0.30, 0.14, 0.42) * celBand(smoothstep(0.25, 0.6, neb), 3) * 0.45;
-			vec3 cE = floor(wdE * 160.0);
-			if (hash12(cE.xy + cE.z * 31.7) > 0.997) sk = vec3(0.90, 0.85, 1.0);
+			// stars: soft round dots that hold still (no single-pixel cells that shimmer)
+			vec2 sp = vec2(atan(wdE.z, wdE.x) * 40.0, wdE.y * 64.0);
+			vec2 sc = floor(sp), sf = fract(sp) - 0.5;
+			float sDot = step(0.985, hash12(sc + 17.3)) * smoothstep(0.22, 0.08, length(sf));
+			sk = mix(sk, vec3(0.90, 0.85, 1.0), sDot * (1.0 - smoothstep(0.75, 0.95, abs(wdE.y))));
 			col = sk;
 		}
 		float efK = celBandSoft(smoothstep(far * 0.08, far * 0.9, dz), 4, 0.35) * END_FOG;
 		col = mix(col, ef, efK * (d0 >= 1.0 ? 0.0 : 1.0));
+		// soft violet glow low on the horizon of the void, so the islands sit in light, not a flat black
+		if (d0 >= 1.0) {
+			vec3 wdH = mat3(gbufferModelViewInverse) * vdir;
+			col += vec3(0.20, 0.10, 0.30) * celBandSoft(smoothstep(0.35, -0.05, abs(wdH.y + 0.05)), 3, 0.5) * 0.9;
+		}
 		col = mix(col, col * vec3(0.92, 0.88, 1.12), 0.6);
 #endif
 	}
