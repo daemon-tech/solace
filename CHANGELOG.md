@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.30-dev
 
 ### Fixes
+- **Dusk clouds near the sun** melt softly into the glow instead of showing pale blocky cells.
 - **Sun rays at dusk** stay closer to the sun instead of fanning across the whole upper sky.
 - **Distant cliffs at dusk** calm into the evening air instead of busy red and green speckle.
 - **Sand at noon** is a warm calm tone instead of glaring near-white.

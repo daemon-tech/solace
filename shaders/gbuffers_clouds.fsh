@@ -47,5 +47,9 @@ void main() {
 	a *= 1.0 - smoothstep(220.0, 520.0, dist) * 0.75;
 	c = mix(c, mix(shade, lit, 0.62), fz * 0.5);
 #endif
+	// toward the low sun at dusk: cells melt into the glow (faces merge, edges see-through) instead of pale blocks
+	float sw = smoothstep(0.2, 0.9, dot(normalize(viewPosC), sunD)) * dusk;
+	c = mix(c, mix(shade, lit, 0.7), sw * 0.6);
+	a *= 1.0 - 0.5 * sw;
 	outColor = vec4(c, a);
 }
