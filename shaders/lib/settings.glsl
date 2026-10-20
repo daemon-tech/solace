@@ -188,3 +188,5 @@ const float sunPathRotation = -25.0;
 #define HELD_LIGHT_STRENGTH 1.0 // [0.5 0.75 1.0 1.25 1.5]
 #define STYLISED_LAVA // calm cartoon lava: deep orange with slow bright veins
 #define LAVA_BRIGHT 1.0 // [0.8 0.9 1.0 1.1 1.2]
+#define GOLDEN_RIM // warm golden fringe on characters at sunrise and sunset
+#define GOLDEN_RIM_STRENGTH 1.0 // [0.5 0.75 1.0 1.25 1.5]

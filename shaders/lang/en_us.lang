@@ -265,3 +265,7 @@ option.STYLISED_LAVA=Stylised Lava
 option.STYLISED_LAVA.comment=Calm cartoon lava: a deep orange body with slowly drifting bright veins.
 option.LAVA_BRIGHT=Lava Brightness
 option.LAVA_BRIGHT.comment=How bright stylised lava is.
+option.GOLDEN_RIM=Golden Hour Rim
+option.GOLDEN_RIM.comment=At sunrise and sunset, mobs and players get a soft warm fringe along their outline.
+option.GOLDEN_RIM_STRENGTH=Golden Hour Rim Strength
+option.GOLDEN_RIM_STRENGTH.comment=How strong the warm fringe on characters is.

@@ -5,6 +5,9 @@ uniform sampler2D shadowtex0;
 uniform vec3 shadowLightPosition;
 uniform vec3 sunPosition;
 uniform mat4 gbufferModelViewInverse;
+uniform mat4 gbufferProjectionInverse;
+uniform float viewWidth;
+uniform float viewHeight;
 uniform float cloudHeight;
 uniform vec3 upPosition;
 uniform float rainStrength;
@@ -348,6 +351,25 @@ void main() {
 	}
 	lb = lbReal;
 	vec3 col = mix(cOut[0], cOut[1], lb);
+#if defined ENTITY_PASS && defined GOLDEN_RIM
+	// golden-hour rim: at sunrise and sunset, characters seen against the low sun get a soft warm
+	// fringe along their silhouette (wide smooth falloff, two soft bands, never a hard white line)
+	{
+		vec4 vP4 = gbufferProjectionInverse * vec4(gl_FragCoord.xy / vec2(viewWidth, viewHeight) * 2.0 - 1.0, gl_FragCoord.z * 2.0 - 1.0, 1.0);
+		vec3 vP = vP4.xyz / vP4.w;
+		vec3 vV = safeNormalize(vP, vec3(0, 0, -1));
+		// entity vertex normals are not reliable here: use the flat face normal from screen derivatives
+		vec3 nF = safeNormalize(cross(dFdx(vP), dFdy(vP)), n);
+		if (dot(nF, vV) > 0.0) nF = -nF;
+		vec3 sV = safeNormalize(sunPosition, up);
+		float sh = dot(sV, up);
+		float gold = smoothstep(-0.04, 0.04, sh) * (1.0 - smoothstep(0.12, 0.38, sh)) * (1.0 - rainStrength);
+		float backG = smoothstep(-0.3, 0.7, dot(vV, sV));
+		float fres = 1.0 - clamp(dot(nF, -vV), 0.0, 1.0);
+		float rimG = celBandSoft(smoothstep(0.45, 0.95, fres), 2, 0.6) * mix(0.35, 1.0, backG) * gold * lm.y;
+		col += vec3(1.0, 0.66, 0.30) * clamp(rimG * GOLDEN_RIM_STRENGTH, 0.0, 1.5) * 0.34;
+	}
+#endif
 	outColor = vec4(clamp(col, 0.0, 4.0), albedo.a);
 	outFlag = vec4(0.0, clamp(pool, 0.0, 1.0), 0.0, 1.0);
 #ifdef FLAT_NORMAL
