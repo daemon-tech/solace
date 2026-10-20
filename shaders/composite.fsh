@@ -1023,7 +1023,10 @@ void main() {
 	if (isEyeInWater == 0) {
 		vec3 upH = safeNormalize(upPosition, vec3(0, 1, 0));
 		float hh = dot(vdir, upH);
-		float hzW = sky ? (1.0 - smoothstep(0.0, 0.07, abs(hh))) * 0.55 : (water ? pow(smoothstep(24.0, far * 0.8, lin), 1.5) * 0.65 : 0.0);
+		// sky side: a wider, softer fade (no pale stripe); far land gets the same haze so the band
+		// continues across the world edge instead of sitting as a flat strip above the terrain
+		float skyW = 1.0 - smoothstep(0.0, 0.13, abs(hh)); skyW *= skyW;
+		float hzW = sky ? skyW * 0.42 : (water ? pow(smoothstep(24.0, far * 0.8, lin), 1.5) * 0.65 : pow(smoothstep(far * 0.45, far * 0.95, lin), 1.5) * 0.42);
 		vec3 hzC = mix(fogSky, vec3(0.97, 0.99, 1.0), 0.6);
 		col = mix(col, hzC, hzW * HORIZON_HAZE * mix(0.25, 1.0, dayG) * (1.0 - rainStrength * 0.5));
 	}
