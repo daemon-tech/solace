@@ -3,6 +3,12 @@
 Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All Rights Reserved.
 All builds tested in the real client with screenshots.
 
+## 0.31-dev
+
+### Features
+- **Clearer settings menu**: the main page now holds the key sliders (look, saturation, clouds, fog, water, glow, shadows, field waves) plus clear categories. Crowded pages are split into sub-pages (for example Sky > Clouds / Fog & Haze / Sun, Moon & Night / Weather), fine-tuning lives in Advanced pages, and every option has a short name and a tooltip. Defaults and look are unchanged.
+- **Golden Rim** option now shows up in the menu correctly.
+
 ## 0.30-dev
 
 ### Features

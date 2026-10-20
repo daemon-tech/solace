@@ -381,7 +381,8 @@ void main() {
 	}
 	lb = lbReal;
 	vec3 col = mix(cOut[0], cOut[1], lb);
-#if defined ENTITY_PASS && defined GOLDEN_RIM
+#ifdef GOLDEN_RIM
+#ifdef ENTITY_PASS
 	// golden-hour rim: at sunrise and sunset, characters seen against the low sun get a soft warm
 	// fringe along their silhouette (wide smooth falloff, two soft bands, never a hard white line)
 	{
@@ -399,6 +400,7 @@ void main() {
 		float rimG = celBandSoft(smoothstep(0.45, 0.95, fres), 2, 0.6) * mix(0.35, 1.0, backG) * gold * lm.y;
 		col += vec3(1.0, 0.66, 0.30) * clamp(rimG * GOLDEN_RIM_STRENGTH, 0.0, 1.5) * 0.34;
 	}
+#endif
 #endif
 #if defined ENTITY_PASS && CHAR_RIM > 0
 	// character rim: all day, a soft light fringe along the silhouette so mobs and players stand
