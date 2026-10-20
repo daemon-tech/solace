@@ -1036,7 +1036,7 @@ void main() {
 #endif
 	// dusk: distant land calms into the evening air (less red/green texel contrast on far cliffs)
 	if (!sky && !water && isEyeInWater == 0) {
-		float dfK = smoothstep(40.0, 150.0, lin) * duskG * (1.0 - rainStrength);
+		float dfK = mix(0.35, 1.0, smoothstep(40.0, 150.0, lin)) * smoothstep(6.0, 16.0, lin) * duskG * (1.0 - rainStrength);
 		vec3 calmC = mix(vec3(luma(col)), col, 0.55) * mix(vec3(1.0), fogSky / max(luma(fogSky), 1e-3), 0.25);
 		col = mix(col, calmC, dfK * 0.5);
 	}
