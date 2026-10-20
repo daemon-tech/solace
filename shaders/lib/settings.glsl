@@ -87,6 +87,8 @@ const float sunPathRotation = -25.0;
 #define SKY_SUN_GLOW 0.5 // [0.0 0.25 0.5 1.0 1.5]
 #define DUSK_SKY 1.0 // [0.5 0.75 1.0]
 #define FOG_SKY_MATCH 0.8 // [0.0 0.4 0.6 0.8 1.0] fog takes the sky horizon colour
+#define VALLEY_FOG 0.45 // [0.0 0.2 0.35 0.45 0.6 0.8] calm low-lying fog layer in valleys and over rivers
+#define VALLEY_FOG_HEIGHT 70.0 // [64.0 67.0 70.0 74.0 80.0] top of the valley fog layer (world height)
 #define MORNING_MIST 0.6 // [0.0 0.3 0.6 0.9] low ground mist at sunrise and in swamps
 #define BIOME_FOG 1.0 // [0.0 0.5 1.0 1.5] denser fog in swamps, dark forests, cold biomes
 #define WATER_CLARITY 1.0 // [0.0 0.5 1.0 1.5] clearer, paler shallows
@@ -176,3 +178,6 @@ const float sunPathRotation = -25.0;
 #define RIM_LIGHT // soft bright fringe on silhouettes, mainly against the sun or moon
 #define RIM_STRENGTH 0.6 // [0.3 0.6 1.0 1.5]
 #define RIM_WIDTH 1.0 // [0.6 1.0 1.4]
+
+#ifdef CLOUD_LAYERS
+#endif

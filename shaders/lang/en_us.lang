@@ -247,3 +247,7 @@ option.RIM_STRENGTH=Rim Light Strength
 option.RIM_STRENGTH.comment=How visible the rim light is. The default is kept subtle.
 option.RIM_WIDTH=Rim Light Width
 option.RIM_WIDTH.comment=How wide the soft fringe is.
+option.VALLEY_FOG=Valley Fog
+option.VALLEY_FOG.comment=Calm low-lying fog layer that pools in valleys and over rivers.
+option.VALLEY_FOG_HEIGHT=Valley Fog Height
+option.VALLEY_FOG_HEIGHT.comment=Top of the valley fog layer (world height).

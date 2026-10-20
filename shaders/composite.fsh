@@ -663,6 +663,25 @@ void main() {
 		vec3 mc = mix(fogSky, vec3(1.0), 0.15);
 		col = mix(col, mc, clamp(m, 0.0, 0.5) * (water ? 0.4 : 1.0));
 	}
+#ifdef VALLEY_FOG
+	// valley fog: a calm, low-lying layer below VALLEY_FOG_HEIGHT that pools in valleys and over rivers all day.
+	// Analytic slab: only the part of the view ray below the layer top gathers fog, thicker deeper down,
+	// so hills rise out of it and looking down into a valley reads layered. Soft bands, no noise.
+	if (isEyeInWater == 0 && d0 < 1.0 && cave < 0.5) {
+		float Ht = VALLEY_FOG_HEIGHT;
+		float cY = cameraPosition.y;
+		float lo = min(cY, wY), hi = max(cY, wY);
+		float inside = clamp((Ht - lo) / max(hi - lo, 0.01), 0.0, 1.0); // share of the ray below the top
+		if (hi - lo < 0.01) inside = step(lo, Ht);
+		float seg = lin * inside;
+		float depthB = clamp((Ht - 0.5 * (lo + min(hi, Ht))) / 10.0, 0.0, 1.0); // denser near the valley floor
+		float vf = 1.0 - exp(-seg * 0.030 * (0.35 + depthB));
+		vf *= smoothstep(10.0, 40.0, lin) * (1.0 - smoothstep(far * 0.85, far, lin) * 0.5);
+		vf = celBandSoft(clamp(vf, 0.0, 1.0), 4, 0.5);
+		vec3 vc = mix(mix(fogSky, vec3(0.93, 0.95, 0.98), 0.35), vec3(0.16, 0.20, 0.36), 1.0 - dayFactor(sunPosition, upPosition));
+		col = mix(col, vc, vf * VALLEY_FOG * (1.0 - rainStrength * 0.5) * (water ? 0.6 : 1.0));
+	}
+#endif
 #ifdef OUTLINES
 #if EDGE_STYLE > 0
 	// no ink underwater (avoids dark rings around bubbles/particles)
