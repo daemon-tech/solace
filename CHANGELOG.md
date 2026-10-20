@@ -10,6 +10,7 @@ All builds tested in the real client with screenshots.
 - **Low maps**: valley fog and morning mist follow the visible ground on maps whose land sits far below sea level, instead of burying the whole landscape.
 - **Wind lines**: more wind lines are in view at once, spread over a wider patch around you.
 - **Colour**: overall saturation and vibrance are a little lower by default, for a calmer look.
+- **Backlit foliage**: at sunrise and sunset, grass and leaves seen against the low sun get a soft warm glow.
 
 ## 0.31
 
