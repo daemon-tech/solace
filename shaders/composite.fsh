@@ -1231,7 +1231,7 @@ void main() {
 			for (int k = 0; k < 9; k++) {
 				vec2 cell = cc + vec2(float(k % 3) - 1.0, float(k / 3) - 1.0);
 				float hc = hash12(cell * 1.31 + 0.7);
-				float cyc = 6.5 + 2.0 * hc;
+				float cyc = 6.0 + 1.5 * hc;
 				float tt = frameTimeCounter / cyc + hc * 7.0;
 				float id = floor(tt), lt = fract(tt) * cyc;   // seconds into this streak's life
 				if (lt > 6.0) continue;                          // quiet gap between streaks
@@ -1241,7 +1241,7 @@ void main() {
 				float life = smoothstep(0.0, 0.8, lt) * (1.0 - smoothstep(4.4, 6.0, lt));
 				// ride the gusts: a line only shows while a gust front is passing under it, so the grass
 				// below visibly bends and brightens with it
-				life *= smoothstep(0.02, 0.25, windGust((base + wd * 5.0).xz, frameTimeCounter));
+				life *= 0.35 + 0.65 * smoothstep(0.0, 0.2, windGust((base + wd * 5.0).xz, frameTimeCounter)); // brightest on a gust, faint between
 				float head = clamp(lt / 3.4, 0.0, 1.0) * 1.35;   // line draws itself in
 				float L = 8.0 + 4.0 * h2, R = 0.6 + 0.3 * h1;
 				vec2 prevP = vec2(0.0); float prevZ = 0.0, prevS = 0.0; bool prevOK = false;
@@ -1261,11 +1261,11 @@ void main() {
 						float tq = clamp(dot(px - prevP, ab) / max(dot(ab, ab), 1e-4), 0.0, 1.0);
 						float dpx = length(px - prevP - ab * tq);
 						float zz = mix(prevZ, zq, tq), ss = mix(prevS, sp, tq);
-						float vis = step(ss, head) * step(head - 0.55, ss);                       // visible window
-						float taper = smoothstep(head - 0.55, head - 0.3, ss) * (1.0 - smoothstep(head - 0.08, head + 0.001, ss));
+						float vis = step(ss, head) * step(head - 0.75, ss);                       // visible window
+						float taper = smoothstep(head - 0.75, head - 0.4, ss) * (1.0 - smoothstep(head - 0.08, head + 0.001, ss));
 						taper *= smoothstep(0.0, 0.08, ss) * (1.0 - smoothstep(0.92, 1.0, ss));
-						float w = max(0.05 * viewHeight / max(zz, 1.0), 1.1);                   // thin, a touch thicker up close
-						float a = (1.0 - smoothstep(w * 0.45, w * 0.45 + 1.1, dpx)) * vis * taper;
+						float w = max(0.075 * viewHeight / max(zz, 1.0), 1.6);                  // soft ribbon, a touch thicker up close
+						float a = ((1.0 - smoothstep(w * 0.4, w * 0.4 + 1.8, dpx)) + 0.22 * (1.0 - smoothstep(w * 0.5, w * 2.2 + 2.0, dpx))) * vis * taper; // core + faint soft glow
 						a *= step(zz, sceneZ + 0.3) * (1.0 - smoothstep(26.0, 40.0, zz));
 						line = max(line, a * life);
 					}
@@ -1273,7 +1273,7 @@ void main() {
 				}
 			}
 			vec3 wsC = mix(vec3(0.93, 0.96, 1.0), vec3(1.0, 0.93, 0.82), 1.0 - smoothstep(0.25, 0.6, dayG));
-			col = mix(col, wsC, clamp(line, 0.0, 1.0) * 0.7 * wsK);
+			col = mix(col, wsC, clamp(line, 0.0, 1.0) * 0.82 * wsK);
 		}
 	}
 #endif
