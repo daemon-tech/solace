@@ -1049,21 +1049,32 @@ void main() {
 			float skyEye = smoothstep(0.25, 0.85, float(eyeBrightnessSmooth.y) / 240.0);
 			vec3 dMul = mix(vec3(1.30, 0.92, 0.55), vec3(1.14, 0.98, 0.84), mornT);
 			vec3 dAdd = mix(vec3(0.07, 0.03, 0.0), vec3(0.035, 0.018, 0.022), mornT);
-			col = mix(col, col * dMul + dAdd, dusk * DUSK_TINT * mix(0.70, 1.0, skyEye) * (1.0 - cave));
+			col = mix(col, col * dMul + dAdd, dusk * DUSK_TINT * mix(0.30, 1.0, skyEye) * (1.0 - cave));
 #ifdef TIME_GRADING
 			// per time of day: sunrise (soft pink-gold), noon (clean, slightly crisper), blue hour (cool), night handled below
 			float morn = (sunAngle > 0.75 || sunAngle < 0.25) ? 1.0 : 0.0;
 			float rise = morn * clamp(1.0 - abs(sunH - 0.08) * 6.0, 0.0, 1.0);
 			float noon = smoothstep(0.55, 0.9, sunH);
 			float blueH = clamp(1.0 - abs(sunH + 0.10) * 9.0, 0.0, 1.0);
-			col = mix(col, col * vec3(1.08, 0.97, 0.98) + vec3(0.03, 0.01, 0.02), rise * TIME_GRADING_STRENGTH);
+			// sunrise pink and blue-hour cool are sky light too: in pits, dug holes and caves they stacked
+			// on the cool shade ambient into a lavender cast, so they fade with the eye's sky view
+			float tgSky = mix(0.15, 1.0, skyEye) * (1.0 - cave);
+			col = mix(col, col * vec3(1.08, 0.97, 0.98) + vec3(0.03, 0.01, 0.02), rise * TIME_GRADING_STRENGTH * tgSky);
 			col = mix(col, mix(vec3(luma(col)), col, 1.05) * vec3(0.99, 1.0, 1.02), noon * TIME_GRADING_STRENGTH);
-			col = mix(col, col * vec3(0.80, 0.90, 1.22) + vec3(0.0, 0.01, 0.04), blueH * TIME_GRADING_STRENGTH);
+			col = mix(col, col * vec3(0.80, 0.90, 1.22) + vec3(0.0, 0.01, 0.04), blueH * TIME_GRADING_STRENGTH * tgSky);
 #endif
 			// night: hue-shift towards indigo but keep warm torch pools warm
 			float warmPix = clamp(texture(colortex2, uv).g * 1.5, 0.0, 1.0);
 			vec3 ind = mix(vec3(luma(col)) * vec3(0.62, 0.70, 1.45), col * vec3(0.70, 0.95, 1.30), 0.5) + vec3(0.03, 0.03, 0.08);
 			col = mix(col, ind, night * SCENE_TINT * (1.0 - warmPix));
+			// twilight white balance where the eye sees little sky (pits, dug holes, caves): the still-indigo
+			// dawn/dusk ambient read lavender on grey stone there. Neutralise its hue, keep its brightness.
+			{
+				float tw = clamp(1.0 - abs(sunH) * 5.0, 0.0, 1.0) * mix(1.0, 0.3, skyEye * skyEye);
+				vec3 neutral = vec3(luma(col)) * vec3(1.0, 0.99, 1.0);
+				float warmP = clamp(texture(colortex2, uv).g * 1.5, 0.0, 1.0); // torch pools keep their warmth
+				col = mix(col, mix(neutral, col, 0.25), tw * 0.85 * (1.0 - warmP));
+			}
 		}
 	}
 #ifdef CAUSTICS

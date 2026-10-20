@@ -175,6 +175,13 @@ void main() {
 	// at dusk the sun is low: lift ambient so foliage doesn't go black
 	float duskLift = 1.0 + 1.2 * clamp(1.0 - abs(dot(safeNormalize(sunPosition, up), up)) * 5.0, 0.0, 1.0);
 	vec3 ambient = duskLift * mix(ambNight, ambDay, day) * mix(0.55, 1.0, celBand(lm.y, 3)) * AMBIENT_BOOST;
+	// twilight in pits, dug holes and caves: the lifted dawn/dusk ambient is still mostly the indigo night tone,
+	// which turns grey stone lavender where little sky reaches. Less sky light -> more neutral ambient hue.
+	{
+		float twA = clamp(1.0 - abs(dot(safeNormalize(sunPosition, up), up)) * 5.0, 0.0, 1.0) * (1.0 - smoothstep(0.55, 0.95, lm.y));
+		vec3 ambN = vec3(dot(ambient, vec3(0.3333))) * vec3(0.96, 0.98, 1.06);
+		ambient = mix(ambient, ambN, twA * 0.8);
+	}
 	vec3 sunCol = mix(sunNight, sunDay, day);
 #ifdef DIM_NETHER
 	// Nether: warm ember ambient, no sun; block light does the rest
