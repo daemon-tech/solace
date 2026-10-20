@@ -467,6 +467,19 @@ void main() {
 				}
 			}
 #endif
+#if DUSK_WATER_GLOW > 0
+			{
+				// dusk water glow: a broad, soft warm wash on the water toward the low sun, fading smoothly
+				// to the sides (calm and wide, no sparkle), sunrise leans peach-rose
+				vec3 LsD = safeNormalize(sunPosition, upV);
+				float lowD = clamp(1.0 - abs(dot(LsD, upV)) * 3.0, 0.0, 1.0) * step(-0.08, dot(LsD, upV));
+				vec3 RwD = reflect(V, upV);
+				float lobe = pow(max(dot(RwD, LsD), 0.0), 3.0);
+				float kD = smoothstep(0.0, 1.0, lobe) * lowD * (1.0 - rainStrength) * float(DUSK_WATER_GLOW) * 0.18;
+				vec3 dC = mix(vec3(1.0, 0.70, 0.42), vec3(1.0, 0.76, 0.74), ((sunAngle > 0.75 || sunAngle < 0.25) ? 1.0 : 0.0));
+				col = mix(col, col * 0.6 + dC * 0.55, clamp(kD, 0.0, 0.6));
+			}
+#endif
 #ifdef WATER_SUN_GLINT
 			// banded sun glint path on the surface (uses the full wave normal)
 			vec3 Lsun = safeNormalize(sunPosition, upV);

@@ -179,6 +179,7 @@ const float sunPathRotation = -25.0;
 #define WATERFALL_BLOBS // big stylized foam blobs on falling water
 #define GLOW_SHALLOWS // glowing cyan shallows with white wave bands (also at night)
 #define GLOW_SHALLOWS_AMT 1.0 // [0.0 0.5 1.0 1.5]
+#define DUSK_WATER_GLOW 2 // [0 1 2 3 4] broad soft warm light on water toward the low sun
 #define SUNSET_STREAK // long sun streak on water at sunrise/sunset
 #define LIGHT_HALO 0.6 // [0.0 0.3 0.6 1.0] soft glow around lanterns, torches and lava
 #define MOON_HALO 1.0 // [0.0 0.5 1.0 1.5] soft silver glow and faint ring around the moon
