@@ -17,6 +17,8 @@ All builds tested in the real client with screenshots.
 ### Clouds
 - **Calmer horizon:** the low cloud layer now melts softly into the sky far away and thins out just above the horizon, so the distance no longer looks busy.
 
+- **Warmer dusk cloud undersides:** at sunset the shaded sides of clouds are a warm coral instead of grey-mauve.
+
 ### Characters
 - **Golden Hour Rim** (Cel Lighting > Golden Hour Rim): at sunrise and sunset, mobs and players get a soft warm fringe on their outline and top faces, strongest when they stand against the low sun.
 - **Soft Characters** (Colour > Soft Characters): mobs and players get soft two-tone cartoon shading with a gently wrapped light and a brighter shade side, so they never look muddy.

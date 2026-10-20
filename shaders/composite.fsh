@@ -967,7 +967,7 @@ void main() {
 		vec3 cShade = mix(vec3(0.13, 0.14, 0.32), vec3(0.72, 0.80, 0.94), cDay);
 		float cMorn = ((sunAngle > 0.75 || sunAngle < 0.25) ? 1.0 : 0.0);
 		cLit = mix(cLit, mix(vec3(1.0, 0.80, 0.55), vec3(1.0, 0.84, 0.80), cMorn), cDusk * 0.75); // sunrise: peach-rose, not gold
-		cShade = mix(cShade, mix(vec3(0.80, 0.56, 0.62), vec3(0.76, 0.60, 0.70), cMorn), cDusk * 0.6);
+		cShade = mix(cShade, mix(vec3(0.92, 0.56, 0.46), vec3(0.86, 0.60, 0.64), cMorn), cDusk * 0.7); // warm coral undersides, never pale grey-mauve
 		cLit = mix(cLit, vec3(luma(cLit)) * 0.75, rainStrength * 0.6);
 		cShade = mix(cShade, vec3(luma(cShade)) * 0.75, rainStrength * 0.6);
 		float toSun = max(dot(rd, sunW), 0.0);

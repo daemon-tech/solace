@@ -27,7 +27,7 @@ void main() {
 	vec3 lit = mix(vec3(0.20, 0.22, 0.46), vec3(1.0, 1.0, 0.98), day);
 	vec3 shade = mix(vec3(0.13, 0.14, 0.32), vec3(0.72, 0.80, 0.94), day);
 	lit = mix(lit, (sunAngle > 0.75 || sunAngle < 0.25) ? vec3(1.0, 0.84, 0.78) : vec3(1.0, 0.80, 0.55), dusk * 0.75); // sunrise: peach-rose
-	shade = mix(shade, vec3(0.80, 0.56, 0.62), dusk * 0.6);
+	shade = mix(shade, (sunAngle > 0.75 || sunAngle < 0.25) ? vec3(0.86, 0.60, 0.64) : vec3(0.92, 0.56, 0.46), dusk * 0.7); // warm coral undersides
 	float k = ny > 0.5 ? 1.0 : (ny < -0.5 ? 0.0 : celBand(sl, 3) * 0.8 + 0.1);
 	float dist = length(viewPosC);
 #ifdef CLOUD_SMOOTH
