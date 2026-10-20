@@ -641,6 +641,10 @@ void main() {
 	vec3 vdir = safeNormalize(vpos, vec3(0, 0, -1));
 	vec3 fogSky = celHorizon(vdir, sunPosition, upPosition, rainStrength);
 	float wY = (mat3(gbufferModelViewInverse) * vpos).y + cameraPosition.y;
+	// ground reference for the low layers: sea level in normal worlds; on maps whose land sits far below
+	// sea level the layers follow the viewer instead (stay below the eye), so low valleys do not wash out
+	float lowMapK = smoothstep(56.0, 40.0, cameraPosition.y);
+	float gRef = mix(63.0, min(63.0, cameraPosition.y - 14.0), lowMapK);
 	float sunHf = dot(safeNormalize(sunPosition, safeNormalize(upPosition, vec3(0,1,0))), safeNormalize(upPosition, vec3(0,1,0)));
 	float morningW = ((sunAngle < 0.25 || sunAngle > 0.75) ? 1.0 : 0.0) * clamp(1.0 - abs(sunHf - 0.05) * 4.0, 0.0, 1.0);
 	float bFog = clamp(bHaze * BIOME_MOOD * BIOME_FOG, 0.0, 1.0);
@@ -716,7 +720,7 @@ void main() {
 		float amt = MORNING_MIST * max(morningW, bSwamp * BIOME_MOOD * 0.35);
 		// soft and smooth: a gentle low veil that thins with height, slowly drifting in broad swells (no bands, no noise),
 		// lit warm peach toward the rising sun and cool white away from it
-		float hgt = exp(-max(wY - 63.0, 0.0) / 6.0);
+		float hgt = exp(-max(wY - gRef, 0.0) / 6.0);
 		vec3 wp = mat3(gbufferModelViewInverse) * vpos + cameraPosition;
 		float swell = 0.80 + 0.20 * sin(wp.x * 0.045 + frameTimeCounter * 0.05) * sin(wp.z * 0.038 - frameTimeCounter * 0.04);
 		float m = smoothstep(0.0, 1.0, smoothstep(4.0, 64.0, lin) * hgt) * swell * amt;
@@ -730,7 +734,7 @@ void main() {
 	// Analytic slab: only the part of the view ray below the layer top gathers fog, thicker deeper down,
 	// so hills rise out of it and looking down into a valley reads layered. Soft bands, no noise.
 	if (isEyeInWater == 0 && d0 < 1.0 && cave < 0.5) {
-		float Ht = VALLEY_FOG_HEIGHT;
+		float Ht = VALLEY_FOG_HEIGHT - 63.0 + gRef;
 		float cY = cameraPosition.y;
 		float lo = min(cY, wY), hi = max(cY, wY);
 		float inside = clamp((Ht - lo) / max(hi - lo, 0.01), 0.0, 1.0); // share of the ray below the top
