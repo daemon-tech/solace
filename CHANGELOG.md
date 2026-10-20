@@ -3,31 +3,39 @@
 Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All Rights Reserved.
 All builds tested in the real client with screenshots.
 
-## 0.31-dev
+## 0.31
 
-### Features
-- **Dusk water glow**: at sunrise and sunset a broad, soft warm light now spreads over the water toward the low sun, calm and wide with no sparkle (Water > Surface > Dusk Water Glow, 0 turns it off).
-- **Soft stars**: night stars are now small soft round points with a faint glow, a few slightly warm, that breathe very slowly instead of hard square dots, with a few more along the Milky Way (Sky > Sun & Moon > Soft Stars, 0 brings back the classic dots).
-- **Soft morning mist**: the low sunrise mist over grass is now one smooth veil instead of stepped bands. It thins with height, swells gently and slowly, and glows a warm peach toward the rising sun (Fog > Morning Mist).
-- **Cloud shadows**: the shadows of drifting clouds are a little deeper with wider, softer edges, so big calm shade patches now slowly roll across fields and forests.
-- **Rainbow**: after rain, while the world is still wet, a soft pastel rainbow arcs across the sky opposite the sun (Weather > Rainbow, 0 turns it off).
-- **Wind fronts**: gusts now travel as long, coherent fronts across the land. Grass leans further as each front passes, and tree leaves lean and stir with the same fronts, so a breeze reads clearly as it rolls over fields and forests.
-- **Wind lines**: the white wind lines are a little wider and softer with a faint glow, stay visible longer as they draw in, and come a bit more often. They are brightest while a gust front passes and faint in between.
-- **Pollen on the wind**: drifting pollen motes now surge downwind and lift a little as a gust front passes, then settle again.
-- **Turning breeze**: the wind now slowly swings back and forth by about 35 degrees over roughly ten minutes. Grass, leaves and wind lines follow the new direction while the gust fronts blend smoothly from one heading to the other.
-- **Layered ridges**: far land now fades into the blue haze in a few soft steps, so ridge lines behind each other read as calm stacked silhouettes (Fog > Layered Ridges, 0 turns it off).
-- **Warm light, cool shade**: sunlit faces now lean a little warm and shaded sides a soft sky-blue, a bit stronger in the morning and evening, for a calmer painted light contrast (Lighting > Advanced > Warm Light, Cool Shade, 0 turns it off).
-- **Moon halo**: on clear nights the moon now sits in a calm silver-blue glow with a faint wide ring around it. Hidden in rain and behind terrain (Sky > Sun, Moon & Night > Moon Halo, 0 turns it off).
-- **Drifting pollen**: on sunny days in meadows and forests a few soft warm motes now float slowly on the breeze near the camera, anchored in the world and fading gently in and out. Hidden in rain, at night and underwater (Foliage > Drifting Pollen, 0 turns them off).
-- **Painted water**: water is a brighter, clearer turquoise with a softer pale rim, and the thin hard crest lines become broad, slow, soft brush-stroke highlights near the camera. Far water stays a calm mirror (Water > Painted Water + strength slider).
-- **Sunbeams through trees**: when the sun sits behind a broken canopy, long soft warm beams now fan out of the gaps in the leaves, strongest in the morning and evening (Lighting > Sunbeams Through Trees, 0 turns them off).
-- **Wind lines ride the gusts**: wind lines now only appear while a gust is rolling through, and they travel at the same pace as the wave bending the grass below. Gust fronts move a little slower and calmer overall.
-- **Clearer field waves**: the light bands rolling over meadows are broader, slower and easier to see, with a soft shade between crests (default raised, new strongest step).
-- **Wind lines**: on clear days a few thin, soft white lines now drift through the air with the breeze, draw themselves in, curl into a small loop and fade out. They stay anchored in the world, hide behind terrain and fade at dusk and in rain (Foliage > Wind Lines, 0 turns them off).
-- **Wet ground in rain**: open ground slowly turns a little darker and richer while it rains, with a soft sheen at low angles and calm puddle patches on flat spots that mirror the grey sky. Dries again after the rain (Weather > Wetness Strength).
+The big wind and atmosphere update.
+
+### Wind
+- **Gust fronts**: gusts now roll across the land as long, coherent fronts. Grass leans further as each front passes, and tree leaves lean and stir with the same fronts, so a breeze reads clearly over fields and forests.
+- **Wind lines**: soft white wind lines drift with the breeze, draw themselves in, curl into a small loop and fade out. They are synced to the gusts, travelling at the same pace as the wave bending the grass below (Foliage > Wind Lines).
+- **Pollen on the wind**: on sunny days a few soft warm motes float near the camera and surge downwind as a gust front passes, then settle again (Foliage > Drifting Pollen).
+- **Turning breeze**: the wind slowly swings back and forth by about 35 degrees over roughly ten minutes, and grass, leaves, wind lines and gust fronts follow smoothly.
+
+### Weather
 - **No more rain streaks on the screen**: rain is only the falling drops in the world now; night rain keeps its calm blue mood.
-- **Puffy clouds**: the low cloud layer now forms big, rounded, soft puffs instead of block cells (new option, Sky > Clouds > Puffy Clouds).
-- **Clearer settings menu**: the main page now holds the key sliders (look, saturation, clouds, fog, water, glow, shadows, field waves) plus clear categories. Crowded pages are split into sub-pages (for example Sky > Clouds / Fog & Haze / Sun, Moon & Night / Weather), fine-tuning lives in Advanced pages, and every option has a short name and a tooltip. Defaults and look are unchanged.
+- **Wet ground in rain**: open ground slowly turns darker and richer while it rains, with a soft sheen at low angles and calm puddle patches on flat spots. Dries again afterwards (Weather > Wetness Strength).
+- **Rainbow**: after rain, while the world is still wet, a soft pastel rainbow arcs across the sky opposite the sun (Weather > Rainbow).
+
+### Atmosphere & light
+- **Sunbeams through trees**: long soft warm beams fan out of gaps in broken canopies, strongest in the morning and evening (Lighting > Sunbeams Through Trees).
+- **Warm light, cool shade**: sunlit faces lean a little warm and shaded sides a soft sky-blue, stronger at dawn and dusk (Lighting > Advanced > Warm Light, Cool Shade).
+- **Layered ridges**: far land fades into the blue haze in a few soft steps, so ridge lines read as calm stacked silhouettes (Fog > Layered Ridges).
+- **Soft morning mist**: the low sunrise mist is one smooth veil that thins with height, swells slowly and glows peach toward the rising sun (Fog > Morning Mist).
+- **Dusk water glow**: at sunrise and sunset a broad, soft warm light spreads over the water toward the low sun (Water > Surface > Dusk Water Glow).
+- **Painted water**: brighter, clearer turquoise with a softer pale rim and broad, slow brush-stroke highlights instead of thin hard crest lines (Water > Painted Water).
+- **Cloud shadows**: drifting cloud shadows are a little deeper with wider, softer edges, so big calm shade patches roll across the land.
+- **Puffy clouds**: the low cloud layer forms big, rounded, soft puffs instead of block cells (Sky > Clouds > Puffy Clouds).
+- **Clearer field waves**: the light bands rolling over meadows are broader, slower and easier to see (default raised, new strongest step).
+
+### Night sky
+- **Soft stars**: stars are small soft round points with a faint glow that breathe very slowly, instead of hard square dots (Sky > Sun, Moon & Night > Soft Stars).
+- **Richer Milky Way**: more stars gather along the Milky Way band.
+- **Moon halo**: on clear nights the moon sits in a calm silver-blue glow with a faint wide ring (Sky > Sun, Moon & Night > Moon Halo).
+
+### Menu
+- **Reorganised settings**: the main page holds the key sliders plus clear categories, crowded pages are split into sub-pages (for example Sky > Clouds / Fog & Haze / Sun, Moon & Night / Weather), fine-tuning lives in Advanced pages, and every option has a short name and a tooltip. Defaults are unchanged.
 - **Golden Rim** option now shows up in the menu correctly.
 
 ## 0.30-dev
