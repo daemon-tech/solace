@@ -11,6 +11,7 @@ All builds tested in the real client with screenshots.
 - **Soft morning mist**: the low sunrise mist over grass is now one smooth veil instead of stepped bands. It thins with height, swells gently and slowly, and glows a warm peach toward the rising sun (Fog > Morning Mist).
 - **Cloud shadows**: the shadows of drifting clouds are a little deeper with wider, softer edges, so big calm shade patches now slowly roll across fields and forests.
 - **Rainbow**: after rain, while the world is still wet, a soft pastel rainbow arcs across the sky opposite the sun (Weather > Rainbow, 0 turns it off).
+- **Wind fronts**: gusts now travel as long, coherent fronts across the land. Grass leans further as each front passes, and tree leaves lean and stir with the same fronts, so a breeze reads clearly as it rolls over fields and forests.
 - **Layered ridges**: far land now fades into the blue haze in a few soft steps, so ridge lines behind each other read as calm stacked silhouettes (Fog > Layered Ridges, 0 turns it off).
 - **Warm light, cool shade**: sunlit faces now lean a little warm and shaded sides a soft sky-blue, a bit stronger in the morning and evening, for a calmer painted light contrast (Lighting > Advanced > Warm Light, Cool Shade, 0 turns it off).
 - **Moon halo**: on clear nights the moon now sits in a calm silver-blue glow with a faint wide ring around it. Hidden in rain and behind terrain (Sky > Sun, Moon & Night > Moon Halo, 0 turns it off).

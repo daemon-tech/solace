@@ -84,9 +84,11 @@ vec2 windDir() { return normalize(vec2(0.8, 0.45)); }
 float windGust(vec2 xz, float t) {
 	vec2 wd = windDir();
 	float front = dot(xz, wd) * 0.08 - t * WIND_SPEED * 0.35; // fronts travel ~4.4 blocks/s (wind lines ride them)
-	float g = sin(front + vnoise(xz * 0.015) * 3.0) * 0.5 + 0.5;
-	g = smoothstep(0.45, 0.95, g);
-	g *= 0.6 + 0.4 * vnoise(xz * 0.03 - wd * t * WIND_SPEED * 0.6);
+	// coherent travelling fronts: long gently curved crests (low phase warp), each front rises softly and trails off
+	float ph = front + vnoise(xz * 0.008) * 1.6;
+	float g = sin(ph) * 0.5 + 0.5;
+	g = smoothstep(0.35, 0.95, g) * (0.85 + 0.15 * sin(ph * 0.5 + 1.3)); // every other front a little stronger
+	g *= 0.75 + 0.25 * vnoise(xz * 0.02 - wd * t * WIND_SPEED * 0.6);
 	return g;
 }
 
@@ -100,12 +102,12 @@ vec2 windOffset(int kind, vec3 wp, float top, float t) {
 #endif
 	if (kind == 1) {
 		float base = sin(t * 2.1 + wp.x * 0.7 + wp.z * 0.5) * 0.05 + sin(t * 4.3 + wp.z * 1.3) * 0.015;
-		vec2 lean = wd * (0.03 + 0.34 * gust) + vec2(base, base * 0.6) * (1.0 + gust);
+		vec2 lean = wd * (0.03 + 0.48 * gust) + vec2(base, base * 0.6) * (1.0 + gust);
 		return lean * top * WAVING_STRENGTH;
 	}
 	vec2 sway = vec2(sin(t * 1.4 + wp.x * 0.45 + wp.z * 0.20), cos(t * 1.1 + wp.z * 0.40 + wp.x * 0.15)) * 0.045
 	          + vec2(sin(t * 3.7 + wp.y * 1.3 + wp.x), sin(t * 3.1 + wp.z * 1.1)) * 0.012;
-	return (sway * (1.0 + 0.8 * gust) + wd * 0.03 * gust) * WAVING_STRENGTH;
+	return (sway * (1.0 + 1.3 * gust) + wd * 0.07 * gust) * WAVING_STRENGTH; // leaves lean and stir with each front
 }
 
 // rolling ocean swell (WATER_ROLL): 0..1, 1 = crest; long waves travelling along one direction
