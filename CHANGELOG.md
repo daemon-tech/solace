@@ -8,7 +8,7 @@ All builds tested in the real client with screenshots.
 ### Changes
 - **Removed pollen motes**: the drifting pollen and its gust drift are gone, along with the Drifting Pollen option.
 - **Low maps**: valley fog and morning mist follow the visible ground on maps whose land sits far below sea level, instead of burying the whole landscape.
-- **Wind lines**: more wind lines are in view at once, spread over a wider patch around you.
+- **Wind lines**: more wind lines are in view at once; they taper from a thin tail to a soft body, rise and fall gently, show mostly with gusts, take a warm tint at golden hour, stay out of rain and thin out at the centre of the view.
 - **Colour**: overall saturation and vibrance are a little lower by default, for a calmer look.
 - **Backlit foliage**: at sunrise and sunset, grass and leaves seen against the low sun get a soft warm glow.
 - **Caves**: darker where no sky reaches, so torches, lanterns and lava form warm, soft pools of light.

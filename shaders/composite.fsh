@@ -1197,7 +1197,7 @@ void main() {
 	// wind streaks: a few thin soft white lines that drift with the breeze, draw themselves in,
 	// curl into a small loop and fade. They ride the same gust fronts that bend the grass.
 	{
-		float wsK = WIND_STREAKS * smoothstep(0.15, 0.4, dayG) * (1.0 - rainStrength * 0.6)
+		float wsK = WIND_STREAKS * smoothstep(0.15, 0.4, dayG) * (1.0 - smoothstep(0.1, 0.5, rainStrength))
 		          * smoothstep(0.6, 0.85, float(eyeBrightnessSmooth.y) / 240.0);
 		if (wsK > 0.01 && isEyeInWater == 0) {
 			vec2 wd2 = windDirT(frameTimeCounter);
@@ -1217,11 +1217,12 @@ void main() {
 				if (lt > 6.0) continue;                          // quiet gap between streaks
 				float h1 = hash12(cell + vec2(id, 7.3)), h2 = hash12(cell.yx + vec2(3.1, id + 11.0)), h3 = hash12(cell * 0.7 + vec2(id * 1.7, 5.0));
 				vec3 base = vec3((cell.x + h1) * 9.0, cameraPosition.y + 1.5 + 5.0 * h3, (cell.y + h2) * 9.0) - wd * 6.0;
+				base.y += 0.35 * sin(lt * 0.7 + h1 * 6.2832);         // slow, gentle rise and fall while it drifts
 				base += wd * (lt * WIND_SPEED * 4.375);           // drifts downwind at the same speed as the grass gust fronts
 				float life = smoothstep(0.0, 0.8, lt) * (1.0 - smoothstep(4.4, 6.0, lt));
 				// ride the gusts: a line only shows while a gust front is passing under it, so the grass
 				// below visibly bends and brightens with it
-				life *= 0.35 + 0.65 * smoothstep(0.0, 0.2, windGust((base + wd * 5.0).xz, frameTimeCounter)); // brightest on a gust, faint between
+				life *= 0.15 + 0.85 * smoothstep(0.0, 0.2, windGust((base + wd * 5.0).xz, frameTimeCounter)); // brightest on a gust, faint between
 				float head = clamp(lt / 3.4, 0.0, 1.0) * 1.35;   // line draws itself in
 				float L = 8.0 + 4.0 * h2, R = 0.6 + 0.3 * h1;
 				vec2 prevP = vec2(0.0); float prevZ = 0.0, prevS = 0.0; bool prevOK = false;
@@ -1244,7 +1245,9 @@ void main() {
 						float vis = step(ss, head) * step(head - 0.75, ss);                       // visible window
 						float taper = smoothstep(head - 0.75, head - 0.4, ss) * (1.0 - smoothstep(head - 0.08, head + 0.001, ss));
 						taper *= smoothstep(0.0, 0.08, ss) * (1.0 - smoothstep(0.92, 1.0, ss));
-						float w = max(0.075 * viewHeight / max(zz, 1.0), 1.6);                  // soft ribbon, a touch thicker up close
+						// tapered: a thin trailing tail, a soft full body and a fine tip through the curl
+						float wT = mix(0.35, 1.0, smoothstep(head - 0.75, head - 0.35, ss)) * (1.0 - 0.45 * smoothstep(0.7, 1.0, ss));
+						float w = max(0.075 * viewHeight / max(zz, 1.0) * wT, 1.3);                  // soft ribbon, a touch thicker up close
 						float a = ((1.0 - smoothstep(w * 0.4, w * 0.4 + 1.8, dpx)) + 0.22 * (1.0 - smoothstep(w * 0.5, w * 2.2 + 2.0, dpx))) * vis * taper; // core + faint soft glow
 						a *= step(zz, sceneZ + 0.3) * (1.0 - smoothstep(26.0, 40.0, zz));
 						line = max(line, a * life);
@@ -1252,7 +1255,10 @@ void main() {
 					prevP = sq; prevZ = zq; prevS = sp; prevOK = ok;
 				}
 			}
-			vec3 wsC = mix(vec3(0.93, 0.96, 1.0), vec3(1.0, 0.93, 0.82), 1.0 - smoothstep(0.25, 0.6, dayG));
+			// tint: cool white by day, a warm peach glow at golden hour
+			vec3 wsC = mix(vec3(0.93, 0.96, 1.0), vec3(1.0, 0.86, 0.68), 1.0 - smoothstep(0.25, 0.7, dayG));
+			// keep the middle of the view calm: lines thin out softly toward the screen centre
+			line *= mix(0.45, 1.0, smoothstep(0.06, 0.3, length(gl_FragCoord.xy / vec2(viewWidth, viewHeight) - 0.5)));
 			col = mix(col, wsC, clamp(line, 0.0, 1.0) * 0.82 * wsK);
 		}
 	}
