@@ -234,7 +234,8 @@ void main() {
 			float noonK = smoothstep(0.45, 0.85, sH) * (1.0 - rainStrength) * smoothstep(0.5, 0.9, lm.y);
 			float sideK = smoothstep(0.6, 0.95, 1.0 - abs(dot(n, up)));
 			vec3 nw = mat3(gbufferModelViewInverse) * n;
-			lighting += sunDay * (0.16 + 0.14 * abs(nw.x)) * noonK * sideK * (1.0 - lb * 0.5);
+			lighting += sunDay * (0.07 + 0.12 * abs(nw.x)) * noonK * sideK * (1.0 - lb); // only lifts the unlit side: tops stay the brightest face
+			lighting *= 1.0 - 0.08 * noonK * sideK * lb; // lit walls sit one soft step below the sunlit tops
 		}
 	#endif
 		// underwater: kelp/seagrass/floor stay readable (light, not black)

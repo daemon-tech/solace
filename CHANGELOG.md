@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.30-dev
 
 ### Fixes
+- **Noon walls:** sunlit sides sit one soft step below the tops, so block shapes read clearly.
 - **Underwater** fog fades smoothly with depth and turns a calm deep navy at night.
 - **Block sides at noon** get a soft sky light, so walls read as two calm tones instead of one flat shade.
 - **Water at dusk** mirrors a soft rose sky and keeps some teal instead of turning into a flat orange sheet.
