@@ -13,11 +13,11 @@
 #define GROUND_GRADE_STRENGTH 0.75 // [0.3 0.45 0.6 0.75 0.9]
 #define SOFT_GRASS // very gentle soft grass: calmer tops, soft gradients and contact shade
 #define SOFT_GRASS_STRENGTH 1.0 // [0.5 1.0 1.5]
-#define GRASS_SMOOTH 0.3 // [0.0 0.3 0.5 0.7 0.9] low-pass grass top texture detail
+#define GRASS_SMOOTH 0.45 // [0.0 0.3 0.45 0.5 0.7 0.9] low-pass grass top texture detail
 #define TEXTURE_CALM 0.25 // [0.0 0.15 0.25 0.35 0.5] smooth cartoon textures: less harsh texel noise on blocks
 #define FOLIAGE_SMOOTH 0.5 // [0.0 0.35 0.5 0.65 0.85] smooth leaf masses instead of checker noise
 #define HIDE_LEAF_LITTER // leaf litter specks off (smooth even ground)
-#define GRASS_SWAY 0.10 // [0.0 0.05 0.10 0.15]
+#define GRASS_SWAY 0.07 // [0.0 0.05 0.07 0.10 0.15]
 #define GRASS_SWAY_SPEED 1.2 // [0.6 1.2 2.0]
 #define TORCH_STRENGTH 0.9 // [0.5 0.6 0.75 0.9 1.0]
 //#define SOFT_CLOUDS // cloud style: on = painted soft clouds on a sky plane, off = cubic block clouds (default)

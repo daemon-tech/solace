@@ -230,7 +230,7 @@ void main() {
 			float gl = luma(col), lf = gl / max(luma(vec3(0.31, 0.73, 0.25)), 1e-3);
 	#if GRASS_TONE == 1
 			vec3 tone = vec3(0.33, 0.73, 0.27); // warmer, yellow-leaning meadow green
-			vec2 tex = vec2(0.88, 1.06);        // smoother texel contrast
+			vec2 tex = vec2(0.91, 1.04);        // smoother texel contrast (calm, still readable)
 	#else
 			vec3 tone = vec3(0.27, 0.72, 0.38);
 			vec2 tex = vec2(0.82, 1.10);
