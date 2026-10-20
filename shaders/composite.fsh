@@ -714,10 +714,16 @@ void main() {
 	// low ground mist: sunrise everywhere, swamps all day; hugs the ground, never on near water
 	if (isEyeInWater == 0 && d0 < 1.0 && MORNING_MIST > 0.0) {
 		float amt = MORNING_MIST * max(morningW, bSwamp * BIOME_MOOD * 0.35);
-		float hgt = exp(-max(wY - 63.0, 0.0) / 7.0);
-		float m = celBand(smoothstep(6.0, 56.0, lin) * hgt, 4) * amt;
-		vec3 mc = mix(fogSky, vec3(1.0), 0.15);
-		col = mix(col, mc, clamp(m, 0.0, 0.5) * (water ? 0.4 : 1.0));
+		// soft and smooth: a gentle low veil that thins with height, slowly drifting in broad swells (no bands, no noise),
+		// lit warm peach toward the rising sun and cool white away from it
+		float hgt = exp(-max(wY - 63.0, 0.0) / 6.0);
+		vec3 wp = mat3(gbufferModelViewInverse) * vpos + cameraPosition;
+		float swell = 0.80 + 0.20 * sin(wp.x * 0.045 + frameTimeCounter * 0.05) * sin(wp.z * 0.038 - frameTimeCounter * 0.04);
+		float m = smoothstep(0.0, 1.0, smoothstep(4.0, 64.0, lin) * hgt) * swell * amt;
+		vec3 Vm = safeNormalize(vpos, vec3(0, 0, -1));
+		float toSun = clamp(dot(Vm, safeNormalize(sunPosition, vec3(0, 1, 0))) * 0.5 + 0.5, 0.0, 1.0);
+		vec3 mc = mix(mix(fogSky, vec3(0.94, 0.96, 1.0), 0.35), vec3(1.0, 0.88, 0.80), toSun * toSun * morningW);
+		col = mix(col, mc, clamp(m, 0.0, 0.55) * (water ? 0.4 : 1.0));
 	}
 #ifdef VALLEY_FOG
 	// valley fog: a calm, low-lying layer below VALLEY_FOG_HEIGHT that pools in valleys and over rivers all day.

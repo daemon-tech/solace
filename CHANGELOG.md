@@ -8,6 +8,7 @@ All builds tested in the real client with screenshots.
 ### Features
 - **Dusk water glow**: at sunrise and sunset a broad, soft warm light now spreads over the water toward the low sun, calm and wide with no sparkle (Water > Surface > Dusk Water Glow, 0 turns it off).
 - **Soft stars**: night stars are now small soft round points with a faint glow, a few slightly warm, that breathe very slowly instead of hard square dots (Sky > Sun & Moon > Soft Stars, 0 brings back the classic dots).
+- **Soft morning mist**: the low sunrise mist over grass is now one smooth veil instead of stepped bands. It thins with height, swells gently and slowly, and glows a warm peach toward the rising sun (Fog > Morning Mist).
 - **Layered ridges**: far land now fades into the blue haze in a few soft steps, so ridge lines behind each other read as calm stacked silhouettes (Fog > Layered Ridges, 0 turns it off).
 - **Warm light, cool shade**: sunlit faces now lean a little warm and shaded sides a soft sky-blue, a bit stronger in the morning and evening, for a calmer painted light contrast (Lighting > Advanced > Warm Light, Cool Shade, 0 turns it off).
 - **Moon halo**: on clear nights the moon now sits in a calm silver-blue glow with a faint wide ring around it. Hidden in rain and behind terrain (Sky > Sun, Moon & Night > Moon Halo, 0 turns it off).
