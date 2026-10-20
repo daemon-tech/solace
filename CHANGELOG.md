@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.30-dev
 
 ### Fixes
+- **Dusk clouds** away from the sun stay a soft dusty rose instead of olive.
 - **Far trees** close their leaf gaps smoothly into calm canopy shapes, without jagged cut-out edges.
 - **Noon walls:** sunlit sides sit one soft step below the tops, so block shapes read clearly.
 - **Underwater** fog fades smoothly with depth and turns a calm deep navy at night.
