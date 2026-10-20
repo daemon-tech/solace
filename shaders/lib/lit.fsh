@@ -212,6 +212,15 @@ void main() {
 		ambient = mix(ambient, ambN, twA * 0.8);
 	}
 	vec3 sunCol = mix(sunNight, sunDay, day);
+#if WARM_COOL > 0
+	{
+		// warm-cool contrast: sunlit faces lean a touch warm, shade leans soft sky-blue; stronger with a lower sun
+		float sHw = dot(safeNormalize(sunPosition, up), up);
+		float wcK = float(WARM_COOL) * 0.25 * day * (1.0 - rainStrength) * mix(1.4, 0.8, smoothstep(0.15, 0.8, sHw));
+		sunCol *= mix(vec3(1.0), vec3(1.07, 1.0, 0.88), wcK);
+		ambient *= mix(vec3(1.0), vec3(0.93, 1.0, 1.12), wcK);
+	}
+#endif
 #if defined ENTITY_PASS && ENTITY_SOFT > 0
 	ambient *= 1.0 + 0.012 * float(ENTITY_SOFT); // lifted shade side: soft, never muddy
 #endif

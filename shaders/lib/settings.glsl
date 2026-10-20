@@ -126,6 +126,7 @@ const float sunPathRotation = -25.0;
 #define FIELD_WAVES 1.0 // [0.0 0.4 0.7 1.0 1.4] soft bright waves rolling across grass fields
 #define WIND_SHEEN 0.15 // [0.0 0.05 0.10 0.15 0.2] light sheen where gusts bend the grass
 #define GRASS_TONE 1 // [0 1] 0 = cool green, 1 = warm meadow green
+#define WARM_COOL 2 // [0 1 2 3 4] warm sunlight and cool sky-blue shade
 #define GOLDEN_HOUR_TINT 0.6 // [0.0 0.3 0.6 0.9] warm low-sun light on grass and leaves
 #define WATER_SSR // screen-space reflections of terrain on water
 #define WATER_SSR_STRENGTH 0.8 // [0.4 0.6 0.8 1.0]
