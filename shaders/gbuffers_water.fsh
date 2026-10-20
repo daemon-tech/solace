@@ -83,8 +83,11 @@ void main() {
 		float spec = dot(reflect(-safeNormalize(shadowLightPosition, up), n), v);
 		// banded sun glint: warm halo band + white core
 		if (day > 0.3) {
-			col = mix(col, mix(vec3(1.0, 0.93, 0.72), vec3(1.0, 0.90, 0.84), ((sunAngle > 0.75 || sunAngle < 0.25) ? 1.0 : 0.0)), step(0.955, spec) * 0.45);
-			if (spec > 0.988) col = vec3(1.0);
+			// high sun: soft-edged, calmer glint (no hard white blot at noon)
+			float noonG = 1.0 - smoothstep(0.06, 0.16, abs(sunAngle - 0.25));
+			float gw = mix(0.0015, 0.010, noonG);
+			col = mix(col, mix(vec3(1.0, 0.93, 0.72), vec3(1.0, 0.90, 0.84), ((sunAngle > 0.75 || sunAngle < 0.25) ? 1.0 : 0.0)), smoothstep(0.955 - gw, 0.955 + gw, spec) * mix(0.45, 0.32, noonG));
+			col = mix(col, vec3(1.0, 0.99, 0.96), smoothstep(0.988 - gw * 0.6, 0.988 + gw * 0.6, spec) * mix(1.0, 0.78, noonG));
 		} else {
 			// night: banded moon glint path and moonlit ripple highlights
 			col = mix(col, vec3(0.70, 0.80, 1.0), step(0.94, spec) * 0.45);
@@ -122,7 +125,7 @@ void main() {
 		// footprint fade: glints never get smaller than a few pixels (no far shimmer)
 		float fpS = length(fwidth(p));
 		float sparkle = smoothstep(0.84, 0.88, vnoise(sp)) * smoothstep(0.45, 0.55, vnoise(p * 0.2 + t * 0.07)) * step(0.50, spec) * (1.0 - smoothstep(0.15, 0.35, fpS))
-		              + smoothstep(0.955, 0.975, vnoise(p * 1.6 + vec2(t * 0.35, -t * 0.2))) * day * 0.5 * (1.0 - smoothstep(0.04, 0.10, fpS)); // scattered small glints: near water only, gentle
+		              + smoothstep(0.955, 0.975, vnoise(p * 1.6 + vec2(t * 0.35, -t * 0.2))) * day * 0.5 * (1.0 - 0.5 * (1.0 - smoothstep(0.06, 0.16, abs(sunAngle - 0.25)))) * (1.0 - smoothstep(0.04, 0.10, fpS)); // scattered small glints: near water only, gentle
 		col = mix(col, vec3(1.0), clamp(sparkle, 0.0, 1.0) * 0.9 * mix(0.4, 1.0, day));
 #endif
 		outColor = vec4(col * mix(light, 1.0, 0.5 * day), max(max(mix(mix(0.30, 0.20, WATER_CLARITY), 0.85, fres), farR * 0.9 * min(WATER_REFLECT, 1.0)) * WATER_OPACITY, clamp(crest, 0.0, 1.0) * 0.80));

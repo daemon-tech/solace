@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.30-dev
 
 ### Fixes
+- **Water at noon** has a softer, calmer sun glint with gentle edges and fewer scattered sparkles.
 - **Forest at dusk** reads calmer from a few blocks away, with softer light and dark leaf patches.
 - **Dusk clouds near the sun** melt softly into the glow instead of showing pale blocky cells.
 - **Sun rays at dusk** stay closer to the sun instead of fanning across the whole upper sky.
