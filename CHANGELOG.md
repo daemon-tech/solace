@@ -30,6 +30,7 @@ All builds tested in the real client with screenshots.
 - **Gentle lightning flash:** a lightning strike briefly lifts the whole scene in a calm cool light instead of nothing at all; nearby strikes are a little stronger. The flash rises quickly and fades out softly over about a second, so several strikes in a row never flicker.
 - **Moonlit nights:** nights are a soft silver-blue instead of deep saturated indigo, with gently lifted mid tones so grass, paths and shapes stay readable while the deepest shadows stay calm.
 - **Soft world border:** the last stretch before the render distance melts smoothly into the horizon sky, so the end of the loaded world (also far water) no longer shows as a hard line. The pale haze band at the horizon is wider and softer and continues over far land, so it no longer sits as a flat strip above the terrain.
+- **Night leaves:** trees at night are a calm muted blue-green instead of bright cyan.
 - **Valley fog** (Sky & Fog > Valley Fog): a calm low-lying fog layer in valleys and over rivers.
 
 ### Bloom
