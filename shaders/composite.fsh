@@ -57,6 +57,8 @@ uniform float bRain;
 uniform float bSwamp;
 uniform float bDark;
 uniform float rainStrength;
+uniform float thunderStrength;
+uniform vec4 lightningBoltPosition;
 uniform mat4 gbufferProjectionInverse;
 uniform mat4 gbufferModelViewInverse;
 uniform vec3 cameraPosition;
@@ -752,6 +754,20 @@ void main() {
 		float rs = step(0.93, cell) * smoothstep(0.0, 0.3, fract(rq.y)) * (1.0 - smoothstep(0.3, 0.9, fract(rq.y)));
 		col = mix(col, vec3(0.80, 0.86, 0.95) * mix(0.45, 1.0, dayG), rs * 0.35 * rainStrength * (1.0 - dryB) * RAIN_STREAKS);
 		col = mix(col, col * vec3(0.62, 0.72, 0.98), rainStrength * (1.0 - dryB) * (1.0 - dayG) * 0.6 * RAIN_STREAKS);
+	}
+#endif
+#if !defined DIM_NETHER && !defined DIM_END
+	// overcast: the sun stays a soft pale glow behind the rain clouds (no disc, no rays)
+	if (rainStrength > 0.01 && isEyeInWater == 0) {
+		float toS = max(dot(vdir, safeNormalize(sunPosition, vec3(0, 0, 1))), 0.0);
+		float og = celBandSoft(pow(toS, 5.0), 4, 0.5) * 0.55 + pow(toS, 40.0) * 0.45;
+		col += vec3(0.86, 0.89, 0.93) * og * 0.22 * rainStrength * (1.0 - dryB) * dayG * (sky ? 1.0 : 0.35);
+	}
+	// gentle lightning flash: a calm cool lift of the whole scene while a bolt exists (no harsh white-out)
+	if (lightningBoltPosition.w > 0.5) {
+		float fl = 0.16 * (1.0 - smoothstep(60.0, 240.0, length(lightningBoltPosition.xyz)));
+		fl += 0.06;
+		col = mix(col, col * 1.25 + vec3(0.30, 0.34, 0.46) * (sky ? 1.0 : 0.6), fl);
 	}
 #endif
 #ifdef BLOOM

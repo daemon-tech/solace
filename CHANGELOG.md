@@ -20,6 +20,8 @@ All builds tested in the real client with screenshots.
 - **No more bright streaks over seagrass:** seagrass and kelp under the surface no longer show up as pale vertical stripes; the water keeps its calm depth colour over them.
 
 ### Atmosphere
+- **Overcast sun:** in rain the sun stays a soft pale glow behind the clouds.
+- **Gentle lightning flash:** a lightning strike briefly lifts the whole scene in a calm cool light instead of nothing at all; nearby strikes are a little stronger.
 - **Valley fog** (Sky & Fog > Valley Fog): a calm low-lying fog layer in valleys and over rivers.
 
 ### Bloom
