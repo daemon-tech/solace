@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.30-dev
 
 ### Features
+- **Painterly distance**: far land and water melt into soft, brush-like patches while keeping their shapes (new option, Painterly Distance).
 - **Field waves**: soft, light bands roll slowly across grassy meadows in the wind (new option, Field Waves).
 - **Aerial perspective**: distant land now loses its detail and fades to a soft light blue, so far hills read as calm layered shapes.
 

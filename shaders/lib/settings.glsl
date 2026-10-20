@@ -161,6 +161,7 @@ const float sunPathRotation = -25.0;
 #define LEAF_TRANSLUCENCY 0.35 // [0.0 0.2 0.35 0.5] backlit leaves glow toward the sun
 #define NIGHT_GLOW 1.0 // [0.0 0.5 1.0] faint glow on flowers at night
 #define FXAA // light anti-aliasing that keeps outlines crisp
+#define PAINTERLY_FAR 9 // [0 5 7 9 10] painterly distance: far land melts into soft brush-like patches (x10 percent)
 //#define DISTANCE_BLUR // optional soft blur of far terrain
 #define DISTANCE_BLUR_STRENGTH 1.0 // [0.5 1.0 1.5 2.0]
 #define WATER_WAKE // V-shaped wake behind you and your boat

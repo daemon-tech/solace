@@ -30,6 +30,33 @@ void main() {
 		}
 	}
 #endif
+#if PAINTERLY_FAR > 0
+	{
+		// painterly distance: far land is flattened into soft brush-like patches (4-sector smoothing
+		// filter keeps silhouettes, removes small texture detail; no noise, no grain)
+		float d = texture(depthtex0, uv).r;
+		float lin = 2.0 * near * far / max(far + near - (2.0 * d - 1.0) * (far - near), 1e-4);
+		float k = smoothstep(far * 0.18, far * 0.55, lin) * step(d, 0.99999);
+		if (k > 0.01) {
+			vec2 st = px * mix(1.0, 2.0, k);
+			vec3 m[4]; vec3 v[4];
+			for (int q = 0; q < 4; q++) { m[q] = vec3(0.0); v[q] = vec3(0.0); }
+			for (int y = 0; y <= 2; y++) for (int x = 0; x <= 2; x++) {
+				vec3 s0 = fetch(uv + vec2(-x, -y) * st), s1 = fetch(uv + vec2(x, -y) * st);
+				vec3 s2 = fetch(uv + vec2(-x, y) * st), s3 = fetch(uv + vec2(x, y) * st);
+				m[0] += s0; v[0] += s0 * s0; m[1] += s1; v[1] += s1 * s1;
+				m[2] += s2; v[2] += s2 * s2; m[3] += s3; v[3] += s3 * s3;
+			}
+			vec3 best = c; float bv = 1e9;
+			for (int q = 0; q < 4; q++) {
+				vec3 mu = m[q] / 9.0; vec3 va = abs(v[q] / 9.0 - mu * mu);
+				float sv = va.r + va.g + va.b;
+				if (sv < bv) { bv = sv; best = mu; }
+			}
+			c = mix(c, best, k * float(PAINTERLY_FAR) * 0.1);
+		}
+	}
+#endif
 #ifdef DISTANCE_BLUR
 	{
 		float d = texture(depthtex0, uv).r;
