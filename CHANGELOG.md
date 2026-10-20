@@ -10,6 +10,9 @@ All builds tested in the real client with screenshots.
 - **Pits and caves at sunrise** keep neutral stone colours instead of a lavender cast.
 - **Sunrise** river streak, sun glint, clouds and sun glow are peach-rose instead of gold.
 
+### Clouds
+- **Calmer horizon:** the low cloud layer now melts softly into the sky far away and thins out just above the horizon, so the distance no longer looks busy.
+
 ### Water
 - **No more bright streaks over seagrass:** seagrass and kelp under the surface no longer show up as pale vertical stripes; the water keeps its calm depth colour over them.
 

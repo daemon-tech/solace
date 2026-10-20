@@ -961,7 +961,9 @@ void main() {
 					lc = mix(lc, fogSky, smoothstep(300.0, 1800.0, tA) * 0.55);
 					float soft = clCover(qA, 0.2, 0);
 					lc += rimC * soft * (1.0 - soft) * 2.5 * pow(toSun, 3.0) * 0.7;
-					float fade = 1.0 - smoothstep(800.0, 2000.0, tA);
+					// calm horizon: far cells melt into the sky colour and thin out low over the horizon (no busy confetti)
+					lc = mix(lc, fogSky, smoothstep(250.0, 1100.0, tA) * 0.35);
+					float fade = (1.0 - smoothstep(500.0, 1500.0, tA)) * smoothstep(0.02, 0.16, abs(rd.y));
 					col = mix(col, lc, cov * fade * 0.80);
 				}
 			}
