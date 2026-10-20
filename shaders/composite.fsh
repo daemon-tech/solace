@@ -1199,6 +1199,9 @@ void main() {
 				if (h > 0.22) continue; // sparse
 				vec3 fp = (cell + vec3(hash12(cell.xz + 1.7), hash12(cell.xz + cell.y + 4.4), hash12(cell.zx + 6.2))) * 2.5;
 				fp += vec3(sin(frameTimeCounter * 0.4 + h * 50.0), sin(frameTimeCounter * 0.3 + h * 80.0) * 0.5, cos(frameTimeCounter * 0.35 + h * 60.0)) * 0.5;
+				// carried by the gusts: as a front passes, the mote surges downwind and lifts a little, then settles
+				float gP = windGust(fp.xz + drift.xz, frameTimeCounter);
+				fp += vec3(wdP.x, 0.0, wdP.y) * gP * 1.6 + vec3(0.0, 0.35 * gP, 0.0);
 				vec3 rel = fp - cp;
 				if (rel.y > 4.0 || rel.y < -1.5) continue;
 				float tc = dot(rel, rd);
@@ -1206,6 +1209,7 @@ void main() {
 				float d = length(rel - rd * tc);
 				float r = 0.06 + 0.006 * tc;
 				float fade = smoothstep(0.2, 0.8, sin(frameTimeCounter * 0.25 + h * 40.0) * 0.5 + 0.5) * (1.0 - smoothstep(10.0, 18.0, tc));
+				fade = min(fade * (0.8 + 0.4 * gP), 1.0); // a touch brighter while riding a gust
 				glow = max(glow, (1.0 - smoothstep(r * 0.6, r * 1.6, d)) * fade); // soft round mote, no hard pixel
 			}
 			col = mix(col, vec3(1.0, 0.97, 0.82), clamp(glow, 0.0, 1.0) * 0.85 * polK);
