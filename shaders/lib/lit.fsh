@@ -120,6 +120,11 @@ void main() {
 #ifdef SOFT_GRASS
 		if (isFoliage == 2 && tinted) sm = min(sm + 0.25 * SOFT_GRASS_STRENGTH, 0.9); // calmer grass surface, texels fade out
 #endif
+#ifdef TERRAIN_PASS
+		// texture calm: stone, dirt, sand, wood keep their blocky pattern but lose harsh texel contrast
+		// (pulled toward the block's own average tone). Light sources keep full detail.
+		if (isFoliage == 0 && lightId == 0) sm = max(sm, TEXTURE_CALM);
+#endif
 		if (sm > 0.0) {
 			vec4 lo = texture(gtexture, texcoord, 4.0);
 			lo.rgb /= max(lo.a, 0.25);

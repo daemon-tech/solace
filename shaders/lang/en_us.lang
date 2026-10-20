@@ -251,3 +251,5 @@ option.VALLEY_FOG=Valley Fog
 option.VALLEY_FOG.comment=Calm low-lying fog layer that pools in valleys and over rivers.
 option.VALLEY_FOG_HEIGHT=Valley Fog Height
 option.VALLEY_FOG_HEIGHT.comment=Top of the valley fog layer (world height).
+option.TEXTURE_CALM=Texture Calm
+option.TEXTURE_CALM.comment=Smooth cartoon textures: blocks keep their pattern but lose harsh texel noise.
