@@ -964,7 +964,7 @@ void main() {
 		vec3 sunW = safeNormalize(mat3(gbufferModelViewInverse) * sunPosition, vec3(0, 1, 0));
 		float cDay = clamp(sunW.y * 4.0 + 0.4, 0.0, 1.0), cDusk = clamp(1.0 - abs(sunW.y) * 5.0, 0.0, 1.0);
 		vec3 cLit = mix(vec3(0.20, 0.22, 0.46), vec3(1.0, 1.0, 0.98), cDay);
-		vec3 cShade = mix(vec3(0.13, 0.14, 0.32), vec3(0.72, 0.80, 0.94), cDay);
+		vec3 cShade = mix(vec3(0.13, 0.14, 0.32), vec3(0.84, 0.88, 0.96), cDay); // soft pale undersides by day
 		float cMorn = ((sunAngle > 0.75 || sunAngle < 0.25) ? 1.0 : 0.0);
 		cLit = mix(cLit, mix(vec3(1.0, 0.80, 0.55), vec3(1.0, 0.84, 0.80), cMorn), cDusk * 0.75); // sunrise: peach-rose, not gold
 		cShade = mix(cShade, mix(vec3(0.92, 0.56, 0.46), vec3(0.86, 0.60, 0.64), cMorn), cDusk * 0.7); // warm coral undersides, never pale grey-mauve
