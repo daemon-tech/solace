@@ -430,3 +430,5 @@ option.RAINBOW=Rainbow
 option.RAINBOW.comment=After rain, while the world is still wet, a soft pastel rainbow arcs across the sky opposite the sun. 0 turns it off.
 option.SUN_SPOTS=Sun Spots
 option.SUN_SPOTS.comment=Soft round spots of sunlight on the ground under leaf canopies.
+option.SHORE_FOAM=Shore Foam
+option.SHORE_FOAM.comment=A soft white foam line that slowly washes up and down the shore.

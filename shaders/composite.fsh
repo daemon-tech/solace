@@ -534,6 +534,22 @@ void main() {
 			float brk = smoothstep(0.30, 0.62, vnoise(rq * 0.45 + vec2(t * 0.2, 0.0)) * 0.7 + vnoise(rq * 1.3) * 0.3);
 			float streak = smoothstep(mix(0.82, 0.90, farF), 0.94, sin(ph)) * brk * (1.0 - farF * 0.35) * mix(0.60, 1.0, shore); // far sea keeps thin foam
 			col = mix(col, foamC, clamp(max(sheet * 0.90, streak * 1.0), 0.0, 1.0) * (1.0 - fall) * fday * WATER_FOAM_AMT);
+#ifdef SHORE_FOAM
+			{
+				// shoreline foam: a clean white line where the water meets the shore that slowly washes up
+				// and draws back, leaving a faint wet sheet behind it; a second, fainter line follows further out.
+				// The phase drifts gently along the shore so the whole coast never pulses at once.
+				float sph = t * 0.55 + vnoise(wxz * 0.06) * 6.2832;
+				float wash = 0.5 + 0.5 * sin(sph);
+				float e1 = mix(0.30, 0.95, wash);
+				float e2 = e1 + mix(0.70, 1.05, 0.5 + 0.5 * sin(sph - 1.3));
+				float line1 = smoothstep(e1 - 0.24, e1 - 0.08, behind) * (1.0 - smoothstep(e1 - 0.02, e1 + 0.10, behind));
+				float line2 = smoothstep(e2 - 0.18, e2 - 0.06, behind) * (1.0 - smoothstep(e2 - 0.01, e2 + 0.08, behind));
+				float sheetW = 1.0 - smoothstep(e1 - 0.40, e1 - 0.08, behind);
+				float sf = max(max(line1, line2 * 0.55), sheetW * 0.2) * (1.0 - farF) * (1.0 - fall);
+				col = mix(col, foamC, clamp(sf, 0.0, 1.0) * fday * SHORE_FOAM);
+			}
+#endif
 #ifdef WATER_ROLL
 			// rolling swell: blocky white foam caps on the crests (1/8-block cells, ocean only)
 			if (fall < 0.5) {
