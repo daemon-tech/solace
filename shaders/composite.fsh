@@ -1209,8 +1209,11 @@ void main() {
 		// light cyan underwater fog, applied after grading so it is not over-saturated.
 		// Sky pixels (seen through the surface) only get a light tint, not full fog.
 		float dist = (d0 >= 1.0 && !isDH) ? 12.0 : lin;
-		float f = celBand(clamp(dist / 36.0, 0.0, 1.0), 4) * UNDERWATER_FOG;
+		// smooth depth falloff (no hard fog rings); at night the water sinks into a calm deep navy
+		float f = celBandSoft(clamp(dist / 36.0, 0.0, 1.0), 4, 0.6) * UNDERWATER_FOG;
 		vec3 uw = mix(vec3(0.16, 0.52, 0.90), vec3(0.04, 0.17, 0.42), f);
+		float uwDay = clamp(dot(safeNormalize(sunPosition, upPosition), safeNormalize(upPosition, vec3(0, 1, 0))) * 3.0 + 0.2, 0.0, 1.0);
+		uw = mix(uw * vec3(0.30, 0.36, 0.55), uw, uwDay);
 		col = mix(col * vec3(0.55, 0.85, 1.15) + vec3(0.0, 0.05, 0.14), uw, clamp(f * 0.95 + 0.18, 0.0, 0.9));
 #ifdef UNDERWATER_RAYS
 		{
