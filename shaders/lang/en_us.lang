@@ -416,3 +416,5 @@ option.WATER_PAINTERLY=Painted Water
 option.WATER_PAINTERLY.comment=Brighter turquoise water with broad, soft brush-stroke highlights instead of thin lines.
 option.WATER_PAINTERLY_K=Painted Water Strength
 option.WATER_PAINTERLY_K.comment=How strongly the painted water look is applied.
+option.POLLEN=Drifting Pollen
+option.POLLEN.comment=A few soft warm motes floating on the breeze on sunny days. 0 turns them off.
