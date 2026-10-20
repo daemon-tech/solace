@@ -24,5 +24,5 @@ void main() {
 	gl_Position.xyz = celDistort(gl_Position.xyz);
 	texcoord = gl_MultiTexCoord0.xy;
 	vcolor = gl_Color;
-	sWater = int(mc_Entity.x + 0.5) == 10001 ? 1 : 0;
+	sWater = int(mc_Entity.x + 0.5) == 10001 ? 1 : (int(mc_Entity.x + 0.5) == 10002 ? 2 : 0); // 2 = leaves (sun spots)
 }

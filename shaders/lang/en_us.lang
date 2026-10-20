@@ -428,3 +428,5 @@ option.SOFT_STARS=Soft Stars
 option.SOFT_STARS.comment=Stars are small soft round points with a faint glow that breathe very slowly. 2 shows a few more, 0 uses the classic dots.
 option.RAINBOW=Rainbow
 option.RAINBOW.comment=After rain, while the world is still wet, a soft pastel rainbow arcs across the sky opposite the sun. 0 turns it off.
+option.SUN_SPOTS=Sun Spots
+option.SUN_SPOTS.comment=Soft round spots of sunlight on the ground under leaf canopies.

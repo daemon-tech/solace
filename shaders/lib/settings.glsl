@@ -78,6 +78,7 @@
 #define DUSK_TINT 1.0 // [0.0 0.25 0.5 0.85 1.0]
 #define BLOOM
 #define GODRAYS
+#define SUN_SPOTS 0.6 // [0.0 0.35 0.6 0.85] soft round sun spots on the ground under leaf canopies
 #define CANOPY_RAYS 1.0 // [0.0 0.5 1.0 1.5] long soft sun beams through gaps in tree canopies
 #define GODRAYS_STRENGTH 0.5 // [0.0 0.2 0.35 0.5 0.7]
 #define CANOPY_GLOW 0.20 // [0.0 0.06 0.12 0.20 0.30]

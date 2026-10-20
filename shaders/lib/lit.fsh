@@ -82,6 +82,21 @@ float shadowAt(vec4 clip, float ndl) {
 	}
 	lit /= 32.0;
 	lit = smoothstep(0.08, 0.92, lit); // creamy falloff, clean full shadow / full light
+#ifdef SUN_SPOTS
+	{
+		// dappled light: under a leaf canopy, soft round sun spots fall through the gaps. Smooth blobs
+		// anchored in the world and projected along the sun ray, so they lean with the light and stay calm.
+		vec4 scL = texture(shadowcolor0, p.xy);
+		float leafC = step(0.955, scL.a) * (1.0 - step(0.985, scL.a)) * (1.0 - step(p.z - bias, texture(shadowtex0, p.xy).r));
+		if (leafC > 0.5 && lit < 0.98) {
+			vec3 sW = safeNormalize(mat3(gbufferModelViewInverse) * shadowLightPosition, vec3(0, 1, 0));
+			vec2 q = cwpos.xz - sW.xz / max(sW.y, 0.25) * cwpos.y;
+			float sp = vnoise(q * 0.62) * 0.7 + vnoise(q * 1.3 + 7.1) * 0.3;
+			sp = smoothstep(0.60, 0.74, sp);
+			lit = max(lit, sp * SUN_SPOTS);
+		}
+	}
+#endif
 #ifdef GLASS_TINT_LIGHT
 	// light through stained glass: the nearest shadow caster is translucent -> take the glass colour.
 	// (shadowtex1, the opaque-only depth, reads empty on this Iris build, so the caster's alpha in
