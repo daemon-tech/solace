@@ -842,7 +842,7 @@ void main() {
 				acc += step(1.0, texture(depthtex0, p).r);
 			}
 			acc /= 20.0;
-			float fall = 1.0 - smoothstep(0.0, 0.85, length((suv - uv) * vec2(viewWidth / viewHeight, 1.0)));
+			float fall = 1.0 - smoothstep(0.0, mix(0.85, 0.5, duskG), length((suv - uv) * vec2(viewWidth / viewHeight, 1.0)));
 			vec3 rc = useSun ? mix(mix(vec3(1.0, 0.96, 0.70), vec3(1.0, 0.92, 0.86), MORN_K), mix(vec3(1.0, 0.62, 0.22), vec3(1.0, 0.78, 0.68), MORN_K), duskG) : vec3(0.45, 0.55, 1.0);
 			float str = GODRAYS_STRENGTH * (1.0 + FOREST_RAYS * bDark + FOREST_RAYS * 0.5 * smoothstep(0.9, 0.6, float(eyeBrightnessSmooth.y) / 240.0)) * (useSun ? mix(0.55, 1.0, duskG) * (1.0 + 0.4 * morningW * MORNING_MIST) : 0.35);
 			// soft bands (no hard wedges), and less on clouds/terrain at dusk so near clouds do not turn into pale fans
