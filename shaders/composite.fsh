@@ -896,7 +896,9 @@ void main() {
 		float folK = texture(colortex1, uv).a < 0.75 ? 0.45 : 1.0; // canopies sway much less than meadows
 		float fwK = greenK * folK * (1.0 - smoothstep(far * 0.35, far * 0.6, lin)) * (1.0 - cave) * mix(0.3, 1.0, dayG);
 		vec3 sheen = vec3(0.88, 0.97, 0.64) * (luma(col) + 0.24);
-		col = mix(col, sheen, 0.55 * FIELD_WAVES * fwK * fieldWave(mod(wpF.xz, 4096.0), frameTimeCounter));
+		float fw = fieldWave(mod(wpF.xz, 4096.0), frameTimeCounter);
+		col *= 1.0 - 0.07 * FIELD_WAVES * fwK * (1.0 - fw);          // soft shade in the troughs so the bright crests read clearly
+		col = mix(col, sheen, 0.6 * FIELD_WAVES * fwK * fw);
 	}
 	// warm atmospheric haze with distance (sunset orange, daytime soft yellow-green in forests)
 	if (!sky && isEyeInWater == 0) {

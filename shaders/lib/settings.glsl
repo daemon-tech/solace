@@ -119,7 +119,7 @@ const float sunPathRotation = -25.0;
 #define WIND_GUST_STRENGTH 1.0 // [0.5 0.75 1.0 1.5 2.0]
 #define WIND_STREAKS 1.0 // [0.0 0.5 1.0 1.5] thin soft wind lines drifting with the breeze
 #define WIND_SPEED 1.0 // [0.5 0.75 1.0 1.5]
-#define FIELD_WAVES 0.7 // [0.0 0.4 0.7 1.0] soft bright waves rolling across grass fields
+#define FIELD_WAVES 1.0 // [0.0 0.4 0.7 1.0 1.4] soft bright waves rolling across grass fields
 #define WIND_SHEEN 0.15 // [0.0 0.05 0.10 0.15 0.2] light sheen where gusts bend the grass
 #define GRASS_TONE 1 // [0 1] 0 = cool green, 1 = warm meadow green
 #define GOLDEN_HOUR_TINT 0.6 // [0.0 0.3 0.6 0.9] warm low-sun light on grass and leaves

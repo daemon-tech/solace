@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.31-dev
 
 ### Features
+- **Clearer field waves**: the light bands rolling over meadows are broader, slower and easier to see, with a soft shade between crests (default raised, new strongest step).
 - **Wind lines**: on clear days a few thin, soft white lines now drift through the air with the breeze, draw themselves in, curl into a small loop and fade out. They stay anchored in the world, hide behind terrain and fade at dusk and in rain (Foliage > Wind Lines, 0 turns them off).
 - **Wet ground in rain**: open ground slowly turns a little darker and richer while it rains, with a soft sheen at low angles and calm puddle patches on flat spots that mirror the grey sky. Dries again after the rain (Weather > Wetness Strength).
 - **No more rain streaks on the screen**: rain is only the falling drops in the world now; night rain keeps its calm blue mood.
