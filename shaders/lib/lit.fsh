@@ -393,6 +393,12 @@ void main() {
 			float sh = vnoise(cwpos.xz * 0.8 + vec2(frameTimeCounter * 0.4, -frameTimeCounter * 0.3));
 			col *= vec3(1.25, 1.0, 0.7) * (0.9 + 0.25 * celBand(sh, 3));
 		}
+		if (lightId == 8) {
+			// sculk: the bright specks glow a soft blue, the dark body keeps a faint cool sheen
+			float sp = smoothstep(0.30, 0.65, max(albedo.g, albedo.b));
+			col = mix(col, max(col, vec3(0.32, 0.70, 1.0) * (0.45 + 0.35 * luma(albedo.rgb)) * EMISSIVE_STRENGTH), sp * 0.5);
+			col += vec3(0.03, 0.07, 0.12) * (1.0 - sp * 0.5);
+		}
 	#ifdef STYLISED_LAVA
 		if (lightId == 7) {
 			// stylised lava: a deep saturated orange body with calm, slowly drifting bright veins.

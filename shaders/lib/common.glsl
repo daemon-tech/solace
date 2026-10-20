@@ -68,13 +68,14 @@ float dayFactor(vec3 sunView, vec3 upView) {
 	return clamp(dot(s, u) * 4.0 + 0.4, 0.0, 1.0);
 }
 
-// light colour per light-source id (see block.properties 10010-10015)
+// light colour per light-source id (see block.properties 10010-10017)
 vec3 lightColor(int id) {
 	if (id == 2) return vec3(0.30, 0.85, 1.00); // soul fire: cyan
 	if (id == 3) return vec3(1.00, 0.22, 0.15); // redstone: red
 	if (id == 4) return vec3(0.72, 0.38, 1.00); // amethyst, portal, crying obsidian: purple
 	if (id == 5) return vec3(0.80, 0.92, 1.00); // sea lantern, end rod: cool white
 	if (id == 6) return vec3(0.55, 1.00, 0.45); // verdant froglight: green
+	if (id == 8) return vec3(0.30, 0.62, 1.00); // sculk: soft blue
 	return vec3(1.00, 0.72, 0.42);              // torches, lanterns, lava: warm
 }
 

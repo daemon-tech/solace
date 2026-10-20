@@ -12,6 +12,7 @@ All builds tested in the real client with screenshots.
 - **Colour**: overall saturation and vibrance are a little lower by default, for a calmer look.
 - **Backlit foliage**: at sunrise and sunset, grass and leaves seen against the low sun get a soft warm glow.
 - **Caves**: darker where no sky reaches, so torches, lanterns and lava form warm, soft pools of light.
+- **Sculk**: glows a soft blue in the dark and casts a faint cool light.
 
 ## 0.31
 
