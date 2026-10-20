@@ -64,6 +64,7 @@ uniform int heldBlockLightValue;
 uniform int heldBlockLightValue2;
 uniform mat4 gbufferProjectionInverse;
 uniform mat4 gbufferModelViewInverse;
+uniform mat4 gbufferModelView;
 uniform vec3 cameraPosition;
 uniform vec3 fogColor;
 uniform vec3 previousCameraPosition;
@@ -1105,6 +1106,68 @@ void main() {
 			vec3 ffC = vec3(0.86, 1.0, 0.38);
 			col = mix(col, ffC * 1.05, clamp(glow, 0.0, 1.0) * nightF);
 			col += ffC * celBandSoft(clamp(halo, 0.0, 1.0), 3, 0.4) * 0.35 * nightF;
+		}
+	}
+#endif
+#endif
+#ifdef WIND_STREAKS
+#if !defined DIM_NETHER && !defined DIM_END
+	// wind streaks: a few thin soft white lines that drift with the breeze, draw themselves in,
+	// curl into a small loop and fade. They ride the same gust fronts that bend the grass.
+	{
+		float wsK = WIND_STREAKS * smoothstep(0.15, 0.4, dayG) * (1.0 - rainStrength * 0.6)
+		          * smoothstep(0.6, 0.85, float(eyeBrightnessSmooth.y) / 240.0);
+		if (wsK > 0.01 && isEyeInWater == 0) {
+			vec2 wd2 = windDir();
+			vec3 wd = vec3(wd2.x, 0.0, wd2.y), side = vec3(-wd2.y, 0.0, wd2.x), upW = vec3(0, 1, 0);
+			vec2 px = gl_FragCoord.xy;
+			float sceneZ = sky ? 1e6 : lin;
+			float line = 0.0;
+			// world-anchored: each 12-block cell around the camera owns one streak, so they stay put when the camera turns
+			vec2 cc = floor(cameraPosition.xz / 12.0);
+			for (int k = 0; k < 9; k++) {
+				vec2 cell = cc + vec2(float(k % 3) - 1.0, float(k / 3) - 1.0);
+				float hc = hash12(cell * 1.31 + 0.7);
+				float cyc = 8.0 + 3.0 * hc;
+				float tt = frameTimeCounter / cyc + hc * 7.0;
+				float id = floor(tt), lt = fract(tt) * cyc;   // seconds into this streak's life
+				if (lt > 6.0) continue;                          // quiet gap between streaks
+				float h1 = hash12(cell + vec2(id, 7.3)), h2 = hash12(cell.yx + vec2(3.1, id + 11.0)), h3 = hash12(cell * 0.7 + vec2(id * 1.7, 5.0));
+				vec3 base = vec3((cell.x + h1) * 12.0, cameraPosition.y + 1.5 + 5.0 * h3, (cell.y + h2) * 12.0) - wd * 6.0;
+				base += wd * (lt * WIND_SPEED * 3.2);             // drifts downwind
+				float life = smoothstep(0.0, 0.8, lt) * (1.0 - smoothstep(4.4, 6.0, lt));
+				float head = clamp(lt / 3.4, 0.0, 1.0) * 1.35;   // line draws itself in
+				float L = 8.0 + 4.0 * h2, R = 0.6 + 0.3 * h1;
+				vec2 prevP = vec2(0.0); float prevZ = 0.0, prevS = 0.0; bool prevOK = false;
+				for (int i = 0; i <= 28; i++) {
+					float sp = float(i) / 28.0;
+					// gentle S-curve along the run, then one soft loop at the end
+					vec3 q = wd * (sp * L) + side * (0.45 * sin(sp * 4.7 + h1 * 6.0)) + upW * (0.25 * sin(sp * 6.3 + h3 * 6.0));
+					float la = clamp((sp - 0.62) / 0.38, 0.0, 1.0) * 6.2832;
+					q += wd * (R * 0.6 * sin(la) + R * 1.6 * la / 6.2832) + upW * (R * 0.8 * (1.0 - cos(la))) + side * (R * 0.8 * sin(la)); // open corkscrew curl, reads round from any side
+					vec4 vq = gbufferModelView * vec4(base + q - cameraPosition, 1.0);
+					vec4 cq = gbufferProjection * vq;
+					bool ok = cq.w > 0.3;
+					vec2 sq = (cq.xy / max(cq.w, 1e-3) * 0.5 + 0.5) * vec2(viewWidth, viewHeight);
+					float zq = -vq.z;
+					if (ok && prevOK) {
+						vec2 ab = sq - prevP;
+						float tq = clamp(dot(px - prevP, ab) / max(dot(ab, ab), 1e-4), 0.0, 1.0);
+						float dpx = length(px - prevP - ab * tq);
+						float zz = mix(prevZ, zq, tq), ss = mix(prevS, sp, tq);
+						float vis = step(ss, head) * step(head - 0.55, ss);                       // visible window
+						float taper = smoothstep(head - 0.55, head - 0.3, ss) * (1.0 - smoothstep(head - 0.08, head + 0.001, ss));
+						taper *= smoothstep(0.0, 0.08, ss) * (1.0 - smoothstep(0.92, 1.0, ss));
+						float w = max(0.05 * viewHeight / max(zz, 1.0), 1.1);                   // thin, a touch thicker up close
+						float a = (1.0 - smoothstep(w * 0.45, w * 0.45 + 1.1, dpx)) * vis * taper;
+						a *= step(zz, sceneZ + 0.3) * (1.0 - smoothstep(26.0, 40.0, zz));
+						line = max(line, a * life);
+					}
+					prevP = sq; prevZ = zq; prevS = sp; prevOK = ok;
+				}
+			}
+			vec3 wsC = mix(vec3(0.93, 0.96, 1.0), vec3(1.0, 0.93, 0.82), 1.0 - smoothstep(0.25, 0.6, dayG));
+			col = mix(col, wsC, clamp(line, 0.0, 1.0) * 0.7 * wsK);
 		}
 	}
 #endif
