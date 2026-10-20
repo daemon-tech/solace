@@ -69,7 +69,7 @@ void main() {
 				float dayC = clamp(sunH * 4.0 + 0.4, 0.0, 1.0);
 				float dusk = clamp(1.0 - abs(sunH) * 5.0, 0.0, 1.0);
 				vec3 top = mix(vec3(0.20, 0.22, 0.45), vec3(1.0, 1.0, 0.98), dayC);
-				top = mix(top, vec3(1.0, 0.82, 0.58), dusk * 0.85);
+				top = mix(top, mix(vec3(1.0, 0.82, 0.58), vec3(1.0, 0.85, 0.80), ((sunAngle > 0.75 || sunAngle < 0.25) ? 1.0 : 0.0)), dusk * 0.85); // sunrise: peach-rose
 				vec3 under = mix(vec3(0.12, 0.13, 0.30), vec3(0.66, 0.74, 0.88), dayC);
 				under = mix(under, vec3(0.78, 0.52, 0.55), dusk * 0.7);
 				vec3 cc = mix(under, top, lit);

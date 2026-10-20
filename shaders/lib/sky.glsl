@@ -62,7 +62,7 @@ vec3 celSkyImpl(vec3 dir, vec3 sunView, vec3 upView, float rain, bool discs) {
 
 	if (discs) {
 		float s = dot(dir, sun);
-		vec3 sunCol = mix(vec3(1.0, 0.75, 0.4), vec3(1.0, 0.97, 0.8), day);
+		vec3 sunCol = mix(mix(vec3(1.0, 0.75, 0.4), vec3(1.0, 0.80, 0.68), ((sunAngle > 0.75 || sunAngle < 0.25) ? 1.0 : 0.0)), vec3(1.0, 0.97, 0.8), day); // sunrise disc: peach
 		if (s > 0.9990) col = sunCol * 1.4;
 		else if (s > 0.9960) col = mix(col, sunCol, 0.55);
 		else if (s > 0.9880) col = mix(col, sunCol, 0.25);

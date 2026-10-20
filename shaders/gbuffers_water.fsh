@@ -80,7 +80,7 @@ void main() {
 		float spec = dot(reflect(-safeNormalize(shadowLightPosition, up), n), v);
 		// banded sun glint: warm halo band + white core
 		if (day > 0.3) {
-			col = mix(col, vec3(1.0, 0.93, 0.72), step(0.955, spec) * 0.45);
+			col = mix(col, mix(vec3(1.0, 0.93, 0.72), vec3(1.0, 0.90, 0.84), ((sunAngle > 0.75 || sunAngle < 0.25) ? 1.0 : 0.0)), step(0.955, spec) * 0.45);
 			if (spec > 0.988) col = vec3(1.0);
 		} else {
 			// night: banded moon glint path and moonlit ripple highlights
