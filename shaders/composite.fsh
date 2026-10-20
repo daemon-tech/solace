@@ -783,11 +783,7 @@ void main() {
 	float dryB = smoothstep(1.3, 1.8, bTemp) * (1.0 - smoothstep(0.05, 0.3, bRain));
 #ifdef RAIN_STREAKS
 	if (rainStrength * (1.0 - dryB) > 0.01 && isEyeInWater == 0) {
-		// slanted rain streaks over the scene + darker blue mood at night
-		vec2 rq = vec2(uv.x * viewWidth / viewHeight * 60.0 + uv.y * 8.0, uv.y * 6.0 + frameTimeCounter * 9.0);
-		float cell = hash12(floor(rq));
-		float rs = step(0.93, cell) * smoothstep(0.0, 0.3, fract(rq.y)) * (1.0 - smoothstep(0.3, 0.9, fract(rq.y)));
-		col = mix(col, vec3(0.80, 0.86, 0.95) * mix(0.45, 1.0, dayG), rs * 0.35 * rainStrength * (1.0 - dryB) * RAIN_STREAKS);
+		// rain mood: calm, darker blue night rain (no streaks drawn over the screen)
 		col = mix(col, col * vec3(0.62, 0.72, 0.98), rainStrength * (1.0 - dryB) * (1.0 - dayG) * 0.6 * RAIN_STREAKS);
 	}
 #endif

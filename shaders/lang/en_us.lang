@@ -186,7 +186,7 @@ option.LIGHT_HALO.comment=Soft radial glow around lanterns, torches, lava and ot
 option.SUN_HALO=Sun Halo
 option.SUN_HALO.comment=Glowing halo around the sun disk. 0 = off.
 option.RAIN_STREAKS=Rain Mood
-option.RAIN_STREAKS.comment=Rain streaks and a darker blue mood for night rain. 0 = off.
+option.RAIN_STREAKS.comment=Darker, calm blue mood for night rain. 0 = off.
 option.FOREST_RAYS=Forest Rays
 option.FOREST_RAYS.comment=Stronger god rays in forests and under canopies.
 option.FOREST_HAZE=Forest Haze
