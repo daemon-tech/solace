@@ -13,6 +13,7 @@ const int colortex3Format = RGBA8;
 const vec4 colortex3ClearColor = vec4(0.0, 0.0, 0.0, 0.0);
 const bool colortex3Clear = true;
 const bool colortex3MipmapEnabled = true;
+const bool colortex0MipmapEnabled = true;
 const vec4 colortex1ClearColor = vec4(0.5, 0.5, 1.0, 0.0);
 const vec4 colortex2ClearColor = vec4(0.0, 0.0, 0.0, 0.0);
 const bool colortex0Clear = true;
@@ -750,19 +751,23 @@ void main() {
 	}
 #endif
 #ifdef BLOOM
-	// cheap glow haze: sparse ring taps of bright pixels
+	// soft wide glow: bright areas from three blurred mip levels (smooth, colour-preserving, no ring specks)
 	{
 		vec3 glow = vec3(0.0);
 		vec2 px = 1.0 / vec2(viewWidth, viewHeight);
-		for (int i = 0; i < 12; i++) {
-			float a = float(i) * 2.39996;
-			float r = (4.0 + float(i) * 2.2);
-			vec3 s = texture(colortex0, uv + vec2(cos(a), sin(a)) * r * px).rgb;
-			float gr = clamp((s.g - max(s.r, s.b)) * 3.0, 0.0, 1.0); // green surfaces (sunlit grass) barely bloom
-			glow += s * max(luma(s) - 0.62, 0.0) * 1.6 * (1.0 - 0.5 * gr);
+		for (int l = 0; l < 3; l++) {
+			float lod = 3.0 + float(l);
+			vec2 o = px * exp2(lod) * 0.75;
+			vec3 lg = vec3(0.0);
+			for (int i = 0; i < 4; i++) {
+				vec2 d = vec2((i & 1) == 0 ? -1.0 : 1.0, i < 2 ? -1.0 : 1.0);
+				vec3 s = textureLod(colortex0, uv + d * o, lod).rgb;
+				float gr = clamp((s.g - max(s.r, s.b)) * 3.0, 0.0, 1.0); // sunlit grass barely glows
+				lg += s * smoothstep(0.56, 0.95, luma(s)) * (1.0 - 0.5 * gr);
+			}
+			glow += lg * 0.25 * (l == 0 ? 0.30 : (l == 1 ? 0.35 : 0.35));
 		}
-		glow /= 12.0;
-		col += glow * (BLOOM_STRENGTH * STYLE_K) * mix(0.5, 1.6, max(duskG, 0.0));
+		col += glow * 0.55 * (BLOOM_STRENGTH * STYLE_K) * mix(0.5, 1.6, max(duskG, 0.0));
 	}
 #endif
 #ifdef GODRAYS
