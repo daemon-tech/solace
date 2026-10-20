@@ -14,6 +14,7 @@ All builds tested in the real client with screenshots.
 - **Wind fronts**: gusts now travel as long, coherent fronts across the land. Grass leans further as each front passes, and tree leaves lean and stir with the same fronts, so a breeze reads clearly as it rolls over fields and forests.
 - **Wind lines**: the white wind lines are a little wider and softer with a faint glow, stay visible longer as they draw in, and come a bit more often. They are brightest while a gust front passes and faint in between.
 - **Pollen on the wind**: drifting pollen motes now surge downwind and lift a little as a gust front passes, then settle again.
+- **Turning breeze**: the wind now slowly swings back and forth by about 35 degrees over roughly ten minutes. Grass, leaves and wind lines follow the new direction while the gust fronts blend smoothly from one heading to the other.
 - **Layered ridges**: far land now fades into the blue haze in a few soft steps, so ridge lines behind each other read as calm stacked silhouettes (Fog > Layered Ridges, 0 turns it off).
 - **Warm light, cool shade**: sunlit faces now lean a little warm and shaded sides a soft sky-blue, a bit stronger in the morning and evening, for a calmer painted light contrast (Lighting > Advanced > Warm Light, Cool Shade, 0 turns it off).
 - **Moon halo**: on clear nights the moon now sits in a calm silver-blue glow with a faint wide ring around it. Hidden in rain and behind terrain (Sky > Sun, Moon & Night > Moon Halo, 0 turns it off).

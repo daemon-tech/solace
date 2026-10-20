@@ -81,8 +81,11 @@ vec3 lightColor(int id) {
 // shared wind field (world xz, time): 0..1 gust strength. Large breeze waves travel across the
 // land along the wind direction, broken up by slow noise so fronts are irregular.
 vec2 windDir() { return normalize(vec2(0.8, 0.45)); }
-float windGust(vec2 xz, float t) {
-	vec2 wd = windDir();
+vec2 windDirB() { return normalize(vec2(0.45, 0.89)); } // ~35 degrees round from the main breeze
+// the breeze slowly swings between the two directions over ~10 minutes (blend, no sweeping fronts)
+float windMixW(float t) { return smoothstep(0.0, 1.0, 0.5 + 0.5 * sin(t * 0.0105)); }
+vec2 windDirT(float t) { return normalize(mix(windDir(), windDirB(), windMixW(t))); }
+float windGust1(vec2 xz, float t, vec2 wd) {
 	float front = dot(xz, wd) * 0.08 - t * WIND_SPEED * 0.35; // fronts travel ~4.4 blocks/s (wind lines ride them)
 	// coherent travelling fronts: long gently curved crests (low phase warp), each front rises softly and trails off
 	float ph = front + vnoise(xz * 0.008) * 1.6;
@@ -91,11 +94,17 @@ float windGust(vec2 xz, float t) {
 	g *= 0.75 + 0.25 * vnoise(xz * 0.02 - wd * t * WIND_SPEED * 0.6);
 	return g;
 }
+float windGust(vec2 xz, float t) {
+	float w = windMixW(t);
+	float a = w < 0.98 ? windGust1(xz, t, windDir()) : 0.0;
+	float b = w > 0.02 ? windGust1(xz + 37.0, t, windDirB()) : 0.0;
+	return mix(a, b, w);
+}
 
 // shared plant/leaf wind offset (player-space xz), used by terrain and shadow passes
 // kind: 1 = grass/flowers (top vertices only), 2 = leaves
 vec2 windOffset(int kind, vec3 wp, float top, float t) {
-	vec2 wd = windDir();
+	vec2 wd = windDirT(t);
 	float gust = 0.0;
 #ifdef WIND_GUSTS
 	gust = windGust(wp.xz, t) * WIND_GUST_STRENGTH;

@@ -1187,7 +1187,7 @@ void main() {
 		if (polK > 0.01 && isEyeInWater == 0) {
 			vec3 rd = safeNormalize(mat3(gbufferModelViewInverse) * vpos, vec3(0, 0, 1));
 			float maxD = min(sky ? 18.0 : lin, 18.0);
-			vec2 wdP = windDir();
+			vec2 wdP = windDir(); // fixed: drift is direction * time, a turning direction would sweep the motes
 			vec3 drift = vec3(wdP.x, 0.0, wdP.y) * frameTimeCounter * 0.6;
 			vec3 cp = mod(cameraPosition - drift, 1024.0);
 			float glow = 0.0;
@@ -1225,7 +1225,7 @@ void main() {
 		float wsK = WIND_STREAKS * smoothstep(0.15, 0.4, dayG) * (1.0 - rainStrength * 0.6)
 		          * smoothstep(0.6, 0.85, float(eyeBrightnessSmooth.y) / 240.0);
 		if (wsK > 0.01 && isEyeInWater == 0) {
-			vec2 wd2 = windDir();
+			vec2 wd2 = windDirT(frameTimeCounter);
 			vec3 wd = vec3(wd2.x, 0.0, wd2.y), side = vec3(-wd2.y, 0.0, wd2.x), upW = vec3(0, 1, 0);
 			vec2 px = gl_FragCoord.xy;
 			float sceneZ = sky ? 1e6 : lin;
