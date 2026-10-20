@@ -39,7 +39,6 @@ All builds tested in the real client with screenshots.
 
 ### Clouds
 - **Calmer horizon:** the low cloud layer now melts softly into the sky far away and thins out just above the horizon, so the distance no longer looks busy.
-
 - **Warmer dusk cloud undersides:** at sunset the shaded sides of clouds are a warm coral instead of grey-mauve.
 
 ### Characters
