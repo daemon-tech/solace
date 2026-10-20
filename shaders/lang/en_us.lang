@@ -273,3 +273,5 @@ option.FIELD_WAVES=Field Waves
 option.FIELD_WAVES.comment=Soft bright waves that roll slowly across grass fields in the wind.
 option.PAINTERLY_FAR=Painterly Distance
 option.PAINTERLY_FAR.comment=Far land melts into soft, brush-like patches like a painted background. 0 turns it off.
+option.SKY_BRIGHT=Bright Sky
+option.SKY_BRIGHT.comment=A bright, open day sky with a long smooth gradient and a luminous horizon.
