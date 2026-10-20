@@ -174,7 +174,7 @@ void main() {
 			float Hl = (cloudHeight > 1.0 ? cloudHeight : 192.0) + CL_LOW_OFF + CL_LOW_THICK * 0.5;
 			vec2 pc = cwpos.xz + sW.xz * (Hl - cwpos.y) / sW.y;
 			float cs = clCover(clLowQ(pc, frameTimeCounter * 0.6), 0.45, 0);
-			light *= 1.0 - smoothstep(0.1, 0.9, cs) * CLOUD_SHADOW_STRENGTH;
+			light *= 1.0 - smoothstep(0.05, 0.95, cs) * CLOUD_SHADOW_STRENGTH * 1.35;
 		}
 #else
 		vec2 cq = cwpos.xz * 0.011 - windDir() * frameTimeCounter * WIND_SPEED * 0.07;
