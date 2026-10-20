@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.31-dev
 
 ### Features
+- **Puffy clouds**: the low cloud layer now forms big, rounded, soft puffs instead of block cells (new option, Sky > Clouds > Puffy Clouds).
 - **Clearer settings menu**: the main page now holds the key sliders (look, saturation, clouds, fog, water, glow, shadows, field waves) plus clear categories. Crowded pages are split into sub-pages (for example Sky > Clouds / Fog & Haze / Sun, Moon & Night / Weather), fine-tuning lives in Advanced pages, and every option has a short name and a tooltip. Defaults and look are unchanged.
 - **Golden Rim** option now shows up in the menu correctly.
 

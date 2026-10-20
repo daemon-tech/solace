@@ -18,6 +18,15 @@ float clHighCell(vec2 c) {
 // nearest-cell lookup with a filtered transition of width e (cells): crisp blocks up close,
 // smooth (mip-like) blend once a cell edge is smaller than a pixel or two
 float clCover(vec2 q, float e, int layer) {
+#ifdef CLOUD_PUFFY
+	if (layer == 0) {
+		// big rounded puffs: the same smooth field, read continuously with a wide soft edge (no cells)
+		vec2 c = q - 0.5;
+		float f = vnoise(c * 0.23) * 0.65 + vnoise(c * 0.61 + 13.7) * 0.35;
+		float th = mix(0.72, 0.62, CLOUD_COVER);
+		return smoothstep(th - 0.05 - e * 0.1, th + 0.07 + e * 0.1, f);
+	}
+#endif
 	vec2 b = floor(q - 0.5), f = q - 0.5 - b;
 	vec2 w = smoothstep(0.5 - e, 0.5 + e, f);
 	float o00, o10, o01, o11;

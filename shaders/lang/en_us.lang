@@ -406,3 +406,5 @@ option.OUTLINE_FADE.comment=Distance where outlines fade out.
 option.OUTLINE_R.comment=Red part of the outline colour.
 option.OUTLINE_G.comment=Green part of the outline colour.
 option.OUTLINE_B.comment=Blue part of the outline colour.
+option.CLOUD_PUFFY=Puffy Clouds
+option.CLOUD_PUFFY.comment=The low cloud layer forms big, rounded, soft puffs instead of block cells.

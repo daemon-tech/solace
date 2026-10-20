@@ -26,6 +26,7 @@
 #define TORCH_STRENGTH 0.9 // [0.5 0.6 0.75 0.9 1.0]
 //#define SOFT_CLOUDS // cloud style: on = painted soft clouds on a sky plane, off = cubic block clouds (default)
 #define CLOUD_LAYERS // three cubic cloud layers at different heights and speeds (parallax)
+#define CLOUD_PUFFY // low cloud layer: big rounded soft puffs instead of block cells
 #define CLOUD_LOW // low layer: bigger, faster, softer-lit (casts soft ground shadows)
 #define CLOUD_HIGH // high layer: thin, slow, wispy-blocky
 #define CLOUD_LAYER_SPEED 1.0 // [0.5 1.0 1.5 2.0]
