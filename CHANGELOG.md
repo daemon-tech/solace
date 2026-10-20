@@ -3,6 +3,24 @@
 Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All Rights Reserved.
 All builds tested in the real client with screenshots.
 
+## 0.30-dev
+
+### Fixes
+- **Nether portals** are a clear deep purple, without a milky veil or a light line along the obsidian.
+- **Pits and caves at sunrise** keep neutral stone colours instead of a lavender cast.
+- **Sunrise** river streak, sun glint, clouds and sun glow are peach-rose instead of gold.
+
+### Atmosphere
+- **Valley fog** (Sky & Fog > Valley Fog): a calm low-lying fog layer in valleys and over rivers.
+
+### Textures
+- **Texture Calm** (Colour > Texture Calm): smoother cartoon block textures that keep their blocky pattern.
+- **Softer grass:** calmer grass-top detail and a gentler colour sway.
+
+### Nether
+- **Calmer Nether look:** far fog sinks into a deep maroon so cavern layers separate, the hottest surfaces are slightly less saturated, and thin edge lines only show up close by.
+- **Soft embers:** a few round embers that slowly fade in and out instead of square blinking specks.
+
 ## 0.29-dev
 
 ### Lighting
