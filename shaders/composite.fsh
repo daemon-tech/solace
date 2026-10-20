@@ -1083,7 +1083,7 @@ void main() {
 			// stars: soft round dots that hold still (no single-pixel cells that shimmer)
 			vec2 sp = vec2(atan(wdE.z, wdE.x) * 40.0, wdE.y * 64.0);
 			vec2 sc = floor(sp), sf = fract(sp) - 0.5;
-			float sDot = step(0.985, hash12(sc + 17.3)) * smoothstep(0.22, 0.08, length(sf));
+			float sDot = step(0.972, hash12(sc + 17.3)) * smoothstep(0.22, 0.08, length(sf));
 			sk = mix(sk, vec3(0.90, 0.85, 1.0), sDot * (1.0 - smoothstep(0.75, 0.95, abs(wdE.y))));
 			col = sk;
 		}
