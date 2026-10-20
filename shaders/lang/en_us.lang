@@ -410,3 +410,5 @@ option.OUTLINE_G.comment=Green part of the outline colour.
 option.OUTLINE_B.comment=Blue part of the outline colour.
 option.CLOUD_PUFFY=Puffy Clouds
 option.CLOUD_PUFFY.comment=The low cloud layer forms big, rounded, soft puffs instead of block cells.
+option.CANOPY_RAYS=Sunbeams Through Trees
+option.CANOPY_RAYS.comment=Long soft sun beams fanning out of gaps in the leaves when the sun sits behind trees. 0 turns them off.

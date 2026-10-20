@@ -844,6 +844,32 @@ void main() {
 			float str = GODRAYS_STRENGTH * (1.0 + FOREST_RAYS * bDark + FOREST_RAYS * 0.5 * smoothstep(0.9, 0.6, float(eyeBrightnessSmooth.y) / 240.0)) * (useSun ? mix(0.55, 1.0, duskG) * (1.0 + 0.4 * morningW * MORNING_MIST) : 0.35);
 			// soft bands (no hard wedges), and less on clouds/terrain at dusk so near clouds do not turn into pale fans
 			col += rc * celBandSoft(acc * fall, 4, 0.5) * str * (sky ? 0.35 : mix(0.55, 0.25, duskG));
+#ifdef CANOPY_RAYS
+			// sun beams through trees: when the sun sits behind a broken canopy, long soft beams fan out
+			// from the gaps. Strongest when about half of the sky around the sun is blocked by leaves.
+			if (useSun) {
+				float o = 0.0;
+				for (int j = 0; j < 8; j++) {
+					float a = float(j) * 0.7854;
+					o += step(1.0, texture(depthtex0, clamp(suv + vec2(cos(a), sin(a) * viewWidth / viewHeight) * 0.035, 0.0, 1.0)).r);
+				}
+				o /= 8.0;
+				float broken = clamp(4.0 * o * (1.0 - o), 0.0, 1.0) * (1.0 - o * 0.5) + 0.25 * (1.0 - step(0.99, o)) * (1.0 - step(o, 0.01));
+				vec2 dl2 = (suv - uv) / 32.0;
+				float ac2 = 0.0; vec2 p2 = uv;
+				for (int i = 0; i < 32; i++) {
+					p2 += dl2;
+					if (any(lessThan(p2, vec2(0.0))) || any(greaterThan(p2, vec2(1.0)))) break;
+					ac2 += step(1.0, texture(depthtex0, p2).r) * (0.6 + 0.4 * float(i) / 32.0);
+				}
+				ac2 /= 32.0;
+				float fall2 = 1.0 - smoothstep(0.05, 1.1, length((suv - uv) * vec2(viewWidth / viewHeight, 1.0)));
+				float lowSun = 1.0 - smoothstep(0.35, 0.8, sunHg);
+				float beam = smoothstep(0.06, 0.45, ac2) * fall2 * fall2;
+				vec3 bc = mix(vec3(1.0, 0.95, 0.78), vec3(1.0, 0.76, 0.48), duskG);
+				col += bc * beam * broken * mix(0.45, 1.0, lowSun) * CANOPY_RAYS * 0.32 * (1.0 - rainStrength) * (sky ? 0.4 : 1.0);
+			}
+#endif
 		}
 	}
 #endif
