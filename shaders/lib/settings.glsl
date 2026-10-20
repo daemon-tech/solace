@@ -184,3 +184,5 @@ const float sunPathRotation = -25.0;
 
 #ifdef CLOUD_LAYERS
 #endif
+#define HELD_LIGHT // a torch or lantern in hand lights up the area around you
+#define HELD_LIGHT_STRENGTH 1.0 // [0.5 0.75 1.0 1.25 1.5]

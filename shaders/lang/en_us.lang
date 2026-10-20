@@ -257,3 +257,7 @@ option.ENTITY_SOFT.comment=Mobs and players get soft two-tone cartoon shading wi
 option.FAR_SOFTEN=Far Soften
 option.FAR_SOFTEN.comment=Distant blocks melt into soft, flat tones like a painted background. 0 turns it off.
 option.TEXTURE_CALM.comment=Smooth cartoon textures: blocks keep their pattern but lose harsh texel noise.
+option.HELD_LIGHT=Held Light
+option.HELD_LIGHT.comment=A torch or lantern in your hand softly lights up the dark around you.
+option.HELD_LIGHT_STRENGTH=Held Light Strength
+option.HELD_LIGHT_STRENGTH.comment=How bright the light from a held torch or lantern is.

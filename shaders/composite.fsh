@@ -60,6 +60,8 @@ uniform float rainStrength;
 uniform float thunderStrength;
 uniform vec4 lightningBoltPosition;
 uniform float lFlash;
+uniform int heldBlockLightValue;
+uniform int heldBlockLightValue2;
 uniform mat4 gbufferProjectionInverse;
 uniform mat4 gbufferModelViewInverse;
 uniform vec3 cameraPosition;
@@ -280,6 +282,28 @@ void main() {
 		}
 		float ao = 1.0 - celBandSoft(occ / 12.0, 4, 0.4) * SSAO_STRENGTH;
 		col *= mix(1.0, ao, smoothstep(far * 0.6, 8.0, lin));
+	}
+#endif
+	float heldK = 0.0;
+#ifdef HELD_LIGHT
+	// held light: a torch or lantern in hand casts a soft warm pool around the player. Two calm bands
+	// with a smooth falloff, strongest where the scene is dark, so daylight is never touched.
+	if (d0 < 1.0 && d0 > 0.56 && isEyeInWater < 2) {
+		float hl = float(max(heldBlockLightValue, heldBlockLightValue2));
+		if (hl > 0.5) {
+			float rad = hl * 0.9;
+			float fall = 1.0 - smoothstep(0.0, rad, lin);
+			fall = fall * fall * (3.0 - 2.0 * fall);
+			// darkness of the surroundings: night or little sky light at the eye (caves), minus existing torch pools
+			float eyeSky = float(eyeBrightnessSmooth.y) / 240.0;
+			float dark = 1.0 - smoothstep(0.25, 0.75, dayFactor(sunPosition, upPosition) * eyeSky);
+			dark *= 1.0 - clamp(texture(colortex2, uv).g * 1.2, 0.0, 0.6);
+			dark *= 1.0 - smoothstep(0.55, 0.9, luma(col));
+			vec3 hc = vec3(1.0, 0.60, 0.30);
+			float k = fall * dark * (hl / 15.0) * HELD_LIGHT_STRENGTH;
+			heldK = clamp(k * 1.5, 0.0, 1.0);
+			col = mix(col, col * (1.0 + hc * 1.6) + hc * 0.05, clamp(k, 0.0, 1.0));
+		}
 	}
 #endif
 #ifdef COLORED_LIGHT
@@ -1139,7 +1163,7 @@ void main() {
 			// so shapes, grass and paths stay readable, while the darkest shadows stay calm and deep
 			vec3 ind = mix(vec3(luma(col)) * vec3(0.78, 0.88, 1.22), col * vec3(0.84, 0.97, 1.16), 0.55) + vec3(0.032, 0.038, 0.066);
 			ind = pow(max(ind, vec3(0.0)), vec3(0.90)) * 1.06;
-			col = mix(col, ind, night * SCENE_TINT * (1.0 - warmPix));
+			col = mix(col, ind, night * SCENE_TINT * (1.0 - max(warmPix, heldK)));
 			// twilight white balance where the eye sees little sky (pits, dug holes, caves): the still-indigo
 			// dawn/dusk ambient read lavender on grey stone there. Neutralise its hue, keep its brightness.
 			{
