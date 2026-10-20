@@ -83,7 +83,7 @@ vec3 lightColor(int id) {
 vec2 windDir() { return normalize(vec2(0.8, 0.45)); }
 float windGust(vec2 xz, float t) {
 	vec2 wd = windDir();
-	float front = dot(xz, wd) * 0.08 - t * WIND_SPEED * 0.5;
+	float front = dot(xz, wd) * 0.08 - t * WIND_SPEED * 0.35; // fronts travel ~4.4 blocks/s (wind lines ride them)
 	float g = sin(front + vnoise(xz * 0.015) * 3.0) * 0.5 + 0.5;
 	g = smoothstep(0.45, 0.95, g);
 	g *= 0.6 + 0.4 * vnoise(xz * 0.03 - wd * t * WIND_SPEED * 0.6);

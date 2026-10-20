@@ -1130,14 +1130,17 @@ void main() {
 			for (int k = 0; k < 9; k++) {
 				vec2 cell = cc + vec2(float(k % 3) - 1.0, float(k / 3) - 1.0);
 				float hc = hash12(cell * 1.31 + 0.7);
-				float cyc = 8.0 + 3.0 * hc;
+				float cyc = 6.5 + 2.0 * hc;
 				float tt = frameTimeCounter / cyc + hc * 7.0;
 				float id = floor(tt), lt = fract(tt) * cyc;   // seconds into this streak's life
 				if (lt > 6.0) continue;                          // quiet gap between streaks
 				float h1 = hash12(cell + vec2(id, 7.3)), h2 = hash12(cell.yx + vec2(3.1, id + 11.0)), h3 = hash12(cell * 0.7 + vec2(id * 1.7, 5.0));
 				vec3 base = vec3((cell.x + h1) * 12.0, cameraPosition.y + 1.5 + 5.0 * h3, (cell.y + h2) * 12.0) - wd * 6.0;
-				base += wd * (lt * WIND_SPEED * 3.2);             // drifts downwind
+				base += wd * (lt * WIND_SPEED * 4.375);           // drifts downwind at the same speed as the grass gust fronts
 				float life = smoothstep(0.0, 0.8, lt) * (1.0 - smoothstep(4.4, 6.0, lt));
+				// ride the gusts: a line only shows while a gust front is passing under it, so the grass
+				// below visibly bends and brightens with it
+				life *= smoothstep(0.02, 0.25, windGust((base + wd * 5.0).xz, frameTimeCounter));
 				float head = clamp(lt / 3.4, 0.0, 1.0) * 1.35;   // line draws itself in
 				float L = 8.0 + 4.0 * h2, R = 0.6 + 0.3 * h1;
 				vec2 prevP = vec2(0.0); float prevZ = 0.0, prevS = 0.0; bool prevOK = false;
