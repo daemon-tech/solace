@@ -1177,46 +1177,6 @@ void main() {
 	}
 #endif
 #endif
-#ifdef POLLEN
-#if !defined DIM_NETHER && !defined DIM_END
-	// drifting pollen: a few soft warm motes floating slowly on the breeze in sunny meadows and forests
-	{
-		float polK = POLLEN * smoothstep(0.35, 0.6, dayG) * (1.0 - rainStrength)
-		           * smoothstep(0.6, 0.85, float(eyeBrightnessSmooth.y) / 240.0)
-		           * smoothstep(0.3, 0.5, bTemp) * (1.0 - smoothstep(1.2, 1.5, bTemp));
-		if (polK > 0.01 && isEyeInWater == 0) {
-			vec3 rd = safeNormalize(mat3(gbufferModelViewInverse) * vpos, vec3(0, 0, 1));
-			float maxD = min(sky ? 18.0 : lin, 18.0);
-			vec2 wdP = windDir(); // fixed: drift is direction * time, a turning direction would sweep the motes
-			vec3 drift = vec3(wdP.x, 0.0, wdP.y) * frameTimeCounter * 0.6;
-			vec3 cp = mod(cameraPosition - drift, 1024.0);
-			float glow = 0.0;
-			for (int i = 0; i < 14; i++) {
-				float s0 = 0.75 + float(i) * 1.3;
-				if (s0 > maxD + 1.3) break;
-				vec3 cell = floor((cp + rd * s0) / 2.5);
-				float h = hash12(cell.xz + cell.y * 13.7 + 2.9);
-				if (h > 0.22) continue; // sparse
-				vec3 fp = (cell + vec3(hash12(cell.xz + 1.7), hash12(cell.xz + cell.y + 4.4), hash12(cell.zx + 6.2))) * 2.5;
-				fp += vec3(sin(frameTimeCounter * 0.4 + h * 50.0), sin(frameTimeCounter * 0.3 + h * 80.0) * 0.5, cos(frameTimeCounter * 0.35 + h * 60.0)) * 0.5;
-				// carried by the gusts: as a front passes, the mote surges downwind and lifts a little, then settles
-				float gP = windGust(fp.xz + drift.xz, frameTimeCounter);
-				fp += vec3(wdP.x, 0.0, wdP.y) * gP * 1.6 + vec3(0.0, 0.35 * gP, 0.0);
-				vec3 rel = fp - cp;
-				if (rel.y > 4.0 || rel.y < -1.5) continue;
-				float tc = dot(rel, rd);
-				if (tc < 0.5 || tc > maxD) continue;
-				float d = length(rel - rd * tc);
-				float r = 0.06 + 0.006 * tc;
-				float fade = smoothstep(0.2, 0.8, sin(frameTimeCounter * 0.25 + h * 40.0) * 0.5 + 0.5) * (1.0 - smoothstep(10.0, 18.0, tc));
-				fade = min(fade * (0.8 + 0.4 * gP), 1.0); // a touch brighter while riding a gust
-				glow = max(glow, (1.0 - smoothstep(r * 0.6, r * 1.6, d)) * fade); // soft round mote, no hard pixel
-			}
-			col = mix(col, vec3(1.0, 0.97, 0.82), clamp(glow, 0.0, 1.0) * 0.85 * polK);
-		}
-	}
-#endif
-#endif
 #ifdef WIND_STREAKS
 #if !defined DIM_NETHER && !defined DIM_END
 	// wind streaks: a few thin soft white lines that drift with the breeze, draw themselves in,

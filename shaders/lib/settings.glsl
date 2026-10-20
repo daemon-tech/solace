@@ -120,7 +120,6 @@ const float sunPathRotation = -25.0;
 #define SHADOW_EDGE 0.18 // [0.06 0.12 0.18 0.25 0.35] softness of the shadow band edge
 #define WIND_GUSTS // breeze waves rolling across grass fields and trees
 #define WIND_GUST_STRENGTH 1.0 // [0.5 0.75 1.0 1.5 2.0]
-#define POLLEN 1.0 // [0.0 0.5 1.0 1.5] a few soft warm motes drifting in sunny air
 #define WIND_STREAKS 1.0 // [0.0 0.5 1.0 1.5] thin soft wind lines drifting with the breeze
 #define WIND_SPEED 1.0 // [0.5 0.75 1.0 1.5]
 #define FIELD_WAVES 1.0 // [0.0 0.4 0.7 1.0 1.4] soft bright waves rolling across grass fields

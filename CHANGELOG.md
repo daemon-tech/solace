@@ -3,6 +3,11 @@
 Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All Rights Reserved.
 All builds tested in the real client with screenshots.
 
+## 0.31.1
+
+### Changes
+- **Removed pollen motes**: the drifting pollen and its gust drift are gone, along with the Drifting Pollen option.
+
 ## 0.31
 
 The big wind and atmosphere update.
