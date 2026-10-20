@@ -292,7 +292,13 @@ void main() {
 		float hl = float(max(heldBlockLightValue, heldBlockLightValue2));
 		if (hl > 0.5) {
 			float rad = hl * 0.9;
-			float fall = 1.0 - smoothstep(0.0, rad, lin);
+			// round pool: true distance from the hand (not screen depth), and surfaces facing the
+			// player catch more light than ones seen edge-on, so the pool reads as a soft sphere
+			vec4 hp4 = gbufferProjectionInverse * vec4(uv * 2.0 - 1.0, d0 * 2.0 - 1.0, 1.0);
+			vec3 hp = hp4.xyz / hp4.w - vec3(0.25, -0.35, 0.0);
+			vec3 hN = safeNormalize(texture(colortex1, uv).xyz * 2.0 - 1.0, vec3(0, 0, 1));
+			float face = mix(0.55, 1.0, clamp(dot(hN, -safeNormalize(hp, vec3(0, 0, -1))), 0.0, 1.0));
+			float fall = (1.0 - smoothstep(0.0, rad, length(hp))) * face;
 			fall = fall * fall * (3.0 - 2.0 * fall);
 			// darkness of the surroundings: night or little sky light at the eye (caves), minus existing torch pools
 			float eyeSky = float(eyeBrightnessSmooth.y) / 240.0;
