@@ -8,6 +8,7 @@ All builds tested in the real client with screenshots.
 ### Changes
 - **Removed pollen motes**: the drifting pollen and its gust drift are gone, along with the Drifting Pollen option.
 - **Low maps**: valley fog and morning mist follow the visible ground on maps whose land sits far below sea level, instead of burying the whole landscape.
+- **Wind lines**: more wind lines are in view at once, spread over a wider patch around you.
 
 ## 0.31
 

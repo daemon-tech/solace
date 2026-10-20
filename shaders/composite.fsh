@@ -1205,17 +1205,18 @@ void main() {
 			vec2 px = gl_FragCoord.xy;
 			float sceneZ = sky ? 1e6 : lin;
 			float line = 0.0;
-			// world-anchored: each 12-block cell around the camera owns one streak, so they stay put when the camera turns
-			vec2 cc = floor(cameraPosition.xz / 12.0);
-			for (int k = 0; k < 9; k++) {
-				vec2 cell = cc + vec2(float(k % 3) - 1.0, float(k / 3) - 1.0);
+			// world-anchored: each 9-block cell in a 4x4 patch around the camera owns one streak,
+			// so several lines are in view at once and they stay put when the camera turns
+			vec2 cc = floor(cameraPosition.xz / 9.0 + 0.5);
+			for (int k = 0; k < 16; k++) {
+				vec2 cell = cc + vec2(float(k % 4) - 2.0, float(k / 4) - 2.0);
 				float hc = hash12(cell * 1.31 + 0.7);
 				float cyc = 6.0 + 1.5 * hc;
 				float tt = frameTimeCounter / cyc + hc * 7.0;
 				float id = floor(tt), lt = fract(tt) * cyc;   // seconds into this streak's life
 				if (lt > 6.0) continue;                          // quiet gap between streaks
 				float h1 = hash12(cell + vec2(id, 7.3)), h2 = hash12(cell.yx + vec2(3.1, id + 11.0)), h3 = hash12(cell * 0.7 + vec2(id * 1.7, 5.0));
-				vec3 base = vec3((cell.x + h1) * 12.0, cameraPosition.y + 1.5 + 5.0 * h3, (cell.y + h2) * 12.0) - wd * 6.0;
+				vec3 base = vec3((cell.x + h1) * 9.0, cameraPosition.y + 1.5 + 5.0 * h3, (cell.y + h2) * 9.0) - wd * 6.0;
 				base += wd * (lt * WIND_SPEED * 4.375);           // drifts downwind at the same speed as the grass gust fronts
 				float life = smoothstep(0.0, 0.8, lt) * (1.0 - smoothstep(4.4, 6.0, lt));
 				// ride the gusts: a line only shows while a gust front is passing under it, so the grass
@@ -1224,8 +1225,8 @@ void main() {
 				float head = clamp(lt / 3.4, 0.0, 1.0) * 1.35;   // line draws itself in
 				float L = 8.0 + 4.0 * h2, R = 0.6 + 0.3 * h1;
 				vec2 prevP = vec2(0.0); float prevZ = 0.0, prevS = 0.0; bool prevOK = false;
-				for (int i = 0; i <= 28; i++) {
-					float sp = float(i) / 28.0;
+				for (int i = 0; i <= 22; i++) {
+					float sp = float(i) / 22.0;
 					// gentle S-curve along the run, then one soft loop at the end
 					vec3 q = wd * (sp * L) + side * (0.45 * sin(sp * 4.7 + h1 * 6.0)) + upW * (0.25 * sin(sp * 6.3 + h3 * 6.0));
 					float la = clamp((sp - 0.62) / 0.38, 0.0, 1.0) * 6.2832;
