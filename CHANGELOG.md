@@ -12,7 +12,7 @@ All builds tested in the real client with screenshots.
 
 ### Lighting
 - **Held Light** (Cel Lighting > Held Light): a torch or lantern in your hand casts a soft warm pool of light around you at night and in caves, with a smooth falloff; daylight is untouched.
-- **Stylised Lava** (Cel Lighting > Stylised Lava): lava is a calm, deep orange with large, slowly drifting bright veins instead of a busy pale texture.
+- **Stylised Lava** (Cel Lighting > Stylised Lava): lava is a calm, deep orange with large, slowly drifting bright veins instead of a busy pale texture. At night it is slightly dimmer, so its glow stays orange instead of washing out.
 
 ### Clouds
 - **Calmer horizon:** the low cloud layer now melts softly into the sky far away and thins out just above the horizon, so the distance no longer looks busy.

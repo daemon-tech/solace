@@ -343,7 +343,8 @@ void main() {
 			fl = mix(fl, luma(albedo.rgb), 0.15);
 			float v = celBandSoft(smoothstep(0.42, 0.78, fl), 2, 0.5);
 			vec3 lavaC = mix(vec3(0.86, 0.24, 0.04), vec3(1.0, 0.62, 0.16), v);
-			col = lavaC * LAVA_BRIGHT;
+			// slightly dimmer at night so the glow around it stays orange instead of washing out pale
+			col = lavaC * LAVA_BRIGHT * mix(0.72, 1.0, day);
 		}
 	#endif
 	#endif
