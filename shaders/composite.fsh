@@ -169,6 +169,8 @@ vec3 grade(vec3 c) {
 	c = max(c, 0.0);
 	// soft luminance cap: compress highlights above LUMA_CAP
 	float nl = luma(c);
+	// highlight shoulder: the brightest tones drift toward soft white instead of clipping to saturated yellow
+	c = mix(c, vec3(nl) * vec3(1.02, 0.99, 0.97), smoothstep(LUMA_CAP - 0.04, 1.05, nl) * 0.4);
 	if (nl > LUMA_CAP) c *= (LUMA_CAP + (nl - LUMA_CAP) * 0.35) / nl;
 	return c;
 }

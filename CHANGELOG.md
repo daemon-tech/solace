@@ -16,6 +16,9 @@ All builds tested in the real client with screenshots.
 ### Bloom
 - **Smoother bloom:** the glow around bright areas is now built from soft blurred layers instead of scattered samples, so it is wide and even with no specks or rings, and it no longer puts a faint veil over the whole picture.
 
+### Colour
+- **Soft highlights:** the brightest spots drift toward a soft white instead of clipping to saturated yellow, so the sky around a rising or setting sun stays clean.
+
 ### Textures
 - **Texture Calm** (Colour > Texture Calm): smoother cartoon block textures that keep their blocky pattern.
 - **Far Soften** (Colour > Far Soften): distant blocks and tree tops melt into soft, flat tones like a painted background, so far terrain no longer shimmers.
