@@ -6,6 +6,7 @@ uniform mat4 gbufferProjectionInverse;
 uniform vec3 sunPosition;
 uniform vec3 upPosition;
 uniform float rainStrength;
+uniform float wetness;
 uniform float viewWidth;
 uniform float viewHeight;
 uniform mat4 gbufferModelViewInverse;
@@ -76,6 +77,24 @@ void main() {
 		if (h > 0.985 && mw > 0.3) col = mix(col, vec3(0.92, 0.92, 1.0), 0.6 * night * (1.0 - rainStrength)); // denser stars in the band
 #endif
 	}
+#if RAINBOW > 0
+	// soft pastel rainbow after rain: a wide smooth arc around the point opposite the sun while the world is still wet
+	{
+		vec3 upR = safeNormalize(upPosition, vec3(0, 1, 0));
+		vec3 sR = safeNormalize(sunPosition, upR);
+		float sunUp = dot(sR, upR);
+		float showR = smoothstep(0.02, 0.2, wetness) * (1.0 - smoothstep(0.05, 0.35, rainStrength)) * smoothstep(0.02, 0.15, sunUp) * (1.0 - smoothstep(0.55, 0.75, sunUp));
+		if (showR > 0.0) {
+			float ang = acos(clamp(dot(dir, -sR), -1.0, 1.0)) * 57.2958; // degrees from the anti-solar point
+			float t = (ang - 39.0) / 6.0; // 0 = inner violet edge, 1 = outer red edge
+			float band = smoothstep(0.0, 0.25, t) * (1.0 - smoothstep(0.75, 1.0, t));
+			vec3 hue = clamp(abs(fract(vec3(0.75 - t * 0.75) + vec3(0.0, 2.0 / 3.0, 1.0 / 3.0)) * 6.0 - 3.0) - 1.0, 0.0, 1.0);
+			hue = mix(hue, vec3(1.0), 0.45);
+			float footFade = smoothstep(0.0, 0.25, dot(dir, upR) + 0.05);
+			col = mix(col, col + hue * 0.35, band * showR * footFade * float(RAINBOW) * 0.75);
+		}
+	}
+#endif
 #ifdef SOFT_CLOUDS
 	// soft, puffy cel cumulus on a sky plane (replaces blocky vanilla clouds)
 	{

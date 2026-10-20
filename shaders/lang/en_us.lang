@@ -428,3 +428,5 @@ option.DUSK_WATER_GLOW=Dusk Water Glow
 option.DUSK_WATER_GLOW.comment=A broad, soft warm light spreads over the water toward the low sun at sunrise and sunset. 0 turns it off.
 option.SOFT_STARS=Soft Stars
 option.SOFT_STARS.comment=Stars are small soft round points with a faint glow that breathe very slowly. 2 shows a few more, 0 uses the classic dots.
+option.RAINBOW=Rainbow
+option.RAINBOW.comment=After rain, while the world is still wet, a soft pastel rainbow arcs across the sky opposite the sun. 0 turns it off.
