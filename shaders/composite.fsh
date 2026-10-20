@@ -874,6 +874,12 @@ void main() {
 		col = mix(col, blueC * vec3(0.85, 0.95, 1.05), celBandSoft(smoothstep(10.0, 70.0, lin), 4, 0.45) * FOREST_HAZE * forestK * dayG * (1.0 - hb));
 	}
 #endif
+	// render-distance border: the last stretch before the loaded world ends melts smoothly into the
+	// horizon sky colour (no banding), so the edge of the world never shows as a hard line or step
+	if (!sky && isEyeInWater == 0 && d0 < 1.0) {
+		float edgeF = smoothstep(far * 0.70, far * 0.97, lin);
+		col = mix(col, fogSky, edgeF * edgeF * (3.0 - 2.0 * edgeF) * (1.0 - cave));
+	}
 #ifdef WEATHER_FX
 	// weather: rain fog, desert sandstorm, snow haze (all banded and distance based)
 	if (!sky && isEyeInWater == 0) {
