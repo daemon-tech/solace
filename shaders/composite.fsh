@@ -952,6 +952,11 @@ void main() {
 	if (!sky && isEyeInWater == 0 && !water) {
 		float hb = smoothstep(far * 0.10, far * 0.85, lin);
 		hb = hb * hb * (3.0 - 2.0 * hb);
+#if MOUNTAIN_LAYERS > 0
+		// layered ridges: the fade advances in a few soft distance steps, so each ridge line sits on its own
+		// calm flat haze plane and far mountains read as stacked painted silhouettes
+		hb = mix(hb, celBandSoft(hb, 4, 0.45), 0.25 * float(MOUNTAIN_LAYERS) * smoothstep(0.02, 0.15, hb));
+#endif
 		vec3 blueC = mix(fogSky, vec3(0.66, 0.80, 0.97), 0.55) * mix(0.55, 1.0, dayG);
 		// far land first loses its detail (contrast pulled toward a calm mid tone), then turns light blue
 		float apK = DISTANCE_BLUE * (1.0 - 0.6 * duskG);

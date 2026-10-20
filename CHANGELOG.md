@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.31-dev
 
 ### Features
+- **Layered ridges**: far land now fades into the blue haze in a few soft steps, so ridge lines behind each other read as calm stacked silhouettes (Fog > Layered Ridges, 0 turns it off).
 - **Warm light, cool shade**: sunlit faces now lean a little warm and shaded sides a soft sky-blue, a bit stronger in the morning and evening, for a calmer painted light contrast (Lighting > Advanced > Warm Light, Cool Shade, 0 turns it off).
 - **Moon halo**: on clear nights the moon now sits in a calm silver-blue glow with a faint wide ring around it. Hidden in rain and behind terrain (Sky > Sun, Moon & Night > Moon Halo, 0 turns it off).
 - **Drifting pollen**: on sunny days in meadows and forests a few soft warm motes now float slowly on the breeze near the camera, anchored in the world and fading gently in and out. Hidden in rain, at night and underwater (Foliage > Drifting Pollen, 0 turns them off).

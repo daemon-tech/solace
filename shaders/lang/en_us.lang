@@ -422,3 +422,5 @@ option.MOON_HALO=Moon Halo
 option.MOON_HALO.comment=A calm silver-blue glow and a faint wide ring around the moon on clear nights. 0 turns it off.
 option.WARM_COOL=Warm Light, Cool Shade
 option.WARM_COOL.comment=Sunlit faces lean a little warm and shaded sides a soft sky-blue, strongest when the sun is low. 0 turns it off.
+option.MOUNTAIN_LAYERS=Layered Ridges
+option.MOUNTAIN_LAYERS.comment=Far mountains fade into the haze in a few soft steps, so ridges read as calm stacked silhouettes. 0 turns it off.
