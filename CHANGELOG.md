@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.33.1
 
 ### Changes
+- **Quieter wind over trees**: the drifting wind lines only brush faintly over tree crowns and keep their full strength over meadows.
 - **Calmer underwater light**: under water the colour is a soft teal, the water brightens gently toward the sunlit surface, and light shafts fall in soft beams instead of hard patches.
 - **Dappled sunlight**: the sun spots under leaf canopies are larger, softer and more frequent, so tree shadows read as dappled light instead of flat dark patches.
 - **Smooth shore-to-deep water**: the colour now flows gently from bright shallows into deep blue instead of jumping in hard-edged steps.

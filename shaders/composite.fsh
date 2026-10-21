@@ -1332,7 +1332,9 @@ void main() {
 			vec3 wsC = mix(vec3(0.93, 0.96, 1.0), vec3(1.0, 0.86, 0.68), 1.0 - smoothstep(0.25, 0.7, dayG));
 			// keep the middle of the view calm: lines thin out softly toward the screen centre
 			line *= mix(0.45, 1.0, smoothstep(0.06, 0.3, length(gl_FragCoord.xy / vec2(viewWidth, viewHeight) - 0.5)));
-			col = mix(col, wsC, clamp(line, 0.0, 1.0) * 0.82 * wsK);
+			// tree crowns: the lines only brush over them faintly (they belong to the meadow, not the canopy)
+			float crownK = (texture(colortex1, uv).a < 0.75) ? 1.0 - 0.8 * smoothstep(1.0, 3.0, wY - cameraPosition.y) : 1.0;
+			col = mix(col, wsC, clamp(line, 0.0, 1.0) * 0.82 * wsK * crownK);
 		}
 	}
 #endif
