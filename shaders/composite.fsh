@@ -752,8 +752,8 @@ void main() {
 		float day = dayFactor(sunPosition, upPosition);
 		vec3 fogCol = mix(vec3(0.18, 0.20, 0.50), vec3(0.42, 0.72, 0.85), day) * bTint;
 		fogCol = mix(fogCol, fogSky, FOG_SKY_MATCH);
-		float fs = far * mix(0.12, 0.02, bFog), fe = far * mix(0.9, 0.6, bFog);
-		float f = celBand(smoothstep(fs, fe, lin), 4) * min(FOG_STRENGTH * (1.0 + bFog * 0.3), 1.0);
+		float fs = far * mix(0.14, 0.06, bFog), fe = far * mix(0.95, 0.75, bFog); // foggy biomes still let nearby hills read clearly
+		float f = celBandSoft(smoothstep(fs, fe, lin), 4, 0.5) * min(FOG_STRENGTH * (1.0 + bFog * 0.3), 1.0);
 		col = mix(col, fogCol, f * (water ? 0.35 : 1.0) * (1.0 - 0.85 * cave * CAVE_FOG_ON));
 	}
 #endif
