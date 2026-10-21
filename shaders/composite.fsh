@@ -1340,6 +1340,8 @@ void main() {
 		col = mix(col, nf, nfK);
 		// soft overall calm: slightly less saturation on the hottest surfaces
 		col = mix(vec3(luma(col)), col, mix(1.0, 0.76, smoothstep(0.3, 0.8, max(col.r - col.b, 0.0))));
+		// crimson forest: wart and nylium settle into a calmer rose-maroon instead of a harsh pure red
+		if (biome == BIOME_CRIMSON_FOREST) col = mix(vec3(luma(col)) * vec3(1.08, 0.94, 0.92), col, mix(1.0, 0.82, smoothstep(0.15, 0.5, col.r - max(col.g, col.b))));
 		// heat: fog turns red-orange around lava (blurred light field)
 		vec4 heat = textureLod(colortex3, uv, 6.0);
 		col = mix(col, vec3(1.0, 0.35, 0.10), clamp(heat.a * 6.0, 0.0, 0.5) * NETHER_FOG * smoothstep(4.0, 30.0, lin));
