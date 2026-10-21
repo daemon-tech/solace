@@ -362,20 +362,20 @@ void main() {
 			// rain: darker, glossier ground with soft puddle sheen on open flat surfaces
 			float upF = smoothstep(0.85, 0.98, dot(safeNormalize(n, up), up));
 			float open = smoothstep(0.85, 0.97, lm.y);
-			float wetK = wetness * open * WET_GROUND_STRENGTH;
+			float wetK = max(wetness, rainStrength * 0.85) * open * WET_GROUND_STRENGTH; // react as soon as it rains
 			if (wetK > 0.001 && isFoliage != 1) {
 				// soaked ground: a little darker and richer in colour (after the grass grade, so lawns get wet too)
-				col *= 1.0 - 0.24 * wetK;
+				col *= 1.0 - 0.30 * wetK;
 				col = max(mix(vec3(luma(col)), col, 1.0 + 0.30 * wetK), vec3(0.0));
 				// soft sheen toward grazing angles on open flat ground (calm sky-coloured lift, no specks)
 				vec4 wv4 = gbufferProjectionInverse * vec4(gl_FragCoord.xy / vec2(viewWidth, viewHeight) * 2.0 - 1.0, gl_FragCoord.z * 2.0 - 1.0, 1.0);
 				vec3 wvd = safeNormalize(wv4.xyz / wv4.w, vec3(0, 0, -1));
-				float wfr = pow(1.0 - clamp(dot(safeNormalize(n, up), -wvd), 0.0, 1.0), 3.0);
+				float wfr = pow(1.0 - clamp(dot(safeNormalize(n, up), -wvd), 0.0, 1.0), 2.2);
 				vec3 wsky = mix(vec3(0.20, 0.24, 0.34), vec3(0.62, 0.68, 0.76), day);
-				col = mix(col, wsky, wfr * upF * wetK * 0.35);
+				col = mix(col, wsky, clamp(0.10 + wfr, 0.0, 1.0) * upF * wetK * 0.48);
 				// small calm puddles in flat dips: smooth large patches that mirror the grey sky
 				float pd = smoothstep(0.60, 0.70, vnoise(cwpos.xz * 0.30) * 0.75 + vnoise(cwpos.xz * 0.9 + 5.1) * 0.25) * upF;
-				col = mix(col, mix(vec3(luma(col)) * 0.55, wsky, 0.35 + 0.5 * wfr), pd * wetK * 0.6);
+				col = mix(col, mix(vec3(luma(col)) * 0.55, wsky, 0.35 + 0.5 * wfr), pd * wetK * (isFoliage == 2 ? 0.12 : 0.45)); // lawns only glisten, paths and stone hold puddles
 			}
 		}
 	#endif
