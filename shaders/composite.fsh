@@ -1337,7 +1337,8 @@ void main() {
 		float nfK = celBandSoft(smoothstep(far * 0.04, far * 0.75, dz), 5, 0.35) * NETHER_FOG;
 		// depth: far fog sinks into a calm deep maroon so layers of cavern separate instead of one orange wall
 		nf = mix(nf, nf * vec3(0.62, 0.52, 0.70), smoothstep(far * 0.15, far * 0.7, dz) * 0.75);
-		col = mix(col, nf, nfK);
+		// glowing lava keeps its deep orange through the near fog instead of washing out pale
+		col = mix(col, nf, nfK * (1.0 - 0.45 * smoothstep(0.55, 0.9, col.r) * smoothstep(0.25, 0.05, col.b) * (1.0 - smoothstep(far * 0.2, far * 0.6, dz))));
 		// soft overall calm: slightly less saturation on the hottest surfaces
 		col = mix(vec3(luma(col)), col, mix(1.0, 0.76, smoothstep(0.3, 0.8, max(col.r - col.b, 0.0))));
 		// crimson forest: wart and nylium settle into a calmer rose-maroon instead of a harsh pure red
