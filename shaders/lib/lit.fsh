@@ -527,5 +527,5 @@ void main() {
 #endif
 	// alpha 0.5 = foliage, 0.85 = graded grass ground (outlines skip small grass ledges), 1.0 = other
 	bool grassG = isFoliage == 2 && vcolor.g > vcolor.b * 1.15 && vcolor.g > vcolor.r * 1.05;
-	outNormal = vec4(n * 0.5 + 0.5, isFoliage == 1 ? 0.5 : (grassG ? 0.85 : 1.0));
+	outNormal = vec4(n * 0.5 + 0.5, isFoliage == 1 ? (isGrassPlant == 1 ? 0.6 : 0.5) : (grassG ? 0.85 : 1.0)); // 0.5 leaves, 0.6 grass plants (both < 0.75 = foliage)
 }

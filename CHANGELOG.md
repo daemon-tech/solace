@@ -8,7 +8,7 @@ All builds tested in the real client with screenshots.
 ### Changes
 - **Soft mirrored shores**: trees and hills reflected in calm water are softly smeared and sway gently with the waves instead of a sharp pixel copy.
 - **Calmer far canopies**: from about 12 blocks away, leaf masses melt their bright/dark texel speckle into one soft painted shape; edges to sky and trunks stay crisp.
-- **Quieter wind over trees**: the drifting wind lines only brush faintly over tree crowns and keep their full strength over meadows.
+- **Quieter wind over trees**: the drifting wind lines only brush faintly over leaf blocks (tree crowns, also seen from above) and keep their full strength over meadows and grass.
 - **Calmer underwater light**: under water the colour is a soft teal, the water brightens gently toward the sunlit surface, and light shafts fall in soft beams instead of hard patches.
 - **Dappled sunlight**: the sun spots under leaf canopies are larger, softer and more frequent, so tree shadows read as dappled light instead of flat dark patches.
 - **Smooth shore-to-deep water**: the colour now flows gently from bright shallows into deep blue instead of jumping in hard-edged steps.
