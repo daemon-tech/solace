@@ -454,6 +454,12 @@ void main() {
 			fl = mix(fl, luma(albedo.rgb), 0.15);
 			float v = celBandSoft(smoothstep(0.42, 0.78, fl), 2, 0.5);
 			vec3 lavaC = mix(vec3(0.86, 0.24, 0.04), vec3(1.0, 0.62, 0.16), v);
+			// cooling crust: a few large dark-ember rafts drift slowly on the surface, edged with a hot rim
+			float cr = vnoise(cwpos.xz * 0.11 + vec2(-t * 0.5, t * 0.35));
+			float crust = celBandSoft(smoothstep(0.30, 0.20, cr), 2, 0.5);
+			float rim = smoothstep(0.36, 0.30, cr) * (1.0 - crust);
+			lavaC = mix(lavaC, vec3(0.40, 0.08, 0.03), crust * 0.75);
+			lavaC = mix(lavaC, vec3(1.0, 0.72, 0.26), rim * 0.6);
 			// slightly dimmer at night so the glow around it stays orange instead of washing out pale
 			col = lavaC * LAVA_BRIGHT * mix(0.72, 1.0, day);
 		}
