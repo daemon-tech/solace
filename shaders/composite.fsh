@@ -83,7 +83,7 @@ vec3 biomeTint(out float extraHaze) {
 	t = mix(t, vec3(0.94, 1.05, 0.92), lush);
 	t = mix(t, vec3(1.08, 0.99, 0.84), hot);
 	t = mix(t, vec3(0.90, 0.97, 1.10), cold);
-	t = mix(t, vec3(0.90, 1.00, 0.95), bSwamp);
+	t = mix(t, vec3(0.97, 0.98, 0.86), bSwamp); // swamps: muted olive, not mint
 	t = mix(t, vec3(0.93, 0.97, 0.96), bDark);
 	extraHaze = 0.35 * bSwamp + 0.30 * bDark + 0.15 * cold;
 	return mix(vec3(1.0), t, BIOME_MOOD * 1.5);
@@ -371,6 +371,10 @@ void main() {
 		vec3 deepC = vec3(0.07, 0.36, 0.54); // deeper end of the shallow-to-deep gradient
 		midC = mix(midC, vec3(0.34, 0.60, 0.46), bSwamp * BIOME_MOOD);
 		deepC = mix(deepC, vec3(0.16, 0.36, 0.30), bSwamp * BIOME_MOOD);
+		// swamps: murky olive-green water all the way to the shore (no pale mint shallows)
+		shoreC = mix(shoreC, vec3(0.50, 0.60, 0.40), bSwamp * BIOME_MOOD);
+		midC = mix(midC, vec3(0.26, 0.42, 0.30), bSwamp * BIOME_MOOD * 0.6);
+		deepC = mix(deepC, vec3(0.10, 0.24, 0.18), bSwamp * BIOME_MOOD * 0.6);
 		// night: same hues, darker and bluer (never navy-black)
 		vec3 nightK = mix(vec3(0.30, 0.40, 0.64), vec3(1.0), wday);
 		vec3 wc = (dd < 0.5 ? mix(shoreC, midC, dd * 2.0) : mix(midC, deepC, dd * 2.0 - 1.0)) * nightK;

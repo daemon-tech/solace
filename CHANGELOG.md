@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.33.1
 
 ### Changes
+- **Murky swamps**: swamps take a calm muted olive tone and murky olive-green water to the shore, instead of a pale mint wash.
 - **Soft white snow**: snowy lands settle into a calm soft white with just a hint of cool in the shade, instead of icy cyan.
 
 ### Fixes
