@@ -1314,10 +1314,10 @@ void main() {
 		else if (biome == BIOME_CRIMSON_FOREST) nf = mix(nf, vec3(0.62, 0.10, 0.08), 0.4);
 		float nfK = celBandSoft(smoothstep(far * 0.04, far * 0.75, dz), 5, 0.35) * NETHER_FOG;
 		// depth: far fog sinks into a calm deep maroon so layers of cavern separate instead of one orange wall
-		nf = mix(nf, nf * vec3(0.62, 0.52, 0.70), smoothstep(far * 0.2, far * 0.8, dz) * 0.6);
+		nf = mix(nf, nf * vec3(0.62, 0.52, 0.70), smoothstep(far * 0.15, far * 0.7, dz) * 0.75);
 		col = mix(col, nf, nfK);
 		// soft overall calm: slightly less saturation on the hottest surfaces
-		col = mix(vec3(luma(col)), col, mix(1.0, 0.86, smoothstep(0.35, 0.8, max(col.r - col.b, 0.0))));
+		col = mix(vec3(luma(col)), col, mix(1.0, 0.76, smoothstep(0.3, 0.8, max(col.r - col.b, 0.0))));
 		// heat: fog turns red-orange around lava (blurred light field)
 		vec4 heat = textureLod(colortex3, uv, 6.0);
 		col = mix(col, vec3(1.0, 0.35, 0.10), clamp(heat.a * 6.0, 0.0, 0.5) * NETHER_FOG * smoothstep(4.0, 30.0, lin));
