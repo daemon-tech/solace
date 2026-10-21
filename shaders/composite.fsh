@@ -362,7 +362,7 @@ void main() {
 		vec4 wp4 = gbufferProjectionInverse * vec4(uv * 2.0 - 1.0, d0 * 2.0 - 1.0, 1.0);
 		vec3 wv = wp4.xyz / max(abs(wp4.w), 1e-5);
 		vec2 wxz = (mat3(gbufferModelViewInverse) * wv).xz + mod(cameraPosition.xz, 4096.0);
-		float dd = celBand(smoothstep(0.3, 14.0 * mix(0.8, 1.4, WATER_CLARITY * 0.5), behind), 4);
+		float dd = celBandSoft(smoothstep(0.3, 14.0 * mix(0.8, 1.4, WATER_CLARITY * 0.5), behind), 4, 0.85); // soft painted steps from shore to deep, no hard contour lines
 		vec3 shoreC = vec3(0.80, 0.98, 0.96);
 #ifdef GLOW_SHALLOWS
 		shoreC = vec3(0.62, 1.0, 0.98); // brighter cyan shallows
