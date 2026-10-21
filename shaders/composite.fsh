@@ -1358,6 +1358,8 @@ void main() {
 			vec3 wdH = mat3(gbufferModelViewInverse) * vdir;
 			col += vec3(0.20, 0.10, 0.30) * celBandSoft(smoothstep(0.35, -0.05, abs(wdH.y + 0.05)), 3, 0.5) * 0.9;
 		}
+		// calm void mist: island undersides and low edges sink into a soft violet haze
+		if (d0 < 1.0) col = mix(col, ef * 1.35 + vec3(0.03, 0.01, 0.05), celBandSoft(smoothstep(58.0, 10.0, wY), 3, 0.4) * 0.55 * END_FOG);
 		col = mix(col, col * vec3(0.92, 0.88, 1.12), 0.6);
 #endif
 	}
