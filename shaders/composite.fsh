@@ -1242,7 +1242,7 @@ void main() {
 	{
 		float wsK = WIND_STREAKS * smoothstep(0.15, 0.4, dayG) * (1.0 - smoothstep(0.1, 0.5, rainStrength))
 		          * smoothstep(0.6, 0.85, float(eyeBrightnessSmooth.y) / 240.0);
-		if (wsK > 0.01 && isEyeInWater == 0) {
+		if (wsK > 0.01 && isEyeInWater == 0 && !sky && lin < far * 0.95) {
 			vec2 wd2 = windDirT(frameTimeCounter);
 			vec3 wd = vec3(wd2.x, 0.0, wd2.y), side = vec3(-wd2.y, 0.0, wd2.x), upW = vec3(0, 1, 0);
 			vec2 px = gl_FragCoord.xy;
