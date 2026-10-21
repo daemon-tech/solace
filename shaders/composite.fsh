@@ -756,7 +756,7 @@ void main() {
 		float dayA = dayFactor(sunPosition, upPosition);
 		float ap = 1.0 - exp(-max(lin - 24.0, 0.0) / (far * 0.75));
 		ap = smoothstep(0.0, 1.0, ap) * float(AERIAL_PERSPECTIVE) * 0.1 * mix(0.35, 1.0, dayA) * (1.0 - rainStrength * 0.5);
-		vec3 apC = mix(fogSky, vec3(0.70, 0.80, 0.95), 0.25 * dayA);
+		vec3 apC = mix(fogSky, vec3(0.62, 0.75, 0.94), 0.55 * dayA); // daytime distance leans soft sky-blue, not milk-white
 		vec3 desat = mix(vec3(luma(col)), col, 1.0 - 0.45 * ap);
 		col = mix(desat, apC, ap * 0.7);
 	}
@@ -804,7 +804,7 @@ void main() {
 		float vf = 1.0 - exp(-seg * 0.030 * (0.35 + depthB));
 		vf *= smoothstep(10.0, 40.0, lin) * (1.0 - smoothstep(far * 0.85, far, lin) * 0.5);
 		vf = celBandSoft(clamp(vf, 0.0, 1.0), 4, 0.5);
-		vec3 vc = mix(mix(fogSky, vec3(0.93, 0.95, 0.98), 0.35), vec3(0.16, 0.20, 0.36), 1.0 - dayFactor(sunPosition, upPosition));
+		vec3 vc = mix(mix(fogSky, vec3(0.74, 0.84, 0.97), 0.45), vec3(0.16, 0.20, 0.36), 1.0 - dayFactor(sunPosition, upPosition));
 		col = mix(col, vc, vf * VALLEY_FOG * (1.0 - rainStrength * 0.5) * (water ? 0.6 : 1.0));
 	}
 #endif
