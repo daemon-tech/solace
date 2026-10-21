@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.33.1
 
 ### Changes
+- **Warm light islands at night**: torch and campfire light now fades out with distance and glows soft amber, so the surrounding land sinks into moonlight instead of staying daylight green.
 - Distance fog in foggy biomes starts later and fades in smoothly instead of in steps, so nearby hills stay clear.
 - The sun's glow is now one soft gradient instead of hard concentric rings.
 - Fixed thin pale arcs in the sky: wind streaks no longer draw over vanilla clouds.

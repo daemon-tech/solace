@@ -1459,7 +1459,8 @@ void main() {
 			col = mix(col, col * vec3(0.80, 0.90, 1.22) + vec3(0.0, 0.01, 0.04), blueH * TIME_GRADING_STRENGTH * tgSky);
 #endif
 			// night: hue-shift towards indigo but keep warm torch pools warm
-			float warmPix = clamp(texture(colortex2, uv).g * 1.5, 0.0, 1.0);
+			// warm pools fall off with the light level: only the core near the flame keeps day colour, the rim fades into the night
+			float warmPix = smoothstep(0.30, 0.92, texture(colortex2, uv).g);
 			// moonlit night: a soft silver-blue instead of deep saturated indigo; the mids are lifted gently
 			// so shapes, grass and paths stay readable, while the darkest shadows stay calm and deep
 			vec3 ind = mix(vec3(luma(col)) * vec3(0.78, 0.88, 1.22), col * vec3(0.84, 0.97, 1.16), 0.55) + vec3(0.018, 0.022, 0.044);
@@ -1472,6 +1473,8 @@ void main() {
 			col = mix(col, ind, night * SCENE_TINT * (1.0 - max(warmPix, heldK)));
 			// calm deep night: unlit land steps down, warm light pools keep their full strength
 			col *= mix(1.0, 0.70, night * (1.0 - smoothstep(0.05, 0.45, max(warmPix, heldK))));
+			// the pool itself glows a soft amber instead of neutral daylight green
+			col = mix(col, col * vec3(1.10, 0.95, 0.78), night * warmPix * (1.0 - heldK) * 0.55);
 			// twilight white balance where the eye sees little sky (pits, dug holes, caves): the still-indigo
 			// dawn/dusk ambient read lavender on grey stone there. Neutralise its hue, keep its brightness.
 			{
