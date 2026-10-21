@@ -979,21 +979,22 @@ void main() {
 			float L = min(length(endP), 32.0);
 			vec3 dP = endP / max(length(endP), 1e-4);
 			float acc = 0.0;
-			for (int i = 0; i < 24; i++) {
-				vec3 pp = dP * L * (float(i) + 0.5) / 24.0;
+			// 48 steps: the beam edge reads as one smooth shaft instead of stacked slices
+			for (int i = 0; i < 48; i++) {
+				vec3 pp = dP * L * (float(i) + 0.5) / 48.0;
 				vec4 sc = shadowProjection * (shadowModelView * vec4(pp, 1.0));
 				vec3 sp = celDistort(sc.xyz / max(sc.w, 1e-4)) * 0.5 + 0.5;
 				if (all(greaterThan(sp, vec3(0.0))) && all(lessThan(sp, vec3(1.0))))
 					acc += clamp((texture(shadowtex0, sp.xy).r - sp.z) / 0.0016 + 0.5, 0.0, 1.0);
 			}
-			acc /= 24.0;
+			acc /= 48.0;
 			vec3 sunV = safeNormalize(sunPosition, vec3(0, 1, 0));
 			float mie = 0.45 + 0.55 * pow(max(dot(vdir, sunV), 0.0), 3.0);
 			vec3 shC = mix(mix(vec3(1.0, 0.93, 0.74), vec3(1.0, 0.92, 0.88), MORN_K), mix(vec3(1.0, 0.64, 0.30), vec3(1.0, 0.80, 0.72), MORN_K), duskG);
 			float openK = smoothstep(0.99, 0.70, float(eyeBrightnessSmooth.y) / 240.0); // indoors: full; outdoors: only broken light
 			float brokenK = mix(clamp(4.0 * acc * (1.0 - acc), 0.0, 1.0), 1.0, openK);
 			shC *= mix(vec3(1.0), vec3(1.06, 1.0, 0.84), openK); // rooms and caves: a soft warm sunbeam instead of a grey one
-			col += shC * celBand(smoothstep(0.0, 0.16, acc * sqrt(L / 32.0)), 4) * mie * interior * dayG * LIGHT_SHAFTS_STRENGTH * 0.35 * brokenK;
+			col += shC * celBandSoft(smoothstep(0.0, 0.16, acc * sqrt(L / 32.0)), 4, 0.5) * mie * interior * dayG * LIGHT_SHAFTS_STRENGTH * 0.35 * brokenK;
 		}
 	}
 #endif
