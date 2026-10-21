@@ -57,6 +57,7 @@ uniform float bRain;
 uniform float bSwamp;
 uniform float bDark;
 uniform float rainStrength;
+uniform float wetness;
 uniform float thunderStrength;
 uniform vec4 lightningBoltPosition;
 uniform float lFlash;
@@ -1323,6 +1324,34 @@ void main() {
 		}
 	}
 #endif
+#endif
+#if RAINBOW > 0 && !defined DIM_NETHER && !defined DIM_END
+	{
+		// after-rain rainbow: while the land is still wet and the rain has passed, a calm painted arc stands
+		// opposite the sun, drawn over sky, clouds and far hills in five soft pastel bands that fade at the feet
+		vec3 upR = safeNormalize(upPosition, vec3(0, 1, 0));
+		vec3 sunR = safeNormalize(sunPosition, upR);
+		float sUp = dot(sunR, upR);
+		float rK = smoothstep(0.005, 0.08, wetness) * (1.0 - smoothstep(0.05, 0.35, rainStrength)) * smoothstep(-0.02, 0.12, sUp) * (1.0 - smoothstep(0.55, 0.8, sUp));
+		if (rK > 0.01 && isEyeInWater == 0) {
+			float ang = degrees(acos(clamp(dot(vdir, -sunR), -1.0, 1.0)));
+			float x = (ang - 39.0) / 5.0; // 0 inner violet .. 1 outer red
+			float body = smoothstep(-0.25, 0.08, x) * smoothstep(1.25, 0.92, x);
+			if (body > 0.0) {
+				float xb = clamp(x, 0.0, 0.999) * 5.0;
+				vec3 c0 = vec3(0.66, 0.56, 0.98), c1 = vec3(0.50, 0.74, 1.0), c2 = vec3(0.62, 0.93, 0.58), c3 = vec3(1.0, 0.88, 0.50), c4 = vec3(1.0, 0.60, 0.52);
+				float fb = fract(xb), sb = smoothstep(0.82, 1.0, fb); // painted bands with a soft seam
+				int ib = int(xb);
+				vec3 ca = ib == 0 ? c0 : ib == 1 ? c1 : ib == 2 ? c2 : ib == 3 ? c3 : c4;
+				vec3 cb = ib == 0 ? c1 : ib == 1 ? c2 : ib == 2 ? c3 : c4;
+				vec3 rc = mix(ca, cb, sb);
+				float feet = smoothstep(-0.03, 0.22, dot(vdir, upR));
+				float terr = (d0 >= 1.0) ? 1.0 : smoothstep(far * 0.35, far * 0.85, lin) * 0.7;
+				float a = body * feet * terr * rK * float(RAINBOW) * 0.9;
+				col = mix(col, clamp(col * rc * 1.18 + rc * 0.10, 0.0, 1.0), a); // tinted veil that keeps the sky's light
+			}
+		}
+	}
 #endif
 #if defined DIM_NETHER || defined DIM_END
 	// own Nether / End looks: banded dimension fog in the biome's fog colour, soft glow
