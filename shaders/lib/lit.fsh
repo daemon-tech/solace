@@ -91,8 +91,8 @@ float shadowAt(vec4 clip, float ndl) {
 		if (leafC > 0.5 && lit < 0.98) {
 			vec3 sW = safeNormalize(mat3(gbufferModelViewInverse) * shadowLightPosition, vec3(0, 1, 0));
 			vec2 q = cwpos.xz - sW.xz / max(sW.y, 0.25) * cwpos.y;
-			float sp = vnoise(q * 0.62) * 0.7 + vnoise(q * 1.3 + 7.1) * 0.3;
-			sp = smoothstep(0.60, 0.74, sp);
+			float sp = vnoise(q * 0.45) * 0.7 + vnoise(q * 1.1 + 7.1) * 0.3; // larger, calmer blobs
+			sp = smoothstep(0.50, 0.70, sp); // more of them, soft edges
 			lit = max(lit, sp * SUN_SPOTS);
 		}
 	}

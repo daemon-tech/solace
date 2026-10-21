@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.33.1
 
 ### Changes
+- **Dappled sunlight**: the sun spots under leaf canopies are larger, softer and more frequent, so tree shadows read as dappled light instead of flat dark patches.
 - **Smooth shore-to-deep water**: the colour now flows gently from bright shallows into deep blue instead of jumping in hard-edged steps.
 - **Softer low-sun glints**: near sunset the sun's path on the water is softer and warmer, with fewer hard sparkles and no hard-edged bar.
 - **Meadow patches**: lawns get calm, large drifts of sunny yellow-green and deeper cool green instead of one flat tone; grass blades share the patch of the block below.
