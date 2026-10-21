@@ -502,7 +502,10 @@ void main() {
 			float cells = smoothstep(0.62, 0.70, vnoise(wxz * 3.5 + vec2(t * 0.8, -t * 0.5)) * 0.6 + mix(vnoise(wxz * 9.0 - t * 1.3), 0.5, smoothstep(0.03, 0.08, fpG)) * 0.4);
 			cells *= 1.0 - smoothstep(0.08, 0.2, fpG); // far: fade out instead of a flat patch
 			g = celBand(clamp(g * 2.5, 0.0, 1.0), 3) * cells;
-			col = mix(col, vec3(1.0, 0.97, 0.88), clamp(g, 0.0, 1.0) * 0.9 * wday * (1.0 - rainStrength));
+			// glint colour: clean cool white by day (warm cream reads as sand flakes on deep blue), warm only with a low sun
+			float gLow = 1.0 - smoothstep(0.08, 0.35, dot(Lsun, upV));
+			vec3 gC = mix(vec3(0.95, 0.99, 1.0), vec3(1.0, 0.92, 0.76), gLow);
+			col = mix(col, max(col, gC), clamp(g, 0.0, 1.0) * 0.75 * wday * (1.0 - rainStrength));
 			// moon path: on clear nights a calm silver trail of glints leads across the water towards the moon
 			{
 				vec3 Lm = safeNormalize(moonPosition, upV);

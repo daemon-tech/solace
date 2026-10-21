@@ -10,6 +10,7 @@ All builds tested in the real client with screenshots.
 - **Soft white snow**: snowy lands settle into a calm soft white with just a hint of cool in the shade, instead of icy cyan (near snow only, so far mountain views keep their airy blue and colour).
 
 ### Fixes
+- **Sun glints on water**: daytime glints are a clean cool white instead of beige cells that looked like sand flakes floating on the sea.
 - **Snowy grass blocks**: their sides keep a clean snow cap instead of a painted green stripe.
 - **No blue dome by day**: the moon's glow rings now only show at night; by day a faint pale moon remains instead of a hard-edged blue dome above the horizon.
 
