@@ -3,10 +3,26 @@
 Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All Rights Reserved.
 All builds tested in the real client with screenshots.
 
-## 0.32.1
+## 0.33
+
+The night and water update.
 
 ### Changes
 - **Cave glow haze**: underground, the air around lava and other lights fills with a soft warm veil of their colour (Cave Glow Haze option).
+- **Smoother cave beams**: light shafts through cave openings read as one smooth, soft beam.
+- **Night**: deeper, calmer moonlight, so torches and lanterns form warm glowing islands.
+- **Moon path**: on clear nights a calm silver path of glints lies on the water below the moon.
+- **Moon halo**: only shows once the sun is down, no pale ring in the dawn sky.
+- **Wet ground in rain**: ground reacts as soon as rain starts, turns darker and soaked, keeps a soft sky sheen, with puddles on paths and stone.
+- **Deep water**: open ocean settles one calm step deeper into blue-indigo.
+- **Golden-hour rivers**: rivers and shallows warm up with the low sun.
+- **Water colour**: slightly calmer default saturation.
+- **Underwater**: far open water melts into fog instead of a bright band.
+- **Daytime haze**: distance and valley haze lean soft sky-blue instead of milk-white.
+- **Wind lines**: only over terrain and foliage, never against the sky.
+- **Nether**: fixed a blue patch from overworld sky effects; the crimson forest settles into a calmer rose-maroon; lava keeps its deep orange through the fog.
+- **Lava**: slow cooling crusts with a hot rim drift across lava seas.
+- **End**: soft violet mist under the island edges.
 
 ## 0.32
 
