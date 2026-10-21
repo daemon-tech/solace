@@ -1479,6 +1479,9 @@ void main() {
 			col = mix(col, col * vec3(1.10, 0.95, 0.78), night * warmPix * (1.0 - heldK) * 0.55);
 			// overcast rain: the land loses its sunny punch, a calm grey-green under soft cool light (warm pools excluded)
 			if (IS_OW && !sky) col = mix(col, mix(vec3(luma(col)), col, 0.74) * vec3(0.95, 0.98, 1.03) * 0.90, rainStrength * skyEye * (1.0 - warmPix));
+			// neon lime guard: very saturated bright yellow-greens settle into a softer meadow green (same shift on blocks and grass)
+			if (IS_OW && !sky) { float gEx = col.g - max(col.r, col.b); float lk = smoothstep(0.10, 0.28, gEx) * smoothstep(0.25, 0.55, col.g);
+				col = mix(col, mix(vec3(luma(col)), col, 0.78) * vec3(0.99, 0.97, 1.0), lk * 0.6); }
 			// highlight shoulder: pale walls, sand and quartz in full sun roll off softly instead of clipping to flat white
 			if (!sky) { float hM = max(col.r, max(col.g, col.b)); if (hM > 0.80) col *= (0.80 + (1.0 - exp(-(hM - 0.80) * 2.6)) * 0.17) / hM; }
 			// twilight white balance where the eye sees little sky (pits, dug holes, caves): the still-indigo
