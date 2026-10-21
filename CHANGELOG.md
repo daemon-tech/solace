@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.33.1
 
 ### Changes
+- **Sunlit shallows**: a soft, slowly drifting net of light now plays over sand and stone in shallow water near the shore.
 - **Softer meadow green**: very saturated bright lime grass in full sun settles into a calmer meadow green.
 - **Scattered whitecaps**: open-sea crest foam now gathers in drifting groups instead of endless parallel stripes across the whole ocean.
 - **Soft highlights**: pale walls, sand and quartz in full sun roll off gently instead of clipping to flat white.

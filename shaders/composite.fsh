@@ -1507,6 +1507,16 @@ void main() {
 		float dayC = clamp(dot(safeNormalize(sunPosition, upPosition), safeNormalize(upPosition, vec3(0, 1, 0))) * 3.0 + 0.2, 0.0, 1.0);
 		float k = isEyeInWater == 1 ? 0.22 : 0.10 * (1.0 - smoothstep(1.0, 8.0, max(linDepth(dB) - lin, 0.0)));
 		col += vec3(0.75, 1.0, 0.95) * ca * k * dayC * CAUSTICS_STRENGTH * smoothstep(48.0, 8.0, lin);
+		if (isEyeInWater == 0) {
+			// sunlit shallows seen from above: a soft, slowly drifting light net on the bottom (smooth lines, no hard cells)
+			float sh = max(linDepth(dB) - lin, 0.0);
+			float sk = smoothstep(0.15, 0.6, sh) * (1.0 - smoothstep(1.5, 5.0, sh)) * (1.0 - smoothstep(14.0, 40.0, lin));
+			vec2 sq = cw.xz * 0.7;
+			float tS = frameTimeCounter * 0.35;
+			float s1 = abs(vnoise(sq + vec2(tS, -tS * 0.6)) - vnoise(sq * 1.25 - vec2(tS * 0.7, tS * 0.4)));
+			float net = smoothstep(0.09, 0.015, s1);
+			col = mix(col, col * 0.75 + vec3(0.86, 1.0, 0.96) * 0.35, net * sk * dayC * 0.55 * CAUSTICS_STRENGTH);
+		}
 	}
 #endif
 	if (isEyeInWater == 1) {
