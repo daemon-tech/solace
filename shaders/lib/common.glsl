@@ -17,6 +17,12 @@
 #undef GROUND_GRADE
 #undef GLASS_TINT_LIGHT
 #endif
+// overworld-only screen effects (sky haze, canopy glow, field waves) must stay out of the Nether and End
+#if defined DIM_NETHER || defined DIM_END
+#define IS_OW false
+#else
+#define IS_OW true
+#endif
 vec3 celDistort(vec3 p) {
 	// Radial shadow-map distortion: more resolution near the player.
 	float d = length(p.xy);

@@ -737,7 +737,7 @@ void main() {
 #if AERIAL_PERSPECTIVE > 0
 	// aerial perspective: distant land slowly fades paler and bluer into the sky colour, smooth (no bands),
 	// so ridges and forests stack into soft layers; warmer toward the sun at dawn and dusk
-	if (isEyeInWater == 0 && d0 < 1.0 && cave < 0.5 && !water) {
+	if (IS_OW && isEyeInWater == 0 && d0 < 1.0 && cave < 0.5 && !water) {
 		float dayA = dayFactor(sunPosition, upPosition);
 		float ap = 1.0 - exp(-max(lin - 24.0, 0.0) / (far * 0.75));
 		ap = smoothstep(0.0, 1.0, ap) * float(AERIAL_PERSPECTIVE) * 0.1 * mix(0.35, 1.0, dayA) * (1.0 - rainStrength * 0.5);
@@ -995,7 +995,7 @@ void main() {
 		}
 	}
 #endif
-	if (!sky && isEyeInWater == 0) {
+	if (IS_OW && !sky && isEyeInWater == 0) {
 		vec2 px2 = 6.0 / vec2(viewWidth, viewHeight);
 		float open = 0.0;
 		for (int i = 0; i < 8; i++) {
@@ -1008,7 +1008,7 @@ void main() {
 		col += glowC * open * (fol ? CANOPY_GLOW : CANOPY_GLOW * 0.4);
 	}
 	// rolling field waves: broad soft light bands drift slowly across open green ground in the wind
-	if (!sky && !water && isEyeInWater == 0 && FIELD_WAVES > 0.0) {
+	if (IS_OW && !sky && !water && isEyeInWater == 0 && FIELD_WAVES > 0.0) {
 		vec3 wpF = mat3(gbufferModelViewInverse) * vpos + cameraPosition;
 		float greenK = smoothstep(0.05, 0.18, col.g - max(col.r, col.b));
 		float folK = texture(colortex1, uv).a < 0.75 ? 0.45 : 1.0; // canopies sway much less than meadows
@@ -1019,7 +1019,7 @@ void main() {
 		col = mix(col, sheen, 0.6 * FIELD_WAVES * fwK * fw);
 	}
 	// warm atmospheric haze with distance (sunset orange, daytime soft yellow-green in forests)
-	if (!sky && isEyeInWater == 0) {
+	if (IS_OW && !sky && isEyeInWater == 0) {
 		float hz = smoothstep(3.0, far * 0.6, lin);
 		vec3 hzc = mix(mix(mix(vec3(0.85, 0.95, 0.55), vec3(0.98, 0.90, 0.88), MORN_K), fogSky * 1.08, FOG_SKY_MATCH * 0.6), mix(vec3(1.0, 0.62, 0.22), vec3(1.0, 0.78, 0.68), MORN_K), duskG);
 		col = mix(col, hzc, hz * (HAZE + bHaze * BIOME_MOOD * 0.5) * STYLE_K * dayG * (water ? 0.25 : 1.0) * (1.0 - 0.5 * duskG));
