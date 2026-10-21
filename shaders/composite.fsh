@@ -505,7 +505,10 @@ void main() {
 			// glint colour: clean cool white by day (warm cream reads as sand flakes on deep blue), warm only with a low sun
 			float gLow = 1.0 - smoothstep(0.08, 0.35, dot(Lsun, upV));
 			vec3 gC = mix(vec3(0.95, 0.99, 1.0), vec3(1.0, 0.92, 0.76), gLow);
-			col = mix(col, max(col, gC), clamp(g, 0.0, 1.0) * 0.75 * wday * (1.0 - rainStrength));
+			// low sun: fewer hard sparkle cells, instead a broad soft warm sheen path under them
+			col = mix(col, max(col, gC), clamp(g, 0.0, 1.0) * 0.75 * mix(1.0, 0.5, gLow) * wday * (1.0 - rainStrength));
+			float gS = pow(max(dot(reflect(V, upV), Lsun), 0.0), 14.0);
+			col = mix(col, vec3(1.0, 0.88, 0.72), celBandSoft(gS, 3, 0.6) * 0.30 * gLow * step(0.0, dot(Lsun, upV)) * (1.0 - rainStrength));
 			// moon path: on clear nights a calm silver trail of glints leads across the water towards the moon
 			{
 				vec3 Lm = safeNormalize(moonPosition, upV);
