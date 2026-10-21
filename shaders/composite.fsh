@@ -446,8 +446,11 @@ void main() {
 			}
 			if (hitUV.x >= 0.0 && texture(colortex2, hitUV).r < 0.5) {
 				vec2 e = smoothstep(vec2(0.0), vec2(0.08), hitUV) * smoothstep(vec2(1.0), vec2(0.92), hitUV);
-				vec3 refl = texture(colortex0, hitUV).rgb;
-				refl = mix(refl, wc, 0.25); // reflections take a little of the water colour
+				// soft painted mirror: a short vertical smear with a gentle sideways wobble from the waves (no sharp pixel copy)
+				vec3 refl = vec3(0.0);
+				float wob = sin(wxz.y * 1.3 + t * 0.9) * 0.0025 + sin(wxz.x * 0.9 - t * 0.7) * 0.0015;
+				for (int k = -2; k <= 2; k++) refl += texture(colortex0, hitUV + vec2(wob, float(k) * 0.0035)).rgb * (k == 0 ? 0.3 : (abs(k) == 1 ? 0.2 : 0.15));
+				refl = mix(refl, wc, 0.30); // reflections take a little of the water colour
 				col = mix(col, refl, fres * e.x * e.y * WATER_SSR_STRENGTH * (1.0 - 0.6 * farF));
 #ifdef NIGHT_LIGHT_REFLECT
 				// night: light sources reflect as vivid coloured glows, stretched into a short vertical streak
