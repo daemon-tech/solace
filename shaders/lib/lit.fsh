@@ -263,6 +263,15 @@ void main() {
 #endif
 	// shade twice: fully shadowed (lb=0) and fully lit (lb=1); the real band value blends them, so composite can
 	// re-blend with a smoothed shadow term (soft shadows part 2) without re-running the lighting
+#if BOUNCE_LIGHT > 0
+	{
+		// bounce light: sunlit ground throws a soft warm-green glow back up onto undersides and
+		// shaded sides (tree canopies from below, overhangs, mobs). Smooth, no sampling, calm.
+		float downF = clamp(-dot(n, up), 0.0, 1.0), sideF = 1.0 - abs(dot(n, up));
+		vec3 bounceC = mix(vec3(0.62, 0.78, 0.36), vec3(1.0, 0.72, 0.42), golden) * sunCol;
+		ambient += bounceC * (downF * 0.55 + sideF * 0.14) * day * smoothstep(0.55, 0.95, lm.y) * (1.0 - rainStrength * 0.8) * float(BOUNCE_LIGHT) * 0.1;
+	}
+#endif
 	float lbReal = lb; float pool = 0.0;
 	vec3 cOut[2];
 	for (int it = 0; it < 2; it++) {

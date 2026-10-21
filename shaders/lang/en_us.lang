@@ -432,3 +432,5 @@ option.SUN_SPOTS=Sun Spots
 option.SUN_SPOTS.comment=Soft round spots of sunlight on the ground under leaf canopies.
 option.SHORE_FOAM=Shore Foam
 option.SHORE_FOAM.comment=A soft white foam line that slowly washes up and down the shore.
+option.BOUNCE_LIGHT=Bounce Light
+option.BOUNCE_LIGHT.comment=Soft warm light bounced from sunlit ground onto undersides and shaded sides.
