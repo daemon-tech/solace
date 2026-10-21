@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.33.1
 
 ### Changes
+- **Calmer far canopies**: from about 12 blocks away, leaf masses melt their bright/dark texel speckle into one soft painted shape; edges to sky and trunks stay crisp.
 - **Quieter wind over trees**: the drifting wind lines only brush faintly over tree crowns and keep their full strength over meadows.
 - **Calmer underwater light**: under water the colour is a soft teal, the water brightens gently toward the sunlit surface, and light shafts fall in soft beams instead of hard patches.
 - **Dappled sunlight**: the sun spots under leaf canopies are larger, softer and more frequent, so tree shadows read as dappled light instead of flat dark patches.

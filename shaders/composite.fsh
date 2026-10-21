@@ -244,6 +244,21 @@ vec3 smoothShadow(vec3 col, float d0, float lin) {
 
 void main() {
 	vec3 col = texture(colortex0, uv).rgb;
+	// calm far canopies: past ~20 blocks, leaf pixels take a soft average of their leafy neighbours, so the
+	// bright/dark texel speckle of cutout leaves melts into one painted mass (edges to sky and trunks stay crisp)
+	if (texture(colortex1, uv).a < 0.75) {
+		float dl = linDepth(texture(depthtex0, uv).r);
+		float kC = smoothstep(12.0, 40.0, dl);
+		if (kC > 0.0) {
+			vec2 pxC = clamp(1.2 * gbufferProjection[1][1] * 0.5 * viewHeight / (16.0 * max(dl, 1.0)) * 1.4, 1.5, 4.0) / vec2(viewWidth, viewHeight); // ~one leaf texel
+			vec3 acc = col; float wsum = 1.0;
+			for (int i = 0; i < 8; i++) {
+				vec2 o = uv + vec2(cos(float(i) * 0.785), sin(float(i) * 0.785)) * pxC * (i % 2 == 0 ? 1.0 : 1.6);
+				if (texture(colortex1, o).a < 0.75 && abs(linDepth(texture(depthtex0, o).r) - dl) < 2.0 + dl * 0.05) { acc += texture(colortex0, o).rgb; wsum += 1.0; }
+			}
+			col = mix(col, acc / wsum, kC * 0.75);
+		}
+	}
 	if (any(isnan(col)) || any(isinf(col))) col = vec3(0.0);
 	// nether portal sheet (normal alpha 0.95): self-lit, so haze, fog lift and grading must not veil it
 	float portalPx = step(abs(texture(colortex1, uv).a - 0.95), 0.02);
