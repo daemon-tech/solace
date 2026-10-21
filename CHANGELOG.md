@@ -4,6 +4,7 @@ Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All 
 All builds tested in the real client with screenshots.
 
 ## 0.31.1
+- Light shafts: sunbeams through roof openings and cave mouths are softly warm, and deep caves keep most of the beam
 
 ### Changes
 - **Removed pollen motes**: the drifting pollen and its gust drift are gone, along with the Drifting Pollen option.

@@ -961,7 +961,7 @@ void main() {
 #ifdef LIGHT_SHAFTS
 	// light shafts indoors / under canopies: march the view ray through the shadow map
 	{
-		float interior = smoothstep(0.99, 0.70, float(eyeBrightnessSmooth.y) / 240.0) * (1.0 - cave * 0.7);
+		float interior = smoothstep(0.99, 0.70, float(eyeBrightnessSmooth.y) / 240.0) * (1.0 - cave * 0.35); // cave openings keep most of their beam
 #ifdef VOLUMETRIC_OUTDOOR
 		// forests and misty mornings: shafts outdoors too (only show where the canopy breaks the light)
 		interior = max(interior, VOLUMETRIC_OUTDOOR * clamp(0.35 + bDark + morningW * MORNING_MIST + rainStrength * 0.3, 0.0, 1.0));
@@ -984,6 +984,7 @@ void main() {
 			vec3 shC = mix(mix(vec3(1.0, 0.93, 0.74), vec3(1.0, 0.92, 0.88), MORN_K), mix(vec3(1.0, 0.64, 0.30), vec3(1.0, 0.80, 0.72), MORN_K), duskG);
 			float openK = smoothstep(0.99, 0.70, float(eyeBrightnessSmooth.y) / 240.0); // indoors: full; outdoors: only broken light
 			float brokenK = mix(clamp(4.0 * acc * (1.0 - acc), 0.0, 1.0), 1.0, openK);
+			shC *= mix(vec3(1.0), vec3(1.06, 1.0, 0.84), openK); // rooms and caves: a soft warm sunbeam instead of a grey one
 			col += shC * celBand(smoothstep(0.0, 0.16, acc * sqrt(L / 32.0)), 4) * mie * interior * dayG * LIGHT_SHAFTS_STRENGTH * 0.35 * brokenK;
 		}
 	}
