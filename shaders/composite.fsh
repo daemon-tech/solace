@@ -943,6 +943,14 @@ void main() {
 				float fall2 = 1.0 - smoothstep(0.05, 1.1, length((suv - uv) * vec2(viewWidth / viewHeight, 1.0)));
 				float lowSun = 1.0 - smoothstep(0.35, 0.8, sunHg);
 				float beam = smoothstep(0.06, 0.45, ac2) * fall2 * fall2;
+				{
+					// shafts: calm radial streaks fanning from the sun, slowly swaying with the breeze
+					vec2 dv = (uv - suv) * vec2(viewWidth / viewHeight, 1.0);
+					float ang = atan(dv.y, dv.x);
+					float sway = 0.18 * sin(frameTimeCounter * 0.25 * WIND_SPEED) + 0.10 * sin(frameTimeCounter * 0.11 + 1.7);
+					float st = 0.5 + 0.5 * sin(ang * 9.0 + sway) * (0.6 + 0.4 * sin(ang * 4.0 - sway * 1.3 + 0.8));
+					beam *= mix(0.55, 1.25, smoothstep(0.15, 0.85, st));
+				}
 				vec3 bc = mix(vec3(1.0, 0.95, 0.78), vec3(1.0, 0.76, 0.48), duskG);
 				col += bc * beam * broken * mix(0.45, 1.0, lowSun) * CANOPY_RAYS * 0.32 * (1.0 - rainStrength) * (sky ? 0.4 : 1.0);
 			}
