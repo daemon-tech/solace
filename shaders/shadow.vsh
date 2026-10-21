@@ -18,6 +18,7 @@ void main() {
 	if (plant || eid == 10002) {
 		float top = (gl_MultiTexCoord0.y < mc_midTexCoord.y) ? 1.0 : 0.0;
 		vp.xz += windOffset(plant ? 1 : 2, vp.xyz + cameraPosition, top, frameTimeCounter);
+		if (plant) vp.xz += playerPush(vp.xyz, top);
 	}
 #endif
 	gl_Position = gl_ProjectionMatrix * (shadowModelView * vp);

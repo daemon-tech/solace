@@ -79,6 +79,14 @@ vec3 lightColor(int id) {
 	return vec3(1.00, 0.72, 0.42);              // torches, lanterns, lava: warm
 }
 
+// grass parting: plants near the player's feet bend softly away (rel = position relative to the camera)
+vec2 playerPush(vec3 rel, float top) {
+	vec3 f = rel - vec3(0.0, -1.62, 0.0);
+	float r = length(f.xz);
+	float k = top * (1.0 - smoothstep(0.35, 1.7, r)) * (1.0 - smoothstep(0.6, 1.6, abs(f.y)));
+	return f.xz / max(r, 0.15) * k * 0.42 * GRASS_PART;
+}
+
 // shared wind field (world xz, time): 0..1 gust strength. Large breeze waves travel across the
 // land along the wind direction, broken up by slow noise so fronts are irregular.
 vec2 windDir() { return normalize(vec2(0.8, 0.45)); }

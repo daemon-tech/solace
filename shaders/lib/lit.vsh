@@ -43,6 +43,7 @@ void main() {
 		vec4 vp = gbufferModelViewInverse * (gl_ModelViewMatrix * gl_Vertex);
 		float top = (gl_MultiTexCoord0.y < mc_midTexCoord.y) ? 1.0 : 0.0;
 		vp.xz += windOffset(plant ? 1 : 2, cwpos, top, frameTimeCounter);
+		if (plant) vp.xz += playerPush(vp.xyz, top);
 		gl_Position = gl_ProjectionMatrix * (gbufferModelView * vp);
 	}
 #endif
