@@ -294,7 +294,8 @@ void main() {
 
 	#ifdef FLAT_NORMAL
 		// particles: neutral brightness only, so they never pick up the cool/indigo tint
-		lighting = vec3(max(mix(0.35, 1.0, lm.y * mix(0.4, 1.0, day)), lm.x));
+		// at night smoke and dust over a fire glow a soft ember tone from below instead of bright white
+		lighting = max(vec3(mix(0.26, 1.0, lm.y * mix(0.32, 1.0, day))), vec3(lm.x) * mix(vec3(1.0, 0.70, 0.46) * 0.62, vec3(1.0), day));
 	#endif
 	#ifdef GROUND_GRADE
 		// grass ground: tinted texels (grass top / side overlay) get flat, soft lighting

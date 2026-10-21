@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.33.1
 
 ### Changes
+- **Night smoke**: campfire smoke and other particles no longer glow bright white at night; over a fire they take a soft dim ember tone.
 - **Soft mirrored shores**: trees and hills reflected in calm water are softly smeared and sway gently with the waves instead of a sharp pixel copy.
 - **Calmer far canopies**: from about 12 blocks away, leaf masses melt their bright/dark texel speckle into one soft painted shape; edges to sky and trunks stay crisp.
 - **Quieter wind over trees**: the drifting wind lines only brush faintly over leaf blocks (tree crowns, also seen from above) and keep their full strength over meadows and grass.
