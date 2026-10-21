@@ -8,7 +8,7 @@ void biomeSky(inout vec3 zen, inout vec3 hor, float k) {
 	if (k < 0.001) return;
 	zen = mix(zen, vec3(0.30, 0.52, 0.78), sbHot * 0.55 * k);   hor = mix(hor, vec3(0.92, 0.84, 0.66), sbHot * 0.65 * k);
 	zen = mix(zen, vec3(0.32, 0.50, 0.78), sbMesa * 0.50 * k);  hor = mix(hor, vec3(0.96, 0.68, 0.46), sbMesa * 0.70 * k);
-	zen = mix(zen, vec3(0.34, 0.54, 0.84), sbCold * 0.55 * k);  hor = mix(hor, vec3(0.84, 0.92, 0.99), sbCold * 0.65 * k);
+	zen = mix(zen, vec3(0.34, 0.54, 0.84), sbCold * 0.55 * k);  hor = mix(hor, vec3(0.70, 0.82, 0.96), sbCold * 0.65 * k); // cold: crisp soft-blue horizon, no white wall
 	zen = mix(zen, vec3(0.26, 0.40, 0.46), sbSwamp * 0.60 * k); hor = mix(hor, vec3(0.60, 0.68, 0.56), sbSwamp * 0.65 * k);
 	zen = mix(zen, vec3(0.05, 0.42, 0.74), sbJungle * 0.55 * k); hor = mix(hor, vec3(0.40, 0.86, 0.88), sbJungle * 0.60 * k);
 	zen = mix(zen, vec3(0.42, 0.54, 0.90), sbCherry * 0.55 * k); hor = mix(hor, vec3(0.97, 0.80, 0.89), sbCherry * 0.65 * k);
