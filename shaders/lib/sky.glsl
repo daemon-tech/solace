@@ -75,9 +75,11 @@ vec3 celSkyImpl(vec3 dir, vec3 sunView, vec3 upView, float rain, bool discs) {
 		float s = dot(dir, sun);
 		vec3 sunCol = mix(mix(vec3(1.0, 0.75, 0.4), vec3(1.0, 0.80, 0.68), ((sunAngle > 0.75 || sunAngle < 0.25) ? 1.0 : 0.0)), vec3(1.0, 0.97, 0.8), day); // sunrise disc: peach
 		if (s > 0.9990) col = sunCol * 1.4;
-		else if (s > 0.9960) col = mix(col, sunCol, 0.55);
-		else if (s > 0.9880) col = mix(col, sunCol, 0.25);
-		else if (s > 0.960) col = mix(col, sunCol, 0.10 * (0.4 + duskW));
+		else {
+			// calm glow around the disc: soft-edged layers instead of hard concentric rings
+			float gl = smoothstep(0.9935, 0.9975, s) * 0.55 + smoothstep(0.982, 0.9935, s) * 0.18 + smoothstep(0.945, 0.99, s) * 0.10 * (0.4 + duskW);
+			col = mix(col, sunCol, clamp(gl, 0.0, 0.6));
+		}
 		float m = dot(dir, -sun);
 		// the moon's glow rings belong to the night; by day only a faint pale moon remains (no blue dome over the horizon)
 		float mk = smoothstep(0.12, -0.08, dot(sun, up));
