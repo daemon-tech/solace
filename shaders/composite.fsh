@@ -554,7 +554,9 @@ void main() {
 			// flowing streak foam riding the wave crests (same phase as the surface waves)
 			float ph = wxz.x * 0.55 + wxz.y * 0.25 + t * 0.9 + vnoise(wxz * 0.15) * 4.0;
 			vec2 rq = mat2(0.8, -0.6, 0.6, 0.8) * wxz; // rotated so breaks are not grid-aligned
-			float brk = smoothstep(0.30, 0.62, vnoise(rq * 0.45 + vec2(t * 0.2, 0.0)) * 0.7 + vnoise(rq * 1.3) * 0.3);
+			float brk = smoothstep(0.36, 0.66, vnoise(rq * 0.45 + vec2(t * 0.2, 0.0)) * 0.7 + vnoise(rq * 1.3) * 0.3);
+			// whitecap patches: only scattered drifting groups of crests carry foam, the open sea between them stays clear
+			brk *= mix(smoothstep(0.36, 0.64, vnoise(rq * 0.06 + vec2(t * 0.03, -t * 0.02))), 1.0, shore);
 			float streak = smoothstep(mix(0.70, 0.86, farF), 0.98, sin(ph)) * brk * (1.0 - farF * 0.35) * mix(0.60, 1.0, shore); // far sea keeps thin foam
 			col = mix(col, foamC, clamp(max(sheet * 0.90, streak * 0.55), 0.0, 1.0) * (1.0 - fall) * fday * WATER_FOAM_AMT);
 #ifdef SHORE_FOAM

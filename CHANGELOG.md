@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.33.1
 
 ### Changes
+- **Scattered whitecaps**: open-sea crest foam now gathers in drifting groups instead of endless parallel stripes across the whole ocean.
 - **Soft highlights**: pale walls, sand and quartz in full sun roll off gently instead of clipping to flat white.
 - **Overcast rain mood**: while it rains the land loses its sunny punch and settles into a calm grey-green under soft cool light.
 - **Warm light islands at night**: torch and campfire light now fades out with distance and glows soft amber, so the surrounding land sinks into moonlight instead of staying daylight green.
