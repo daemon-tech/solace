@@ -373,6 +373,8 @@ void main() {
 		// night: same hues, darker and bluer (never navy-black)
 		vec3 nightK = mix(vec3(0.30, 0.40, 0.64), vec3(1.0), wday);
 		vec3 wc = (dd < 0.5 ? mix(shoreC, midC, dd * 2.0) : mix(midC, deepC, dd * 2.0 - 1.0)) * nightK;
+		// open-ocean depth: past the deep band the water settles one calm step further into a soft blue-indigo
+		wc = mix(wc, deepC * vec3(0.62, 0.74, 0.92) * nightK, celBandSoft(smoothstep(14.0, 34.0, behind), 2, 0.4) * 0.65);
 		// falling / sloped water (normal not up): keep the surface's white flow streaks readable
 		vec3 nV = texture(colortex1, uv).xyz * 2.0 - 1.0;
 		float fall = smoothstep(0.3, 0.6, 1.0 - abs(dot(safeNormalize(nV, vec3(0, 1, 0)), safeNormalize(upPosition, vec3(0, 1, 0)))));
