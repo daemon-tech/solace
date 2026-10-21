@@ -373,6 +373,11 @@ void main() {
 		// night: same hues, darker and bluer (never navy-black)
 		vec3 nightK = mix(vec3(0.30, 0.40, 0.64), vec3(1.0), wday);
 		vec3 wc = (dd < 0.5 ? mix(shoreC, midC, dd * 2.0) : mix(midC, deepC, dd * 2.0 - 1.0)) * nightK;
+		// golden hour: the water takes the low sun's warmth (peach-gold shallows, honeyed teal) instead of staying cold white
+		{
+			float wDusk = clamp(1.0 - abs(dot(safeNormalize(sunPosition, upPosition), safeNormalize(upPosition, vec3(0, 1, 0)))) * 4.0, 0.0, 1.0) * step(-0.08, dot(safeNormalize(sunPosition, upPosition), safeNormalize(upPosition, vec3(0, 1, 0))));
+			wc *= mix(vec3(1.0), mix(vec3(1.10, 0.90, 0.70), vec3(1.04, 0.93, 0.84), dd), wDusk);
+		}
 		// open-ocean depth: past the deep band the water settles one calm step further into a soft blue-indigo
 		wc = mix(wc, deepC * vec3(0.62, 0.74, 0.92) * nightK, celBandSoft(smoothstep(14.0, 34.0, behind), 2, 0.4) * 0.65);
 		// falling / sloped water (normal not up): keep the surface's white flow streaks readable
