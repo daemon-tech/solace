@@ -438,3 +438,5 @@ option.AERIAL_PERSPECTIVE=Aerial Perspective
 option.AERIAL_PERSPECTIVE.comment=Distant land fades softly paler and bluer into the sky, so ridges stack into calm layers.
 option.GRASS_PART=Grass Parting
 option.GRASS_PART.comment=Grass and flowers bend softly away around your feet as you walk through them.
+option.CAVE_HAZE=Cave Glow Haze
+option.CAVE_HAZE.comment=Soft glowing haze around lava and lights underground.

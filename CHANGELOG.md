@@ -3,6 +3,11 @@
 Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All Rights Reserved.
 All builds tested in the real client with screenshots.
 
+## 0.32.1
+
+### Changes
+- **Cave glow haze**: underground, the air around lava and other lights fills with a soft warm veil of their colour (Cave Glow Haze option).
+
 ## 0.32
 
 The light and shore update.

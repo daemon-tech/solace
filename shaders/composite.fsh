@@ -752,6 +752,12 @@ void main() {
 		float cf = celBandSoft(1.0 - exp(-lin * 0.045 * CAVE_FOG_DENSITY), 4, 0.6); // soft band steps (no hard box on far walls)
 		vec3 caveC = vec3(0.040, 0.046, 0.070) + vec3(0.010, 0.020, 0.030) * dayFactor(sunPosition, upPosition);
 		col = mix(col, caveC, cf * cave * 0.85);
+		// glowing haze: air around lava and lights fills with a soft warm veil of their colour
+		vec4 h6 = textureLod(colortex3, uv, 6.0), h7 = textureLod(colortex3, uv, 7.0);
+		vec4 hs = h6 * 0.6 + h7 * 0.4;
+		vec3 hTint = hs.rgb / max(hs.a, 1e-3); hTint /= max(max(hTint.r, max(hTint.g, hTint.b)), 1e-3);
+		float hK = smoothstep(0.0, 0.08, hs.a) * smoothstep(1.5, 8.0, lin);
+		col += hTint * vec3(1.0, 0.82, 0.62) * hK * (0.06 + 0.10 * cf) * cave * CAVE_HAZE;
 	}
 #endif
 	// low ground mist: sunrise everywhere, swamps all day; hugs the ground, never on near water
