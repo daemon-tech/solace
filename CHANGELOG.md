@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.33.1
 
 ### Changes
+- Fixed thin pale arcs in the sky: wind streaks no longer draw over vanilla clouds.
 - **Crisper cold horizons**: in snowy and mountain biomes the horizon is a soft blue instead of a white wall, so far ridges stand out.
 - **Calmer sea foam**: the white foam lines riding the ocean wave crests are softer and more translucent.
 - **Murky swamps**: swamps take a calm muted olive tone and murky olive-green water to the shore, instead of a pale mint wash.
