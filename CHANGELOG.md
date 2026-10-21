@@ -3,8 +3,9 @@
 Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All Rights Reserved.
 All builds tested in the real client with screenshots.
 
-## 0.31.1
-- Light shafts: sunbeams through roof openings and cave mouths are softly warm, and deep caves keep most of the beam
+## 0.32
+
+The light and shore update.
 
 ### Changes
 - **Removed pollen motes**: the drifting pollen and its gust drift are gone, along with the Drifting Pollen option.
@@ -19,6 +20,8 @@ All builds tested in the real client with screenshots.
 - **Aerial perspective**: distant land fades softly paler and bluer into the sky, so ridges and forests stack into calm layers (Aerial Perspective option).
 - **Canopy light shafts**: sun beams through trees now fan out as calm radial shafts that slowly sway with the breeze.
 - **Grass parting**: grass and flowers bend softly away around your feet as you walk through them, shadows included (Grass Parting option).
+- **Cave light shafts**: sunbeams through roof openings and cave mouths are softly warm, and deep caves keep most of the beam.
+- **Nether**: far fog sinks earlier into a deep maroon, so cavern layers separate instead of forming one orange wall; lava looks calmer.
 - **Caves**: darker where no sky reaches, so torches, lanterns and lava form warm, soft pools of light.
 - **Sculk**: glows a soft blue in the dark and casts a faint cool light.
 - **Sunrise and sunset sky**: richer, calmer gradients, a warm glowing horizon rising through coral into soft rose and blue.
