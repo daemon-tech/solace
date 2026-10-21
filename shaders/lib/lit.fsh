@@ -356,6 +356,13 @@ void main() {
 			col = mix(col, fc * mix(0.82, 1.0, fr), min(fr * 1.15 * GROUND_GRADE_STRENGTH, 0.92));
 		}
 	#endif
+		// meadow patches: lawns get calm large tonal drifts (sunny yellow-green / deeper cool green); applied before the
+		// ground colour is taken, so blades, block tops and side fringes all share the same patch (seamless)
+		if (grassTex && isEyeInWater == 0) {
+			float mp = vnoise(floor(cwpos.xz) * 0.045) * 0.65 + vnoise(floor(cwpos.xz) * 0.11 + 7.3) * 0.35;
+			mp = celBandSoft(smoothstep(0.32, 0.68, mp), 3, 0.5);
+			col *= mix(vec3(0.78, 0.86, 0.92), vec3(1.08, 1.07, 0.88), mp);
+		}
 		vec3 colGround = col;
 	#endif
 #ifdef WET_GROUND

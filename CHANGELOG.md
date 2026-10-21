@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.33.1
 
 ### Changes
+- **Meadow patches**: lawns get calm, large drifts of sunny yellow-green and deeper cool green instead of one flat tone; grass blades share the patch of the block below.
 - **Sunlit shallows**: a soft, slowly drifting net of light now plays over sand and stone in shallow water near the shore.
 - **Softer meadow green**: very saturated bright lime grass in full sun settles into a calmer meadow green.
 - **Scattered whitecaps**: open-sea crest foam now gathers in drifting groups instead of endless parallel stripes across the whole ocean.
