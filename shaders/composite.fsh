@@ -555,8 +555,8 @@ void main() {
 			float ph = wxz.x * 0.55 + wxz.y * 0.25 + t * 0.9 + vnoise(wxz * 0.15) * 4.0;
 			vec2 rq = mat2(0.8, -0.6, 0.6, 0.8) * wxz; // rotated so breaks are not grid-aligned
 			float brk = smoothstep(0.30, 0.62, vnoise(rq * 0.45 + vec2(t * 0.2, 0.0)) * 0.7 + vnoise(rq * 1.3) * 0.3);
-			float streak = smoothstep(mix(0.82, 0.90, farF), 0.94, sin(ph)) * brk * (1.0 - farF * 0.35) * mix(0.60, 1.0, shore); // far sea keeps thin foam
-			col = mix(col, foamC, clamp(max(sheet * 0.90, streak * 1.0), 0.0, 1.0) * (1.0 - fall) * fday * WATER_FOAM_AMT);
+			float streak = smoothstep(mix(0.70, 0.86, farF), 0.98, sin(ph)) * brk * (1.0 - farF * 0.35) * mix(0.60, 1.0, shore); // far sea keeps thin foam
+			col = mix(col, foamC, clamp(max(sheet * 0.90, streak * 0.55), 0.0, 1.0) * (1.0 - fall) * fday * WATER_FOAM_AMT);
 #ifdef SHORE_FOAM
 			{
 				// shoreline foam: a clean white line where the water meets the shore that slowly washes up
