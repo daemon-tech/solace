@@ -1438,6 +1438,8 @@ void main() {
 		// light cyan underwater fog, applied after grading so it is not over-saturated.
 		// Sky pixels (seen through the surface) only get a light tint, not full fog.
 		float dist = (d0 >= 1.0 && !isDH) ? 12.0 : lin;
+		// open water beyond render distance: sideways and downward views melt into full fog, no bright band at the far edge
+		if (d0 >= 1.0 && !isDH) dist = mix(48.0, 12.0, smoothstep(0.05, 0.35, (mat3(gbufferModelViewInverse) * vdir).y));
 		// smooth depth falloff (no hard fog rings); at night the water sinks into a calm deep navy
 		float f = celBandSoft(clamp(dist / 36.0, 0.0, 1.0), 4, 0.6) * UNDERWATER_FOG;
 		vec3 uw = mix(vec3(0.16, 0.52, 0.90), vec3(0.04, 0.17, 0.42), f);
