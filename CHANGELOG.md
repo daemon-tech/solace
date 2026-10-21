@@ -7,7 +7,7 @@ All builds tested in the real client with screenshots.
 
 ### Changes
 - **Murky swamps**: swamps take a calm muted olive tone and murky olive-green water to the shore, instead of a pale mint wash.
-- **Soft white snow**: snowy lands settle into a calm soft white with just a hint of cool in the shade, instead of icy cyan.
+- **Soft white snow**: snowy lands settle into a calm soft white with just a hint of cool in the shade, instead of icy cyan (near snow only, so far mountain views keep their airy blue and colour).
 
 ### Fixes
 - **Snowy grass blocks**: their sides keep a clean snow cap instead of a painted green stripe.
