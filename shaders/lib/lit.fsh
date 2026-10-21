@@ -341,7 +341,8 @@ void main() {
 			col = mix(col, target, GROUND_GRADE_STRENGTH * mix(1.0, 0.4, torch * (1.0 - day * lm.y)));
 		}
 	#if defined TERRAIN_PASS && !defined FLAT_NORMAL
-		else if (isFoliage == 2 && isEyeInWater == 0 && abs(dot(n, up)) < 0.3) {
+		// snowy grass sides keep their white snow cap (no green fringe painted over the snow)
+		else if (isFoliage == 2 && isEyeInWater == 0 && abs(dot(n, up)) < 0.3 && !(luma(albedo.rgb) > 0.62 && max(albedo.r, max(albedo.g, albedo.b)) - min(albedo.r, min(albedo.g, albedo.b)) < 0.14)) {
 			// soft grass fringe: the top of a grass block's side fades from grass green into the dirt,
 			// in calm blocky steps (quarter-texel bands) instead of a ragged pixel edge
 			float fy = floor(fract(cwpos.y + 0.001) * 16.0) / 16.0;
