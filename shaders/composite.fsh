@@ -1475,6 +1475,8 @@ void main() {
 			col *= mix(1.0, 0.70, night * (1.0 - smoothstep(0.05, 0.45, max(warmPix, heldK))));
 			// the pool itself glows a soft amber instead of neutral daylight green
 			col = mix(col, col * vec3(1.10, 0.95, 0.78), night * warmPix * (1.0 - heldK) * 0.55);
+			// overcast rain: the land loses its sunny punch, a calm grey-green under soft cool light (warm pools excluded)
+			if (IS_OW && !sky) col = mix(col, mix(vec3(luma(col)), col, 0.74) * vec3(0.95, 0.98, 1.03) * 0.90, rainStrength * skyEye * (1.0 - warmPix));
 			// twilight white balance where the eye sees little sky (pits, dug holes, caves): the still-indigo
 			// dawn/dusk ambient read lavender on grey stone there. Neutralise its hue, keep its brightness.
 			{
