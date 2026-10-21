@@ -1530,10 +1530,15 @@ void main() {
 		if (d0 >= 1.0 && !isDH) dist = mix(48.0, 12.0, smoothstep(0.05, 0.35, (mat3(gbufferModelViewInverse) * vdir).y));
 		// smooth depth falloff (no hard fog rings); at night the water sinks into a calm deep navy
 		float f = celBandSoft(clamp(dist / 36.0, 0.0, 1.0), 4, 0.6) * UNDERWATER_FOG;
-		vec3 uw = mix(vec3(0.16, 0.52, 0.90), vec3(0.04, 0.17, 0.42), f);
+		vec3 uw = mix(vec3(0.20, 0.60, 0.82), vec3(0.06, 0.26, 0.44), f); // calm soft teal, no saturated navy
 		float uwDay = clamp(dot(safeNormalize(sunPosition, upPosition), safeNormalize(upPosition, vec3(0, 1, 0))) * 3.0 + 0.2, 0.0, 1.0);
 		uw = mix(uw * vec3(0.30, 0.36, 0.55), uw, uwDay);
 		col = mix(col * vec3(0.55, 0.85, 1.15) + vec3(0.0, 0.05, 0.14), uw, clamp(f * 0.95 + 0.18, 0.0, 0.9));
+		{
+			// looking up: the water brightens gently toward the sunlit surface (soft vertical light gradient)
+			float upG = smoothstep(-0.1, 0.8, (mat3(gbufferModelViewInverse) * vdir).y);
+			col = mix(col, vec3(0.62, 0.90, 0.96) * mix(0.35, 1.0, uwDay), upG * 0.22);
+		}
 #ifdef UNDERWATER_RAYS
 		{
 			// soft shafts of light slanting down from the surface, drifting slowly
@@ -1542,7 +1547,7 @@ void main() {
 			float rays = smoothstep(0.55, 0.85, vnoise(rq * vec2(1.0, 0.25) * 2.0 + vnoise(rq * 0.5) * 0.6));
 			float upw = smoothstep(-0.3, 0.6, wd.y);
 			float dayU = clamp(dot(safeNormalize(sunPosition, upPosition), safeNormalize(upPosition, vec3(0, 1, 0))) * 3.0 + 0.2, 0.0, 1.0);
-			col += vec3(0.55, 0.85, 1.0) * celBand(rays * upw, 3) * 0.18 * dayU * UNDERWATER_RAYS * smoothstep(1.0, 10.0, min(lin, 40.0));
+			col += vec3(0.60, 0.90, 1.0) * celBandSoft(rays * upw, 3, 0.7) * 0.16 * dayU * UNDERWATER_RAYS * smoothstep(1.0, 10.0, min(lin, 40.0));
 		}
 #endif
 	}
