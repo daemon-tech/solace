@@ -5,6 +5,9 @@ All builds tested in the real client with screenshots.
 
 ## 0.33.1
 
+### Changes
+- **Soft white snow**: snowy lands settle into a calm soft white with just a hint of cool in the shade, instead of icy cyan.
+
 ### Fixes
 - **Snowy grass blocks**: their sides keep a clean snow cap instead of a painted green stripe.
 - **No blue dome by day**: the moon's glow rings now only show at night; by day a faint pale moon remains instead of a hard-edged blue dome above the horizon.

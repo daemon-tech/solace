@@ -1325,6 +1325,16 @@ void main() {
 	}
 #endif
 #endif
+#if !defined DIM_NETHER && !defined DIM_END
+	// snowy lands: bright snow settles into a calm soft white (a hint of cool in the shade) instead of icy cyan
+	if (!sky && !water && isEyeInWater == 0) {
+		float snowB = 1.0 - smoothstep(0.05, 0.3, bTemp);
+		float lS = luma(col);
+		float blueish = smoothstep(0.02, 0.12, col.b - col.r);
+		float k = snowB * smoothstep(0.45, 0.7, lS) * blueish;
+		col = mix(col, vec3(lS) * vec3(0.95, 0.98, 1.05) * 1.02, k * 0.65);
+	}
+#endif
 #if RAINBOW > 0 && !defined DIM_NETHER && !defined DIM_END
 	{
 		// after-rain rainbow: while the land is still wet and the rain has passed, a calm painted arc stands
