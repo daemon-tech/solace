@@ -80,16 +80,16 @@
 #define GODRAYS
 #define SHORE_FOAM 0.85 // [0.0 0.5 0.85 1.0] soft white foam line washing along the shore
 #define BOUNCE_LIGHT 3 // [0 2 3 5] warm light bounced from sunlit ground onto undersides (x10 percent)
-#define AERIAL_PERSPECTIVE 4 // [0 2 4 6] distant land fades paler and bluer into the sky (x10 percent)
+#define AERIAL_PERSPECTIVE 0 // [0 2 4 6] distant land fades paler and bluer into the sky (x10 percent)
 #define GRASS_PART 1.0 // [0.0 0.5 1.0 1.5] grass and flowers bend softly away around your feet
 #define SUN_SPOTS 0.6 // [0.0 0.35 0.6 0.85] soft round sun spots on the ground under leaf canopies
 #define CANOPY_RAYS 1.0 // [0.0 0.5 1.0 1.5] long soft sun beams through gaps in tree canopies
 #define GODRAYS_STRENGTH 0.5 // [0.0 0.2 0.35 0.5 0.7]
 #define CANOPY_GLOW 0.20 // [0.0 0.06 0.12 0.20 0.30]
 #define BLOOM_STRENGTH 0.6 // [0.0 0.3 0.6 0.9 1.2]
-#define HAZE 0.3 // [0.0 0.1 0.18 0.22 0.3 0.45]
+#define HAZE 0.0 // [0.0 0.1 0.18 0.22 0.3 0.45]
 #define SAND_BOOST 0.8 // [0.0 0.4 0.8 1.0]
-#define DISTANCE_FOG
+//#define DISTANCE_FOG
 #define FOG_STRENGTH 0.55 // [0.0 0.25 0.55 0.75 1.0]
 #define UNDERWATER_FOG 0.6 // [0.2 0.4 0.6 0.8 1.0]
 #define SKY_BANDS 6 // [3 4 6 8 12]
@@ -101,18 +101,18 @@ const float sunPathRotation = -25.0;
 #define SKY_SUN_GLOW 0.5 // [0.0 0.25 0.5 1.0 1.5]
 #define DUSK_SKY 1.0 // [0.5 0.75 1.0]
 #define FOG_SKY_MATCH 0.8 // [0.0 0.4 0.6 0.8 1.0] fog takes the sky horizon colour
-#define VALLEY_FOG 0.45 // [0.0 0.2 0.35 0.45 0.6 0.8] calm low-lying fog layer in valleys and over rivers
+#define VALLEY_FOG 0.0 // [0.0 0.2 0.35 0.45 0.6 0.8] calm low-lying fog layer in valleys and over rivers
 #define VALLEY_FOG_HEIGHT 70.0 // [64.0 67.0 70.0 74.0 80.0] top of the valley fog layer (world height)
-#define MORNING_MIST 0.6 // [0.0 0.3 0.6 0.9] low ground mist at sunrise and in swamps
-#define BIOME_FOG 1.0 // [0.0 0.5 1.0 1.5] denser fog in swamps, dark forests, cold biomes
+#define MORNING_MIST 0.0 // [0.0 0.3 0.6 0.9] low ground mist at sunrise and in swamps
+#define BIOME_FOG 0.0 // [0.0 0.5 1.0 1.5] denser fog in swamps, dark forests, cold biomes
 #define WATER_CLARITY 1.0 // [0.0 0.5 1.0 1.5] clearer, paler shallows
 #define WATER_REFLECT 1.0 // [0.0 0.5 1.0 1.5] distant sky reflection
 #define WATER_FOAM_AMT 1.0 // [0.0 0.5 1.0 1.3] foam sheets
-#define HORIZON_HAZE 1.0 // [0.0 0.5 1.0 1.5] white haze where sea meets sky
+#define HORIZON_HAZE 0.0 // [0.0 0.5 1.0 1.5] white haze where sea meets sky
 // 0.20 lighting
 #define COLORED_LIGHT // light sources tint nearby block light in their own colour
 #define COLORED_LIGHT_STRENGTH 0.8 // [0.4 0.6 0.8 1.0]
-#define CAVE_FOG // darker, denser fog underground
+//#define CAVE_FOG // darker, denser fog underground
 #ifdef CAVE_FOG
 #define CAVE_FOG_ON 1.0
 #else
@@ -162,13 +162,13 @@ const float sunPathRotation = -25.0;
 #define VOLUMETRIC_OUTDOOR 0.6 // [0.0 0.3 0.6 1.0] light shafts in forests, mist and rain
 #define WATER_SPLASH // rings and foam bursts around the player in water, foam where falling water lands
 #define WATER_SPLASH_AMT 1.0 // [0.0 0.5 1.0 1.5]
-#define MOUNTAIN_LAYERS 2 // [0 1 2 3 4] far ridges fade in soft steps like stacked silhouettes
-#define DISTANCE_BLUE 0.6 // [0.0 0.2 0.35 0.5 0.6 0.75] far mountains fade to soft blue
+#define MOUNTAIN_LAYERS 0 // [0 1 2 3 4] far ridges fade in soft steps like stacked silhouettes
+#define DISTANCE_BLUE 0.0 // [0.0 0.2 0.35 0.5 0.6 0.75] far mountains fade to soft blue
 #define TIME_GRADING // per time-of-day colour grading (sunrise, noon, golden hour, blue hour, night)
 #define TIME_GRADING_STRENGTH 1.0 // [0.0 0.5 1.0 1.5]
 #define WEATHER_FX // rain fog, sandstorms in hot dry biomes, snow haze
-#define RAIN_FOG 1.0 // [0.0 0.5 1.0 1.5]
-#define SANDSTORM 1.0 // [0.0 0.5 1.0]
+#define RAIN_FOG 0.0 // [0.0 0.5 1.0 1.5]
+#define SANDSTORM 0.0 // [0.0 0.5 1.0]
 #define WET_GROUND // darker glossy ground and puddle sheen in rain
 #define WET_GROUND_STRENGTH 1.0 // [0.0 0.5 1.0 1.5]
 #define MILKY_WAY 1.0 // [0.0 0.5 1.0 1.5] faint Milky Way band at night
@@ -180,8 +180,8 @@ const float sunPathRotation = -25.0;
 #define UNDERWATER_RAYS 1.0 // [0.0 0.5 1.0 1.5] light shafts from the surface when diving
 #define GLASS_REFLECT // fresnel sky sheen and highlight streak on glass
 #define GLASS_REFLECT_STRENGTH 1.0 // [0.0 0.5 1.0 1.5]
-#define NETHER_FOG 1.0 // [0.0 0.5 1.0 1.5] banded Nether fog in the biome colour, rising embers
-#define END_FOG 1.0 // [0.0 0.5 1.0 1.5] violet End fog and painted End sky
+#define NETHER_FOG 0.0 // [0.0 0.5 1.0 1.5] banded Nether fog in the biome colour, rising embers
+#define END_FOG 0.0 // [0.0 0.5 1.0 1.5] violet End fog and painted End sky
 #define LEAF_TRANSLUCENCY 0.35 // [0.0 0.2 0.35 0.5] backlit leaves glow toward the sun
 #define NIGHT_GLOW 1.0 // [0.0 0.5 1.0] faint glow on flowers at night
 #define FXAA // light anti-aliasing that keeps outlines crisp
@@ -202,7 +202,7 @@ const float sunPathRotation = -25.0;
 #define SUN_HALO 0.6 // [0.0 0.3 0.6 1.0] glowing sun disk halo
 #define RAIN_STREAKS 1.0 // [0.0 0.5 1.0] rain streaks and darker blue night rain mood
 #define FOREST_RAYS 0.8 // [0.0 0.4 0.8 1.2] stronger god rays in forests
-#define FOREST_HAZE 0.35 // [0.0 0.2 0.35 0.5] blue depth haze between trees
+#define FOREST_HAZE 0.0 // [0.0 0.2 0.35 0.5] blue depth haze between trees
 #define FOLIAGE_CONTRAST 0.6 // [0.0 0.3 0.6 1.0] sunlit yellow-green vs cool shade on grass and leaves
 #define SHADOW_PENUMBRA 1.0 // [0.5 1.0 1.5 2.0] how fast shadows soften away from the caster
 #define SHADOW_TEMPORAL // temporal shadow smoothing (history buffer, reprojection + clamp)
@@ -221,5 +221,5 @@ const float sunPathRotation = -25.0;
 #define LAVA_BRIGHT 1.0 // [0.8 0.9 1.0 1.1 1.2]
 #define GOLDEN_RIM // warm golden fringe on characters at sunrise and sunset
 #define GOLDEN_RIM_STRENGTH 1.0 // [0.5 0.75 1.0 1.25 1.5]
-#define CAVE_HAZE 0.6 // [0.0 0.3 0.6 0.9 1.2] glowing haze around lava and lights underground
+#define CAVE_HAZE 0.0 // [0.0 0.3 0.6 0.9 1.2] glowing haze around lava and lights underground
 #define MOON_RIM 1.0 // [0.0 0.5 1.0 1.5] faint silver moon fringe on characters at night

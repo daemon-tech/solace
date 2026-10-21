@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.33.1
 
 ### Changes
+- **Clear skies, no fog**: distance, valley, cave, biome, weather, Nether and End fog and all distance haze are now off by default. Far land stays clear and keeps its colour, and the end of the render distance fades softly into the sky. Only short visibility limits remain under water, in lava and in powder snow (each fog option can still be turned back on in the menu).
 - Water: calmer, softer sparkles that drift slowly.
 - Water: wave tops facing the sun catch soft, warm painted highlights.
 - Water: sand and soil at the water line now look softly wet (slightly darker, cooler strip).

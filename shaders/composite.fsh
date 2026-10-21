@@ -1106,7 +1106,7 @@ void main() {
 	if (IS_OW && !sky && isEyeInWater == 0) {
 		float hz = smoothstep(3.0, far * 0.6, lin);
 		vec3 hzc = mix(mix(mix(vec3(0.85, 0.95, 0.55), vec3(0.98, 0.90, 0.88), MORN_K), fogSky * 1.08, FOG_SKY_MATCH * 0.6), mix(vec3(1.0, 0.62, 0.22), vec3(1.0, 0.78, 0.68), MORN_K), duskG);
-		col = mix(col, hzc, hz * (HAZE + bHaze * BIOME_MOOD * 0.5) * STYLE_K * dayG * (water ? 0.25 : 1.0) * (1.0 - 0.5 * duskG));
+		col = mix(col, hzc, hz * (HAZE + bHaze * BIOME_MOOD * BIOME_FOG * 0.5) * STYLE_K * dayG * (water ? 0.25 : 1.0) * (1.0 - 0.5 * duskG));
 	}
 #ifdef DISTANCE_BLUE
 	// aerial perspective: far terrain (mountains) turns soft blue toward the sky colour
@@ -1132,7 +1132,7 @@ void main() {
 	// render-distance border: the last stretch before the loaded world ends melts smoothly into the
 	// horizon sky colour (no banding), so the edge of the world never shows as a hard line or step
 	if (!sky && isEyeInWater == 0 && d0 < 1.0) {
-		float edgeF = smoothstep(far * 0.70, far * 0.97, lin);
+		float edgeF = smoothstep(far * 0.86, far * 1.0, lin); // only the very last stretch: far land stays clear
 		col = mix(col, fogSky, edgeF * edgeF * (3.0 - 2.0 * edgeF) * (1.0 - cave));
 	}
 #ifdef WEATHER_FX
@@ -1713,6 +1713,9 @@ void main() {
 		}
 	}
 #endif
+	// in lava / powder snow: only a short visibility limit
+	if (isEyeInWater == 2) col = mix(col, vec3(0.92, 0.32, 0.06), clamp(lin / 3.0, 0.0, 1.0));
+	if (isEyeInWater == 3) col = mix(col, vec3(0.82, 0.87, 0.94), clamp(lin / 2.0, 0.0, 1.0));
 	if (isEyeInWater == 1) {
 		// light cyan underwater fog, applied after grading so it is not over-saturated.
 		// Sky pixels (seen through the surface) only get a light tint, not full fog.
