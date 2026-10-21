@@ -493,6 +493,14 @@ void main() {
 			cells *= 1.0 - smoothstep(0.08, 0.2, fpG); // far: fade out instead of a flat patch
 			g = celBand(clamp(g * 2.5, 0.0, 1.0), 3) * cells;
 			col = mix(col, vec3(1.0, 0.97, 0.88), clamp(g, 0.0, 1.0) * 0.9 * wday * (1.0 - rainStrength));
+			// moon path: on clear nights a calm silver trail of glints leads across the water towards the moon
+			{
+				vec3 Lm = safeNormalize(moonPosition, upV);
+				float gm = pow(max(dot(Rw, Lm), 0.0), 40.0);
+				float gmW = pow(max(dot(reflect(V, upV), Lm), 0.0), 18.0); // soft wide sheen under the glints
+				float nW = (1.0 - wday) * (1.0 - rainStrength);
+				col = mix(col, vec3(0.80, 0.86, 1.0), clamp(celBand(clamp(gm * 2.0, 0.0, 1.0), 3) * cells * 0.75 + celBandSoft(gmW, 3, 0.5) * 0.14, 0.0, 1.0) * nW);
+			}
 #endif
 #ifdef WATER_STARS
 			{
