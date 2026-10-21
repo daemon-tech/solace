@@ -734,6 +734,18 @@ void main() {
 		col = mix(col, fogCol, f * (water ? 0.35 : 1.0) * (1.0 - 0.85 * cave * CAVE_FOG_ON));
 	}
 #endif
+#if AERIAL_PERSPECTIVE > 0
+	// aerial perspective: distant land slowly fades paler and bluer into the sky colour, smooth (no bands),
+	// so ridges and forests stack into soft layers; warmer toward the sun at dawn and dusk
+	if (isEyeInWater == 0 && d0 < 1.0 && cave < 0.5 && !water) {
+		float dayA = dayFactor(sunPosition, upPosition);
+		float ap = 1.0 - exp(-max(lin - 24.0, 0.0) / (far * 0.75));
+		ap = smoothstep(0.0, 1.0, ap) * float(AERIAL_PERSPECTIVE) * 0.1 * mix(0.35, 1.0, dayA) * (1.0 - rainStrength * 0.5);
+		vec3 apC = mix(fogSky, vec3(0.70, 0.80, 0.95), 0.25 * dayA);
+		vec3 desat = mix(vec3(luma(col)), col, 1.0 - 0.45 * ap);
+		col = mix(desat, apC, ap * 0.7);
+	}
+#endif
 #ifdef CAVE_FOG
 	// cave fog: darker, denser, slightly cool-tinted; banded like the rest of the fog
 	if (isEyeInWater == 0 && d0 < 1.0 && cave > 0.01) {

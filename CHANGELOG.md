@@ -15,6 +15,7 @@ All builds tested in the real client with screenshots.
 - **Sun spots**: soft round spots of sunlight fall through leaf canopies onto the ground, leaning with the sun (Sun Spots option).
 - **Shore foam**: a soft white foam line where water meets the shore, slowly washing up and drawing back, with a fainter second line further out (Shore Foam option).
 - **Bounce light**: sunlit ground throws a soft warm-green light back onto tree canopies from below, overhangs and mobs (Bounce Light option).
+- **Aerial perspective**: distant land fades softly paler and bluer into the sky, so ridges and forests stack into calm layers (Aerial Perspective option).
 - **Caves**: darker where no sky reaches, so torches, lanterns and lava form warm, soft pools of light.
 - **Sculk**: glows a soft blue in the dark and casts a faint cool light.
 - **Sunrise and sunset sky**: richer, calmer gradients, a warm glowing horizon rising through coral into soft rose and blue.

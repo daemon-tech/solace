@@ -434,3 +434,5 @@ option.SHORE_FOAM=Shore Foam
 option.SHORE_FOAM.comment=A soft white foam line that slowly washes up and down the shore.
 option.BOUNCE_LIGHT=Bounce Light
 option.BOUNCE_LIGHT.comment=Soft warm light bounced from sunlit ground onto undersides and shaded sides.
+option.AERIAL_PERSPECTIVE=Aerial Perspective
+option.AERIAL_PERSPECTIVE.comment=Distant land fades softly paler and bluer into the sky, so ridges stack into calm layers.
