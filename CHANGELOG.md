@@ -3,6 +3,11 @@
 Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All Rights Reserved.
 All builds tested in the real client with screenshots.
 
+## 0.33.1
+
+### Fixes
+- **No blue dome by day**: the moon's glow rings now only show at night; by day a faint pale moon remains instead of a hard-edged blue dome above the horizon.
+
 ## 0.33
 
 The night and water update.
