@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.33.1
 
 ### Changes
+- **Gust waves through the grass**: each wind gust now rolls across meadows as a clear, soft silvery band, moving together with the swaying grass and the wind lines.
 - **No more lavender stone at dawn**: grey stone and cobble walls in the open read as a soft warm grey in the dawn and dusk light instead of lilac.
 - **Calmer sunny grass**: bright neon greens in full sun settle into a softer, warmer meadow green.
 - **Warm torch-lit walls at night**: pale walls inside a torch pool glow warm cream instead of pink-lavender.

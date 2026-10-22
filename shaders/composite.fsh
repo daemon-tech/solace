@@ -1065,10 +1065,13 @@ void main() {
 		float greenK = smoothstep(0.05, 0.18, col.g - max(col.r, col.b));
 		float folK = texture(colortex1, uv).a < 0.75 ? 0.45 : 1.0; // canopies sway much less than meadows
 		float fwK = greenK * folK * (1.0 - smoothstep(far * 0.35, far * 0.6, lin)) * (1.0 - cave) * mix(0.3, 1.0, dayG);
-		vec3 sheen = vec3(0.88, 0.97, 0.64) * (luma(col) + 0.24);
-		float fw = fieldWave(mod(wpF.xz, 4096.0), frameTimeCounter);
-		col *= 1.0 - 0.07 * FIELD_WAVES * fwK * (1.0 - fw);          // soft shade in the troughs so the bright crests read clearly
-		col = mix(col, sheen, 0.6 * FIELD_WAVES * fwK * fw);
+		// the bands ride the shared gust field: same fronts that bend the grass and carry the wind lines.
+		// crest = blades bent over showing their pale silvery side; a soft trough shade behind keeps it readable
+		float gF = windGust(wpF.xz, frameTimeCounter);
+		float fw = smoothstep(0.48, 0.78, gF); // narrower crest, soft edges
+		vec3 sheen = mix(vec3(luma(col)), col, 0.70) * vec3(1.10, 1.14, 1.00) + vec3(0.035, 0.045, 0.025);
+		col *= 1.0 - 0.10 * FIELD_WAVES * fwK * (1.0 - fw) * (1.0 - rainStrength * 0.5);
+		col = mix(col, sheen, 0.70 * FIELD_WAVES * fwK * fw * (1.0 - rainStrength * 0.5));
 	}
 	// warm atmospheric haze with distance (sunset orange, daytime soft yellow-green in forests)
 	if (IS_OW && !sky && isEyeInWater == 0) {
