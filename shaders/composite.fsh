@@ -1481,7 +1481,9 @@ void main() {
 			float tgSky = mix(0.15, 1.0, skyEye) * (1.0 - cave);
 			col = mix(col, col * vec3(1.08, 0.97, 0.98) + vec3(0.03, 0.01, 0.02), rise * TIME_GRADING_STRENGTH * tgSky);
 			col = mix(col, mix(vec3(luma(col)), col, 1.05) * vec3(0.99, 1.0, 1.02), noon * TIME_GRADING_STRENGTH);
-			col = mix(col, col * vec3(0.80, 0.90, 1.22) + vec3(0.0, 0.01, 0.04), blueH * TIME_GRADING_STRENGTH * tgSky);
+			// blue hour: pale walls, quartz and stone take a calm, slightly darker cool grey instead of glowing lavender-white
+			vec3 bhGain = mix(vec3(0.80, 0.90, 1.22), vec3(0.80, 0.84, 0.96), sky ? 0.0 : smoothstep(0.40, 0.78, luma(col)));
+			col = mix(col, col * bhGain + vec3(0.0, 0.01, 0.04), blueH * TIME_GRADING_STRENGTH * tgSky);
 #endif
 			// night: hue-shift towards indigo but keep warm torch pools warm
 			// warm pools fall off with the light level: only the core near the flame keeps day colour, the rim fades into the night
