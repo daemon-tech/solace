@@ -1475,41 +1475,6 @@ void main() {
 			col = mix(col, lc, clamp(best, 0.0, 1.0) * dlK * DRIFT_LEAVES);
 		}
 	}
-#ifdef SUN_MOTES
-	// sun motes: a few tiny pollen/dust specks float in the daylight near the camera and drift with the breeze;
-	// they light up when you look toward the sun (backlit), barely visible otherwise. Calm, sparse, world-anchored.
-	{
-		float mK = smoothstep(0.3, 0.7, dayG) * (1.0 - smoothstep(0.1, 0.4, rainStrength)) * smoothstep(0.6, 0.9, float(eyeBrightnessSmooth.y) / 240.0);
-		if (mK > 0.01 && isEyeInWater == 0) {
-			vec2 wd2 = windDirT(frameTimeCounter);
-			vec3 sunV = normalize(sunPosition);
-			vec2 px = gl_FragCoord.xy;
-			float sceneZ = sky ? 1e6 : lin;
-			float best = 0.0, back = 0.0;
-			vec3 cc = floor(cameraPosition / 3.0 + 0.5);
-			for (int k = 0; k < 45; k++) {
-				vec3 cell = cc + vec3(float(k % 5) - 2.0, float((k / 5) % 3) - 1.0, float(k / 15) - 1.0);
-				float h1 = hash12(cell.xz * 1.31 + cell.y * 4.7), h2 = hash12(cell.zx * 2.11 + cell.y * 1.9 + 3.3), h3 = hash12(cell.xy * 0.71 + cell.z * 5.1);
-				if (h3 > 0.8) continue; // most cells carry a mote
-				float t = frameTimeCounter;
-				vec3 pw = (cell + vec3(h1, h2, h3 * 1.8)) * 3.0
-				        + vec3(wd2.x, 0.0, wd2.y) * (fract(t * 0.05 + h1) - 0.5) * 3.0
-				        + vec3(sin(t * 0.7 + h1 * 6.28), 0.5 * sin(t * 0.5 + h2 * 6.28), cos(t * 0.6 + h3 * 6.28)) * 0.35;
-				vec4 vq = gbufferModelView * vec4(pw - cameraPosition, 1.0);
-				float zq = -vq.z;
-				if (zq < 0.6 || zq > 9.0) continue;
-				vec4 cq = gbufferProjection * vq;
-				vec2 sq = (cq.xy / cq.w * 0.5 + 0.5) * vec2(viewWidth, viewHeight);
-				float sz = 0.03 * viewHeight / zq + 1.0;
-				float d = length(px - sq) / sz;
-				float a = (1.0 - smoothstep(0.4, 1.0, d)) * step(zq, sceneZ + 0.1) * (1.0 - smoothstep(6.0, 9.0, zq)) * smoothstep(0.0, 0.3, fract(t * 0.05 + h1)) * (1.0 - smoothstep(0.7, 1.0, fract(t * 0.05 + h1)));
-				if (a > best) { best = a; back = dot(normalize(vq.xyz), sunV); }
-			}
-			float lit = mix(0.25, 1.0, smoothstep(0.3, 0.9, back));
-			col = mix(col, vec3(1.0, 0.95, 0.80) * max(luma(col) * 1.4, 0.9), best * lit * mK * 0.9 * SUN_MOTES);
-		}
-	}
-#endif
 #endif
 #endif
 #if !defined DIM_NETHER && !defined DIM_END
