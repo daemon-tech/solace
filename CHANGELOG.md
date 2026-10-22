@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.33.1
 
 ### Changes
+- Water: wave tops facing the sun catch soft, warm painted highlights.
 - Water: sand and soil at the water line now look softly wet (slightly darker, cooler strip).
 - **Moon rim**: at night characters get a faint silver fringe from the moon (Moon Rim option).
 - **Warm torch light at night outdoors**: torch and lantern pools in villages read as warm amber islands against the cool moonlight.

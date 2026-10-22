@@ -100,6 +100,12 @@ void main() {
 #endif
 		col = mix(col, vec3(0.86, 0.98, 1.0), clamp(crest, 0.0, 1.0) * mix(0.50, 0.85, step(1.5, crest)) * mix(0.75, 1.0, day));
 		float spec = dot(reflect(-safeNormalize(shadowLightPosition, up), n), v);
+		// painted sunlit crests: wave tops facing the sun catch a soft warm cream stroke
+		if (day > 0.3) {
+			float lit = smoothstep(0.45, 0.85, spec) * smoothstep(0.55, 0.92, wv) * smoothstep(0.30, 0.60, vnoise(p * vec2(0.08, 0.20) + vec2(t * 0.02, 0.0)));
+			lit *= (1.0 - smoothstep(24.0, 64.0, length(viewPos))) * (1.0 - rainStrength);
+			col = mix(col, vec3(1.0, 0.97, 0.86), lit * 0.38);
+		}
 		// banded sun glint: warm halo band + white core
 		if (day > 0.3) {
 			// high sun: soft-edged, calmer glint (no hard white blot at noon)
