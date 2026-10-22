@@ -7,7 +7,7 @@ All builds tested in the real client with screenshots.
 
 ### Changes
 - **Gentle moonlight on water**: the moon path is a calm silver sheen with soft glints instead of a hard white disc and scattered flakes.
-- **Calmer blue hour**: pale walls, quartz and stone no longer glow lavender-white after sunset; they settle into a calm muted tone.
+- **Calmer blue hour**: pale walls, quartz, stone and cobble no longer glow lavender-blue after sunset; they settle into a calm muted tone.
 - **Night smoke**: campfire smoke and other particles no longer glow bright white at night; over a fire they take a soft dim ember tone.
 - **Soft mirrored shores**: trees and hills reflected in calm water are softly smeared and sway gently with the waves instead of a sharp pixel copy.
 - **Calmer far canopies**: from about 12 blocks away, leaf masses melt their bright/dark texel speckle into one soft painted shape; edges to sky and trunks stay crisp.
