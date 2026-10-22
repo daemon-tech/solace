@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.33.1
 
 ### Changes
+- **Warm wood at sunrise**: wooden roofs, walls and paths stay warm wood brown in the morning light instead of turning salmon pink.
 - **Moonlit gust waves**: at night the wind waves roll through the grass as a soft, cool silver shimmer.
 - **Golden gust waves at sunrise and sunset**: with a low sun the wind waves in the grass glow soft gold instead of silver.
 - **Gust waves through the grass**: each wind gust now rolls across meadows as a clear, soft silvery band, moving together with the swaying grass and the wind lines.

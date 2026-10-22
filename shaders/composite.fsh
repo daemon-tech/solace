@@ -1490,6 +1490,9 @@ void main() {
 			// on the cool shade ambient into a lavender cast, so they fade with the eye's sky view
 			float tgSky = mix(0.15, 1.0, skyEye) * (1.0 - cave);
 			col = mix(col, col * vec3(1.06, 0.99, 0.95) + vec3(0.025, 0.014, 0.0), rise * TIME_GRADING_STRENGTH * tgSky);
+			// dawn on warm surfaces (wood, terracotta, paths): the pink morning light left too much blue and they read salmon; keep them warm wood
+			float wW = smoothstep(0.06, 0.18, col.r - col.g) * morn * clamp(1.6 - abs(sunH) * 4.0, 0.0, 1.0) * (1.0 - cave) * step(0.75, texture(colortex1, uv).a);
+			col.b = mix(col.b, min(col.b, col.g * 0.66), wW);
 			col = mix(col, mix(vec3(luma(col)), col, 1.05) * vec3(0.99, 1.0, 1.02), noon * TIME_GRADING_STRENGTH);
 			// blue hour: pale walls, quartz and stone take a calm, slightly darker cool grey instead of glowing lavender-white
 			vec3 bhGain = mix(vec3(0.80, 0.90, 1.22), vec3(0.80, 0.84, 0.96), sky ? 0.0 : smoothstep(0.18, 0.55, luma(col))); // from mid tones up (stone, cobble, pale walls)
