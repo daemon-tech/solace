@@ -1062,9 +1062,9 @@ void main() {
 	// rolling field waves: broad soft light bands drift slowly across open green ground in the wind
 	if (IS_OW && !sky && !water && isEyeInWater == 0 && FIELD_WAVES > 0.0) {
 		vec3 wpF = mat3(gbufferModelViewInverse) * vpos + cameraPosition;
-		float greenK = smoothstep(0.05, 0.18, col.g - max(col.r, col.b));
+		float greenK = smoothstep(0.12, 0.32, (col.g - max(col.r, col.b)) / max(col.g, 0.02)); // relative: works on dark night grass too
 		float folK = texture(colortex1, uv).a < 0.75 ? 0.45 : 1.0; // canopies sway much less than meadows
-		float fwK = greenK * folK * (1.0 - smoothstep(far * 0.35, far * 0.6, lin)) * (1.0 - cave) * mix(0.3, 1.0, dayG);
+		float fwK = greenK * folK * (1.0 - smoothstep(far * 0.35, far * 0.6, lin)) * (1.0 - cave) * mix(0.55, 1.0, dayG); // moonlit waves stay readable at night
 		// the bands ride the shared gust field: same fronts that bend the grass and carry the wind lines.
 		// crest = blades bent over showing their pale silvery side; a soft trough shade behind keeps it readable
 		float gF = windGust(wpF.xz, frameTimeCounter);
@@ -1072,6 +1072,7 @@ void main() {
 		// low sun: the bent blades catch the warm light, crests turn soft gold instead of cool silver
 		float goldW = smoothstep(-0.06, 0.02, sunHg) * (1.0 - smoothstep(0.10, 0.35, sunHg));
 		vec3 sheen = mix(vec3(luma(col)), col, 0.70) * mix(vec3(1.10, 1.14, 1.00), vec3(1.20, 1.08, 0.84), goldW) + mix(vec3(0.035, 0.045, 0.025), vec3(0.055, 0.035, 0.0), goldW);
+		sheen += (1.0 - dayG) * (sheen * 0.35 + vec3(0.010, 0.016, 0.030)); // night: moonlit crest, a soft cool silver lift that survives the night grade
 		col *= 1.0 - 0.10 * FIELD_WAVES * fwK * (1.0 - fw) * (1.0 - rainStrength * 0.5);
 		col = mix(col, sheen, 0.70 * FIELD_WAVES * fwK * fw * (1.0 - rainStrength * 0.5));
 	}

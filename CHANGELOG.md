@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.33.1
 
 ### Changes
+- **Moonlit gust waves**: at night the wind waves roll through the grass as a soft, cool silver shimmer.
 - **Golden gust waves at sunrise and sunset**: with a low sun the wind waves in the grass glow soft gold instead of silver.
 - **Gust waves through the grass**: each wind gust now rolls across meadows as a clear, soft silvery band, moving together with the swaying grass and the wind lines.
 - **No more lavender stone at dawn**: grey stone and cobble walls in the open read as a soft warm grey in the dawn and dusk light instead of lilac.
