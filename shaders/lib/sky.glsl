@@ -75,6 +75,13 @@ vec3 celSkyImpl(vec3 dir, vec3 sunView, vec3 upView, float rain, bool discs) {
 	// luminous horizon: a wide soft bright glow just above the horizon line
 	col = mix(col, mix(hor, vec3(0.94, 0.97, 1.0), 0.6), (1.0 - smoothstep(0.0, 0.22, t0)) * day * (1.0 - dusk) * SKY_BRIGHT * 0.55 * step(0.0, h));
 	if (h < 0.0) col = hor * mix(1.0, 0.92, clamp(-h * 3.0, 0.0, 1.0));
+	// clear day: a soft painted gradient at the horizon, pale blue-white at the line, melting into the sky colour above and below
+	{
+		float hzK = day * (1.0 - smoothstep(0.0, 0.6, dusk)) * (1.0 - rain);
+		vec3 pale = vec3(0.78, 0.88, 0.98);
+		float g = h >= 0.0 ? 1.0 - smoothstep(0.0, 0.30, pow(h, 0.8)) : 1.0 - smoothstep(0.0, 0.45, -h);
+		col = mix(col, pale, g * hzK * 0.45);
+	}
 
 	if (discs) {
 		float s = dot(dir, sun);
@@ -119,5 +126,9 @@ vec3 celHorizon(vec3 dir, vec3 sunView, vec3 upView, float rain) {
 	hor = mix(hor, mix(belt * 1.05, dHor, facing), smoothstep(0.0, 0.6, dusk) * DUSK_SKY);
 	float night = clamp(-sunH * 4.0, 0.0, 1.0);
 	hor = mix(hor, hor * 1.12 + vec3(0.03, 0.03, 0.06), night * 0.6);
+	// same pale horizon line as the sky, so the world edge melts into it without a seam
+	float hv = dot(dir, up);
+	float g = hv >= 0.0 ? 1.0 - smoothstep(0.0, 0.30, pow(max(hv, 0.0), 0.8)) : 1.0 - smoothstep(0.0, 0.45, -hv);
+	hor = mix(hor, vec3(0.78, 0.88, 0.98), g * day * (1.0 - smoothstep(0.0, 0.6, dusk)) * (1.0 - rain) * 0.45);
 	return mix(hor, vec3(luma(hor)) * 0.7, rain * 0.6);
 }
