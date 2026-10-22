@@ -547,7 +547,7 @@ void main() {
 	if (lightId == 5) em = max(em, smoothstep(0.50, 0.72, max(albedo.r, max(albedo.g, albedo.b))));
 	outLight = em > 0.01 ? vec4(lightColor(lightId) * em, em) : vec4(0.0);
 	// candles: the flames are particles (not drawn here), so the upper wax glows faintly and feeds a soft warm halo
-	if (isLeaf == 3) { float cE = smoothstep(0.25, 0.5, luma(albedo.rgb)) * CANDLE_GLOW; outLight = vec4(vec3(1.0, 0.62, 0.30) * cE, cE * 0.45); }
+	if (isLeaf == 3 || isLeaf == 4) { float cE = smoothstep(0.25, 0.5, luma(albedo.rgb)) * CANDLE_GLOW * (isLeaf == 4 ? step(0.53, fract(cwpos.y - 0.001)) : 1.0); /* on a cake only the candle, not the cake top */ outLight = vec4(vec3(1.0, 0.62, 0.30) * cE, cE * 0.45); }
 	outShadow = vec4(-1.0);
 #ifndef FLAT_NORMAL
 	if (isEyeInWater == 0 && ndl > 0.0) outShadow = vec4(cOut[1] - cOut[0], lb);

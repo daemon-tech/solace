@@ -893,7 +893,8 @@ void main() {
 		col += halo * LIGHT_HALO * mix(1.0, 0.35, dayG * (1.0 - cave));
 		// small, dim sources (candles) light almost no block-light pool of their own: give them a wider soft halo instead
 		vec3 h4 = textureLod(colortex3, uv, 4.0).rgb;
-		col += h4 * 1.6 * CANDLE_GLOW * (1.0 - smoothstep(0.15, 0.45, texture(colortex2, uv).g)) * mix(1.0, 0.3, dayG * (1.0 - cave));
+		col += h4 * 1.6 * CANDLE_GLOW * smoothstep(0.25, 0.5, (h4.r - h4.b) / max(max(h4.r, h4.g), 1e-4)) * // warm sources only (no amethyst / soul / sculk halo)
+		        (1.0 - smoothstep(0.15, 0.45, texture(colortex2, uv).g)) * mix(1.0, 0.3, dayG * (1.0 - cave));
 	}
 #endif
 #ifdef SUN_HALO
