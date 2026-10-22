@@ -6,6 +6,9 @@ All builds tested in the real client with screenshots.
 ## 0.33.1
 
 ### Changes
+- **Moon rim**: at night characters get a faint silver fringe from the moon (Moon Rim option).
+- **Warm torch light at night outdoors**: torch and lantern pools in villages read as warm amber islands against the cool moonlight.
+- **Stronger backlit leaves**: leaves seen toward the sun glow in a wider, warmer gold-green; grass tufts keep a gentle glow instead of neon specks.
 - **Dripleaves and propagules in the wind**: big and small dripleaves sway like other plants, hanging mangrove propagules sway like hanging vines.
 - **Bobbing lily pads**: lily pads bob gently and drift a little on the water with the breeze (Lily Pad Bob option).
 - **More plants in the wind**: dry grass, dead bushes, sweet berry bushes, firefly bushes, saplings, eyeblossoms and cactus flowers now sway in the breeze too.
@@ -81,6 +84,7 @@ All builds tested in the real client with screenshots.
 ### Fixes
 - **Sun glints on water**: daytime glints are a clean cool white instead of beige cells that looked like sand flakes floating on the sea.
 - **Snowy grass blocks**: their sides keep a clean snow cap instead of a painted green stripe.
+- **Candle cakes**: only the candle glows, the cake top is no longer lit up.
 - **No blue dome by day**: the moon's glow rings now only show at night; by day a faint pale moon remains instead of a hard-edged blue dome above the horizon.
 
 ## 0.33
