@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.33.1
 
 ### Changes
+- **Whiter snow in the sun**: snow caps on trees and snowy ground further away read as soft white instead of icy blue, also when seen from a warmer biome.
 - **Calmer blue hour on stone**: cobble and grey stone walls stay cool at blue hour without turning periwinkle.
 - **No purple wood at night**: moonlit roofs and wooden walls read as a calm cool grey instead of lilac; torch-lit spots stay warm.
 - **Calmer golden hour on dirt**: sunlit dirt and terracotta slopes at sunset stay warm without turning neon orange.

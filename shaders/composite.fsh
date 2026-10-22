@@ -1373,8 +1373,11 @@ void main() {
 		float snowB = (1.0 - smoothstep(0.05, 0.3, bTemp)) * (1.0 - smoothstep(16.0, 56.0, lin)); // near snow only: far hazy terrain keeps its airy blue
 		float lS = luma(col);
 		float blueish = smoothstep(0.02, 0.12, col.b - col.r);
-		float k = snowB * smoothstep(0.45, 0.7, lS) * blueish;
-		col = mix(col, vec3(lS) * vec3(0.96, 0.98, 1.04) * 1.02, k * 0.55);
+		// snow seen from a warmer biome or further off: detect it per pixel, bright, nearly grey, slightly cool
+		float spread = max(col.r, max(col.g, col.b)) - min(col.r, min(col.g, col.b));
+		float snowP = smoothstep(0.52, 0.66, lS) * (1.0 - smoothstep(0.22, 0.34, spread)) * (1.0 - smoothstep(90.0, 170.0, lin)) * dayG;
+		float k = max(snowB * smoothstep(0.45, 0.7, lS), snowP) * blueish;
+		col = mix(col, vec3(lS) * vec3(0.97, 0.99, 1.03) * mix(1.02, 1.08, snowP), k * mix(0.55, 0.7, snowP));
 	}
 #endif
 #if RAINBOW > 0 && !defined DIM_NETHER && !defined DIM_END
