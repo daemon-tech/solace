@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.33.1
 
 ### Changes
+- **Calmer sunny grass**: bright neon greens in full sun settle into a softer, warmer meadow green.
 - **Warm torch-lit walls at night**: pale walls inside a torch pool glow warm cream instead of pink-lavender.
 - **Torch light islands in caves**: underground and under roofs, torch light reads as a calm amber island, warm even on grey stone, glowing softly near the flame and fading gently; already warm or bright surfaces like wood stay calm.
 - **Leaves in the rain**: tree crowns sit a calm step deeper when it rains instead of glowing pale lime.
