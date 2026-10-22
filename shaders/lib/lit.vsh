@@ -23,7 +23,7 @@ in vec4 at_midBlock;
 void main() {
 	gl_Position = ftransform();
 	int eid = int(mc_Entity.x + 0.5);
-	lightId = (eid >= 10010 && eid <= 10017) ? eid - 10009 : (eid == 10018 ? 1 : (eid == 10019 ? 2 : 0));
+	lightId = (eid >= 10010 && eid <= 10017) ? eid - 10009 : (eid == 10018 || eid == 10021 ? 1 : (eid == 10019 ? 2 : 0));
 	isLeaf = eid == 10002 ? 1 : 0;
 	isFoliage = (eid == 10002 || eid == 10006) ? 1 : (eid == 10003 ? 2 : (eid == 10004 ? 3 : (lightId > 0 ? 4 : (eid == 10007 ? 5 : 0))));
 	texcoord = (gl_TextureMatrix[0] * gl_MultiTexCoord0).xy;
@@ -40,11 +40,11 @@ void main() {
 	isGrassPlant = eid == 10006 ? 1 : 0;
 #ifdef WAVING_FOLIAGE
 	bool plant = eid == 10006 || eid == 10007 || eid == 10008;
-	if (isFoliage == 1 || plant || eid == 10009) {
+	if (isFoliage == 1 || plant || eid == 10009 || eid == 10021) {
 		vec4 vp = gbufferModelViewInverse * (gl_ModelViewMatrix * gl_Vertex);
 		float top = (gl_MultiTexCoord0.y < mc_midTexCoord.y) ? 1.0 : 0.0;
 		vec2 wo = windOffset(plant ? 1 : 2, cwpos, top, frameTimeCounter);
-		if (eid == 10009) { vec3 nW = mat3(gbufferModelViewInverse) * vnormal; wo -= nW.xz * dot(wo, nW.xz); } // vines slide along their wall, never into it
+		if (eid == 10009 || eid == 10021) { vec3 nW = mat3(gbufferModelViewInverse) * vnormal; wo -= nW.xz * dot(wo, nW.xz); } // vines slide along their wall, never into it
 		vp.xz += wo;
 		if (plant) vp.xz += playerPush(vp.xyz, top);
 		gl_Position = gl_ProjectionMatrix * (gbufferModelView * vp);
