@@ -1515,6 +1515,8 @@ void main() {
 			// foliage keeps more of its own green at night (the blue lift turned close leaves teal)
 			if (texture(colortex1, uv).a < 0.75) ind = mix(ind, ind * vec3(1.02, 1.04, 0.88), 0.8);
 			col = mix(col, ind, night * SCENE_TINT * (1.0 - max(warmPix, heldK)));
+			// moonlit wood and stone: indigo moon ambient on warm albedo dipped green below red and blue and read purple; lift green to a cool grey-brown
+			col.g = mix(col.g, max(col.g, min(col.r, col.b) * 0.98), night * 0.85 * (1.0 - max(warmPix, heldK)));
 			// calm deep night: unlit land steps down, warm light pools keep their full strength
 			col *= mix(1.0, 0.70, night * (1.0 - smoothstep(0.05, 0.45, max(warmPix, heldK))));
 			// the pool itself glows a soft amber instead of neutral daylight green
