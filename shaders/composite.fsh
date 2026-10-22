@@ -1522,6 +1522,10 @@ void main() {
 				vec3 neutral = vec3(luma(col)) * vec3(1.0, 0.99, 1.0);
 				float warmP = clamp(texture(colortex2, uv).g * 1.5, 0.0, 1.0); // torch pools keep their warmth
 				col = mix(col, mix(neutral, col, 0.25), tw * 0.85 * (1.0 - warmP));
+				// open land: dawn/dusk indigo ambient + pink sky light still turn grey stone lavender; pull only that hue towards a soft warm grey
+				float twO = clamp(1.6 - abs(sunH) * 4.0, 0.0, 1.0) * (1.0 - tw);
+				float lav = smoothstep(0.0, 0.05, min(col.r, col.b) - col.g) * smoothstep(-0.07, 0.0, col.b - col.r) * step(0.75, texture(colortex1, uv).a);
+				col = mix(col, vec3(luma(col)) * vec3(1.06, 1.0, 0.93), clamp(twO * lav * 1.3 * (1.0 - 0.6 * warmP), 0.0, 0.9));
 			}
 		}
 	}
