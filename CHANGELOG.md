@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.33.1
 
 ### Changes
+- **Pink cherry blossoms**: cherry leaves read as warm blossom pink again instead of cool lavender.
 - **Richer sunlit treetops**: the brightest leaf faces in full sun keep a little green depth instead of washing out to a chalky pale lime.
 - **Warm wood at sunrise**: wooden roofs, walls and paths stay warm wood brown in the morning light instead of turning salmon pink.
 - **Moonlit gust waves**: at night the wind waves roll through the grass as a soft, cool silver shimmer.

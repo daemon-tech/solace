@@ -412,6 +412,8 @@ void main() {
 			float l = luma(col);
 			float pinkLeaf = smoothstep(0.02, 0.12, albedo.r - albedo.g); // cherry leaves keep their pink
 			col = mix(col, vec3(l) * (isEyeInWater == 1 ? vec3(0.55, 1.05, 1.0) : mix(vec3(0.60, 0.80, 0.70) * 0.92, vec3(0.82, 1.30, 0.72) * 0.96, day)), FOLIAGE_LIME * STYLE_K * mix(1.0, 1.0 - torch * 0.6, 1.0 - day) * (1.0 - pinkLeaf) * (1.0 - 0.55 * rainStrength));
+			// cherry leaves: the cool shade ambient pushed them to lavender; keep a warm cherry-blossom pink
+			col = mix(col, col * vec3(1.10, 0.96, 0.84), pinkLeaf * 0.85 * (isEyeInWater == 1 ? 0.0 : 1.0));
 			// overcast rain: leaf masses sit a step deeper instead of glowing pale lime
 			if (isFoliage == 1 && isGrassPlant == 0) col *= 1.0 - 0.18 * rainStrength;
 		}
