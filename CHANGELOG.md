@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.33.1
 
 ### Changes
+- **Amethyst twinkle**: a few amethyst crystal facets catch a soft white twinkle now and then (Amethyst Twinkle option).
 - **Glowing glow berries**: glow berries on cave vines now glow warm orange and light their surroundings, and the vines sway like other vines.
 - **Swaying lanterns**: hanging lanterns and soul lanterns swing gently on their chain, a little more when a gust passes (Lantern Sway option).
 - **Swaying reeds**: sugar cane and bamboo bend and ripple in the breeze as one stalk and lean downwind in a gust and their shadows sway with them (Reed Sway option).

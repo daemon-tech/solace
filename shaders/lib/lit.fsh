@@ -528,6 +528,13 @@ void main() {
 		col = mix(col, max(col, rimC * (luma(col) * 0.7 + 0.55)), rimK * float(CHAR_RIM) * 0.085);
 	}
 #endif
+	if (lightId == 4) {
+		// amethyst: a few crystal texels twinkle now and then (sharp short flash, calm in between)
+		vec3 tq = floor(cwpos * 8.0 + 0.001);
+		float h = hash12(tq.xz * 0.731 + tq.y * 3.17);
+		float tw = pow(max(sin(frameTimeCounter * (1.5 + 2.5 * h) + h * 60.0), 0.0), 6.0);
+		col += vec3(1.0, 0.92, 1.0) * step(0.78, h) * tw * smoothstep(0.25, 0.5, luma(albedo.rgb)) * 3.0 * AMETHYST_TWINKLE;
+	}
 	outColor = vec4(clamp(col, 0.0, 4.0), albedo.a);
 	outFlag = vec4(0.0, clamp(pool, 0.0, 1.0), 0.0, 1.0);
 #ifdef FLAT_NORMAL

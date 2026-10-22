@@ -131,6 +131,7 @@ const float sunPathRotation = -25.0;
 #define FLAME_FLICKER 1.0 // [0.0 0.5 1.0] torch and lantern light breathes softly, a little livelier on gusts
 #define LANTERN_SWAY 1.0 // [0.0 0.5 1.0 1.5] hanging lanterns swing gently on their chain, more in a gust
 #define REED_SWAY 1.0 // [0.0 0.5 1.0 1.5] sugar cane and bamboo bend and ripple in the breeze
+#define AMETHYST_TWINKLE 1.0 // [0.0 0.5 1.0 1.5] a few amethyst crystal facets twinkle now and then
 #define LEAF_GLINTS 1.0 // [0.0 0.5 1.0] when a gust passes, a few sunlit leaves catch the sun for a moment
 #define DRIFT_LEAVES 1.0 // [0.0 0.5 1.0] loose leaves tumble down and sail downwind when a gust passes
 #define WIND_SHEEN 0.15 // [0.0 0.05 0.10 0.15 0.2] light sheen where gusts bend the grass
