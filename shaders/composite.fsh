@@ -1468,7 +1468,7 @@ void main() {
 			float mornT = (sunAngle > 0.75 || sunAngle < 0.25) ? 1.0 : 0.0;
 			float skyEye = smoothstep(0.25, 0.85, float(eyeBrightnessSmooth.y) / 240.0);
 			vec3 dMul = mix(vec3(1.30, 0.92, 0.55), vec3(1.10, 0.96, 0.93), mornT);
-			vec3 dAdd = mix(vec3(0.07, 0.03, 0.0), vec3(0.035, 0.012, 0.03), mornT);
+			vec3 dAdd = mix(vec3(0.07, 0.03, 0.0), vec3(0.035, 0.022, 0.006), mornT); // dawn: soft peach-gold lift, no magenta veil
 			col = mix(col, col * dMul + dAdd, dusk * DUSK_TINT * mix(0.30, 1.0, skyEye) * (1.0 - cave));
 #ifdef TIME_GRADING
 			// per time of day: sunrise (soft pink-gold), noon (clean, slightly crisper), blue hour (cool), night handled below
@@ -1479,7 +1479,7 @@ void main() {
 			// sunrise pink and blue-hour cool are sky light too: in pits, dug holes and caves they stacked
 			// on the cool shade ambient into a lavender cast, so they fade with the eye's sky view
 			float tgSky = mix(0.15, 1.0, skyEye) * (1.0 - cave);
-			col = mix(col, col * vec3(1.08, 0.97, 0.98) + vec3(0.03, 0.01, 0.02), rise * TIME_GRADING_STRENGTH * tgSky);
+			col = mix(col, col * vec3(1.06, 0.99, 0.95) + vec3(0.025, 0.014, 0.0), rise * TIME_GRADING_STRENGTH * tgSky);
 			col = mix(col, mix(vec3(luma(col)), col, 1.05) * vec3(0.99, 1.0, 1.02), noon * TIME_GRADING_STRENGTH);
 			// blue hour: pale walls, quartz and stone take a calm, slightly darker cool grey instead of glowing lavender-white
 			vec3 bhGain = mix(vec3(0.80, 0.90, 1.22), vec3(0.80, 0.84, 0.96), sky ? 0.0 : smoothstep(0.18, 0.55, luma(col))); // from mid tones up (stone, cobble, pale walls)

@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.33.1
 
 ### Changes
+- **Golden sunrise**: the sunrise cast on the land is a soft peach-gold instead of a pink-magenta veil.
 - **Softer waterfalls**: the foam tumbling down waterfalls has soft, cloud-like edges instead of hard-cut blue and white patches.
 - **Gentle moonlight on water**: the moon path is a calm silver sheen with soft glints instead of a hard white disc and scattered flakes.
 - **Calmer blue hour**: pale walls, quartz, stone and cobble no longer glow lavender-blue after sunset; they settle into a calm muted tone.
