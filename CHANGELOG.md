@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.34.1
 
 ### Changes
+- **Soaked paths in rain**: open dirt paths, sand and stone now turn visibly darker with a soft grey sheen while it rains, a little more than lawns.
 - **Soft evening clouds in hot lands**: savanna and desert clouds take a lighter peach tone at sunset, and the evening colour grade no longer pushes them to deep orange.
 
 ## 0.34.0
