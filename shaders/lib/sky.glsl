@@ -44,6 +44,11 @@ vec3 celSkyImpl(vec3 dir, vec3 sunView, vec3 upView, float rain, bool discs) {
 	vec3 dMid = mix(vec3(0.950, 0.520, 0.240), vec3(0.97, 0.66, 0.62), morning);
 	vec3 dHor = mix(vec3(0.960, 0.560, 0.120), vec3(1.00, 0.78, 0.56), morning);
 	// anti-sun side at dusk: soft violet/rose band ("belt of Venus")
+	// hot dry lands (savanna, desert): the evening sky settles into a calm soft peach instead of deep orange
+	float hotD = sbHot * (1.0 - morning);
+	dHor = mix(dHor, vec3(0.97, 0.76, 0.58), hotD * 0.75);
+	dMid = mix(dMid, vec3(0.94, 0.70, 0.62), hotD * 0.65);
+	dZen = mix(dZen, vec3(0.80, 0.66, 0.74), hotD * 0.5);
 	vec3 belt = mix(vec3(0.62, 0.42, 0.66), vec3(0.70, 0.58, 0.80), morning);
 	float duskW = smoothstep(0.0, 0.6, dusk) * DUSK_SKY;
 	float side = mix(0.55, 1.0, facing);
@@ -78,6 +83,7 @@ vec3 celSkyImpl(vec3 dir, vec3 sunView, vec3 upView, float rain, bool discs) {
 		else {
 			// calm glow around the disc: soft-edged layers instead of hard concentric rings
 			float gl = smoothstep(0.9935, 0.9975, s) * 0.55 + smoothstep(0.982, 0.9935, s) * 0.18 + smoothstep(0.945, 0.99, s) * 0.10 * (0.4 + duskW);
+			gl *= 1.0 - 0.45 * sbHot * duskW; // calmer glow around the evening sun in hot lands
 			col = mix(col, sunCol, clamp(gl, 0.0, 0.6));
 		}
 		float m = dot(dir, -sun);
@@ -108,6 +114,7 @@ vec3 celHorizon(vec3 dir, vec3 sunView, vec3 upView, float rain) {
 	hor = mix(hor, vec3(0.80, 0.88, 0.96), SKY_SUN_GLOW * day * (1.0 - dusk) * facing * facing * facing * facing * 0.45);
 	{ vec3 zDummy = hor; biomeSky(zDummy, hor, day * (1.0 - smoothstep(0.0, 0.6, dusk) * 0.7)); }
 	vec3 dHor = mix(vec3(0.960, 0.560, 0.120), vec3(1.00, 0.78, 0.56), morning);
+	dHor = mix(dHor, vec3(0.97, 0.76, 0.58), sbHot * (1.0 - morning) * 0.75);
 	vec3 belt = mix(vec3(0.62, 0.42, 0.66), vec3(0.70, 0.58, 0.80), morning);
 	hor = mix(hor, mix(belt * 1.05, dHor, facing), smoothstep(0.0, 0.6, dusk) * DUSK_SKY);
 	float night = clamp(-sunH * 4.0, 0.0, 1.0);

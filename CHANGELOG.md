@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.33.1
 
 ### Changes
+- **Soft savanna evenings**: in hot dry lands the evening sky settles into a calm soft peach with a gentler glow around the sun, instead of a deep orange wall.
 - **Leaves flip in the gusts**: when a gust passes over a forest, the leaves turn slightly paler and silvery, as if showing their undersides, and settle again behind the front.
 - **Calmer redstone glow**: redstone lamps and torches tint the ground a soft red instead of a glaring one; torch light is unchanged.
 - **Cyan soul light**: soul lanterns and soul torches cast a soft cyan glow on the ground around them.
