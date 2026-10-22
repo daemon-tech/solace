@@ -533,7 +533,7 @@ void main() {
 				float gm = pow(max(dot(Rw, Lm), 0.0), 40.0);
 				float gmW = pow(max(dot(reflect(V, upV), Lm), 0.0), 18.0); // soft wide sheen under the glints
 				float nW = (1.0 - wday) * (1.0 - rainStrength);
-				col = mix(col, vec3(0.80, 0.86, 1.0), clamp(celBand(clamp(gm * 2.0, 0.0, 1.0), 3) * cells * 0.75 + celBandSoft(gmW, 3, 0.5) * 0.14, 0.0, 1.0) * nW);
+				col = mix(col, vec3(0.80, 0.86, 1.0), clamp(celBand(clamp(gm * 2.0, 0.0, 1.0), 3) * cells * 0.5 + celBandSoft(gmW, 3, 0.8) * 0.26, 0.0, 1.0) * nW);
 			}
 #endif
 #ifdef WATER_STARS

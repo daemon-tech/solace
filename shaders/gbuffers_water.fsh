@@ -109,8 +109,9 @@ void main() {
 			col = mix(col, vec3(1.0, 0.99, 0.96), smoothstep(0.988 - gw * 0.6, 0.988 + gw * 0.6, spec) * mix(1.0, 0.78, noonG));
 		} else {
 			// night: banded moon glint path and moonlit ripple highlights
-			col = mix(col, vec3(0.70, 0.80, 1.0), step(0.94, spec) * 0.45);
-			if (spec > 0.985) col = vec3(0.90, 0.94, 1.0);
+			// soft silver moon glow: wide gentle halo and a soft core instead of a hard white disc
+			col = mix(col, vec3(0.66, 0.76, 1.0), smoothstep(0.86, 0.97, spec) * 0.32);
+			col = mix(col, vec3(0.88, 0.92, 1.0), smoothstep(0.975, 0.995, spec) * 0.75);
 			float rph = sin(p.x * 1.1 - p.y * 0.6 + t * 1.3 + vnoise(p * 0.3) * 3.0);
 			float rip = step(0.84, rph) + step(0.95, rph);
 			col = mix(col, vec3(0.60, 0.74, 1.0), clamp(rip, 0.0, 1.0) * mix(0.45, 0.75, step(1.5, rip)) * (1.0 - day));
