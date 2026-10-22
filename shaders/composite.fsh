@@ -1069,7 +1069,9 @@ void main() {
 		// crest = blades bent over showing their pale silvery side; a soft trough shade behind keeps it readable
 		float gF = windGust(wpF.xz, frameTimeCounter);
 		float fw = smoothstep(0.48, 0.78, gF); // narrower crest, soft edges
-		vec3 sheen = mix(vec3(luma(col)), col, 0.70) * vec3(1.10, 1.14, 1.00) + vec3(0.035, 0.045, 0.025);
+		// low sun: the bent blades catch the warm light, crests turn soft gold instead of cool silver
+		float goldW = smoothstep(-0.06, 0.02, sunHg) * (1.0 - smoothstep(0.10, 0.35, sunHg));
+		vec3 sheen = mix(vec3(luma(col)), col, 0.70) * mix(vec3(1.10, 1.14, 1.00), vec3(1.20, 1.08, 0.84), goldW) + mix(vec3(0.035, 0.045, 0.025), vec3(0.055, 0.035, 0.0), goldW);
 		col *= 1.0 - 0.10 * FIELD_WAVES * fwK * (1.0 - fw) * (1.0 - rainStrength * 0.5);
 		col = mix(col, sheen, 0.70 * FIELD_WAVES * fwK * fw * (1.0 - rainStrength * 0.5));
 	}
