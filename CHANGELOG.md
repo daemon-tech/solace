@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.33.1
 
 ### Changes
+- **Glowing furnaces**: lit furnaces, smokers and blast furnaces now glow warm from their fire opening and light the room.
 - **Copper torches and lanterns**: copper torches and copper lanterns now glow with their green flame light, and hanging copper lanterns swing like the others.
 - **Swaying spore blossoms**: spore blossoms under cave ceilings sway gently with the breeze like hanging vines.
 - **Candle light**: lit candles and candle cakes count as warm light sources and get a soft warm glow around them (Candle Glow option). The tiny flames themselves are vanilla particles and do not flicker.
