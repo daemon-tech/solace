@@ -535,6 +535,8 @@ void main() {
 #endif
 	// premultiplied: only the glowing texels of a source write colour (no light from the torch stick)
 	float em = lightId > 0 ? emitMask(albedo.rgb) : 0.0;
+	// sea lantern, end rod, froglight: pale, low-chroma glow faces; the chroma test missed them and the animated texture made the pool flicker warm/cool
+	if (lightId == 5) em = max(em, smoothstep(0.50, 0.72, max(albedo.r, max(albedo.g, albedo.b))));
 	outLight = em > 0.01 ? vec4(lightColor(lightId) * em, em) : vec4(0.0);
 	outShadow = vec4(-1.0);
 #ifndef FLAT_NORMAL
