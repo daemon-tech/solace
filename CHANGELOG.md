@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.33.1
 
 ### Changes
+- **Softer waterfalls**: the foam tumbling down waterfalls has soft, cloud-like edges instead of hard-cut blue and white patches.
 - **Gentle moonlight on water**: the moon path is a calm silver sheen with soft glints instead of a hard white disc and scattered flakes.
 - **Calmer blue hour**: pale walls, quartz, stone and cobble no longer glow lavender-blue after sunset; they settle into a calm muted tone.
 - **Night smoke**: campfire smoke and other particles no longer glow bright white at night; over a fire they take a soft dim ember tone.

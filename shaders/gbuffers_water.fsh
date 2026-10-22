@@ -120,13 +120,13 @@ void main() {
 		float side = 1.0 - abs(dot(safeNormalize(vnormal, up), up));
 		if (side > 0.3) {
 			float fl = vnoise(vec2((p.x + p.y) * 2.0, worldPos.y * 0.7 + t * 2.6));
-			col = mix(col, vec3(0.92, 0.99, 1.0), (step(0.62, fl) * 0.55 + step(0.80, fl) * 0.4) * mix(0.4, 1.0, day));
+			col = mix(col, vec3(0.92, 0.99, 1.0), (smoothstep(0.58, 0.68, fl) * 0.5 + smoothstep(0.76, 0.86, fl) * 0.35) * mix(0.4, 1.0, day)); // soft-edged streaks
 			crest = max(crest, step(0.62, fl));
 #ifdef WATERFALL_BLOBS
 			// big stylized cel blobs tumbling down: white cores with pale blue rims, two tones
 			float bl = vnoise(vec2((p.x + p.y) * 0.9, worldPos.y * 0.35 + t * 1.8)) * 0.7 + vnoise(vec2((p.x + p.y) * 2.2, worldPos.y * 0.9 + t * 3.0)) * 0.3;
-			col = mix(col, vec3(0.62, 0.86, 1.0), step(0.48, bl) * 0.7 * mix(0.45, 1.0, day));
-			col = mix(col, vec3(0.97, 1.0, 1.0), step(0.60, bl) * 0.9 * mix(0.45, 1.0, day));
+			col = mix(col, vec3(0.66, 0.88, 1.0), smoothstep(0.42, 0.52, bl) * 0.6 * mix(0.45, 1.0, day)); // soft cloud-like foam
+			col = mix(col, vec3(0.97, 1.0, 1.0), smoothstep(0.56, 0.66, bl) * 0.85 * mix(0.45, 1.0, day));
 			crest = max(crest, step(0.48, bl));
 #endif
 		}
