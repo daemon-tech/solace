@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.34.1
 
 ### Changes
+- **Soft sunrise**: dawn is one calm smooth gradient from pale gold near the sun through soft rose to a gentle blue above, less candy-pink than before.
 - **Calm End sky**: the End sky is one smooth violet-dusk gradient from a soft rose-violet horizon to deep indigo, with a faint soft nebula glow instead of large blotchy bands.
 - **Warm Nether glow**: with Nether fog off, the Nether gets a calm warm ambient tint, and rising embers plus the soft heat glow around lava are back. Both have their own settings (Nether Embers, Nether Warm Tint).
 - **Soft moon**: the moon sits in one smooth silver glow with a soft pale disc instead of stepped rings.

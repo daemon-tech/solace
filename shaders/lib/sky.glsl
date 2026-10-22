@@ -40,9 +40,9 @@ vec3 celSkyImpl(vec3 dir, vec3 sunView, vec3 upView, float rain, bool discs) {
 	vec3 mid = mix(zen, hor, 0.5);
 	// sunset gold/orange vs sunrise peach/rose; replaces (not averages) the blue palette
 	// layered: a warm glowing horizon, a coral middle and a soft rose-lilac above it
-	vec3 dZen = mix(vec3(0.880, 0.560, 0.480), vec3(0.74, 0.64, 0.84), morning);
-	vec3 dMid = mix(vec3(0.950, 0.520, 0.240), vec3(0.97, 0.66, 0.62), morning);
-	vec3 dHor = mix(vec3(0.960, 0.560, 0.120), vec3(1.00, 0.78, 0.56), morning);
+	vec3 dZen = mix(vec3(0.880, 0.560, 0.480), vec3(0.62, 0.70, 0.90), morning); // sunrise: soft blue above
+	vec3 dMid = mix(vec3(0.950, 0.520, 0.240), vec3(0.93, 0.72, 0.74), morning); // sunrise: soft rose middle
+	vec3 dHor = mix(vec3(0.960, 0.560, 0.120), vec3(1.00, 0.86, 0.64), morning); // sunrise: pale gold near the sun
 	// anti-sun side at dusk: soft violet/rose band ("belt of Venus")
 	// hot dry lands (savanna, desert): the evening sky settles into a calm soft peach instead of deep orange
 	float hotD = sbHot * (1.0 - morning);
@@ -70,7 +70,7 @@ vec3 celSkyImpl(vec3 dir, vec3 sunView, vec3 upView, float rain, bool discs) {
 	// clear day: one long smooth gradient instead of steps
 	t = mix(t, pow(t0, 0.6), day * (1.0 - dusk) * SKY_BRIGHT);
 	// dusk: the colour layers flow into each other as one calm gradient
-	t = mix(t, pow(t0, 0.6), smoothstep(0.0, 0.6, dusk) * 0.6);
+	t = mix(t, pow(t0, 0.6), smoothstep(0.0, 0.6, dusk) * mix(0.6, 1.0, morning)); // dawn: fully smooth gradient
 	vec3 col = t < 0.5 ? mix(hor, mid, t * 2.0) : mix(mid, zen, t * 2.0 - 1.0);
 	// luminous horizon: a wide soft bright glow just above the horizon line
 	col = mix(col, mix(hor, vec3(0.94, 0.97, 1.0), 0.6), (1.0 - smoothstep(0.0, 0.22, t0)) * day * (1.0 - dusk) * SKY_BRIGHT * 0.55 * step(0.0, h));
