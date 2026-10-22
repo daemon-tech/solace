@@ -1499,8 +1499,10 @@ void main() {
 			col.b = mix(col.b, min(col.b, col.g * 0.66), wW);
 			col = mix(col, mix(vec3(luma(col)), col, 1.05) * vec3(0.99, 1.0, 1.02), noon * TIME_GRADING_STRENGTH);
 			// blue hour: pale walls, quartz and stone take a calm, slightly darker cool grey instead of glowing lavender-white
-			vec3 bhGain = mix(vec3(0.80, 0.90, 1.22), vec3(0.80, 0.84, 0.96), sky ? 0.0 : smoothstep(0.18, 0.55, luma(col))); // from mid tones up (stone, cobble, pale walls)
-			col = mix(col, col * bhGain + vec3(0.0, 0.01, 0.04), blueH * TIME_GRADING_STRENGTH * tgSky);
+			vec3 bhGain = mix(vec3(0.84, 0.91, 1.10), vec3(0.80, 0.84, 0.96), sky ? 0.0 : smoothstep(0.18, 0.55, luma(col))); // from mid tones up (stone, cobble, pale walls)
+			col = mix(col, col * bhGain + vec3(0.0, 0.01, 0.025), blueH * TIME_GRADING_STRENGTH * tgSky);
+			// blue hour on grey stone and cobble: cool, but never periwinkle (blue capped a step above red/green; foliage and sky keep theirs)
+			if (!sky && texture(colortex1, uv).a >= 0.75) col.b = mix(col.b, min(col.b, max(col.r, col.g) * 1.22), clamp(max(blueH, night * 0.6), 0.0, 1.0) * 0.85);
 #endif
 			// night: hue-shift towards indigo but keep warm torch pools warm
 			// warm pools fall off with the light level: only the core near the flame keeps day colour, the rim fades into the night

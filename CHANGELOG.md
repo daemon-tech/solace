@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.33.1
 
 ### Changes
+- **Calmer blue hour on stone**: cobble and grey stone walls stay cool at blue hour without turning periwinkle.
 - **No purple wood at night**: moonlit roofs and wooden walls read as a calm cool grey instead of lilac; torch-lit spots stay warm.
 - **Calmer golden hour on dirt**: sunlit dirt and terracotta slopes at sunset stay warm without turning neon orange.
 - **Pink cherry blossoms**: cherry leaves read as warm blossom pink again instead of cool lavender.
