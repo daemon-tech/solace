@@ -3,6 +3,11 @@
 Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All Rights Reserved.
 All builds tested in the real client with screenshots.
 
+## 0.34.1
+
+### Changes
+- **Soft evening clouds in hot lands**: savanna and desert clouds take a lighter peach tone at sunset, and the evening colour grade no longer pushes them to deep orange.
+
 ## 0.34.0
 
 A big update: the world now moves with the wind, light sources glow and colour their surroundings, nights and golden hours read warmer and calmer, water got softer highlights and wet shores, and fog is gone so far land stays crisp.

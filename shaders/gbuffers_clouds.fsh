@@ -6,11 +6,13 @@ uniform vec3 sunPosition;
 uniform vec3 upPosition;
 uniform float rainStrength;
 uniform float sunAngle;
+uniform float sbHot;
 in vec4 vcolor;
 in vec3 vnormal;
 in vec3 viewPosC;
-/* RENDERTARGETS: 0 */
+/* RENDERTARGETS: 0,2 */
 layout(location = 0) out vec4 outColor;
+layout(location = 1) out vec4 outFlag; // a = 0.25 marks cloud pixels (the evening grade skips them)
 void main() {
 #ifdef SOFT_CLOUDS
 	discard;
@@ -28,6 +30,10 @@ void main() {
 	vec3 shade = mix(vec3(0.13, 0.14, 0.32), vec3(0.84, 0.88, 0.96), day); // soft pale undersides by day, not grey-blue blocks
 	lit = mix(lit, (sunAngle > 0.75 || sunAngle < 0.25) ? vec3(1.0, 0.84, 0.78) : vec3(1.0, 0.80, 0.55), dusk * 0.75); // sunrise: peach-rose
 	shade = mix(shade, (sunAngle > 0.75 || sunAngle < 0.25) ? vec3(0.86, 0.60, 0.64) : vec3(0.92, 0.56, 0.46), dusk * 0.7); // warm coral undersides
+	// hot dry lands: evening clouds turn a soft peach to match the calm evening sky
+	float hotC = sbHot * dusk * ((sunAngle > 0.75 || sunAngle < 0.25) ? 0.0 : 1.0);
+	lit = mix(lit, vec3(1.0, 0.90, 0.82), clamp(hotC * 1.6, 0.0, 1.0));
+	shade = mix(shade, vec3(0.95, 0.80, 0.76), clamp(hotC * 1.6, 0.0, 1.0));
 	float k = ny > 0.5 ? 1.0 : (ny < -0.5 ? 0.0 : celBand(sl, 3) * 0.8 + 0.1);
 	float dist = length(viewPosC);
 #ifdef CLOUD_SMOOTH
@@ -52,4 +58,5 @@ void main() {
 	c = mix(c, mix(shade, lit, 0.7), sw * 0.6);
 	a *= 1.0 - 0.5 * sw;
 	outColor = vec4(c, a);
+	outFlag = vec4(0.0, 0.0, 0.0, 0.25);
 }

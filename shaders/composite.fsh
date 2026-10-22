@@ -1191,6 +1191,9 @@ void main() {
 		float cMorn = ((sunAngle > 0.75 || sunAngle < 0.25) ? 1.0 : 0.0);
 		cLit = mix(cLit, mix(vec3(1.0, 0.80, 0.55), vec3(1.0, 0.84, 0.80), cMorn), cDusk * 0.75); // sunrise: peach-rose, not gold
 		cShade = mix(cShade, mix(vec3(0.92, 0.56, 0.46), vec3(0.86, 0.60, 0.64), cMorn), cDusk * 0.7); // warm coral undersides, never pale grey-mauve
+		float hotC = sbHot * cDusk * (1.0 - cMorn); // hot dry lands: soft peach evening clouds
+		cLit = mix(cLit, vec3(1.0, 0.90, 0.82), clamp(hotC * 1.6, 0.0, 1.0));
+		cShade = mix(cShade, vec3(0.95, 0.80, 0.76), clamp(hotC * 1.6, 0.0, 1.0));
 		cLit = mix(cLit, vec3(luma(cLit)) * 0.75, rainStrength * 0.6);
 		cShade = mix(cShade, vec3(luma(cShade)) * 0.75, rainStrength * 0.6);
 		float toSun = max(dot(rd, sunW), 0.0);
@@ -1275,6 +1278,9 @@ void main() {
 	if (!sky) {
 		vec3 pre = col;
 		col = grade(col) * bTint;
+		// clouds: the evening grade leaves them alone, so they keep the colour of the evening sky
+		float cloudF = 1.0 - step(0.06, abs(texture(colortex2, uv).a - 0.25));
+		col = mix(col, pre, cloudF * duskG);
 		// particles (splash mist, smoke, clouds of dust): pale ones stay neutral white, never sand-beige
 		float pf = texture(colortex2, uv).a;
 		if (pf > 0.4 && pf < 0.8) {
