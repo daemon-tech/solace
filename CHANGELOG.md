@@ -3,7 +3,9 @@
 Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All Rights Reserved.
 All builds tested in the real client with screenshots.
 
-## 0.33.1
+## 0.34.0
+
+A big update: the world now moves with the wind, light sources glow and colour their surroundings, nights and golden hours read warmer and calmer, water got softer highlights and wet shores, and fog is gone so far land stays crisp.
 
 ### Changes
 - **Clear skies, no fog**: distance, valley, cave, biome, weather, Nether and End fog and all distance haze are now off by default. Far land stays clear and keeps its colour, and the end of the render distance fades softly into the sky. Only short visibility limits remain under water, in lava and in powder snow (each fog option can still be turned back on in the menu).
