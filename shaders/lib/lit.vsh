@@ -23,7 +23,7 @@ in vec4 at_midBlock;
 void main() {
 	gl_Position = ftransform();
 	int eid = int(mc_Entity.x + 0.5);
-	lightId = (eid >= 10010 && eid <= 10017) ? eid - 10009 : (eid == 10018 || eid == 10021 || eid == 10023 || eid == 10024 ? 1 : (eid == 10019 ? 2 : 0));
+	lightId = (eid >= 10010 && eid <= 10017) ? eid - 10009 : (eid == 10018 || eid == 10021 || eid == 10023 || eid == 10024 ? 1 : (eid == 10019 ? 2 : (eid == 10025 ? 6 : 0)));
 	isLeaf = eid == 10002 ? 1 : (eid == 10021 ? 2 : (eid == 10023 ? 3 : (eid == 10024 ? 4 : 0))); // 2 = glow-berry vine, 3 = lit candle
 	isFoliage = (eid == 10002 || eid == 10006 || eid == 10021) ? 1 : (eid == 10003 ? 2 : (eid == 10004 ? 3 : (lightId > 0 ? 4 : (eid == 10007 ? 5 : 0))));
 	texcoord = (gl_TextureMatrix[0] * gl_MultiTexCoord0).xy;
@@ -81,7 +81,7 @@ void main() {
 		gl_Position = gl_ProjectionMatrix * (gbufferModelView * vp);
 	}
 #ifdef LANTERN_SWAY
-	if (eid == 10018 || eid == 10019) {
+	if (eid == 10018 || eid == 10019 || eid == 10025) {
 		// hanging lanterns swing gently on their chain like a pendulum (pivot at the top of the block), more in a gust
 		vec4 vp = gbufferModelViewInverse * (gl_ModelViewMatrix * gl_Vertex);
 		vec3 bc = floor(vp.xyz + cameraPosition + at_midBlock.xyz / 64.0) + 0.5; // block centre
