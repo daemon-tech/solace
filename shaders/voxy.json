@@ -1,0 +1,7 @@
+{
+  "version": 1,
+  "uniforms": ["sunPosition", "upPosition", "shadowLightPosition", "gbufferModelView"],
+  "opaqueDrawBuffers": [0, 1, 2],
+  "translucentDrawBuffers": [0, 1, 2],
+  "excludeLodsFromVanillaDepth": true
+}

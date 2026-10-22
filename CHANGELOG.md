@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.34.1
 
 ### Changes
+- **Voxy far look**: with Voxy, far LOD terrain now gets Solace's cel lighting and grade (meadow-green grass tops, same shadow tint) instead of flat unshaded blocks, and far LOD water takes the same deep blue as near water without walls at section borders. Distance effects (aerial perspective, haze, distance blue and mountain layers) and the soft fade into the sky follow the Voxy view distance, so the vanilla chunk edge no longer fades early and leaves a seam.
 - **Calm view past the world edge**: from high spots, the sky below the horizon now leans into a soft, darker grey-green land tone instead of pale sky colour, so it no longer reads as a fog wall, also in rain and thunderstorms; the world edge still melts in without a seam.
 - **Soft sunrise**: dawn is one calm smooth gradient from pale gold near the sun through soft rose to a gentle blue above, less candy-pink than before.
 - **Calm End sky**: the End sky is one smooth violet-dusk gradient from a soft rose-violet horizon to deep indigo, with a faint soft nebula glow instead of large blotchy bands.

@@ -89,6 +89,10 @@ vec3 biomeTint(out float extraHaze) {
 	extraHaze = 0.35 * bSwamp + 0.30 * bDark + 0.15 * cold;
 	return mix(vec3(1.0), t, BIOME_MOOD * 1.5);
 }
+// Voxy LOD terrain (bound by Voxy when voxy.json is present; unset = 0 otherwise)
+uniform sampler2D vxDepthTexOpaque;
+uniform mat4 vxProjInv;
+uniform int vxRenderDistance;
 #ifdef DISTANT_HORIZONS
 uniform sampler2D dhDepthTex0;
 uniform float dhNearPlane;
@@ -279,6 +283,16 @@ void main() {
 		if (dd0 < 1.0) { isDH = true; lin = 2.0 * dhNearPlane * dhFarPlane / max(dhFarPlane + dhNearPlane - (2.0 * dd0 - 1.0) * (dhFarPlane - dhNearPlane), 1e-4); }
 	}
 #endif
+	// Voxy: LOD pixels sit behind the vanilla depth (excludeLodsFromVanillaDepth), read their own depth
+	if (d0 >= 1.0 && vxRenderDistance > 0) {
+		float vd = texture(vxDepthTexOpaque, uv).r;
+		if (vd < 1.0) {
+			vec4 vp = vxProjInv * vec4(vec3(uv, vd) * 2.0 - 1.0, 1.0);
+			isDH = true; lin = -vp.z / vp.w;
+		}
+	}
+	// world end for distance effects: the LOD edge when Voxy is on, else the render distance
+	float wEnd = vxRenderDistance > 0 ? max(far, float(vxRenderDistance) * 16.0) : far;
 	bool water = texture(colortex2, uv).r > 0.5;
 #ifdef SSAO
 	// screen-space ambient occlusion: soft contact shading in corners and under overhangs (banded)
@@ -809,9 +823,9 @@ void main() {
 #if AERIAL_PERSPECTIVE > 0
 	// aerial perspective: distant land slowly fades paler and bluer into the sky colour, smooth (no bands),
 	// so ridges and forests stack into soft layers; warmer toward the sun at dawn and dusk
-	if (IS_OW && isEyeInWater == 0 && d0 < 1.0 && cave < 0.5 && !water) {
+	if (IS_OW && isEyeInWater == 0 && (d0 < 1.0 || isDH) && cave < 0.5 && !water) {
 		float dayA = dayFactor(sunPosition, upPosition);
-		float ap = 1.0 - exp(-max(lin - 24.0, 0.0) / (far * 0.75));
+		float ap = 1.0 - exp(-max(lin - 24.0, 0.0) / (wEnd * 0.75));
 		ap = smoothstep(0.0, 1.0, ap) * float(AERIAL_PERSPECTIVE) * 0.1 * mix(0.35, 1.0, dayA) * (1.0 - rainStrength * 0.5);
 		vec3 apC = mix(fogSky, vec3(0.62, 0.75, 0.94), 0.55 * dayA); // daytime distance leans soft sky-blue, not milk-white
 		vec3 desat = mix(vec3(luma(col)), col, 1.0 - 0.45 * ap);
@@ -1104,14 +1118,14 @@ void main() {
 	}
 	// warm atmospheric haze with distance (sunset orange, daytime soft yellow-green in forests)
 	if (IS_OW && !sky && isEyeInWater == 0) {
-		float hz = smoothstep(3.0, far * 0.6, lin);
+		float hz = smoothstep(3.0, wEnd * 0.6, lin);
 		vec3 hzc = mix(mix(mix(vec3(0.85, 0.95, 0.55), vec3(0.98, 0.90, 0.88), MORN_K), fogSky * 1.08, FOG_SKY_MATCH * 0.6), mix(vec3(1.0, 0.62, 0.22), vec3(1.0, 0.78, 0.68), MORN_K), duskG);
 		col = mix(col, hzc, hz * (HAZE + bHaze * BIOME_MOOD * BIOME_FOG * 0.5) * STYLE_K * dayG * (water ? 0.25 : 1.0) * (1.0 - 0.5 * duskG));
 	}
 #ifdef DISTANCE_BLUE
 	// aerial perspective: far terrain (mountains) turns soft blue toward the sky colour
 	if (!sky && isEyeInWater == 0 && !water) {
-		float hb = smoothstep(far * 0.10, far * 0.85, lin);
+		float hb = smoothstep(wEnd * 0.10, wEnd * 0.85, lin);
 		hb = hb * hb * (3.0 - 2.0 * hb);
 #if MOUNTAIN_LAYERS > 0
 		// layered ridges: the fade advances in a few soft distance steps, so each ridge line sits on its own
@@ -1131,8 +1145,8 @@ void main() {
 #endif
 	// render-distance border: the last stretch before the loaded world ends melts smoothly into the
 	// horizon sky colour (no banding), so the edge of the world never shows as a hard line or step
-	if (!sky && isEyeInWater == 0 && d0 < 1.0) {
-		float edgeF = smoothstep(far * 0.86, far * 1.0, lin); // only the very last stretch: far land stays clear
+	if (!sky && isEyeInWater == 0 && (d0 < 1.0 || isDH)) {
+		float edgeF = smoothstep(wEnd * 0.86, wEnd * 1.0, lin); // only the very last stretch: far land stays clear
 		col = mix(col, fogSky, edgeF * edgeF * (3.0 - 2.0 * edgeF) * (1.0 - cave));
 	}
 #ifdef WEATHER_FX
@@ -1270,7 +1284,7 @@ void main() {
 		// sky side: a wider, softer fade (no pale stripe); far land gets the same haze so the band
 		// continues across the world edge instead of sitting as a flat strip above the terrain
 		float skyW = 1.0 - smoothstep(0.0, 0.13, abs(hh)); skyW *= skyW;
-		float hzW = sky ? skyW * 0.42 : (water ? pow(smoothstep(24.0, far * 0.8, lin), 1.5) * 0.65 : pow(smoothstep(far * 0.45, far * 0.95, lin), 1.5) * 0.42);
+		float hzW = sky ? skyW * 0.42 : (water ? pow(smoothstep(24.0, wEnd * 0.8, lin), 1.5) * 0.65 : pow(smoothstep(wEnd * 0.45, wEnd * 0.95, lin), 1.5) * 0.42);
 		vec3 hzC = mix(fogSky, vec3(0.97, 0.99, 1.0), 0.6);
 		col = mix(col, hzC, hzW * HORIZON_HAZE * mix(0.25, 1.0, dayG) * (1.0 - rainStrength * 0.5));
 	}
