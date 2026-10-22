@@ -536,7 +536,7 @@ void main() {
 	// premultiplied: only the glowing texels of a source write colour (no light from the torch stick)
 	float em = lightId > 0 ? emitMask(albedo.rgb) : 0.0;
 	// sea lantern, end rod, froglight: pale, low-chroma glow faces; the chroma test missed them and the animated texture made the pool flicker warm/cool
-	if (lightId == 1) em = max(em, smoothstep(0.45, 0.70, albedo.r) * (1.0 - smoothstep(0.55, 0.75, albedo.g)) * (1.0 - smoothstep(0.30, 0.45, albedo.b))); // glow berries and other orange-red warm glows
+	if (isLeaf == 2) em = smoothstep(0.45, 0.70, albedo.r) * (1.0 - smoothstep(0.55, 0.75, albedo.g)) * (1.0 - smoothstep(0.30, 0.45, albedo.b)); // glow-berry vines: only the orange berries glow, leaves stay green
 	if (lightId == 5) em = max(em, smoothstep(0.50, 0.72, max(albedo.r, max(albedo.g, albedo.b))));
 	outLight = em > 0.01 ? vec4(lightColor(lightId) * em, em) : vec4(0.0);
 	outShadow = vec4(-1.0);
@@ -545,5 +545,5 @@ void main() {
 #endif
 	// alpha 0.5 = foliage, 0.85 = graded grass ground (outlines skip small grass ledges), 1.0 = other
 	bool grassG = isFoliage == 2 && vcolor.g > vcolor.b * 1.15 && vcolor.g > vcolor.r * 1.05;
-	outNormal = vec4(n * 0.5 + 0.5, isFoliage == 1 ? (isGrassPlant == 1 ? 0.6 : 0.5) : (grassG ? 0.85 : 1.0)); // 0.5 leaves, 0.6 grass plants (both < 0.75 = foliage)
+	outNormal = vec4(n * 0.5 + 0.5, isFoliage == 1 ? (isGrassPlant == 1 ? 0.6 : (isLeaf == 2 ? 0.56 : 0.5)) : (grassG ? 0.85 : 1.0)); // 0.5 leaves, 0.6 grass plants (both < 0.75 = foliage)
 }

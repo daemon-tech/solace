@@ -1376,6 +1376,11 @@ void main() {
 	}
 #endif
 #endif
+	// glow-berry vines (flag 0.56): the berries' own warm light must not turn the leaves olive-brown; keep them leaf-green
+	if (!sky && abs(texture(colortex1, uv).a - 0.56) < 0.02 && texture(colortex3, uv).a < 0.3) {
+		vec3 gN = vec3(0.62, 0.80, 0.28);
+		col = mix(col, gN / luma(gN) * luma(col), 0.7);
+	}
 #ifdef LEAF_GLINTS
 	// sun glints: in a gust a few sunlit leaf texels catch the sun for a moment (sparse, per texel, soft blink)
 	if (!sky && abs(texture(colortex1, uv).a - 0.5) < 0.05 && isEyeInWater == 0) {
