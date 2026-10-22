@@ -96,11 +96,10 @@ vec3 celSkyImpl(vec3 dir, vec3 sunView, vec3 upView, float rain, bool discs) {
 		float m = dot(dir, -sun);
 		// the moon's glow rings belong to the night; by day only a faint pale moon remains (no blue dome over the horizon)
 		float mk = smoothstep(0.12, -0.08, dot(sun, up));
-		if (m > 0.9993) col = mix(col, vec3(0.90, 0.92, 1.0), mix(0.35, 1.0, mk));
-		else if (m > 0.9965) col = mix(col, vec3(0.70, 0.78, 1.0), 0.45 * mk);
-		else if (m > 0.990) col = mix(col, vec3(0.55, 0.65, 1.0), 0.28 * mk);
-		else if (m > 0.975) col = mix(col, vec3(0.45, 0.55, 0.95), 0.16 * mk);
-		else if (m > 0.950) col = mix(col, vec3(0.40, 0.50, 0.90), 0.08 * mk);
+		// calm soft moon: a feathered pale disc inside one smooth silver glow (no stepped rings)
+		float mGlow = smoothstep(0.950, 0.9965, m);
+		col = mix(col, mix(vec3(0.42, 0.52, 0.92), vec3(0.72, 0.80, 1.0), mGlow * mGlow), mGlow * mGlow * 0.45 * mk);
+		col = mix(col, vec3(0.92, 0.94, 1.0), smoothstep(0.99895, 0.99945, m) * mix(0.35, 1.0, mk));
 	}
 	return mix(col, vec3(luma(col)) * 0.7, rain * 0.6);
 }
