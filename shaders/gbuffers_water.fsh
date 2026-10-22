@@ -146,13 +146,13 @@ void main() {
 			col = mix(col, vec3(0.90, 0.97, 1.0), rr * 0.85 * rainStrength);
 		}
 #ifdef WATER_SPARKLE
-		// white sparkle streaks drifting with the waves
-		vec2 sp = p * vec2(0.8, 3.0) + vec2(t * 0.4, 0.0);
+		// soft sparkle streaks drifting slowly with the waves (calm, no flicker)
+		vec2 sp = p * vec2(0.8, 3.0) + vec2(t * 0.15, 0.0);
 		// footprint fade: glints never get smaller than a few pixels (no far shimmer)
 		float fpS = length(fwidth(p));
-		float sparkle = smoothstep(0.84, 0.88, vnoise(sp)) * smoothstep(0.45, 0.55, vnoise(p * 0.2 + t * 0.07)) * step(0.50, spec) * (1.0 - smoothstep(0.15, 0.35, fpS))
-		              + smoothstep(0.955, 0.975, vnoise(p * 1.6 + vec2(t * 0.35, -t * 0.2))) * day * 0.5 * (1.0 - 0.5 * (1.0 - smoothstep(0.06, 0.16, abs(sunAngle - 0.25)))) * (1.0 - smoothstep(0.04, 0.10, fpS)); // scattered small glints: near water only, gentle
-		col = mix(col, vec3(1.0), clamp(sparkle, 0.0, 1.0) * 0.9 * mix(0.4, 1.0, day));
+		float sparkle = smoothstep(0.83, 0.90, vnoise(sp)) * smoothstep(0.45, 0.55, vnoise(p * 0.2 + t * 0.07)) * smoothstep(0.45, 0.70, spec) * (1.0 - smoothstep(0.15, 0.35, fpS))
+		              + smoothstep(0.955, 0.975, vnoise(p * 1.6 + vec2(t * 0.12, -t * 0.07))) * day * 0.5 * (1.0 - 0.5 * (1.0 - smoothstep(0.06, 0.16, abs(sunAngle - 0.25)))) * (1.0 - smoothstep(0.04, 0.10, fpS)); // scattered small glints: near water only, gentle
+		col = mix(col, vec3(1.0, 0.99, 0.95), clamp(sparkle, 0.0, 1.0) * 0.65 * mix(0.4, 1.0, day));
 #endif
 		outColor = vec4(col * mix(light, 1.0, 0.5 * day), max(max(mix(mix(0.30, 0.20, WATER_CLARITY), 0.85, fres), farR * 0.9 * min(WATER_REFLECT, 1.0)) * WATER_OPACITY, clamp(crest, 0.0, 1.0) * 0.80));
 		outFlag = vec4(1.0, 0.0, deepPatch * step(side, 0.3), 1.0); // no deep patches on falling water

@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.33.1
 
 ### Changes
+- Water: calmer, softer sparkles that drift slowly.
 - Water: wave tops facing the sun catch soft, warm painted highlights.
 - Water: sand and soil at the water line now look softly wet (slightly darker, cooler strip).
 - **Moon rim**: at night characters get a faint silver fringe from the moon (Moon Rim option).
