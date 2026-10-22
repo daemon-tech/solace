@@ -1400,8 +1400,8 @@ void main() {
 			vec3 dw = mat3(gbufferModelViewInverse) * (dv.xyz / dv.w) + cameraPosition;
 			vec3 tq = floor(dw * 16.0 + 0.001);
 			float h = hash12(tq.xz * 0.913 + tq.y * 5.31);
-			float tw = pow(max(sin(frameTimeCounter * (1.2 + 2.0 * h) + h * 70.0), 0.0), 8.0);
-			float k = step(0.93, h) * tw * morn * (1.0 - smoothstep(12.0, 24.0, lin)) * smoothstep(0.25, 0.5, luma(col));
+			float tw = pow(max(sin(frameTimeCounter * (0.8 + 1.2 * h) + h * 70.0), 0.0), 8.0);
+			float k = step(0.975, h) * tw * morn * (1.0 - smoothstep(12.0, 24.0, lin)) * smoothstep(0.25, 0.5, luma(col));
 			col = mix(col, vec3(1.0, 0.98, 0.90) * max(luma(col) * 1.8, 1.0), clamp(k, 0.0, 1.0) * MORNING_DEW);
 		}
 	}
