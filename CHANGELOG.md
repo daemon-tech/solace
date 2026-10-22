@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.33.1
 
 ### Changes
+- **Leaves flip in the gusts**: when a gust passes over a forest, the leaves turn slightly paler and silvery, as if showing their undersides, and settle again behind the front.
 - **Calmer redstone glow**: redstone lamps and torches tint the ground a soft red instead of a glaring one; torch light is unchanged.
 - **Cyan soul light**: soul lanterns and soul torches cast a soft cyan glow on the ground around them.
 - **Soul lanterns no longer glow amber**: coloured light now reaches the whole light pool, and the warm night grading only touches warm light, so soul fire gives a soft cool glow.
