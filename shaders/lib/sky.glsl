@@ -10,7 +10,7 @@ void biomeSky(inout vec3 zen, inout vec3 hor, float k) {
 	zen = mix(zen, vec3(0.32, 0.50, 0.78), sbMesa * 0.50 * k);  hor = mix(hor, vec3(0.96, 0.68, 0.46), sbMesa * 0.70 * k);
 	zen = mix(zen, vec3(0.34, 0.54, 0.84), sbCold * 0.55 * k);  hor = mix(hor, vec3(0.70, 0.82, 0.96), sbCold * 0.65 * k); // cold: crisp soft-blue horizon, no white wall
 	zen = mix(zen, vec3(0.26, 0.40, 0.46), sbSwamp * 0.60 * k); hor = mix(hor, vec3(0.60, 0.68, 0.56), sbSwamp * 0.65 * k);
-	zen = mix(zen, vec3(0.05, 0.42, 0.74), sbJungle * 0.55 * k); hor = mix(hor, vec3(0.40, 0.86, 0.88), sbJungle * 0.60 * k);
+	zen = mix(zen, vec3(0.14, 0.48, 0.70), sbJungle * 0.77 * k); hor = mix(hor, vec3(0.56, 0.86, 0.74), sbJungle * 0.90 * k); // jungle: calm warmer green-teal
 	zen = mix(zen, vec3(0.42, 0.54, 0.90), sbCherry * 0.55 * k); hor = mix(hor, vec3(0.97, 0.80, 0.89), sbCherry * 0.65 * k);
 #endif
 }
@@ -84,14 +84,15 @@ vec3 celSkyImpl(vec3 dir, vec3 sunView, vec3 upView, float rain, bool discs) {
 	t = mix(t, pow(t0, 0.6), smoothstep(0.0, 0.6, dusk) * mix(0.6, 1.0, morning)); // dawn: fully smooth gradient
 	vec3 col = t < 0.5 ? mix(hor, mid, t * 2.0) : mix(mid, zen, t * 2.0 - 1.0);
 	// luminous horizon: a wide soft bright glow just above the horizon line
-	col = mix(col, mix(hor, vec3(0.94, 0.97, 1.0), 0.6), (1.0 - smoothstep(0.0, 0.22, t0)) * day * (1.0 - dusk) * SKY_BRIGHT * 0.55 * step(0.0, h));
+	float jW = sbJungle * min(BIOME_SKY, 1.0); // jungle: the bright horizon glow keeps the green-teal tint
+	col = mix(col, mix(hor, vec3(0.94, 0.97, 1.0), 0.6 * (1.0 - 0.6 * jW)), (1.0 - smoothstep(0.0, 0.22, t0)) * day * (1.0 - dusk) * SKY_BRIGHT * 0.55 * step(0.0, h));
 	if (h < 0.0) col = hor * mix(1.0, 0.92, clamp(-h * 3.0, 0.0, 1.0));
 	// clear day: a soft painted gradient at the horizon, pale blue-white at the line, melting into the sky colour above and below
 	{
 		float hzK = day * (1.0 - smoothstep(0.0, 0.6, dusk)) * (1.0 - rain);
-		vec3 pale = vec3(0.78, 0.88, 0.98);
+		vec3 pale = mix(vec3(0.78, 0.88, 0.98), hor * 1.08, 0.55 * jW);
 		float g = h >= 0.0 ? 1.0 - smoothstep(0.0, 0.30, pow(h, 0.8)) : 1.0 - smoothstep(0.0, 0.45, -h);
-		col = mix(col, pale, g * hzK * 0.45);
+		col = mix(col, pale, g * hzK * 0.45 * (1.0 - 0.6 * jW));
 	}
 
 	if (discs) {

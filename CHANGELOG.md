@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.34.1
 
 ### Changes
+- **Jungle sky**: over jungles the horizon settles into a calm, warmer green-teal, and the bright horizon glow keeps that tint instead of turning white.
 - **Soft snowfall sky**: in snowy lands the overcast sky during snowfall settles into a gentle cool white instead of a dull grey.
 - **Gentle Milky Way**: on clear nights the Milky Way band now has a soft painted glow along its core, so it reads as one calm river of light; it still fades at dawn, dusk and in rain.
 - **Voxy far look**: with Voxy, far LOD terrain now gets Solace's cel lighting and grade (meadow-green grass tops, same shadow tint) instead of flat unshaded blocks, and far LOD water takes the same deep blue as near water without walls at section borders. Distance effects (aerial perspective, haze, distance blue and mountain layers) and the soft fade into the sky follow the Voxy view distance, so the vanilla chunk edge no longer fades early and leaves a seam.
