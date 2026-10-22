@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.33.1
 
 ### Changes
+- **Swaying spore blossoms**: spore blossoms under cave ceilings sway gently with the breeze like hanging vines.
 - **Candle light**: lit candles and candle cakes count as warm light sources and get a soft warm glow around them (Candle Glow option). The tiny flames themselves are vanilla particles and do not flicker.
 - **Cobwebs and leaf litter in the wind**: cobwebs billow softly and leaf litter stirs and slides a little when a gust passes (Web & Litter Wind option).
 - **Glowing glow lichen**: glow lichen specks now glow softly and cast a faint green-teal light in caves.
