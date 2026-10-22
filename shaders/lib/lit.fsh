@@ -455,7 +455,7 @@ void main() {
 	#ifdef EMISSIVE_BLOCKS
 		// self-lit only where the texture itself glows (flame tip, lantern glass, lava); the torch stick,
 		// lantern frame and dark parts keep normal lighting instead of glowing as a whole block
-		if (isFoliage == 4) col = mix(col, max(col, albedo.rgb * EMISSIVE_STRENGTH), emitMask(albedo.rgb));
+		if (isFoliage == 4) col = mix(col, max(col, albedo.rgb * EMISSIVE_STRENGTH), emitMask(albedo.rgb) * (isLeaf == 4 ? step(0.53, fract(cwpos.y - 0.001)) : 1.0)); // candle cakes: the cake itself is not self-lit
 		if (isFoliage == 4 && lightId == 1 && albedo.r > 0.7 && albedo.b < 0.3) {
 			// lava / fire: hotter orange, slow shimmer
 			float sh = vnoise(cwpos.xz * 0.8 + vec2(frameTimeCounter * 0.4, -frameTimeCounter * 0.3));
