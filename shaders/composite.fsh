@@ -1590,7 +1590,7 @@ void main() {
 			// the pool itself glows a soft amber instead of neutral daylight green
 			col = mix(col, col * vec3(1.10, 0.95, 0.78), night * warmPix * (1.0 - heldK) * 0.55);
 			// pale walls inside a torch pool: indigo ambient + orange flame mixed into pink-lavender; settle them into warm cream
-			col = mix(col, vec3(luma(col)) * vec3(1.12, 0.96, 0.74), clamp(night * warmPix * 1.6, 0.0, 1.0) * (1.0 - heldK) * smoothstep(0.30, 0.65, luma(col)) * 0.85);
+			col = mix(col, vec3(luma(col)) * vec3(1.12, 0.96, 0.74), clamp(night * warmPix * 1.6, 0.0, 1.0) * (1.0 - heldK) * smoothstep(0.30, 0.65, luma(col)) * 0.85 * (1.0 - step(0.5, texture(colortex3, uv).a))); // flames and lamps themselves keep their colour
 			// overcast rain: the land loses its sunny punch, a calm grey-green under soft cool light (warm pools excluded)
 			if (IS_OW && !sky) col = mix(col, mix(vec3(luma(col)), col, 0.74) * vec3(0.95, 0.98, 1.03) * 0.90, rainStrength * skyEye * (1.0 - warmPix));
 			// neon lime guard: very saturated bright yellow-greens settle into a softer meadow green (same shift on blocks and grass)

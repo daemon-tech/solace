@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.33.1
 
 ### Changes
+- **Torch flames keep their colour at night**: torch flames and lantern glass stay warm orange instead of fading to pale cream.
 - **Cherry petals**: in cherry groves the drifting leaves become soft pink petals that sail on the breeze, a few more on each gust.
 - **Drifting leaves**: loose leaves tumble down and sail away with the breeze, more of them when a gust passes. Option "Drifting Leaves" (0 turns them off).
 - **Wooden roofs at late dusk**: roofs and paths no longer turn salmon pink in the last light; they keep a calm warm wood brown.
