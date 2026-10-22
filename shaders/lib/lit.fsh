@@ -440,6 +440,13 @@ void main() {
 		// warm torch pool painted over the surface (reads orange even on dark green leaves)
 		pool = torch * (1.0 - day * lm.y);
 		col = mix(col, vec3(luma(albedo.rgb) * 0.7 + 0.35) * vec3(1.0, 0.70, 0.42), clamp(pool * 0.30, 0.0, 0.35));
+		// caves and roofed rooms (little sky light): torch light reads as a calm amber island, saturated even on grey stone,
+		// strongest near the flame and fading softly with the light level
+		{
+			float islK = smoothstep(0.12, 0.95, lm.x) * (1.0 - smoothstep(0.25, 0.65, lm.y)) * TORCH_STRENGTH;
+			col = mix(col, col * vec3(1.30, 0.94, 0.60) + vec3(0.03, 0.012, 0.0), clamp(islK * 0.65, 0.0, 0.65));
+			col *= 1.0 + 0.30 * islK * islK; // a soft glow close to the flame
+		}
 	#ifdef EMISSIVE_BLOCKS
 		// self-lit only where the texture itself glows (flame tip, lantern glass, lava); the torch stick,
 		// lantern frame and dark parts keep normal lighting instead of glowing as a whole block
