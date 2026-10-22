@@ -72,7 +72,9 @@ void main() {
 		float core = smoothstep(0.62, 1.0, band);
 		float cl = fbm(sd.xy * 2.6 + sd.z * 1.7) * 0.65 + fbm(sd.yz * 6.0 + 3.0) * 0.35; // dust lanes and clumps
 		float mw = core * smoothstep(0.30, 0.78, cl + core * 0.22);
-		mw = clamp(mw, 0.0, 1.0) * 0.6;
+		mw = clamp(mw, 0.0, 1.0) * 0.75;
+		// soft painted glow along the band's core, so it reads as one gentle river of light (not only clumps)
+		col += vec3(0.06, 0.06, 0.12) * core * core * MILKY_WAY * night * (1.0 - rainStrength);
 		col = mix(col, col + vec3(0.16, 0.14, 0.26), mw * MILKY_WAY * night * (1.0 - rainStrength));
 		if (h > 0.985 && mw > 0.3) col = mix(col, vec3(0.92, 0.92, 1.0), 0.6 * night * (1.0 - rainStrength)); // denser stars in the band
 #endif
