@@ -1415,7 +1415,10 @@ void main() {
 				vec2 r = vec2(cos(ang) * dv.x + sin(ang) * dv.y, -sin(ang) * dv.x + cos(ang) * dv.y);
 				float flip = 0.35 + 0.65 * abs(sin(lt * 3.1 + h2 * 6.28));
 				float dd = abs(r.x) / (sz * flip) + abs(r.y) / (sz * 0.55);
-				float a = (1.0 - smoothstep(0.85, 1.0, dd)) * step(zq, sceneZ + 0.2) * life * (1.0 - smoothstep(22.0, 30.0, zq));
+				// near the ground only: terrain or trees must be close behind the leaf (no leaves floating high up in the air);
+				// against open sky only right next to the camera
+				float grounded = sky ? 1.0 - smoothstep(4.0, 7.0, zq) : 1.0 - smoothstep(12.0, 18.0, sceneZ - zq);
+				float a = (1.0 - smoothstep(0.85, 1.0, dd)) * step(zq, sceneZ + 0.2) * life * (1.0 - smoothstep(22.0, 30.0, zq)) * grounded;
 				if (a > best) {
 					best = a;
 					vec3 leafC = mix(vec3(0.42, 0.62, 0.22), vec3(0.78, 0.74, 0.30), h2);
