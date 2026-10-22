@@ -135,6 +135,7 @@ const float sunPathRotation = -25.0;
 #define WEB_LITTER_WIND 1.0 // [0.0 0.5 1.0 1.5] cobwebs billow and leaf litter stirs in gusts
 #define CANDLE_GLOW 1.0 // [0.0 0.5 1.0 1.5] soft warm glow around lit candles
 #define MORNING_DEW 1.0 // [0.0 0.5 1.0] dew drops on grass twinkle in the morning sun
+#define LILY_BOB 1.0 // [0.0 0.5 1.0 1.5] lily pads bob and drift a little on the water
 #define LEAF_GLINTS 1.0 // [0.0 0.5 1.0] when a gust passes, a few sunlit leaves catch the sun for a moment
 #define DRIFT_LEAVES 1.0 // [0.0 0.5 1.0] loose leaves tumble down and sail downwind when a gust passes
 #define WIND_SHEEN 0.15 // [0.0 0.05 0.10 0.15 0.2] light sheen where gusts bend the grass

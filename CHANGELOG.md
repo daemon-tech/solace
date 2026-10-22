@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.33.1
 
 ### Changes
+- **Bobbing lily pads**: lily pads bob gently and drift a little on the water with the breeze (Lily Pad Bob option).
 - **More plants in the wind**: dry grass, dead bushes, sweet berry bushes, firefly bushes, saplings, eyeblossoms and cactus flowers now sway in the breeze too.
 - **Morning dew**: in the first hours after sunrise, tiny dew drops on the grass near you twinkle in the sun (Morning Dew option).
 - **Glowing redstone ore**: redstone ore that lights up when touched now glows red like other redstone lights.

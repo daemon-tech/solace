@@ -80,6 +80,20 @@ void main() {
 		}
 		gl_Position = gl_ProjectionMatrix * (gbufferModelView * vp);
 	}
+	if (eid == 10026) {
+		// lily pads bob gently on the water and drift a little with the breeze (whole pad moves together)
+		vec4 vp = gbufferModelViewInverse * (gl_ModelViewMatrix * gl_Vertex);
+		vec3 bw = floor(vp.xyz + cameraPosition + at_midBlock.xyz / 64.0);
+		float ph = fract(sin(dot(bw.xz, vec2(12.9898, 78.233))) * 43758.5453) * 6.28;
+		float g = 0.0;
+#ifdef WIND_GUSTS
+		g = windGust(bw.xz, frameTimeCounter);
+#endif
+		vec2 wd = windDirT(frameTimeCounter);
+		vp.y += 0.018 * sin(frameTimeCounter * 1.3 + ph) * LILY_BOB;
+		vp.xz += (wd * (0.03 + 0.06 * g) * sin(frameTimeCounter * 0.6 + ph) + vec2(sin(frameTimeCounter * 0.8 + ph), cos(frameTimeCounter * 0.7 + ph)) * 0.02) * LILY_BOB;
+		gl_Position = gl_ProjectionMatrix * (gbufferModelView * vp);
+	}
 #ifdef LANTERN_SWAY
 	if (eid == 10018 || eid == 10019 || eid == 10025) {
 		// hanging lanterns swing gently on their chain like a pendulum (pivot at the top of the block), more in a gust
