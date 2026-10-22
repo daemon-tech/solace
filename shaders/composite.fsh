@@ -56,6 +56,7 @@ uniform int biome_category;
 uniform float bRain;
 uniform float bSwamp;
 uniform float bDark;
+uniform float bCherry;
 uniform float rainStrength;
 uniform float wetness;
 uniform float thunderStrength;
@@ -1397,7 +1398,7 @@ void main() {
 				float h1 = hash12(cell + vec2(id, 1.9 + hc)), h2 = hash12(cell.yx + vec2(2.3, id + 4.0)), h3 = hash12(cell * 0.53 + vec2(id * 1.3, 8.0));
 				vec3 p0 = vec3((cell.x + h1) * 5.0, cameraPosition.y + 0.5 + 4.5 * h3, (cell.y + h2) * 5.0) - wd * 7.0;
 				float g = windGust(p0.xz, frameTimeCounter - lt); // gust when this leaf let go (one lookup per leaf)
-				float life = smoothstep(0.0, 0.6, lt) * (1.0 - smoothstep(cyc - 1.5, cyc, lt)) * step(hash12(cell * 3.7 + vec2(id * 0.61, 2.0)), 0.60 + 0.40 * smoothstep(0.10, 0.50, g)); // more leaves let go when a gust passes
+				float life = smoothstep(0.0, 0.6, lt) * (1.0 - smoothstep(cyc - 1.5, cyc, lt)) * step(hash12(cell * 3.7 + vec2(id * 0.61, 2.0)), mix(0.60, 0.85, bCherry) + 0.40 * smoothstep(0.10, 0.50, g)); // more leaves let go when a gust passes
 				if (life < 0.01) continue;
 				// fall with a gentle side-to-side flutter while the breeze carries it
 				vec3 pw = p0 + wd * (lt * (1.6 + 2.6 * g) * WIND_SPEED) + vec3(0.0, -0.55 * lt, 0.0)
@@ -1407,7 +1408,7 @@ void main() {
 				if (zq < 0.5 || zq > 30.0) continue;
 				vec4 cq = gbufferProjection * vq;
 				vec2 sq = (cq.xy / cq.w * 0.5 + 0.5) * vec2(viewWidth, viewHeight);
-				float sz = 0.15 * viewHeight / zq;
+				float sz = mix(0.15, 0.13, bCherry) * viewHeight / zq;
 				// tumbling: the flake turns and flips (its width pulses), drawn as a small rhombus
 				float ang = lt * (1.5 + h3) + h1 * 6.28;
 				vec2 dv = px - sq;
@@ -1419,6 +1420,7 @@ void main() {
 					best = a;
 					vec3 leafC = mix(vec3(0.42, 0.62, 0.22), vec3(0.78, 0.74, 0.30), h2);
 					leafC = mix(leafC, vec3(0.86, 0.52, 0.22), step(0.82, h3)); // now and then an orange one
+					leafC = mix(leafC, mix(vec3(0.96, 0.58, 0.76), vec3(1.0, 0.76, 0.86), h1), bCherry); // cherry groves: soft pink petals
 					lc = leafC * mix(0.85, 1.12, smoothstep(0.0, 0.4, r.y / (sz * 0.55) + 0.3)); // lit side up
 				}
 			}
