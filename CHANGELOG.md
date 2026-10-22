@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.33.1
 
 ### Changes
+- **Morning dew**: in the first hours after sunrise, tiny dew drops on the grass near you twinkle in the sun (Morning Dew option).
 - **Sun motes**: on bright days a few pollen specks float in the air near you, drift with the breeze and glow softly when the sun is behind them (Sun Motes option).
 - **Glowing redstone ore**: redstone ore that lights up when touched now glows red like other redstone lights.
 - **Glowing furnaces**: lit furnaces, smokers and blast furnaces now glow warm from their fire opening and light the room.

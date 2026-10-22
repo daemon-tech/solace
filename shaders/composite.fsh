@@ -1389,6 +1389,23 @@ void main() {
 		vec3 oN = vec3(1.0, 0.62, 0.22); // the berries themselves: warm orange, not salmon pink
 		col = mix(col, oN * max(max(col.r, col.g), 0.55) * 1.05, 0.75);
 	}
+#ifdef MORNING_DEW
+	// morning dew: in the first hours after sunrise, tiny drops on grass catch the sun and twinkle (near the camera only)
+	{
+		float fa = texture(colortex1, uv).a;
+		bool grassPx = abs(fa - 0.6) < 0.03 || abs(fa - 0.85) < 0.03;
+		float morn = MORN_K * smoothstep(0.02, 0.12, sunHg) * (1.0 - smoothstep(0.35, 0.6, sunHg)) * (1.0 - rainStrength);
+		if (!sky && grassPx && morn > 0.01 && isEyeInWater == 0 && lin < 24.0) {
+			vec4 dv = gbufferProjectionInverse * vec4(uv * 2.0 - 1.0, texture(depthtex0, uv).r * 2.0 - 1.0, 1.0);
+			vec3 dw = mat3(gbufferModelViewInverse) * (dv.xyz / dv.w) + cameraPosition;
+			vec3 tq = floor(dw * 16.0 + 0.001);
+			float h = hash12(tq.xz * 0.913 + tq.y * 5.31);
+			float tw = pow(max(sin(frameTimeCounter * (1.2 + 2.0 * h) + h * 70.0), 0.0), 8.0);
+			float k = step(0.93, h) * tw * morn * (1.0 - smoothstep(12.0, 24.0, lin)) * smoothstep(0.25, 0.5, luma(col));
+			col = mix(col, vec3(1.0, 0.98, 0.90) * max(luma(col) * 1.8, 1.0), clamp(k, 0.0, 1.0) * MORNING_DEW);
+		}
+	}
+#endif
 #ifdef LEAF_GLINTS
 	// sun glints: in a gust a few sunlit leaf texels catch the sun for a moment (sparse, per texel, soft blink)
 	if (!sky && abs(texture(colortex1, uv).a - 0.5) < 0.05 && isEyeInWater == 0) {
