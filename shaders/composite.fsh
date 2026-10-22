@@ -394,9 +394,11 @@ void main() {
 		vec3 nightK = mix(vec3(0.30, 0.40, 0.64), vec3(1.0), wday);
 		vec3 wc = (dd < 0.5 ? mix(shoreC, midC, dd * 2.0) : mix(midC, deepC, dd * 2.0 - 1.0)) * nightK;
 		// golden hour: the water takes the low sun's warmth (peach-gold shallows, honeyed teal) instead of staying cold white
+		float gDusk;
 		{
 			float wDusk = clamp(1.0 - abs(dot(safeNormalize(sunPosition, upPosition), safeNormalize(upPosition, vec3(0, 1, 0)))) * 4.0, 0.0, 1.0) * step(-0.08, dot(safeNormalize(sunPosition, upPosition), safeNormalize(upPosition, vec3(0, 1, 0))));
 			wc *= mix(vec3(1.0), mix(vec3(1.10, 0.90, 0.70), vec3(1.04, 0.93, 0.84), dd), wDusk);
+			gDusk = wDusk * (1.0 - rainStrength);
 		}
 		// open-ocean depth: past the deep band the water settles one calm step further into a soft blue-indigo
 		wc = mix(wc, deepC * vec3(0.62, 0.74, 0.92) * nightK, celBandSoft(smoothstep(14.0, 34.0, behind), 2, 0.4) * 0.65);
@@ -409,6 +411,8 @@ void main() {
 		col *= 1.0 - 0.10 * texture(colortex2, uv).b * (1.0 - farF);
 		float wl = dot(col, vec3(0.299, 0.587, 0.114));
 		col = mix(vec3(wl), col, WATER_SAT) * WATER_BRIGHT + hiPre * 2.0;
+		// golden hour: the whole water body settles into a soft warm teal-rose (no pale washed-out mint sheet)
+		col = mix(col, col * vec3(1.04, 0.92, 0.96) + vec3(0.04, 0.0, 0.03), gDusk * 0.9 * (1.0 - fall));
 #ifdef WATER_SSR
 		// screen-space reflections of terrain/trees on the water surface (calm normal, fresnel)
 		{
