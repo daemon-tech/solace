@@ -516,6 +516,13 @@ void main() {
 		float fres = 1.0 - clamp(dot(nF, -vV), 0.0, 1.0);
 		float rimG = celBandSoft(smoothstep(0.45, 0.95, fres), 2, 0.6) * mix(0.35, 1.0, backG) * gold * lm.y;
 		col += vec3(1.0, 0.66, 0.30) * clamp(rimG * GOLDEN_RIM_STRENGTH, 0.0, 1.5) * 0.34;
+	#ifdef MOON_RIM
+		// night: characters get a faint silver fringe from the moon (same soft two-band falloff, cool and dim)
+		vec3 mV = -sV;
+		float mUp = smoothstep(0.05, 0.3, dot(mV, up)) * (1.0 - rainStrength);
+		float rimM = celBandSoft(smoothstep(0.5, 0.95, fres), 2, 0.6) * mix(0.4, 1.0, smoothstep(-0.3, 0.7, dot(vV, mV))) * mUp * lm.y;
+		col += vec3(0.62, 0.74, 1.0) * clamp(rimM * MOON_RIM, 0.0, 1.0) * 0.16;
+	#endif
 	}
 #endif
 #endif

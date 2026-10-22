@@ -460,3 +460,5 @@ option.GRASS_PART=Grass Parting
 option.GRASS_PART.comment=Grass and flowers bend softly away around your feet as you walk through them.
 option.CAVE_HAZE=Cave Glow Haze
 option.CAVE_HAZE.comment=Soft glowing haze around lava and lights underground.
+option.MOON_RIM=Moon Rim
+option.MOON_RIM.comment=Characters get a faint silver fringe from the moon at night.

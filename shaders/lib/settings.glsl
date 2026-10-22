@@ -222,3 +222,4 @@ const float sunPathRotation = -25.0;
 #define GOLDEN_RIM // warm golden fringe on characters at sunrise and sunset
 #define GOLDEN_RIM_STRENGTH 1.0 // [0.5 0.75 1.0 1.25 1.5]
 #define CAVE_HAZE 0.6 // [0.0 0.3 0.6 0.9 1.2] glowing haze around lava and lights underground
+#define MOON_RIM 1.0 // [0.0 0.5 1.0 1.5] faint silver moon fringe on characters at night
