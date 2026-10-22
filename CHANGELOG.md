@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.33.1
 
 ### Changes
+- **Dripleaves and propagules in the wind**: big and small dripleaves sway like other plants, hanging mangrove propagules sway like hanging vines.
 - **Bobbing lily pads**: lily pads bob gently and drift a little on the water with the breeze (Lily Pad Bob option).
 - **More plants in the wind**: dry grass, dead bushes, sweet berry bushes, firefly bushes, saplings, eyeblossoms and cactus flowers now sway in the breeze too.
 - **Morning dew**: in the first hours after sunrise, tiny dew drops on the grass near you twinkle in the sun (Morning Dew option).
