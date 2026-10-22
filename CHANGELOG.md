@@ -7,6 +7,7 @@ All builds tested in the real client with screenshots.
 
 ### Changes
 - **Swaying lanterns**: hanging lanterns and soul lanterns swing gently on their chain, a little more when a gust passes (Lantern Sway option).
+- **Swaying reeds**: sugar cane and bamboo bend and ripple in the breeze as one stalk and lean downwind in a gust (Reed Sway option).
 - **Leaf glints**: during gusts a few sunlit leaf texels briefly catch the sun, a soft sparkle in the canopy (Leaf Glints option).
 - **Swaying vines**: vines, cave vines, weeping vines and hanging roots move gently with the breeze, sliding along their wall without clipping into it.
 - **Living flames**: torch and lantern light breathes softly, a little livelier when the wind picks up. Option "Flame Flicker" (0 keeps it steady).

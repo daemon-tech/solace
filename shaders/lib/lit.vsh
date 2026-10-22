@@ -49,6 +49,23 @@ void main() {
 		if (plant) vp.xz += playerPush(vp.xyz, top);
 		gl_Position = gl_ProjectionMatrix * (gbufferModelView * vp);
 	}
+	if (eid == 10020) {
+		// sugar cane and bamboo: the stalk bends as one piece; the offset depends only on world position, so stacked
+		// segments stay joined, and a slow ripple runs up the stalk; gusts lean it downwind
+		vec4 vp = gbufferModelViewInverse * (gl_ModelViewMatrix * gl_Vertex);
+		vec3 w = vp.xyz + cameraPosition;
+		vec3 bw = floor(w + at_midBlock.xyz / 64.0);
+		float g = 0.0;
+#ifdef WIND_GUSTS
+		g = windGust(bw.xz, frameTimeCounter) * WIND_GUST_STRENGTH;
+#endif
+		vec2 wd = windDirT(frameTimeCounter);
+		float ph = fract(sin(dot(bw.xz, vec2(12.9898, 78.233))) * 43758.5453) * 6.28;
+		float up = 0.35 + 0.65 * (0.5 + 0.5 * sin(w.y * 0.7 - frameTimeCounter * 1.3 + ph));
+		vec2 o = vec2(sin(frameTimeCounter * 1.2 + ph), cos(frameTimeCounter * 0.9 + ph * 1.3)) * 0.05 + wd * (0.02 + 0.12 * g);
+		vp.xz += o * up * (1.0 + g) * REED_SWAY;
+		gl_Position = gl_ProjectionMatrix * (gbufferModelView * vp);
+	}
 #endif
 #ifdef LANTERN_SWAY
 	if (eid == 10018 || eid == 10019) {
