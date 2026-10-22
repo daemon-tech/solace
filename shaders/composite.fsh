@@ -1381,6 +1381,10 @@ void main() {
 		vec3 gN = vec3(0.62, 0.80, 0.28);
 		col = mix(col, gN / luma(gN) * luma(col), 0.7);
 	}
+	if (!sky && abs(texture(colortex1, uv).a - 0.56) < 0.02 && texture(colortex3, uv).a >= 0.3) {
+		vec3 oN = vec3(1.0, 0.62, 0.22); // the berries themselves: warm orange, not salmon pink
+		col = mix(col, oN * max(max(col.r, col.g), 0.55) * 1.05, 0.75);
+	}
 #ifdef LEAF_GLINTS
 	// sun glints: in a gust a few sunlit leaf texels catch the sun for a moment (sparse, per texel, soft blink)
 	if (!sky && abs(texture(colortex1, uv).a - 0.5) < 0.05 && isEyeInWater == 0) {
