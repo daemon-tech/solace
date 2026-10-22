@@ -260,6 +260,11 @@ void main() {
 		ambient *= mix(1.0, 0.42, caveK);
 		block *= mix(1.0, 1.18, caveK) * mix(vec3(1.0), vec3(1.04, 0.97, 0.88), caveK);
 	}
+	{
+		// open night: torch and lantern pools in villages read as warm amber islands against the cool moonlight
+		float nightOut = (1.0 - day) * smoothstep(0.5, 0.9, lm.y);
+		block *= mix(vec3(1.0), vec3(1.16, 0.96, 0.74), nightOut);
+	}
 #endif
 	// shade twice: fully shadowed (lb=0) and fully lit (lb=1); the real band value blends them, so composite can
 	// re-blend with a smoothed shadow term (soft shadows part 2) without re-running the lighting
