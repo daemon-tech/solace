@@ -332,6 +332,7 @@ void main() {
 		}
 	}
 #endif
+	float coolL = 0.0; // 0 warm (torch, lantern, lava) .. 1 clearly cool/coloured light (soul fire, sea lantern, amethyst)
 #ifdef COLORED_LIGHT
 	// coloured block light (screen space): light sources write their emitted colour to colortex3;
 	// lit surfaces nearby take the average colour of the sources around them instead of plain warm.
@@ -339,16 +340,17 @@ void main() {
 		float poolC = texture(colortex2, uv).g;
 		if (poolC > 0.01 && texture(colortex3, uv).a < 0.5 && !water) {
 			// blurred light-colour field from the mip chain (smooth, no speckles)
-			vec4 L4 = textureLod(colortex3, uv, 4.0), L5 = textureLod(colortex3, uv, 5.0), L6 = textureLod(colortex3, uv, 6.0);
-			vec4 Ls = L4 * 0.6 + L5 * 0.3 + L6 * 0.1;
+			vec4 L4 = textureLod(colortex3, uv, 4.0), L5 = textureLod(colortex3, uv, 5.0), L6 = textureLod(colortex3, uv, 6.0), L7 = textureLod(colortex3, uv, 7.0);
+			vec4 Ls = L4 * 0.4 + L5 * 0.3 + L6 * 0.2 + L7 * 0.1; // reaches the whole light pool, not only the lamp itself
 			vec3 acc = Ls.rgb; float wsum = Ls.a * 12.0;
-			if (Ls.a > 0.0003) {
+			if (Ls.a > 0.00005) {
 				vec3 warm = vec3(1.00, 0.72, 0.42);
 				vec3 tint = acc / max(Ls.a, 1e-3);
 				vec3 ratio = clamp((tint / max(luma(tint), 0.15)) / (warm / luma(warm)), vec3(0.25), vec3(2.6));
 				ratio /= max(luma(ratio), 0.5); // keep brightness, change only hue (no dark halos)
-				float k = clamp(poolC * 1.8, 0.0, 1.0) * smoothstep(0.001, 0.04, Ls.a) * COLORED_LIGHT_STRENGTH;
+				float k = clamp(poolC * 1.8, 0.0, 1.0) * smoothstep(0.0001, 0.004, Ls.a) * COLORED_LIGHT_STRENGTH;
 				col = mix(col, col * ratio, k);
+				coolL = smoothstep(0.05, 0.30, (tint.b - tint.r) / max(luma(tint), 0.15)) * smoothstep(0.0001, 0.004, Ls.a);
 			}
 		}
 	}
@@ -1509,7 +1511,7 @@ void main() {
 #endif
 			// night: hue-shift towards indigo but keep warm torch pools warm
 			// warm pools fall off with the light level: only the core near the flame keeps day colour, the rim fades into the night
-			float warmPix = smoothstep(0.30, 0.92, texture(colortex2, uv).g);
+			float warmPix = smoothstep(0.30, 0.92, texture(colortex2, uv).g) * (1.0 - coolL); // soul fire & co keep their own cool colour
 			// moonlit night: a soft silver-blue instead of deep saturated indigo; the mids are lifted gently
 			// so shapes, grass and paths stay readable, while the darkest shadows stay calm and deep
 			vec3 ind = mix(vec3(luma(col)) * vec3(0.78, 0.88, 1.22), col * vec3(0.84, 0.97, 1.16), 0.55) + vec3(0.018, 0.022, 0.044);
