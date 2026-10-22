@@ -181,6 +181,8 @@ const float sunPathRotation = -25.0;
 #define GLASS_REFLECT // fresnel sky sheen and highlight streak on glass
 #define GLASS_REFLECT_STRENGTH 1.0 // [0.0 0.5 1.0 1.5]
 #define NETHER_FOG 0.0 // [0.0 0.5 1.0 1.5] banded Nether fog in the biome colour, rising embers
+#define NETHER_EMBERS 1.0 // [0.0 0.5 1.0 1.5] rising embers and heat glow around lava in the Nether, also with Nether fog off
+#define NETHER_AMBIENT 1.0 // [0.0 0.5 1.0] calm warm ambient tint in the Nether
 #define END_FOG 0.0 // [0.0 0.5 1.0 1.5] violet End fog and painted End sky
 #define LEAF_TRANSLUCENCY 0.35 // [0.0 0.2 0.35 0.5] backlit leaves glow toward the sun
 #define NIGHT_GLOW 1.0 // [0.0 0.5 1.0] faint glow on flowers at night

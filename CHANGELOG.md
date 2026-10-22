@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.34.1
 
 ### Changes
+- **Warm Nether glow**: with Nether fog off, the Nether gets a calm warm ambient tint, and rising embers plus the soft heat glow around lava are back. Both have their own settings (Nether Embers, Nether Warm Tint).
 - **Soft moon**: the moon sits in one smooth silver glow with a soft pale disc instead of stepped rings.
 - **Soft clear-day horizon**: on clear days the band at the horizon is a gentle pale blue-white gradient instead of a flat mint-turquoise strip, and the far edge of the world melts into it.
 - **Soaked paths in rain**: open dirt paths, sand and stone now turn visibly darker with a soft grey sheen while it rains, a little more than lawns.

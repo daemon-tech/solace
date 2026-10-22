@@ -1559,7 +1559,7 @@ void main() {
 		if (biome == BIOME_CRIMSON_FOREST) col = mix(vec3(luma(col)) * vec3(1.08, 0.94, 0.92), col, mix(1.0, 0.82, smoothstep(0.15, 0.5, col.r - max(col.g, col.b))));
 		// heat: fog turns red-orange around lava (blurred light field)
 		vec4 heat = textureLod(colortex3, uv, 6.0);
-		col = mix(col, vec3(1.0, 0.35, 0.10), clamp(heat.a * 6.0, 0.0, 0.5) * NETHER_FOG * smoothstep(4.0, 30.0, lin));
+		col = mix(col, vec3(1.0, 0.35, 0.10), clamp(heat.a * 6.0, 0.0, 0.5) * max(NETHER_FOG, NETHER_EMBERS * 0.6) * smoothstep(4.0, 30.0, lin));
 		// rising embers: tiny warm specks drifting up
 		// few soft round embers that fade in and out slowly (no square specks, no on/off blinking)
 		vec2 eq = uv * vec2(viewWidth / viewHeight, 1.0) * 18.0 + vec2(0.0, -frameTimeCounter * 0.5);
@@ -1567,7 +1567,9 @@ void main() {
 		float eh = hash12(ec);
 		float ePh = fract(frameTimeCounter * 0.12 + hash12(ec + 3.1));
 		float em = step(0.985, eh) * smoothstep(0.18, 0.06, length(ef + (vec2(hash12(ec + 5.3), hash12(ec + 9.1)) - 0.5) * 0.5)) * sin(ePh * 3.14159);
-		col += vec3(1.0, 0.60, 0.28) * em * 0.35 * NETHER_FOG;
+		col += vec3(1.0, 0.60, 0.28) * em * 0.35 * max(NETHER_FOG, NETHER_EMBERS);
+		// calm warm ambient tint (independent of the fog setting): shadows lean soft amber instead of flat grey
+		col = mix(col, col * vec3(1.07, 0.97, 0.88) + vec3(0.012, 0.005, 0.0), NETHER_AMBIENT);
 #else
 		vec3 ef = vec3(0.16, 0.10, 0.26);
 		if (d0 >= 1.0) {

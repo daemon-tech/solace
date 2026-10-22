@@ -182,6 +182,10 @@ option.SHADOW_DIST_SOFT=Distance Softness
 option.SHADOW_DIST_SOFT.comment=Shadows become softer further away. 0 = off.
 option.NETHER_FOG=Nether Look
 option.NETHER_FOG.comment=Banded Nether fog in the biome colour with rising embers.
+option.NETHER_EMBERS=Nether Embers
+option.NETHER_EMBERS.comment=Rising embers and heat glow around lava, also with Nether fog off.
+option.NETHER_AMBIENT=Nether Warm Tint
+option.NETHER_AMBIENT.comment=Calm warm ambient tint in the Nether.
 option.END_FOG=End Look
 option.END_FOG.comment=Violet End fog and a painted End sky with nebula bands.
 profile.ULTRA=Ultra
