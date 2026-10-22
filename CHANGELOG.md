@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.33.1
 
 ### Changes
+- **Glowing redstone ore**: redstone ore that lights up when touched now glows red like other redstone lights.
 - **Glowing furnaces**: lit furnaces, smokers and blast furnaces now glow warm from their fire opening and light the room.
 - **Copper torches and lanterns**: copper torches and copper lanterns now glow with their green flame light, and hanging copper lanterns swing like the others.
 - **Swaying spore blossoms**: spore blossoms under cave ceilings sway gently with the breeze like hanging vines.
