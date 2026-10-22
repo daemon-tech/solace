@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.33.1
 
 ### Changes
+- **Leaves in the rain**: tree crowns sit a calm step deeper when it rains instead of glowing pale lime.
 - **Golden-hour sea**: in the evening light open water settles into a calm blue-teal with a hint of rose that matches the sky, instead of a pale minty green.
 - **Golden sunrise**: the sunrise cast on the land is a soft peach-gold instead of a pink-magenta veil.
 - **Softer waterfalls**: the foam tumbling down waterfalls has soft, cloud-like edges instead of hard-cut blue and white patches.

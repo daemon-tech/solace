@@ -411,7 +411,9 @@ void main() {
 			// lime-leaning, brighter foliage (#9dc832 direction)
 			float l = luma(col);
 			float pinkLeaf = smoothstep(0.02, 0.12, albedo.r - albedo.g); // cherry leaves keep their pink
-			col = mix(col, vec3(l) * (isEyeInWater == 1 ? vec3(0.55, 1.05, 1.0) : mix(vec3(0.60, 0.80, 0.70) * 0.92, vec3(0.82, 1.30, 0.72) * 0.96, day)), FOLIAGE_LIME * STYLE_K * mix(1.0, 1.0 - torch * 0.6, 1.0 - day) * (1.0 - pinkLeaf));
+			col = mix(col, vec3(l) * (isEyeInWater == 1 ? vec3(0.55, 1.05, 1.0) : mix(vec3(0.60, 0.80, 0.70) * 0.92, vec3(0.82, 1.30, 0.72) * 0.96, day)), FOLIAGE_LIME * STYLE_K * mix(1.0, 1.0 - torch * 0.6, 1.0 - day) * (1.0 - pinkLeaf) * (1.0 - 0.55 * rainStrength));
+			// overcast rain: leaf masses sit a step deeper instead of glowing pale lime
+			if (isFoliage == 1 && isGrassPlant == 0) col *= 1.0 - 0.18 * rainStrength;
 		}
 	#ifdef GROUND_GRADE
 		// grass plants: the root is exactly the grass top colour, only a soft gradient toward the tip
