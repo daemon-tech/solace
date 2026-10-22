@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.33.1
 
 ### Changes
+- **Richer sunlit treetops**: the brightest leaf faces in full sun keep a little green depth instead of washing out to a chalky pale lime.
 - **Warm wood at sunrise**: wooden roofs, walls and paths stay warm wood brown in the morning light instead of turning salmon pink.
 - **Moonlit gust waves**: at night the wind waves roll through the grass as a soft, cool silver shimmer.
 - **Golden gust waves at sunrise and sunset**: with a low sun the wind waves in the grass glow soft gold instead of silver.

@@ -1522,6 +1522,9 @@ void main() {
 			// neon lime guard: very saturated bright yellow-greens settle into a softer meadow green (same shift on blocks and grass)
 			if (IS_OW && !sky) { float gEx = col.g - max(col.r, col.b); float lk = smoothstep(0.10, 0.28, gEx) * smoothstep(0.25, 0.55, col.g);
 				col = mix(col, mix(vec3(luma(col)), col, 0.72) * vec3(1.02, 0.97, 0.98), lk * 0.75); }
+			// sunlit canopy tops: the brightest leaf faces washed out to a chalky pale lime; keep a little green depth there
+			if (IS_OW && !sky && texture(colortex1, uv).a < 0.75) { float lT = luma(col);
+				col = mix(col, mix(vec3(lT), col, 1.25) * 0.95, smoothstep(0.60, 0.82, lT) * 0.6); }
 			// highlight shoulder: pale walls, sand and quartz in full sun roll off softly instead of clipping to flat white
 			if (!sky) { float hM = max(col.r, max(col.g, col.b)); if (hM > 0.80) col *= (0.80 + (1.0 - exp(-(hM - 0.80) * 2.6)) * 0.17) / hM; }
 			// twilight white balance where the eye sees little sky (pits, dug holes, caves): the still-indigo
