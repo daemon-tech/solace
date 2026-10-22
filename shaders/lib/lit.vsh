@@ -19,10 +19,11 @@ uniform mat4 gbufferModelView;
 uniform float frameTimeCounter;
 in vec4 mc_Entity;
 in vec2 mc_midTexCoord;
+in vec4 at_midBlock;
 void main() {
 	gl_Position = ftransform();
 	int eid = int(mc_Entity.x + 0.5);
-	lightId = (eid >= 10010 && eid <= 10017) ? eid - 10009 : 0;
+	lightId = (eid >= 10010 && eid <= 10017) ? eid - 10009 : (eid == 10018 ? 1 : (eid == 10019 ? 2 : 0));
 	isLeaf = eid == 10002 ? 1 : 0;
 	isFoliage = (eid == 10002 || eid == 10006) ? 1 : (eid == 10003 ? 2 : (eid == 10004 ? 3 : (lightId > 0 ? 4 : (eid == 10007 ? 5 : 0))));
 	texcoord = (gl_TextureMatrix[0] * gl_MultiTexCoord0).xy;
@@ -46,6 +47,21 @@ void main() {
 		if (eid == 10009) { vec3 nW = mat3(gbufferModelViewInverse) * vnormal; wo -= nW.xz * dot(wo, nW.xz); } // vines slide along their wall, never into it
 		vp.xz += wo;
 		if (plant) vp.xz += playerPush(vp.xyz, top);
+		gl_Position = gl_ProjectionMatrix * (gbufferModelView * vp);
+	}
+#endif
+#ifdef LANTERN_SWAY
+	if (eid == 10018 || eid == 10019) {
+		// hanging lanterns swing gently on their chain like a pendulum (pivot at the top of the block), more in a gust
+		vec4 vp = gbufferModelViewInverse * (gl_ModelViewMatrix * gl_Vertex);
+		vec3 bc = floor(vp.xyz + cameraPosition + at_midBlock.xyz / 64.0) + 0.5; // block centre
+		float d = clamp(bc.y + 0.5 - (vp.y + cameraPosition.y), 0.0, 1.0);
+		float g = windGust(bc.xz, frameTimeCounter);
+		float ph = fract(sin(dot(bc.xz, vec2(12.9898, 78.233))) * 43758.5453) * 6.28;
+		vec2 wd = windDirT(frameTimeCounter);
+		float sw = sin(frameTimeCounter * 1.6 + ph) * (0.05 + 0.10 * g) * LANTERN_SWAY;
+		float sw2 = sin(frameTimeCounter * 1.1 + ph * 1.7) * 0.025 * LANTERN_SWAY;
+		vp.xz += (wd * sw + vec2(-wd.y, wd.x) * sw2) * d;
 		gl_Position = gl_ProjectionMatrix * (gbufferModelView * vp);
 	}
 #endif
