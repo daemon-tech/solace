@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.33.1
 
 ### Changes
+- **Cobwebs and leaf litter in the wind**: cobwebs billow softly and leaf litter stirs and slides a little when a gust passes (Web & Litter Wind option).
 - **Glowing glow lichen**: glow lichen specks now glow softly and cast a faint green-teal light in caves.
 - **Amethyst twinkle**: a few amethyst crystal facets catch a soft white twinkle now and then (Amethyst Twinkle option).
 - **Glowing glow berries**: glow berries on cave vines now glow warm orange and light their surroundings, and the vines sway like other vines.

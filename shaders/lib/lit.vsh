@@ -58,6 +58,28 @@ void main() {
 		gl_Position = gl_ProjectionMatrix * (gbufferModelView * vp);
 	}
 #endif
+	if (eid == 10022 || eid == 10004) {
+		// cobwebs billow softly (corners move most, a gust pushes them downwind);
+		// leaf litter: single leaves stir and slide a little when a gust passes over them
+		vec4 vp = gbufferModelViewInverse * (gl_ModelViewMatrix * gl_Vertex);
+		vec3 w = vp.xyz + cameraPosition;
+		float g = 0.0;
+#ifdef WIND_GUSTS
+		g = windGust(w.xz, frameTimeCounter) * WIND_GUST_STRENGTH;
+#endif
+		vec2 wd = windDirT(frameTimeCounter);
+		float hv = fract(sin(dot(floor(w.xz * 4.0) + floor(w.y * 4.0), vec2(12.9898, 78.233))) * 43758.5453);
+		if (eid == 10022) {
+			vec3 o = vec3(wd.x, 0.0, wd.y) * (0.03 + 0.10 * g) * (0.6 + 0.4 * sin(frameTimeCounter * 1.7 + hv * 6.28))
+			       + vec3(0.0, 0.025 * sin(frameTimeCounter * 2.3 + hv * 6.28), 0.0);
+			vp.xyz += o * WEB_LITTER_WIND;
+		} else {
+			float st = smoothstep(0.25, 0.7, g);
+			vp.xz += (wd * 0.06 + vec2(sin(frameTimeCounter * 9.0 + hv * 30.0), cos(frameTimeCounter * 8.0 + hv * 20.0)) * 0.025) * st * WEB_LITTER_WIND;
+			vp.y += 0.03 * st * max(sin(frameTimeCounter * 7.0 + hv * 40.0), 0.0) * WEB_LITTER_WIND;
+		}
+		gl_Position = gl_ProjectionMatrix * (gbufferModelView * vp);
+	}
 #ifdef LANTERN_SWAY
 	if (eid == 10018 || eid == 10019) {
 		// hanging lanterns swing gently on their chain like a pendulum (pivot at the top of the block), more in a gust
