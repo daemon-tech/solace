@@ -429,7 +429,7 @@ void main() {
 			vec3 vW = safeNormalize(cwpos - cameraPosition, vec3(0, 0, 1));
 			vec3 sW = safeNormalize(mat3(gbufferModelViewInverse) * sunPosition, vec3(0, 1, 0));
 			float bl = pow(max(dot(vW, sW), 0.0), 3.0) * day * smoothstep(0.5, 0.9, lm.y);
-			col += albedo.rgb * vec3(1.05, 1.0, 0.55) * celBand(bl, 3) * LEAF_TRANSLUCENCY * 1.5;
+			col += albedo.rgb * vec3(1.18, 0.92, 0.40) * celBand(bl, 3) * LEAF_TRANSLUCENCY * 1.5;
 			// low sun: a soft warm rim of light through grass and leaves seen against the sun
 			float lowSun = smoothstep(-0.03, 0.05, sW.y) * (1.0 - smoothstep(0.18, 0.42, sW.y)) * (1.0 - rainStrength);
 			float blLow = smoothstep(0.55, 1.0, dot(vW, sW)) * lowSun * smoothstep(0.6, 0.95, lm.y);
