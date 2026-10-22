@@ -350,6 +350,9 @@ void main() {
 				ratio /= max(luma(ratio), 0.5); // keep brightness, change only hue (no dark halos)
 				float k = clamp(poolC * 1.8, 0.0, 1.0) * smoothstep(0.0001, 0.004, Ls.a) * COLORED_LIGHT_STRENGTH;
 				col = mix(col, col * ratio, k);
+				// calm, not glaring: strong source hues (redstone red, amethyst) keep a soft saturation cap
+				float cMx = max(col.r, max(col.g, col.b)), sat = (cMx - min(col.r, min(col.g, col.b))) / max(cMx, 1e-3);
+				col = mix(col, mix(vec3(luma(col)), col, 0.55 / max(sat, 0.55)), k * smoothstep(0.15, 0.5, length(ratio - 1.0))); // warm torch pools untouched
 				coolL = smoothstep(0.05, 0.30, (tint.b - tint.r) / max(luma(tint), 0.15)) * smoothstep(0.0001, 0.004, Ls.a);
 				// the lit-pass torch island is always amber (it only knows the light level); inside cool pools retint it to the source colour
 				vec3 tN = tint / max(max(tint.r, max(tint.g, tint.b)), 1e-3);
