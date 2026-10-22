@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.33.1
 
 ### Changes
+- **Leaf glints**: during gusts a few sunlit leaf texels briefly catch the sun, a soft sparkle in the canopy (Leaf Glints option).
 - **Swaying vines**: vines, cave vines, weeping vines and hanging roots move gently with the breeze, sliding along their wall without clipping into it.
 - **Living flames**: torch and lantern light breathes softly, a little livelier when the wind picks up. Option "Flame Flicker" (0 keeps it steady).
 - **Crops sway in the wind**: wheat, carrots, potatoes and beetroots now bend with the breeze and the gusts like grass and flowers.

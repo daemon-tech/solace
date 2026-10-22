@@ -1376,6 +1376,20 @@ void main() {
 	}
 #endif
 #endif
+#ifdef LEAF_GLINTS
+	// sun glints: in a gust a few sunlit leaf texels catch the sun for a moment (sparse, per texel, soft blink)
+	if (!sky && abs(texture(colortex1, uv).a - 0.5) < 0.05 && isEyeInWater == 0) {
+		vec4 gv = gbufferProjectionInverse * vec4(uv * 2.0 - 1.0, texture(depthtex0, uv).r * 2.0 - 1.0, 1.0);
+		vec3 gw = mat3(gbufferModelViewInverse) * (gv.xyz / gv.w) + cameraPosition;
+		vec3 tq = floor(gw * 8.0 + 0.001);
+		float hg = hash12(tq.xz * 1.37 + tq.y * 7.11);
+		float gG = windGust(gw.xz, frameTimeCounter);
+		float on = step(0.985 - 0.035 * smoothstep(0.15, 0.7, gG), hg);
+		float bl = smoothstep(0.2, 0.9, sin(frameTimeCounter * (1.3 + hg * 1.7) + hg * 40.0));
+		float sunK = smoothstep(0.3, 0.6, luma(col)) * smoothstep(0.15, 0.5, dayG) * (1.0 - smoothstep(24.0, 48.0, lin)); // lit leaves, near
+		col = mix(col, vec3(1.0, 0.97, 0.82), on * bl * sunK * 0.8 * LEAF_GLINTS);
+	}
+#endif
 #ifdef DRIFT_LEAVES
 #if !defined DIM_NETHER && !defined DIM_END
 	// drifting leaves: when a gust front passes, a few loose leaves tumble down and sail downwind
