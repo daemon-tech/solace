@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.33.1
 
 ### Changes
+- **Drifting leaves**: loose leaves tumble down and sail away with the breeze, more of them when a gust passes. Option "Drifting Leaves" (0 turns them off).
 - **Wooden roofs at late dusk**: roofs and paths no longer turn salmon pink in the last light; they keep a calm warm wood brown.
 - **Soft savanna evenings**: in hot dry lands the evening sky settles into a calm soft peach with a gentler glow around the sun, instead of a deep orange wall.
 - **Sea lanterns glow cool, not amber**: the ground around sea lanterns and end rods now takes their cool white light reliably instead of switching to a torch-like amber.

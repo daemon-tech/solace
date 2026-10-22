@@ -128,6 +128,7 @@ const float sunPathRotation = -25.0;
 #define WIND_STREAKS 1.0 // [0.0 0.5 1.0 1.5] thin soft wind lines drifting with the breeze
 #define WIND_SPEED 1.0 // [0.5 0.75 1.0 1.5]
 #define FIELD_WAVES 1.0 // [0.0 0.4 0.7 1.0 1.4] soft bright waves rolling across grass fields
+#define DRIFT_LEAVES 1.0 // [0.0 0.5 1.0] loose leaves tumble down and sail downwind when a gust passes
 #define WIND_SHEEN 0.15 // [0.0 0.05 0.10 0.15 0.2] light sheen where gusts bend the grass
 #define GRASS_TONE 1 // [0 1] 0 = cool green, 1 = warm meadow green
 #define WARM_COOL 2 // [0 1 2 3 4] warm sunlight and cool sky-blue shade

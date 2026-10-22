@@ -1375,6 +1375,59 @@ void main() {
 	}
 #endif
 #endif
+#ifdef DRIFT_LEAVES
+#if !defined DIM_NETHER && !defined DIM_END
+	// drifting leaves: when a gust front passes, a few loose leaves tumble down and sail downwind
+	// (world-anchored, one per 6-block cell around the camera; small calm flat-coloured flakes)
+	{
+		float dlK = smoothstep(0.12, 0.4, dayG) * (1.0 - smoothstep(0.1, 0.5, rainStrength)) * smoothstep(0.5, 0.8, float(eyeBrightnessSmooth.y) / 240.0);
+		if (dlK > 0.01 && isEyeInWater == 0) {
+			vec2 wd2 = windDirT(frameTimeCounter);
+			vec3 wd = vec3(wd2.x, 0.0, wd2.y), side = vec3(-wd2.y, 0.0, wd2.x);
+			vec2 px = gl_FragCoord.xy;
+			float sceneZ = sky ? 1e6 : lin;
+			float best = 0.0; vec3 lc = vec3(0.0);
+			vec2 cc = floor(cameraPosition.xz / 5.0 + 0.5);
+			for (int k = 0; k < 50; k++) {
+				vec2 cell = cc + vec2(float(k % 5) - 2.0, float((k / 5) % 5) - 2.0);
+				float hc = hash12(cell * 2.17 + 4.1 + float(k / 25) * 9.3);
+				float cyc = 7.0 + 3.0 * hc;
+				float tt = frameTimeCounter / cyc + hc * 5.0;
+				float id = floor(tt), lt = fract(tt) * cyc;
+				float h1 = hash12(cell + vec2(id, 1.9 + hc)), h2 = hash12(cell.yx + vec2(2.3, id + 4.0)), h3 = hash12(cell * 0.53 + vec2(id * 1.3, 8.0));
+				vec3 p0 = vec3((cell.x + h1) * 5.0, cameraPosition.y + 0.5 + 4.5 * h3, (cell.y + h2) * 5.0) - wd * 7.0;
+				float g = windGust(p0.xz, frameTimeCounter - lt); // gust when this leaf let go (one lookup per leaf)
+				float life = smoothstep(0.0, 0.6, lt) * (1.0 - smoothstep(cyc - 1.5, cyc, lt)) * step(hash12(cell * 3.7 + vec2(id * 0.61, 2.0)), 0.60 + 0.40 * smoothstep(0.10, 0.50, g)); // more leaves let go when a gust passes
+				if (life < 0.01) continue;
+				// fall with a gentle side-to-side flutter while the breeze carries it
+				vec3 pw = p0 + wd * (lt * (1.6 + 2.6 * g) * WIND_SPEED) + vec3(0.0, -0.55 * lt, 0.0)
+				        + side * (0.45 * sin(lt * 2.3 + h1 * 6.28)) + vec3(0.0, 0.12 * sin(lt * 4.6 + h2 * 6.28), 0.0);
+				vec4 vq = gbufferModelView * vec4(pw - cameraPosition, 1.0);
+				float zq = -vq.z;
+				if (zq < 0.5 || zq > 30.0) continue;
+				vec4 cq = gbufferProjection * vq;
+				vec2 sq = (cq.xy / cq.w * 0.5 + 0.5) * vec2(viewWidth, viewHeight);
+				float sz = 0.15 * viewHeight / zq;
+				// tumbling: the flake turns and flips (its width pulses), drawn as a small rhombus
+				float ang = lt * (1.5 + h3) + h1 * 6.28;
+				vec2 dv = px - sq;
+				vec2 r = vec2(cos(ang) * dv.x + sin(ang) * dv.y, -sin(ang) * dv.x + cos(ang) * dv.y);
+				float flip = 0.35 + 0.65 * abs(sin(lt * 3.1 + h2 * 6.28));
+				float dd = abs(r.x) / (sz * flip) + abs(r.y) / (sz * 0.55);
+				float a = (1.0 - smoothstep(0.85, 1.0, dd)) * step(zq, sceneZ + 0.2) * life * (1.0 - smoothstep(22.0, 30.0, zq));
+				if (a > best) {
+					best = a;
+					vec3 leafC = mix(vec3(0.42, 0.62, 0.22), vec3(0.78, 0.74, 0.30), h2);
+					leafC = mix(leafC, vec3(0.86, 0.52, 0.22), step(0.82, h3)); // now and then an orange one
+					lc = leafC * mix(0.85, 1.12, smoothstep(0.0, 0.4, r.y / (sz * 0.55) + 0.3)); // lit side up
+				}
+			}
+			lc *= mix(vec3(1.0, 0.82, 0.62), vec3(1.0), smoothstep(0.25, 0.7, dayG)) * mix(0.55, 1.0, dayG);
+			col = mix(col, lc, clamp(best, 0.0, 1.0) * dlK * DRIFT_LEAVES);
+		}
+	}
+#endif
+#endif
 #if !defined DIM_NETHER && !defined DIM_END
 	// snowy lands: bright snow settles into a calm soft white (a hint of cool in the shade) instead of icy cyan
 	if (!sky && !water && isEyeInWater == 0) {
