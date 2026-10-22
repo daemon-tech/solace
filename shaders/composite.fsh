@@ -1557,6 +1557,9 @@ void main() {
 				float twO = clamp(1.6 - abs(sunH) * 4.0, 0.0, 1.0) * (1.0 - tw);
 				float lav = smoothstep(0.0, 0.05, min(col.r, col.b) - col.g) * smoothstep(-0.07, 0.0, col.b - col.r) * step(0.75, texture(colortex1, uv).a);
 				col = mix(col, vec3(luma(col)) * vec3(1.06, 1.0, 0.93), clamp(twO * lav * 1.3 * (1.0 - 0.6 * warmP), 0.0, 0.9));
+				// late dusk: pink sky light on wooden roofs and paths reads salmon-rose (blue above green); settle it into warm wood brown
+				float rose = smoothstep(-0.03, 0.01, col.b - col.g) * smoothstep(0.04, 0.10, col.r - col.g) * smoothstep(0.03, 0.08, col.r - col.b) * step(0.75, texture(colortex1, uv).a);
+				col = mix(col, vec3(luma(col)) * vec3(1.14, 0.98, 0.84), clamp(twO * rose * (1.0 - 0.6 * warmP), 0.0, 0.7));
 			}
 		}
 	}
