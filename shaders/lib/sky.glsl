@@ -21,9 +21,10 @@ vec3 celBelowHorizon(vec3 col, float hv, float day, float rain) {
 	if (hv >= 0.0) return col;
 	vec3 land = mix(vec3(0.07, 0.09, 0.14), vec3(0.36, 0.45, 0.42), day);
 	land = mix(land, vec3(luma(land)) * vec3(0.92, 0.97, 1.04), rain * 0.5) * mix(1.0, 0.85, rain);
-	land = mix(land, col * 0.8, 0.35);
+	land = mix(land, col * 0.8, 0.35 * (1.0 - rain)); // rain: do not pull the pale overcast sky back in
+	land *= mix(1.0, 0.8, rain); // the rain veil drawn on top brightens it again, so start a bit darker
 	float k = smoothstep(0.0, 0.22, -hv);
-	return mix(col, land, k * k * (3.0 - 2.0 * k) * 0.75);
+	return mix(col, land, k * k * (3.0 - 2.0 * k) * mix(0.75, 0.9, rain));
 }
 vec3 celSkyImpl(vec3 dir, vec3 sunView, vec3 upView, float rain, bool discs) {
 	vec3 up = safeNormalize(upView, vec3(0, 1, 0));
