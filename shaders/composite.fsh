@@ -351,6 +351,9 @@ void main() {
 				float k = clamp(poolC * 1.8, 0.0, 1.0) * smoothstep(0.0001, 0.004, Ls.a) * COLORED_LIGHT_STRENGTH;
 				col = mix(col, col * ratio, k);
 				coolL = smoothstep(0.05, 0.30, (tint.b - tint.r) / max(luma(tint), 0.15)) * smoothstep(0.0001, 0.004, Ls.a);
+				// the lit-pass torch island is always amber (it only knows the light level); inside cool pools retint it to the source colour
+				vec3 tN = tint / max(max(tint.r, max(tint.g, tint.b)), 1e-3);
+				col = mix(col, vec3(luma(col)) * mix(vec3(1.0), tN, 0.75) * 1.15, coolL * clamp(poolC * 1.6, 0.0, 1.0) * 0.7 * COLORED_LIGHT_STRENGTH);
 			}
 		}
 	}

@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.33.1
 
 ### Changes
+- **Cyan soul light**: soul lanterns and soul torches cast a soft cyan glow on the ground around them.
 - **Soul lanterns no longer glow amber**: coloured light now reaches the whole light pool, and the warm night grading only touches warm light, so soul fire gives a soft cool glow.
 - **Whiter snow in the sun**: snow caps on trees and snowy ground further away read as soft white instead of icy blue, also when seen from a warmer biome.
 - **Calmer blue hour on stone**: cobble and grey stone walls stay cool at blue hour without turning periwinkle.
