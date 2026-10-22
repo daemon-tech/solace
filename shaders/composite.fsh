@@ -363,6 +363,19 @@ void main() {
 	}
 #endif
 
+	// wet shore: land right at the water line is a touch darker and cooler, as if freshly washed (soft strip)
+	if (!water && isEyeInWater == 0 && d0 < 1.0 && lin < 40.0) {
+		vec2 px = 1.0 / vec2(viewWidth, viewHeight) * clamp(16.0 / max(lin, 1.0), 0.35, 2.0);
+		float wet = 0.0;
+		for (int k = 0; k < 12; k++) {
+			float a = float(k) * 0.5236;
+			float r = k < 6 ? 14.0 : 34.0;
+			vec2 o = uv + vec2(cos(a), sin(a)) * px * r;
+			if (texture(colortex2, o).r > 0.5 && abs(linDepth(texture(depthtex0, o).r) - lin) < 2.0) wet += k < 6 ? 1.0 : 0.6;
+		}
+		float wk = smoothstep(0.3, 3.0, wet) * (1.0 - smoothstep(24.0, 40.0, lin));
+		col = mix(col, col * vec3(0.80, 0.84, 0.90), wk * 0.8);
+	}
 	if (water && isEyeInWater == 0 && d0 < 1.0) {
 		float behind = max(linDepth(texture(depthtex1, uv).r) - lin, 0.0);
 		{
