@@ -15,9 +15,11 @@ void main() {
 #ifdef WAVING_FOLIAGE
 	int eid = int(mc_Entity.x + 0.5);
 	bool plant = eid == 10006 || eid == 10007 || eid == 10008;
-	if (plant || eid == 10002) {
+	if (plant || eid == 10002 || eid == 10009) {
 		float top = (gl_MultiTexCoord0.y < mc_midTexCoord.y) ? 1.0 : 0.0;
-		vp.xz += windOffset(plant ? 1 : 2, vp.xyz + cameraPosition, top, frameTimeCounter);
+		vec2 wo = windOffset(plant ? 1 : 2, vp.xyz + cameraPosition, top, frameTimeCounter);
+		if (eid == 10009) wo -= gl_Normal.xz * dot(wo, gl_Normal.xz); // vines slide along their wall
+		vp.xz += wo;
 		if (plant) vp.xz += playerPush(vp.xyz, top);
 	}
 #endif

@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.33.1
 
 ### Changes
+- **Swaying vines**: vines, cave vines, weeping vines and hanging roots move gently with the breeze, sliding along their wall without clipping into it.
 - **Living flames**: torch and lantern light breathes softly, a little livelier when the wind picks up. Option "Flame Flicker" (0 keeps it steady).
 - **Crops sway in the wind**: wheat, carrots, potatoes and beetroots now bend with the breeze and the gusts like grass and flowers.
 - **Torch flames keep their colour at night**: torch flames and lantern glass stay warm orange instead of fading to pale cream.

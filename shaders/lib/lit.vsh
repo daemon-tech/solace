@@ -39,10 +39,12 @@ void main() {
 	isGrassPlant = eid == 10006 ? 1 : 0;
 #ifdef WAVING_FOLIAGE
 	bool plant = eid == 10006 || eid == 10007 || eid == 10008;
-	if (isFoliage == 1 || plant) {
+	if (isFoliage == 1 || plant || eid == 10009) {
 		vec4 vp = gbufferModelViewInverse * (gl_ModelViewMatrix * gl_Vertex);
 		float top = (gl_MultiTexCoord0.y < mc_midTexCoord.y) ? 1.0 : 0.0;
-		vp.xz += windOffset(plant ? 1 : 2, cwpos, top, frameTimeCounter);
+		vec2 wo = windOffset(plant ? 1 : 2, cwpos, top, frameTimeCounter);
+		if (eid == 10009) { vec3 nW = mat3(gbufferModelViewInverse) * vnormal; wo -= nW.xz * dot(wo, nW.xz); } // vines slide along their wall, never into it
+		vp.xz += wo;
 		if (plant) vp.xz += playerPush(vp.xyz, top);
 		gl_Position = gl_ProjectionMatrix * (gbufferModelView * vp);
 	}
