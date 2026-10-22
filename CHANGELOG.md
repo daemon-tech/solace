@@ -5,6 +5,8 @@ All builds tested in the real client with screenshots.
 
 ## 0.34.1
 
+A calm sky update: softer sunrises, moon and Milky Way, gentler horizons in every weather, a warmer Nether and calmer End, darker soaked paths in rain, and Voxy support so far LOD land and water match the near look.
+
 ### Changes
 - **Jungle sky**: over jungles the horizon settles into a calm, warmer green-teal, and the bright horizon glow keeps that tint instead of turning white.
 - **Soft snowfall sky**: in snowy lands the overcast sky during snowfall settles into a gentle cool white instead of a dull grey.
