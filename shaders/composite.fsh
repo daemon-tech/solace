@@ -1576,9 +1576,11 @@ void main() {
 			// End sky: deep violet gradient, slow nebula bands, sparse stars (painted, banded)
 			vec3 wdE = mat3(gbufferModelViewInverse) * vdir;
 			float hE = wdE.y * 0.5 + 0.5;
-			vec3 sk = mix(vec3(0.20, 0.12, 0.30), vec3(0.06, 0.04, 0.14), celBand(hE, 4));
+			// calm violet dusk: one smooth gradient from a soft rose-violet horizon up to deep indigo (no stepped bands)
+			float hS = smoothstep(0.35, 1.0, hE);
+			vec3 sk = mix(vec3(0.30, 0.17, 0.36), vec3(0.07, 0.05, 0.17), hS * hS * (3.0 - 2.0 * hS));
 			float neb = vnoise(wdE.xz / (abs(wdE.y) + 0.4) * 2.0 + frameTimeCounter * 0.01) * vnoise(wdE.xy * 3.0 + 1.7);
-			sk += vec3(0.30, 0.14, 0.42) * celBand(smoothstep(0.25, 0.6, neb), 3) * 0.45;
+			sk += vec3(0.26, 0.13, 0.36) * smoothstep(0.22, 0.7, neb) * 0.35; // faint soft nebula glow
 			// stars: soft round dots that hold still (no single-pixel cells that shimmer)
 			vec2 sp = vec2(atan(wdE.z, wdE.x) * 40.0, wdE.y * 64.0);
 			vec2 sc = floor(sp), sf = fract(sp) - 0.5;
