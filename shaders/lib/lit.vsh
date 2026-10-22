@@ -38,7 +38,7 @@ void main() {
 	vTop = (gl_MultiTexCoord0.y < mc_midTexCoord.y) ? 1.0 : 0.0;
 	isGrassPlant = eid == 10006 ? 1 : 0;
 #ifdef WAVING_FOLIAGE
-	bool plant = eid == 10006 || eid == 10007;
+	bool plant = eid == 10006 || eid == 10007 || eid == 10008;
 	if (isFoliage == 1 || plant) {
 		vec4 vp = gbufferModelViewInverse * (gl_ModelViewMatrix * gl_Vertex);
 		float top = (gl_MultiTexCoord0.y < mc_midTexCoord.y) ? 1.0 : 0.0;

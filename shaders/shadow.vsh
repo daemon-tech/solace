@@ -14,7 +14,7 @@ void main() {
 	vec4 vp = shadowModelViewInverse * (gl_ModelViewMatrix * gl_Vertex);
 #ifdef WAVING_FOLIAGE
 	int eid = int(mc_Entity.x + 0.5);
-	bool plant = eid == 10006 || eid == 10007;
+	bool plant = eid == 10006 || eid == 10007 || eid == 10008;
 	if (plant || eid == 10002) {
 		float top = (gl_MultiTexCoord0.y < mc_midTexCoord.y) ? 1.0 : 0.0;
 		vp.xz += windOffset(plant ? 1 : 2, vp.xyz + cameraPosition, top, frameTimeCounter);

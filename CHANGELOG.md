@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.33.1
 
 ### Changes
+- **Crops sway in the wind**: wheat, carrots, potatoes and beetroots now bend with the breeze and the gusts like grass and flowers.
 - **Torch flames keep their colour at night**: torch flames and lantern glass stay warm orange instead of fading to pale cream.
 - **Cherry petals**: in cherry groves the drifting leaves become soft pink petals that sail on the breeze, a few more on each gust.
 - **Drifting leaves**: loose leaves tumble down and sail away with the breeze, more of them when a gust passes. Option "Drifting Leaves" (0 turns them off).
