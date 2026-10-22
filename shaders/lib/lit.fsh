@@ -444,6 +444,7 @@ void main() {
 		// strongest near the flame and fading softly with the light level
 		{
 			float islK = smoothstep(0.12, 0.95, lm.x) * (1.0 - smoothstep(0.25, 0.65, lm.y)) * TORCH_STRENGTH;
+			islK *= (1.0 - 0.55 * smoothstep(0.30, 0.65, luma(col))) * (1.0 - 0.6 * smoothstep(0.08, 0.30, col.r - col.b)); // already bright or warm (wood): little extra, never garish
 			col = mix(col, col * vec3(1.30, 0.94, 0.60) + vec3(0.03, 0.012, 0.0), clamp(islK * 0.65, 0.0, 0.65));
 			col *= 1.0 + 0.30 * islK * islK; // a soft glow close to the flame
 		}
