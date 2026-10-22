@@ -1576,6 +1576,16 @@ void main() {
 			// night: hue-shift towards indigo but keep warm torch pools warm
 			// warm pools fall off with the light level: only the core near the flame keeps day colour, the rim fades into the night
 			float warmPix = smoothstep(0.30, 0.92, texture(colortex2, uv).g) * (1.0 - coolL); // soul fire & co keep their own cool colour
+#ifdef FLAME_FLICKER
+			// living flames: torch and lantern pools breathe softly (slow, per-area, a little livelier on gusts), never a strobe
+			if (warmPix > 0.01 && !sky) {
+				vec4 fv = gbufferProjectionInverse * vec4(uv * 2.0 - 1.0, texture(depthtex0, uv).r * 2.0 - 1.0, 1.0);
+				vec3 fw = mat3(gbufferModelViewInverse) * (fv.xyz / fv.w) + cameraPosition;
+				float ft = frameTimeCounter * (1.1 + 0.6 * windGust(fw.xz, frameTimeCounter));
+				float fl = vnoise(fw.xz * 0.12 + vec2(ft * 0.9, ft * 0.37)) * 0.65 + vnoise(fw.xz * 0.12 - vec2(ft * 2.1, -ft * 1.3) + 7.0) * 0.35;
+				col *= 1.0 + (fl - 0.5) * 0.16 * FLAME_FLICKER * warmPix * (1.0 - heldK);
+			}
+#endif
 			// moonlit night: a soft silver-blue instead of deep saturated indigo; the mids are lifted gently
 			// so shapes, grass and paths stay readable, while the darkest shadows stay calm and deep
 			vec3 ind = mix(vec3(luma(col)) * vec3(0.78, 0.88, 1.22), col * vec3(0.84, 0.97, 1.16), 0.55) + vec3(0.018, 0.022, 0.044);
