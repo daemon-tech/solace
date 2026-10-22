@@ -15,6 +15,16 @@ void biomeSky(inout vec3 zen, inout vec3 hor, float k) {
 #endif
 }
 // discs=false: no sun/moon discs (used for fog / aerial colour so the fog never shows a sun spot)
+// below the horizon (view past the loaded world from high spots): lean toward a calm, darker land-like tone
+// instead of pale sky, so it never reads as a fog wall; stays sky-coloured right at the horizon line (seamless edge)
+vec3 celBelowHorizon(vec3 col, float hv, float day, float rain) {
+	if (hv >= 0.0) return col;
+	vec3 land = mix(vec3(0.07, 0.09, 0.14), vec3(0.36, 0.45, 0.42), day);
+	land = mix(land, vec3(luma(land)) * vec3(0.92, 0.97, 1.04), rain * 0.5) * mix(1.0, 0.85, rain);
+	land = mix(land, col * 0.8, 0.35);
+	float k = smoothstep(0.0, 0.22, -hv);
+	return mix(col, land, k * k * (3.0 - 2.0 * k) * 0.75);
+}
 vec3 celSkyImpl(vec3 dir, vec3 sunView, vec3 upView, float rain, bool discs) {
 	vec3 up = safeNormalize(upView, vec3(0, 1, 0));
 	vec3 sun = safeNormalize(sunView, up);
@@ -101,7 +111,8 @@ vec3 celSkyImpl(vec3 dir, vec3 sunView, vec3 upView, float rain, bool discs) {
 		col = mix(col, mix(vec3(0.42, 0.52, 0.92), vec3(0.72, 0.80, 1.0), mGlow * mGlow), mGlow * mGlow * 0.45 * mk);
 		col = mix(col, vec3(0.92, 0.94, 1.0), smoothstep(0.99895, 0.99945, m) * mix(0.35, 1.0, mk));
 	}
-	return mix(col, vec3(luma(col)) * 0.7, rain * 0.6);
+	col = mix(col, vec3(luma(col)) * 0.7, rain * 0.6);
+	return celBelowHorizon(col, h, day, rain);
 }
 vec3 celSky(vec3 dir, vec3 sunView, vec3 upView, float rain) { return celSkyImpl(dir, sunView, upView, rain, true); }
 // horizon sky colour in the view direction (for fog / haze). Light-weight copy of the
@@ -129,5 +140,6 @@ vec3 celHorizon(vec3 dir, vec3 sunView, vec3 upView, float rain) {
 	float hv = dot(dir, up);
 	float g = hv >= 0.0 ? 1.0 - smoothstep(0.0, 0.30, pow(max(hv, 0.0), 0.8)) : 1.0 - smoothstep(0.0, 0.45, -hv);
 	hor = mix(hor, vec3(0.78, 0.88, 0.98), g * day * (1.0 - smoothstep(0.0, 0.6, dusk)) * (1.0 - rain) * 0.45);
-	return mix(hor, vec3(luma(hor)) * 0.7, rain * 0.6);
+	hor = mix(hor, vec3(luma(hor)) * 0.7, rain * 0.6);
+	return celBelowHorizon(hor, hv, day, rain);
 }
