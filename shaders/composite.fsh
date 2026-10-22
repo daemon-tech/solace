@@ -1480,6 +1480,10 @@ void main() {
 			vec3 dMul = mix(vec3(1.30, 0.92, 0.55), vec3(1.10, 0.96, 0.93), mornT);
 			vec3 dAdd = mix(vec3(0.07, 0.03, 0.0), vec3(0.035, 0.022, 0.006), mornT); // dawn: soft peach-gold lift, no magenta veil
 			col = mix(col, col * dMul + dAdd, dusk * DUSK_TINT * mix(0.30, 1.0, skyEye) * (1.0 - cave));
+			// golden hour on sunlit dirt and terracotta: low sun + dusk cast pushed them to a garish neon orange; keep them warm but calm
+			{ float mxD = max(col.r, max(col.g, col.b)); float satD = (mxD - min(col.r, min(col.g, col.b))) / max(mxD, 0.02);
+			  float kD = dusk * (1.0 - mornT) * smoothstep(0.42, 0.65, satD) * smoothstep(0.08, 0.22, col.r - col.g) * smoothstep(0.40, 0.65, mxD) * (1.0 - cave);
+			  col = mix(col, mix(vec3(luma(col)), col, 0.62) * 0.92, kD); }
 #ifdef TIME_GRADING
 			// per time of day: sunrise (soft pink-gold), noon (clean, slightly crisper), blue hour (cool), night handled below
 			float morn = (sunAngle > 0.75 || sunAngle < 0.25) ? 1.0 : 0.0;
