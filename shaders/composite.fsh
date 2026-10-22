@@ -1384,10 +1384,10 @@ void main() {
 		vec3 tq = floor(gw * 8.0 + 0.001);
 		float hg = hash12(tq.xz * 1.37 + tq.y * 7.11);
 		float gG = windGust(gw.xz, frameTimeCounter);
-		float on = step(0.985 - 0.035 * smoothstep(0.15, 0.7, gG), hg);
+		float on = step(0.975 - 0.045 * smoothstep(0.15, 0.7, gG), hg);
 		float bl = smoothstep(0.2, 0.9, sin(frameTimeCounter * (1.3 + hg * 1.7) + hg * 40.0));
-		float sunK = smoothstep(0.3, 0.6, luma(col)) * smoothstep(0.15, 0.5, dayG) * (1.0 - smoothstep(24.0, 48.0, lin)); // lit leaves, near
-		col = mix(col, vec3(1.0, 0.97, 0.82), on * bl * sunK * 0.8 * LEAF_GLINTS);
+		float sunK = smoothstep(0.12, 0.35, luma(col)) * smoothstep(0.15, 0.5, dayG) * (1.0 - smoothstep(24.0, 48.0, lin)); // lit leaves, near
+		col = mix(col, vec3(1.0, 0.97, 0.82), on * bl * sunK * 0.9 * LEAF_GLINTS);
 	}
 #endif
 #ifdef DRIFT_LEAVES
