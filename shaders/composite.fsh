@@ -891,6 +891,9 @@ void main() {
 		vec4 h2 = textureLod(colortex3, uv, 2.0), h3 = textureLod(colortex3, uv, 3.0);
 		vec3 halo = (h2.rgb * 0.5 + h3.rgb * 0.5) * 0.9;
 		col += halo * LIGHT_HALO * mix(1.0, 0.35, dayG * (1.0 - cave));
+		// small, dim sources (candles) light almost no block-light pool of their own: give them a wider soft halo instead
+		vec3 h4 = textureLod(colortex3, uv, 4.0).rgb;
+		col += h4 * 1.6 * CANDLE_GLOW * (1.0 - smoothstep(0.15, 0.45, texture(colortex2, uv).g)) * mix(1.0, 0.3, dayG * (1.0 - cave));
 	}
 #endif
 #ifdef SUN_HALO

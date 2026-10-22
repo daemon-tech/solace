@@ -546,6 +546,8 @@ void main() {
 	if (isLeaf == 2) em = smoothstep(0.45, 0.70, albedo.r) * (1.0 - smoothstep(0.55, 0.75, albedo.g)) * (1.0 - smoothstep(0.30, 0.45, albedo.b)) * 0.55; // glow-berry vines (soft spill below): only the orange berries glow, leaves stay green
 	if (lightId == 5) em = max(em, smoothstep(0.50, 0.72, max(albedo.r, max(albedo.g, albedo.b))));
 	outLight = em > 0.01 ? vec4(lightColor(lightId) * em, em) : vec4(0.0);
+	// candles: the flames are particles (not drawn here), so the upper wax glows faintly and feeds a soft warm halo
+	if (isLeaf == 3) { float cE = smoothstep(0.25, 0.5, luma(albedo.rgb)) * CANDLE_GLOW; outLight = vec4(vec3(1.0, 0.62, 0.30) * cE, cE * 0.45); }
 	outShadow = vec4(-1.0);
 #ifndef FLAT_NORMAL
 	if (isEyeInWater == 0 && ndl > 0.0) outShadow = vec4(cOut[1] - cOut[0], lb);
