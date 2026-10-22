@@ -7,6 +7,7 @@ uniform vec3 cameraPosition;
 uniform float frameTimeCounter;
 in vec4 mc_Entity;
 in vec2 mc_midTexCoord;
+in vec4 at_midBlock;
 out vec2 texcoord;
 out vec4 vcolor;
 flat out int sWater;
@@ -22,6 +23,7 @@ void main() {
 		vp.xz += wo;
 		if (plant) vp.xz += playerPush(vp.xyz, top);
 	}
+	if (eid == 10020) { vec3 w = vp.xyz + cameraPosition; vp.xz += reedOffset(w, floor(w + at_midBlock.xyz / 64.0), frameTimeCounter); } // reed shadows sway with the stalk
 #endif
 	gl_Position = gl_ProjectionMatrix * (shadowModelView * vp);
 	gl_Position.xyz = celDistort(gl_Position.xyz);

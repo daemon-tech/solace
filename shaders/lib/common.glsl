@@ -134,6 +134,19 @@ vec2 windOffset(int kind, vec3 wp, float top, float t) {
 	return (sway * (1.0 + 1.3 * gust) + wd * 0.07 * gust) * WAVING_STRENGTH; // leaves lean and stir with each front
 }
 
+// sugar cane / bamboo: depends only on world position, so stacked segments stay joined (shared by lit and shadow pass)
+vec2 reedOffset(vec3 w, vec3 bw, float t) {
+	float g = 0.0;
+#ifdef WIND_GUSTS
+	g = windGust(bw.xz, t) * WIND_GUST_STRENGTH;
+#endif
+	vec2 wd = windDirT(t);
+	float ph = fract(sin(dot(bw.xz, vec2(12.9898, 78.233))) * 43758.5453) * 6.28;
+	float up = 0.35 + 0.65 * (0.5 + 0.5 * sin(w.y * 0.7 - t * 1.3 + ph));
+	vec2 o = vec2(sin(t * 1.2 + ph), cos(t * 0.9 + ph * 1.3)) * 0.05 + wd * (0.02 + 0.12 * g);
+	return o * up * (1.0 + g) * REED_SWAY;
+}
+
 // rolling ocean swell (WATER_ROLL): 0..1, 1 = crest; long waves travelling along one direction
 float rollWave(vec2 xz, float t) {
 	float a = dot(xz, vec2(0.83, 0.56)) * 0.571 - t * 1.1;  // ~11-block wavelength
