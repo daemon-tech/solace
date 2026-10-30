@@ -2,6 +2,9 @@
 #include "/lib/settings.glsl"
 #include "/lib/common.glsl"
 #include "/lib/sky.glsl"
+#include "/lib/clouds.glsl"
+uniform float cloudHeight;
+uniform vec3 cameraPosition;
 uniform mat4 gbufferProjectionInverse;
 uniform vec3 sunPosition;
 uniform vec3 upPosition;
@@ -30,6 +33,7 @@ void main() {
 	vec4 p = gbufferProjectionInverse * vec4(gl_FragCoord.xy / vec2(viewWidth, viewHeight) * 2.0 - 1.0, 1.0, 1.0);
 	vec3 dir = safeNormalize(p.xyz / max(abs(p.w), 1e-5), vec3(0, 0, -1));
 	vec3 col = celSky(dir, sunPosition, upPosition, rainStrength);
+	vec3 skyNS = col; // sky without stars: stars are added back after the clouds, only where no cloud covers them
 	// stylized stars: sparse square-ish dots at night, above the horizon
 	vec3 up = safeNormalize(upPosition, vec3(0, 1, 0));
 	float night = clamp((-dot(safeNormalize(sunPosition, up), up) - 0.30) * 4.0, 0.0, 1.0);
@@ -85,6 +89,21 @@ void main() {
 		if (h > 0.985 && mw > 0.3) col = mix(col, vec3(0.92, 0.92, 1.0), 0.6 * night * (1.0 - rainStrength)); // denser stars in the band
 #endif
 	}
+	vec3 starAdd = col - skyNS; col = skyNS;
+	float starVis = 1.0;
+	if (night > 0.0) {
+		// the block cloud layers are drawn later (composite): read their coverage here so stars stay behind them
+		vec3 wS = mat3(gbufferModelViewInverse) * dir;
+		float HcS = cloudHeight > 1.0 ? cloudHeight : 192.0, tS = frameTimeCounter * 0.6;
+#ifdef CLOUD_HIGH
+		float hH = HcS + CL_HIGH_OFF - cameraPosition.y;
+		if (wS.y * hH > 0.0) starVis *= 1.0 - clCover(clHighQ(cameraPosition.xz + wS.xz * (hH / wS.y), tS), 0.3, 1) * smoothstep(0.02, 0.15, abs(wS.y));
+#endif
+#ifdef CLOUD_LOW
+		float hL = HcS + CL_LOW_OFF - cameraPosition.y;
+		if (wS.y * hL > 0.0) starVis *= 1.0 - clCover(clLowQ(cameraPosition.xz + wS.xz * (hL / wS.y), tS), 0.3, 0);
+#endif
+	}
 	// after-rain rainbow is painted in composite (over clouds and far hills)
 	float cloudFlag = 0.0;
 #ifdef SOFT_CLOUDS
@@ -116,11 +135,13 @@ void main() {
 				rainCl *= 1.0 - 0.25 * thunderStrength;
 				cc = mix(cc, rainCl, rainStrength * 0.9);
 				col = mix(col, cc, mask * 0.92);
+				starVis *= 1.0 - smoothstep(0.0, 0.5, mask);
 				cloudFlag = step(0.02, mask); // whole cloud incl. soft edges, so no bloomed blotches inside
 			}
 		}
 	}
 #endif
+	col += starAdd * starVis;
 	outColor = vec4(col, 1.0);
 	outFlag = vec4(0.0, 0.0, 0.0, 0.25 * cloudFlag);
 }
