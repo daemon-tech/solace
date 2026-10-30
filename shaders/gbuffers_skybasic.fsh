@@ -134,6 +134,7 @@ void main() {
 				rainCl = mix(rainCl, mix(vec3(0.14, 0.18, 0.30), vec3(0.66, 0.71, 0.80), dayC) * mix(0.92, 1.05, lit), sbCold);
 				rainCl *= 1.0 - 0.25 * thunderStrength;
 				cc = mix(cc, rainCl, rainStrength * 0.9);
+				mask *= 1.0 - clamp(max(sbHot, sbMesa) * rainStrength * SANDSTORM, 0.0, 1.0); // sandstorm: clouds vanish behind the dust
 				col = mix(col, cc, mask * 0.92);
 				starVis *= 1.0 - smoothstep(0.0, 0.5, mask);
 				cloudFlag = step(0.02, mask); // whole cloud incl. soft edges, so no bloomed blotches inside

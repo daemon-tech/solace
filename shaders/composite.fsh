@@ -1273,7 +1273,7 @@ void main() {
 				hc = mix(hc, fogSky, 0.35 + 0.4 * smoothstep(400.0, 2000.0, th)); // pale and airy
 				float soft = clCover(q, 0.18, 1);
 				hc += rimC * soft * (1.0 - soft) * 2.5 * pow(toSun, 3.0) * 0.6;
-				col = mix(col, hc, cov * fade * 0.42);
+				col = mix(col, hc, cov * fade * 0.42 * (1.0 - clamp(dryB * rainStrength * SANDSTORM, 0.0, 1.0)));
 			}
 		}
 #endif
@@ -1311,7 +1311,7 @@ void main() {
 					// away from the sun the dusk sky goes olive behind the cells: keep them a soft dusty rose
 					lc = mix(lc, vec3(luma(lc)) * vec3(1.12, 0.88, 0.88), cDusk * (1.0 - rainStrength) * (1.0 - toSun) * 0.55);
 					float fade = (1.0 - smoothstep(500.0, 1500.0, tA)) * smoothstep(0.02, 0.16, abs(rd.y));
-					col = mix(col, lc, cov * fade * 0.80);
+					col = mix(col, lc, cov * fade * 0.80 * (1.0 - clamp(dryB * rainStrength * SANDSTORM, 0.0, 1.0)));
 				}
 			}
 		}
