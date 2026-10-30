@@ -1342,7 +1342,11 @@ void main() {
 		// rain weighs heavier than night: a rainy day turns clearly deep blue, not grey
 		// hot dry lands (desert, badlands, savanna, sandstorms) keep their ochre dust: no navy rain there (smooth biome fade)
 		float hotNv = max(smoothstep(1.3, 1.8, bTemp) * (1.0 - smoothstep(0.05, 0.3, bRain)), max(sbHot, sbMesa));
-		float nvR = rainStrength * NAVY_RAIN * (1.0 - hotNv), nvN = 1.0 - dayG;
+		// snowfall by day: snowy ground and cold lands stay a soft cool white-grey instead of bright blue (night navy unchanged)
+		float snMx = max(col.r, max(col.g, col.b)), snMn = min(col.r, min(col.g, col.b));
+		float snowPx = smoothstep(0.40, 0.70, luma(col)) * (1.0 - smoothstep(0.08, 0.22, snMx - snMn));
+		float snNv = sky ? 0.0 : clamp(max(max(1.0 - smoothstep(0.05, 0.3, bTemp), sbCold), snowPx * 0.8), 0.0, 1.0) * dayG;
+		float nvR = rainStrength * NAVY_RAIN * (1.0 - hotNv) * (1.0 - 0.85 * snNv), nvN = 1.0 - dayG;
 		float nvK = NAVY_MOOD * clamp(max(nvR, nvN), 0.0, 1.0) * (1.0 - cave * 0.7);
 		nvK *= 1.0 - 0.85 * smoothstep(0.06, 0.28, col.r - col.b) * smoothstep(0.08, 0.3, luma(col)); // torch and fire light stay warm orange in the navy
 		vec3 navyC = vec3(luma(col)) * mix(vec3(0.62, 0.80, 1.38), vec3(0.46, 0.70, 1.42), clamp(nvR - nvN * 0.5, 0.0, 1.0));
@@ -1353,6 +1357,8 @@ void main() {
 		float snowL = max(1.0 - smoothstep(0.05, 0.3, bTemp), sbCold) * max(nvN, rainStrength) * (1.0 - cave) * SNOW_NIGHT_LIFT;
 		vec3 liftC = pow(max(col, 0.0), vec3(0.62)) * vec3(0.92, 0.97, 1.08) + vec3(0.025, 0.035, 0.06);
 		col = mix(col, liftC, snowL * 0.8 * (1.0 - smoothstep(0.2, 0.6, luma(col))));
+		// snowfall by day: snow settles into a soft cool white-grey (calm, low saturation)
+		col = mix(col, vec3(luma(col)) * vec3(0.93, 0.98, 1.06) * 1.04, snNv * rainStrength * 0.75);
 		col = mix(col, preCA, cloudM); // clouds keep their own authored colour
 	}
 	// pale gardens: a quiet, muted grey-green mood on the land (less colour, slightly dimmer)
