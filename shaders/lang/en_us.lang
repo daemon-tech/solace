@@ -476,3 +476,8 @@ option.CANOPY_DEPTH=Canopy Depth
 option.CANOPY_DEPTH.comment=Leaves deep inside and under a tree crown turn a cooler, deeper green, so trees read with painted volume. 0 turns it off.
 option.CHERRY_GLOW=Cherry Blossom Glow
 option.CHERRY_GLOW.comment=Cherry blossoms settle into one soft, calm pastel pink that glows a little in the sun. 0 keeps the normal blossoms.
+
+option.SAVANNA_GOLD=Savanna Gold
+option.SAVANNA_GOLD.comment=In savannas and other hot, dry lands the grass keeps a warm golden-olive tone instead of meadow green. 0 turns it off.
+option.FROST_TIPS=Frosted Tree Tops
+option.FROST_TIPS.comment=In snowy lands the tops of tree crowns wear a soft pale frost. 0 turns it off.

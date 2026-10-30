@@ -6,6 +6,8 @@ All builds tested in the real client with screenshots.
 ## 0.34.2
 
 ### Changes
+- **Savanna gold**: in savannas and other hot, dry lands the grass keeps a warm golden-olive tone instead of meadow green (Savanna Gold setting).
+- **Frosted tree tops**: in snowy lands the tops of tree crowns wear a soft pale frost (Frosted Tree Tops setting).
 - **Soft cherry blossoms**: cherry blossom crowns settle into one calm pastel pink instead of busy speckled texels, with a soft glow where the sun falls (Cherry Blossom Glow setting).
 - **Canopy depth**: leaves deep inside and under a tree crown settle into a cooler, deeper green while the outer leaves stay bright, so trees read with soft painted volume (Canopy Depth setting).
 - **Canopy sheen**: sunlit tree tops get a calm, broad painted highlight, so forests seen from above read with soft light on their crowns (Canopy Sheen setting).

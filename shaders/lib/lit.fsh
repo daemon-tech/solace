@@ -30,6 +30,8 @@ in vec3 cwpos;
 in float vTop;
 flat in int isGrassPlant;
 uniform float frameTimeCounter;
+uniform float sbHot;
+uniform float sbCold;
 /* RENDERTARGETS: 0,1,2,3,4 */
 layout(location = 0) out vec4 outColor;
 layout(location = 1) out vec4 outNormal;
@@ -322,6 +324,8 @@ void main() {
 			vec3 tone = vec3(0.27, 0.72, 0.38);
 			vec2 tex = vec2(0.82, 1.10);
 	#endif
+			// savanna and other hot dry lands: the grass keeps a warm golden-olive tone (sun-dried, still soft)
+			tone = mix(tone, vec3(0.64, 0.66, 0.27), sbHot * SAVANNA_GOLD);
 			// golden hour: low sun warms the lit grass and deepens its shade side
 			float shadeK = mix(lb * 0.35 + 0.65, lb * 0.55 + 0.45, golden);
 			vec3 target = tone * 1.02 * mix(tex.x, tex.y, clamp(lf, 0.0, 1.0)) * mix(0.45, 1.0, day) * shadeK;
@@ -358,6 +362,7 @@ void main() {
 	#else
 			vec3 toneF = vec3(0.27, 0.72, 0.38);
 	#endif
+			toneF = mix(toneF, vec3(0.64, 0.66, 0.27), sbHot * SAVANNA_GOLD); // same golden side fringe as the savanna tops
 			vec3 fc = toneF * 0.96 * mix(0.45, 1.0, day) * (lb * 0.35 + 0.65) * (0.9 + 0.1 * lb);
 			col = mix(col, fc * mix(0.82, 1.0, fr), min(fr * 1.15 * GROUND_GRADE_STRENGTH, 0.92));
 		}
@@ -456,6 +461,8 @@ void main() {
 			vec3 blossomC = vec3(1.0, 0.76, 0.87) * (0.50 + 0.62 * luma(col)) + vec3(0.07, 0.03, 0.05) * lb * day;
 			col = mix(col, blossomC, pinkK * CHERRY_GLOW * 1.2 * mix(0.4, 1.0, day));
 		}
+		// snowy lands: tree crowns wear a soft pale frost on their upward faces (calm, no sparkle)
+		if (isLeaf == 1) col = mix(col, vec3(0.86, 0.92, 0.98) * (0.62 + 0.38 * lb) * mix(0.45, 1.0, day), FROST_TIPS * 0.5 * sbCold * smoothstep(0.55, 0.92, dot(n, up)));
 		if (isLeaf == 1) col *= mix(vec3(1.0), vec3(0.74, 0.88, 1.0), CANOPY_DEPTH * (1.0 - smoothstep(0.62, 0.95, lm.y)) * mix(0.5, 1.0, day));
 	#endif
 		// warm torch pool painted over the surface (reads orange even on dark green leaves)
