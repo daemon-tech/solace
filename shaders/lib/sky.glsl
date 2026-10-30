@@ -114,6 +114,8 @@ vec3 celSkyImpl(vec3 dir, vec3 sunView, vec3 upView, float rain, bool discs) {
 		col = mix(col, vec3(0.92, 0.94, 1.0), smoothstep(0.99895, 0.99945, m) * mix(0.35, 1.0, mk));
 	}
 	col = mix(col, vec3(luma(col)) * 0.7, rain * 0.6);
+	// rain: the whole sky settles into one calm slate overcast (no bright blue gaps), navy at night
+	col = mix(col, mix(vec3(0.07, 0.09, 0.18), vec3(0.32, 0.39, 0.53), day) * mix(0.92, 1.05, clamp(h, 0.0, 1.0)), rain * 0.75 * (1.0 - sbCold * 0.5));
 	// cold lands: snowfall overcast settles into a gentle cool white instead of a dull grey
 	col = mix(col, vec3(0.80, 0.84, 0.90) * mix(0.3, 1.0, day), rain * sbCold * 0.55);
 	return celBelowHorizon(col, h, day, rain);

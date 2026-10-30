@@ -4,6 +4,7 @@ Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All 
 All builds tested in the real client with screenshots.
 
 ## 0.34.2
+- Rain: the sky, the block cloud layers and the gaps between clouds settle into one calm slate overcast by day (navy at night) instead of bright blue patches.
 
 ### Changes
 - **Rain clouds**: in rain the painted clouds turn a calm slate blue by day and a dark navy at night instead of staying bright white, a little darker still in thunderstorms and a soft cool grey-white during snowfall.

@@ -1251,6 +1251,9 @@ void main() {
 		cShade = mix(cShade, vec3(0.95, 0.80, 0.76), clamp(hotC * 1.6, 0.0, 1.0));
 		cLit = mix(cLit, vec3(luma(cLit)) * 0.75, rainStrength * 0.6);
 		cShade = mix(cShade, vec3(luma(cShade)) * 0.75, rainStrength * 0.6);
+		// rain: block cloud layers join the slate overcast (navy at night), like the painted clouds
+		cLit = mix(cLit, mix(vec3(0.07, 0.09, 0.17), vec3(0.38, 0.45, 0.60), cDay), rainStrength * 0.85);
+		cShade = mix(cShade, mix(vec3(0.05, 0.07, 0.14), vec3(0.30, 0.37, 0.51), cDay), rainStrength * 0.85);
 		float toSun = max(dot(rd, sunW), 0.0);
 		vec3 rimC = mix(vec3(1.0, 0.72, 0.42), vec3(1.0, 0.74, 0.66), cMorn) * cDusk * (1.0 - rainStrength);
 		float pxA = 2.0 / (gbufferProjection[1][1] * viewHeight); // angle of one pixel
@@ -1343,6 +1346,8 @@ void main() {
 		float nvK = NAVY_MOOD * clamp(max(nvR, nvN), 0.0, 1.0) * (1.0 - cave * 0.7);
 		nvK *= 1.0 - 0.85 * smoothstep(0.06, 0.28, col.r - col.b) * smoothstep(0.08, 0.3, luma(col)); // torch and fire light stay warm orange in the navy
 		vec3 navyC = vec3(luma(col)) * mix(vec3(0.62, 0.80, 1.38), vec3(0.46, 0.70, 1.42), clamp(nvR - nvN * 0.5, 0.0, 1.0));
+		// rain sky and cloud layers: a calm slate overcast instead of a saturated blue
+		if (sky) navyC = mix(navyC, vec3(luma(col)) * vec3(0.86, 0.96, 1.16), clamp(nvR - nvN * 0.5, 0.0, 1.0) * 0.8);
 		col = mix(col, navyC, nvK * mix(0.82, 0.88, clamp(nvR, 0.0, 1.0))); // night: almost one navy hue, like rain
 		// snowy nights and snowfall: gently lift the darkest tones so snowy land stays readable (navy hue kept)
 		float snowL = max(1.0 - smoothstep(0.05, 0.3, bTemp), sbCold) * max(nvN, rainStrength) * (1.0 - cave) * SNOW_NIGHT_LIFT;
