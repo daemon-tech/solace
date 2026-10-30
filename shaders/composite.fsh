@@ -1344,6 +1344,10 @@ void main() {
 		nvK *= 1.0 - 0.85 * smoothstep(0.06, 0.28, col.r - col.b) * smoothstep(0.08, 0.3, luma(col)); // torch and fire light stay warm orange in the navy
 		vec3 navyC = vec3(luma(col)) * mix(vec3(0.62, 0.80, 1.38), vec3(0.46, 0.70, 1.42), clamp(nvR - nvN * 0.5, 0.0, 1.0));
 		col = mix(col, navyC, nvK * mix(0.82, 0.88, clamp(nvR, 0.0, 1.0))); // night: almost one navy hue, like rain
+		// snowy nights and snowfall: gently lift the darkest tones so snowy land stays readable (navy hue kept)
+		float snowL = max(1.0 - smoothstep(0.05, 0.3, bTemp), sbCold) * max(nvN, rainStrength) * (1.0 - cave) * SNOW_NIGHT_LIFT;
+		vec3 liftC = pow(max(col, 0.0), vec3(0.62)) * vec3(0.92, 0.97, 1.08) + vec3(0.025, 0.035, 0.06);
+		col = mix(col, liftC, snowL * 0.8 * (1.0 - smoothstep(0.2, 0.6, luma(col))));
 		col = mix(col, preCA, cloudM); // clouds keep their own authored colour
 	}
 	// pale gardens: a quiet, muted grey-green mood on the land (less colour, slightly dimmer)
