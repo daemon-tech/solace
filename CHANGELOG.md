@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.34.2
 
 ### Changes
+- **Canopy depth**: leaves deep inside and under a tree crown settle into a cooler, deeper green while the outer leaves stay bright, so trees read with soft painted volume (Canopy Depth setting).
 - **Canopy sheen**: sunlit tree tops get a calm, broad painted highlight, so forests seen from above read with soft light on their crowns (Canopy Sheen setting).
 - **Fresh morning air**: for the first hours after sunrise the land sits in a fresh, slightly cool blue air before the day warms up (Fresh Morning Air setting).
 - **Pale garden mood**: pale gardens turn quiet, muted and grey-green instead of bright lime (Pale Garden Mood setting).

@@ -448,6 +448,8 @@ void main() {
 	#ifdef NIGHT_GLOW
 		// flowers: a faint glow at night so meadows still read in the dark
 		if (isFoliage == 5) col += albedo.rgb * smoothstep(0.25, 0.6, max(albedo.r, albedo.b) - albedo.g * 0.5) * 0.14 * (1.0 - day) * NIGHT_GLOW;
+		// canopy depth: leaves that see less open sky (inside and under the crown) settle into a cooler deep green
+		if (isLeaf == 1) col *= mix(vec3(1.0), vec3(0.74, 0.88, 1.0), CANOPY_DEPTH * (1.0 - smoothstep(0.62, 0.95, lm.y)) * mix(0.5, 1.0, day));
 	#endif
 		// warm torch pool painted over the surface (reads orange even on dark green leaves)
 		pool = torch * (1.0 - day * lm.y);
