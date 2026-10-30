@@ -1171,15 +1171,29 @@ void main() {
 		col = mix(col, fogSky, edgeF * edgeF * (3.0 - 2.0 * edgeF) * (1.0 - cave));
 	}
 #ifdef WEATHER_FX
+#if RAIN_SHAFTS > 0
+	// rain by day: a few broad, soft pale beams fall through gaps in the overcast, drifting very slowly
+	if (isEyeInWater == 0) {
+		float rsK = rainStrength * (1.0 - smoothstep(1.3, 1.8, bTemp)) * dayFactor(sunPosition, upPosition) * (1.0 - cave);
+		if (rsK > 0.001) {
+			vec3 rv = safeNormalize(mat3(gbufferModelViewInverse) * vpos, vec3(0, 0, 1));
+			float az = atan(rv.z, rv.x);
+			float bm = smoothstep(0.62, 0.86, vnoise(vec2(az * 4.0 + frameTimeCounter * 0.004, 7.3)));
+			float vert = smoothstep(-0.10, 0.12, rv.y) * (1.0 - smoothstep(0.25, 0.75, rv.y));
+			float reach = sky ? 1.0 : smoothstep(20.0, far * 0.6, lin);
+			col += vec3(0.50, 0.62, 0.80) * bm * vert * reach * rsK * 0.10 * float(RAIN_SHAFTS);
+		}
+	}
+#endif
 	// weather: rain fog, desert sandstorm, snow haze (all banded and distance based)
 	if (!sky && isEyeInWater == 0) {
 		float hotDry = smoothstep(1.3, 1.8, bTemp) * (1.0 - smoothstep(0.05, 0.3, bRain));
 		float coldW = 1.0 - smoothstep(0.05, 0.3, bTemp);
 		float wet = rainStrength * (1.0 - hotDry);
 		float rf = celBandSoft(smoothstep(2.0, far * 0.45, lin), 4, 0.4);
-		vec3 rainC = mix(vec3(0.20, 0.22, 0.30), vec3(0.58, 0.64, 0.72), dayG);
+		vec3 rainC = mix(vec3(0.13, 0.17, 0.31), vec3(0.36, 0.48, 0.66), dayG); // calm deep blue rain air
 		rainC = mix(rainC, vec3(0.86, 0.90, 0.96) * mix(0.45, 1.0, dayG), coldW); // snow: white haze
-		col = mix(col, rainC, rf * wet * RAIN_FOG * 0.75);
+		col = mix(col, rainC, rf * wet * RAIN_FOG * 0.75 * mix(0.55, 1.0, dayG)); // night: lighter veil so the land stays readable
 		// sandstorm: warm dust wall with drifting streaks, only in hot dry biomes while the weather is bad
 		float sand = hotDry * rainStrength * SANDSTORM;
 		if (sand > 0.001) {

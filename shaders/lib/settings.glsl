@@ -181,7 +181,8 @@ const float sunPathRotation = -25.0;
 #define TIME_GRADING // per time-of-day colour grading (sunrise, noon, golden hour, blue hour, night)
 #define TIME_GRADING_STRENGTH 1.0 // [0.0 0.5 1.0 1.5]
 #define WEATHER_FX // rain fog, sandstorms in hot dry biomes, snow haze
-#define RAIN_FOG 0.0 // [0.0 0.5 1.0 1.5]
+#define RAIN_FOG 1.0 // [0.0 0.5 1.0 1.5]
+#define RAIN_SHAFTS 2 // [0 1 2 3] soft pale light beams through the rain clouds by day
 #define SANDSTORM 0.0 // [0.0 0.5 1.0]
 #define WET_GROUND // darker glossy ground and puddle sheen in rain
 #define WET_GROUND_STRENGTH 1.0 // [0.0 0.5 1.0 1.5]

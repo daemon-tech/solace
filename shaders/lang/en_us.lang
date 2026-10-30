@@ -161,6 +161,7 @@ option.DISTANCE_BLUE.comment=Far terrain and mountains fade to a soft blue. 0 = 
 option.WEATHER_FX=Weather Effects
 option.WEATHER_FX.comment=Rain fog, sandstorms in deserts and badlands, white haze in snowfall.
 option.RAIN_FOG=Rain Fog
+option.RAIN_SHAFTS=Rain Light Beams
 option.SANDSTORM=Sandstorm
 option.SANDSTORM.comment=Warm dust wall in hot dry biomes during bad weather. 0 = off.
 option.WET_GROUND=Wet Ground
@@ -374,6 +375,7 @@ option.CAVE_FOG_DENSITY.comment=Thickness of cave fog.
 option.HAZE.comment=Warm daytime haze with distance.
 option.FIREFLY_AMOUNT.comment=How many fireflies appear.
 option.RAIN_FOG.comment=Fog strength in rain.
+option.RAIN_SHAFTS.comment=Soft pale light beams falling through gaps in the rain clouds by day.
 option.WET_GROUND_STRENGTH.comment=How wet and glossy the ground gets in rain.
 option.SKY_BANDS.comment=Number of soft colour steps in the sky.
 option.TIME_GRADING_STRENGTH.comment=Strength of the time-of-day colour mood.
