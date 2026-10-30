@@ -474,3 +474,5 @@ option.PALE_GARDEN_MOOD=Pale Garden Mood
 option.PALE_GARDEN_MOOD.comment=Pale gardens turn quiet, muted and grey-green. 0 keeps their normal colours.
 option.CANOPY_DEPTH=Canopy Depth
 option.CANOPY_DEPTH.comment=Leaves deep inside and under a tree crown turn a cooler, deeper green, so trees read with painted volume. 0 turns it off.
+option.CHERRY_GLOW=Cherry Blossom Glow
+option.CHERRY_GLOW.comment=Cherry blossoms settle into one soft, calm pastel pink that glows a little in the sun. 0 keeps the normal blossoms.

@@ -449,6 +449,13 @@ void main() {
 		// flowers: a faint glow at night so meadows still read in the dark
 		if (isFoliage == 5) col += albedo.rgb * smoothstep(0.25, 0.6, max(albedo.r, albedo.b) - albedo.g * 0.5) * 0.14 * (1.0 - day) * NIGHT_GLOW;
 		// canopy depth: leaves that see less open sky (inside and under the crown) settle into a cooler deep green
+		// cherry blossoms: pink petals glow a soft pastel in the sun and stay light in the crown's shade
+		if (isLeaf == 1) {
+			float pinkK = smoothstep(0.04, 0.16, albedo.r - albedo.g) * smoothstep(-0.02, 0.08, albedo.b - albedo.g * 0.85);
+			// calm the busy petal texels into one soft pastel pink; keep the light and shade of the crown
+			vec3 blossomC = vec3(1.0, 0.76, 0.87) * (0.50 + 0.62 * luma(col)) + vec3(0.07, 0.03, 0.05) * lb * day;
+			col = mix(col, blossomC, pinkK * CHERRY_GLOW * 1.2 * mix(0.4, 1.0, day));
+		}
 		if (isLeaf == 1) col *= mix(vec3(1.0), vec3(0.74, 0.88, 1.0), CANOPY_DEPTH * (1.0 - smoothstep(0.62, 0.95, lm.y)) * mix(0.5, 1.0, day));
 	#endif
 		// warm torch pool painted over the surface (reads orange even on dark green leaves)

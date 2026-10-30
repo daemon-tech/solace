@@ -138,6 +138,7 @@ const float sunPathRotation = -25.0;
 #define LILY_BOB 1.0 // [0.0 0.5 1.0 1.5] lily pads bob and drift a little on the water
 #define LEAF_GLINTS 1.0 // [0.0 0.5 1.0] when a gust passes, a few sunlit leaves catch the sun for a moment
 #define DRIFT_LEAVES 1.0 // [0.0 0.5 1.0] loose leaves tumble down and sail downwind when a gust passes
+#define CHERRY_GLOW 0.6 // [0.0 0.3 0.6 1.0] cherry blossoms settle into one calm pastel pink with a soft glow in the sun
 #define CANOPY_DEPTH 0.6 // [0.0 0.3 0.6 1.0] leaves deep inside and under a canopy turn a cooler deep green, outer leaves stay bright
 #define LEAF_SHEEN 0.6 // [0.0 0.3 0.6 1.0] calm soft sheen on sunlit canopy tops, like painted highlights
 #define MORNING_BLUE 0.6 // [0.0 0.3 0.6 1.0] fresh, slightly cool blue air over the land in the early morning
