@@ -138,6 +138,9 @@ const float sunPathRotation = -25.0;
 #define LILY_BOB 1.0 // [0.0 0.5 1.0 1.5] lily pads bob and drift a little on the water
 #define LEAF_GLINTS 1.0 // [0.0 0.5 1.0] when a gust passes, a few sunlit leaves catch the sun for a moment
 #define DRIFT_LEAVES 1.0 // [0.0 0.5 1.0] loose leaves tumble down and sail downwind when a gust passes
+#define LEAF_SHEEN 0.6 // [0.0 0.3 0.6 1.0] calm soft sheen on sunlit canopy tops, like painted highlights
+#define MORNING_BLUE 0.6 // [0.0 0.3 0.6 1.0] fresh, slightly cool blue air over the land in the early morning
+#define PALE_GARDEN_MOOD 1.0 // [0.0 0.5 1.0] pale gardens turn quiet, muted and grey-green
 #define WIND_SHEEN 0.15 // [0.0 0.05 0.10 0.15 0.2] light sheen where gusts bend the grass
 #define GRASS_TONE 1 // [0 1] 0 = cool green, 1 = warm meadow green
 #define WARM_COOL 2 // [0 1 2 3 4] warm sunlight and cool sky-blue shade

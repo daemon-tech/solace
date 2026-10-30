@@ -57,6 +57,7 @@ uniform float bRain;
 uniform float bSwamp;
 uniform float bDark;
 uniform float bCherry;
+uniform float bPale;
 uniform float rainStrength;
 uniform float wetness;
 uniform float thunderStrength;
@@ -1276,6 +1277,18 @@ void main() {
 		float dfK = mix(0.35, 1.0, smoothstep(40.0, 150.0, lin)) * smoothstep(6.0, 16.0, lin) * duskG * (1.0 - rainStrength);
 		vec3 calmC = mix(vec3(luma(col)), col, 0.55) * mix(vec3(1.0), fogSky / max(luma(fogSky), 1e-3), 0.25);
 		col = mix(col, calmC, dfK * 0.5);
+	}
+	// early morning: fresh, slightly cool blue air over the land for the first hours after sunrise (brightness kept)
+	if (IS_OW && !sky && isEyeInWater == 0 && cave < 0.5) {
+		float mbK = MORNING_BLUE * MORN_K * smoothstep(0.0, 0.08, sunHg) * (1.0 - smoothstep(0.30, 0.55, sunHg)) * (1.0 - rainStrength);
+		vec3 coolC = col * vec3(0.84, 0.97, 1.20);
+		coolC *= luma(col) / max(luma(coolC), 1e-4);
+		col = mix(col, coolC, mbK * mix(0.6, 1.0, smoothstep(8.0, 64.0, lin)));
+	}
+	// pale gardens: a quiet, muted grey-green mood on the land (less colour, slightly dimmer)
+	if (IS_OW && !sky && isEyeInWater == 0) {
+		vec3 paleC = mix(vec3(luma(col)), col, 0.35) * vec3(0.94, 0.99, 0.96) * 0.90;
+		col = mix(col, paleC, bPale * PALE_GARDEN_MOOD * 0.5);
 	}
 	// near-white haze band where the sea meets the sky (water far field + sky just above horizon)
 	if (isEyeInWater == 0) {
