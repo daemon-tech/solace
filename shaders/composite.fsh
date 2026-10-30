@@ -1184,10 +1184,10 @@ void main() {
 		if (rsK > 0.001) {
 			vec3 rv = safeNormalize(mat3(gbufferModelViewInverse) * vpos, vec3(0, 0, 1));
 			float az = atan(rv.z, rv.x);
-			float bm = smoothstep(0.55, 0.85, vnoise(vec2(az * 4.0 + frameTimeCounter * 0.004, 7.3)));
-			float vert = smoothstep(-0.12, 0.10, rv.y) * (1.0 - smoothstep(0.35, 0.85, rv.y));
+			float bm = smoothstep(0.66, 0.84, vnoise(vec2(az * 6.0 + rv.y * 1.2 + frameTimeCounter * 0.004, 7.3))); // narrower, gently slanted spotlight beams
+			float vert = smoothstep(-0.12, 0.08, rv.y) * (1.0 - smoothstep(0.45, 0.95, rv.y));
 			float reach = sky ? 1.0 : smoothstep(20.0, far * 0.6, lin);
-			col += vec3(0.50, 0.62, 0.80) * bm * vert * reach * rsK * 0.17 * float(RAIN_SHAFTS);
+			col += vec3(0.55, 0.68, 0.88) * bm * vert * reach * rsK * 0.28 * float(RAIN_SHAFTS);
 		}
 	}
 #endif
