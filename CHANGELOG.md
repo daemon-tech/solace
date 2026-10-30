@@ -6,6 +6,9 @@ All builds tested in the real client with screenshots.
 ## 0.34.2
 
 ### Changes
+- **Canopy sheen**: sunlit tree tops get a calm, broad painted highlight, so forests seen from above read with soft light on their crowns (Canopy Sheen setting).
+- **Fresh morning air**: for the first hours after sunrise the land sits in a fresh, slightly cool blue air before the day warms up (Fresh Morning Air setting).
+- **Pale garden mood**: pale gardens turn quiet, muted and grey-green instead of bright lime (Pale Garden Mood setting).
 - **Underwater light window**: looking up from under water, a soft bright window of sky light now opens in the surface above you while the water around it settles into a calmer deep teal; at night it stays a faint cool blue glow.
 
 ## 0.34.1
