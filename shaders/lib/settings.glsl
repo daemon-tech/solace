@@ -216,7 +216,7 @@ const float sunPathRotation = -25.0;
 #define SOFT_STARS 1 // [0 1 2] soft round stars with a faint halo (0 = classic dots)
 #define RAINBOW 1 // [0 1 2] soft pastel rainbow while the world is still wet after rain
 #define MOON_HALO 1.0 // [0.0 0.5 1.0 1.5] soft silver glow and faint ring around the moon
-#define SUN_HALO 0.6 // [0.0 0.3 0.6 1.0] glowing sun disk halo
+#define SUN_HALO 0.0 // [0.0 0.3 0.6 1.0] glowing sun disk halo
 #define RAIN_STREAKS 1.0 // [0.0 0.5 1.0] rain streaks and darker blue night rain mood
 #define FOREST_RAYS 0.8 // [0.0 0.4 0.8 1.2] stronger god rays in forests
 #define FOREST_HAZE 0.0 // [0.0 0.2 0.35 0.5] blue depth haze between trees

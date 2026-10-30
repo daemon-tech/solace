@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.34.2
 
 ### Changes
+- **One clean sun glow**: the older Sun Halo is off by default, since Sun Glare already draws the soft glow around the sun; the sun no longer gets a doubled wide haze (Sun Halo stays in the menu).
 - **Whiter valley mist**: the mist lying in valleys is a softer near-white, so it stands out from the blue distance haze.
 - **Gold and violet sunsets**: evening skies glow a warm gold at the horizon and rise through soft peach into a gentle pink-violet overhead, instead of deep orange all the way up.
 - **Clouds keep their colour**: clouds (block clouds and painted clouds) are kept out of bloom, sun glare and the colour grades, so they no longer blow out to white, especially at dusk.
