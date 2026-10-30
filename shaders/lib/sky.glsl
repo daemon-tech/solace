@@ -1,5 +1,6 @@
 // Solace - stylized banded sky with time-of-day palettes. dir/sun/up in view space.
-uniform float sunAngle; // 0 sunrise, 0.25 noon, 0.5 sunset, 0.75 midnight
+uniform float sunAngle;
+uniform float thunderStrength; // 0 sunrise, 0.25 noon, 0.5 sunset, 0.75 midnight
 uniform float sbHot, sbMesa, sbCold, sbSwamp, sbJungle, sbCherry; // smoothed biome weights (shaders.properties)
 // biome sky: pull the day zenith / horizon colours toward a per-biome pair (k = day weight)
 void biomeSky(inout vec3 zen, inout vec3 hor, float k) {
@@ -120,6 +121,8 @@ vec3 celSkyImpl(vec3 dir, vec3 sunView, vec3 upView, float rain, bool discs) {
 	col = mix(col, mix(vec3(0.07, 0.09, 0.18), vec3(0.32, 0.39, 0.53), day) * mix(0.92, 1.05, clamp(h, 0.0, 1.0)), rain * 0.75 * (1.0 - sbCold * 0.5));
 	// cold lands: snowfall overcast settles into a gentle cool white instead of a dull grey
 	col = mix(col, vec3(0.80, 0.84, 0.90) * mix(0.3, 1.0, day), rain * sbCold * 0.55);
+	// thunderstorm: the overcast sinks a calm step darker and cooler, so storms read heavier than rain
+	col = mix(col, col * vec3(0.70, 0.74, 0.86), thunderStrength * rain);
 	return celBelowHorizon(col, h, day, rain);
 }
 vec3 celSky(vec3 dir, vec3 sunView, vec3 upView, float rain) { return celSkyImpl(dir, sunView, upView, rain, true); }
@@ -149,5 +152,6 @@ vec3 celHorizon(vec3 dir, vec3 sunView, vec3 upView, float rain) {
 	float g = hv >= 0.0 ? 1.0 - smoothstep(0.0, 0.30, pow(max(hv, 0.0), 0.8)) : 1.0 - smoothstep(0.0, 0.45, -hv);
 	hor = mix(hor, vec3(0.78, 0.88, 0.98), g * day * (1.0 - smoothstep(0.0, 0.6, dusk)) * (1.0 - rain) * 0.45);
 	hor = mix(hor, vec3(luma(hor)) * 0.7, rain * 0.6);
+	hor = mix(hor, hor * vec3(0.70, 0.74, 0.86), thunderStrength * rain);
 	return celBelowHorizon(hor, hv, day, rain);
 }

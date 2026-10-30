@@ -60,7 +60,6 @@ uniform float bCherry;
 uniform float bPale;
 uniform float rainStrength;
 uniform float wetness;
-uniform float thunderStrength;
 uniform vec4 lightningBoltPosition;
 uniform float lFlash;
 uniform int heldBlockLightValue;

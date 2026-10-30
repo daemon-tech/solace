@@ -6,7 +6,6 @@ uniform mat4 gbufferProjectionInverse;
 uniform vec3 sunPosition;
 uniform vec3 upPosition;
 uniform float rainStrength;
-uniform float thunderStrength;
 uniform float wetness;
 uniform float viewWidth;
 uniform float viewHeight;
