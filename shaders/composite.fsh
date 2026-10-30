@@ -419,8 +419,8 @@ void main() {
 #ifdef GLOW_SHALLOWS
 		shoreC = vec3(0.62, 1.0, 0.98); // brighter cyan shallows
 #endif
-		vec3 midC = vec3(0.27, 0.74, 0.82);
-		vec3 deepC = vec3(0.07, 0.36, 0.54); // deeper end of the shallow-to-deep gradient
+		vec3 midC = vec3(0.30, 0.82, 0.90); // bright clear turquoise
+		vec3 deepC = vec3(0.10, 0.46, 0.70); // deeper end: clean sky-blue, not murky
 		midC = mix(midC, vec3(0.34, 0.60, 0.46), bSwamp * BIOME_MOOD);
 		deepC = mix(deepC, vec3(0.16, 0.36, 0.30), bSwamp * BIOME_MOOD);
 		// swamps: murky olive-green water all the way to the shore (no pale mint shallows)
@@ -444,7 +444,9 @@ void main() {
 		float fall = smoothstep(0.3, 0.6, 1.0 - abs(dot(safeNormalize(nV, vec3(0, 1, 0)), safeNormalize(upPosition, vec3(0, 1, 0)))));
 		float farF = smoothstep(24.0, far * 0.7, lin); // far water keeps the surface sky mirror
 		vec3 hiPre = max(col - vec3(0.80), 0.0);
-		col = mix(col, wc, mix(0.55, 0.88, dd) * (1.0 - 0.65 * farF) * (1.0 - 0.75 * fall) * WATER_DEPTH_TINT / 0.70);
+		// sky mirror: the flatter the view across the water, the more of the mirrored sky stays on the surface
+		float skyM = pow(1.0 - clamp(dot(-safeNormalize(wv, vec3(0, 0, -1)), safeNormalize(upPosition, vec3(0, 1, 0))), 0.0, 1.0), 2.0);
+		col = mix(col, wc, mix(0.55, 0.88, dd) * (1.0 - 0.65 * farF) * (1.0 - 0.75 * fall) * (1.0 - 0.55 * skyM * (1.0 - fall)) * WATER_DEPTH_TINT / 0.70);
 		col *= 1.0 - 0.10 * texture(colortex2, uv).b * (1.0 - farF);
 		float wl = dot(col, vec3(0.299, 0.587, 0.114));
 		col = mix(vec3(wl), col, WATER_SAT) * WATER_BRIGHT + hiPre * 2.0;

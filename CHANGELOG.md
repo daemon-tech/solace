@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.34.2
 
 ### Changes
+- **Bright turquoise water**: water is a brighter, clearer turquoise that deepens into clean sky-blue, and looking out across it the surface keeps much more of the mirrored sky.
 - **Cool air look**: the world now sits in a clear, cool blue-cyan light; shade turns a deep blue-teal instead of grey, and leaves and grass take a deeper, cooler green (less lime, less warm cast). The new Cool Air setting controls the strength; 0 brings back the warmer classic look.
 - **Savanna gold**: in savannas and other hot, dry lands the grass keeps a warm golden-olive tone instead of meadow green (Savanna Gold setting).
 - **Frosted tree tops**: in snowy lands the tops of tree crowns wear a soft pale frost (Frosted Tree Tops setting).
