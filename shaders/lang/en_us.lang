@@ -493,3 +493,5 @@ option.NAVY_RAIN=Navy Rain Weight
 option.NAVY_RAIN.comment=How much stronger rainy weather turns deep navy blue than the night does.
 option.FAR_SHADE=Far Shading
 option.FAR_SHADE.comment=With smooth shading, far hills keep deep blue-teal shade sides so light and shade still read at range.
+option.TORCH_ORANGE=Orange Torch Light
+option.TORCH_ORANGE.comment=Torches, lanterns and fire cast a saturated orange glow that stays warm at night and in rain. 0 keeps the softer neutral warm light.

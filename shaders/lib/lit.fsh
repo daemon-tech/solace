@@ -260,7 +260,7 @@ void main() {
 	// torch light: warm orange pool with a sharp-ish falloff
 	// two hard-ish rings: wide pool + bright core
 	float torch = celBandSoft(smoothstep(0.0, 1.0, pow(lm.x, 1.8)), 4, 0.45) * TORCH_STRENGTH; // smooth falloff: no ring at a fixed distance around held/dynamic lights
-	vec3 block = vec3(1.0, 0.76, 0.50) * torch * mix(0.95, 0.15, day * lm.y); // neutral warm
+	vec3 block = mix(vec3(1.0, 0.76, 0.50), vec3(1.0, 0.56, 0.20) * 1.12, TORCH_ORANGE) * torch * mix(0.95, 0.15, day * lm.y); // warm, saturated orange glow
 #if !defined DIM_NETHER && !defined DIM_END
 	{
 		// caves: where no sky reaches the ambient sinks lower, so torches, lanterns and lava
@@ -465,8 +465,9 @@ void main() {
 		if (isLeaf == 1) {
 			float pinkK = smoothstep(0.04, 0.16, albedo.r - albedo.g) * smoothstep(-0.02, 0.08, albedo.b - albedo.g * 0.85);
 			// calm the busy petal texels into one soft pastel pink; keep the light and shade of the crown
-			vec3 blossomC = vec3(1.0, 0.76, 0.87) * (0.50 + 0.62 * luma(col)) + vec3(0.07, 0.03, 0.05) * lb * day;
+			vec3 blossomC = vec3(1.0, 0.76, 0.87) * (0.50 + 0.62 * luma(col)) * mix(0.42, 1.0, day) + vec3(0.07, 0.03, 0.05) * lb * day; // night: petals sink with the crown, no pale lavender glow
 			col = mix(col, blossomC, pinkK * CHERRY_GLOW * 1.2 * mix(0.4, 1.0, day));
+			col *= mix(1.0, mix(0.62, 1.0, day), pinkK * CHERRY_GLOW / 0.6); // at night pink crowns sit back into the dark like other leaves
 		}
 		// snowy lands: tree crowns wear a soft pale frost on their upward faces (calm, no sparkle)
 		if (isLeaf == 1) col = mix(col, vec3(0.86, 0.92, 0.98) * (0.62 + 0.38 * lb) * mix(0.45, 1.0, day), FROST_TIPS * 0.5 * sbCold * smoothstep(0.55, 0.92, dot(n, up)));
