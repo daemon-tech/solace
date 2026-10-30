@@ -639,6 +639,15 @@ void main() {
 				col = mix(col, foamC, clamp(sf, 0.0, 1.0) * fday * SHORE_FOAM);
 			}
 #endif
+			{
+				// rolling surf: soft white foam lines that form out in the shallows and roll in toward the shore,
+				// broken into long calm stretches along the coast, thinning out as they reach the beach
+				float rph = behind * 1.15 + t * 0.55 + vnoise(wxz * 0.05) * 2.5;
+				float rl = smoothstep(0.55, 0.85, sin(rph)) * (1.0 - smoothstep(0.90, 1.0, sin(rph)) * 0.25);
+				float rbrk = smoothstep(0.25, 0.45, vnoise(wxz * vec2(0.09, 0.09) + vec2(t * 0.02, 0.0)));
+				float rzone = smoothstep(0.5, 1.2, behind) * (1.0 - smoothstep(5.0, 9.0, behind));
+				col = mix(col, foamC, clamp(rl * rbrk * rzone, 0.0, 1.0) * 0.9 * (1.0 - farF * 0.7) * (1.0 - fall) * fday * WATER_FOAM_AMT);
+			}
 #ifdef WATER_ROLL
 			// rolling swell: blocky white foam caps on the crests (1/8-block cells, ocean only)
 			if (fall < 0.5) {
