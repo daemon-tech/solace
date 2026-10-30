@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.34.2
 
 ### Changes
+- **Desert sky**: over deserts and other hot, dry lands the day sky turns a soft violet overhead and settles into a warm peach toward the horizon.
 - **Valley mist you can see**: low land between hills now sits inside a soft pale veil that grows with distance, so valley floors read misty from hilltops and from inside the valley; the mist is smooth, without visible steps.
 - **Starry nights**: clear nights show many more stars: a fine, still layer of small faint stars fills the sky between the bright soft ones, and fades at dawn, dusk and in rain.
 - **Orange torch light**: torches, lanterns and fire cast a saturated orange glow, and their light pools stay warm orange inside the navy night and rain (Orange Torch Light setting).
