@@ -1211,9 +1211,9 @@ void main() {
 			float streak = vnoise(sq * vec2(1.0, 4.0)) * 0.6 + vnoise(sq * 3.0) * 0.4;
 			// thinner far wall (terrain shapes stay readable), broken by rolling gust clouds
 			float gust = vnoise(wpS.xz * 0.03 - windDir() * frameTimeCounter * 0.6) * 0.6 + vnoise(wpS.xz * 0.09 + 3.1) * 0.4;
-			float sf = smoothstep(0.0, 1.0, smoothstep(2.0, 60.0, lin)) * (0.75 + 0.12 * streak + 0.13 * gust); // dense calm dust wall
+			float sf = smoothstep(0.0, 1.0, smoothstep(2.0, 42.0, lin)) * (0.80 + 0.10 * streak + 0.10 * gust); // dense calm dust wall
 			vec3 dustC = vec3(0.86, 0.66, 0.42) * mix(0.4, 1.0, dayG); // ochre dust
-			col = mix(col, dustC * mix(0.92, 1.04, gust), clamp(sf * sand, 0.0, 0.90));
+			col = mix(col, dustC * mix(0.92, 1.04, gust), clamp(sf * sand, 0.0, 0.94));
 			// fast wind-blown dust streaks over the whole view (sky included): long thin bands along the wind
 			vec3 vw = safeNormalize(mat3(gbufferModelViewInverse) * vpos, vec3(0, 0, 1));
 			vec2 wd = windDir();

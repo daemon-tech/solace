@@ -4,6 +4,7 @@ Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All 
 All builds tested in the real client with screenshots.
 
 ## 0.34.2
+- Sandstorm: the ochre dust wall closes in a little sooner and denser, like a real dust storm.
 - Night sky: stars are drawn behind the painted clouds and the block cloud layers, so far fewer stars shine through clouds.
 - Sunrise: sky and clouds glow a soft peach-gold instead of pink, with a calmer rim light on clouds near the sun.
 - Thunderstorms: the overcast sinks a calm step darker and cooler than plain rain, so storms read heavier.
