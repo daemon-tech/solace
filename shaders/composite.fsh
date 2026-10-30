@@ -1757,6 +1757,15 @@ void main() {
 			float upG = smoothstep(-0.1, 0.8, (mat3(gbufferModelViewInverse) * vdir).y);
 			col = mix(col, vec3(0.62, 0.90, 0.96) * mix(0.35, 1.0, uwDay), upG * 0.22);
 		}
+		{
+			// light window: looking up, a soft bright circle of sky light opens in the surface; around it the surface stays a calmer deep teal
+			float wy = (mat3(gbufferModelViewInverse) * vdir).y;
+			float win = smoothstep(0.58, 0.74, wy);
+			float rimW = smoothstep(0.52, 0.64, wy) * (1.0 - smoothstep(0.66, 0.80, wy));
+			float upOnly = smoothstep(0.15, 0.40, wy) * (1.0 - smoothstep(4.0, 1.0, lin) * 0.0);
+			col = mix(col, col * vec3(0.78, 0.88, 0.92), upOnly * (1.0 - win) * 0.55);
+			col = mix(col, mix(vec3(0.16, 0.27, 0.50), vec3(0.80, 0.96, 1.0), uwDay), (win * 0.22 + rimW * 0.12) * mix(0.6, 1.0, uwDay));
+		}
 #ifdef UNDERWATER_RAYS
 		{
 			// soft shafts of light slanting down from the surface, drifting slowly

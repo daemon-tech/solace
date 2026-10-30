@@ -3,6 +3,11 @@
 Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All Rights Reserved.
 All builds tested in the real client with screenshots.
 
+## 0.34.2
+
+### Changes
+- **Underwater light window**: looking up from under water, a soft bright window of sky light now opens in the surface above you while the water around it settles into a calmer deep teal; at night it stays a faint cool blue glow.
+
 ## 0.34.1
 
 A calm sky update: softer sunrises, moon and Milky Way, gentler horizons in every weather, a warmer Nether and calmer End, darker soaked paths in rain, and Voxy support so far LOD land and water match the near look.
