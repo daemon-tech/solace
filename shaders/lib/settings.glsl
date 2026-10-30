@@ -6,7 +6,7 @@
 #define SHADOW_TINT_R 0.36 // [0.30 0.36 0.40 0.46 0.50]
 #define SHADOW_TINT_G 0.43 // [0.34 0.40 0.43 0.48 0.52]
 #define SHADOW_TINT_B 0.62 // [0.44 0.50 0.54 0.62 0.70]
-#define OUTLINES
+//#define OUTLINES // ink outlines around shapes (off by default for a clean painted look)
 #define WATER_PAINTERLY // brighter turquoise water with soft brush-stroke highlights
 #define WATER_PAINTERLY_K 1.0 // [0.5 0.75 1.0]
 #define WATER_SAT 0.85 // [0.6 0.75 0.85 0.95 1.1]
@@ -36,14 +36,14 @@
 #define CLOUD_COVER 0.5 // [0.2 0.35 0.5 0.65 0.8]
 #define WAVING_FOLIAGE // gentle wind sway for leaves and plants
 #define WAVING_STRENGTH 1.0 // [0.5 0.75 1.0 1.5 2.0]
-#define LIGHT_OUTLINES // very subtle thin light outlines
+//#define LIGHT_OUTLINES // very subtle thin light outlines
 #define LIGHT_OUTLINE_OPACITY 0.25 // [0.1 0.15 0.25 0.35 0.5]
 #define BIOME_MOOD 0.8 // [0.0 0.4 0.6 0.8 1.0] biome-aware grading, fog and water
 #define EMISSIVE_BLOCKS // light-emitting blocks render self-lit in their colour
 #define EMISSIVE_STRENGTH 1.15 // [0.8 1.0 1.15 1.4]
 #define WATER_OPACITY 1.0 // [0.6 0.8 1.0 1.2]
 #define WATER_DEPTH_TINT 0.70 // [0.40 0.55 0.70 0.85]
-#define EDGE_STYLE 1 // [0 1 2] 0 off, 1 soft coloured edges, 2 black ink
+#define EDGE_STYLE 0 // [0 1 2] 0 off, 1 soft coloured edges, 2 black ink
 #define SOFT_EDGE_STRENGTH 0.45 // [0.2 0.3 0.45 0.6 0.8]
 #define STYLE 1 // [0 1] 0 Normal (vanilla-like packs), 1 Cartoony
 #if STYLE == 1
@@ -84,9 +84,9 @@
 #define GRASS_PART 1.0 // [0.0 0.5 1.0 1.5] grass and flowers bend softly away around your feet
 #define SUN_SPOTS 0.6 // [0.0 0.35 0.6 0.85] soft round sun spots on the ground under leaf canopies
 #define CANOPY_RAYS 1.0 // [0.0 0.5 1.0 1.5] long soft sun beams through gaps in tree canopies
-#define GODRAYS_STRENGTH 0.5 // [0.0 0.2 0.35 0.5 0.7]
+#define GODRAYS_STRENGTH 0.7 // [0.0 0.2 0.35 0.5 0.7 0.9]
 #define CANOPY_GLOW 0.20 // [0.0 0.06 0.12 0.20 0.30]
-#define BLOOM_STRENGTH 0.6 // [0.0 0.3 0.6 0.9 1.2]
+#define BLOOM_STRENGTH 0.9 // [0.0 0.3 0.6 0.9 1.2]
 #define HAZE 0.0 // [0.0 0.1 0.18 0.22 0.3 0.45]
 #define SAND_BOOST 0.8 // [0.0 0.4 0.8 1.0]
 //#define DISTANCE_FOG
@@ -141,6 +141,9 @@ const float sunPathRotation = -25.0;
 #define CHERRY_GLOW 0.6 // [0.0 0.3 0.6 1.0] cherry blossoms settle into one calm pastel pink with a soft glow in the sun
 #define SAVANNA_GOLD 0.7 // [0.0 0.4 0.7 1.0] savanna grass keeps a warm golden-olive tone instead of meadow green
 #define FROST_TIPS 0.6 // [0.0 0.3 0.6 1.0] in snowy lands the tops of tree crowns wear a soft pale frost
+#define SMOOTH_SHADING 1.0 // [0.0 0.5 1.0] 0 = stepped cel light bands, 1 = soft smooth light with colour contrast
+#define SUN_GLARE 0.6 // [0.0 0.3 0.6 1.0] bright glow and soft radial streaks around the sun
+#define NAVY_MOOD 0.6 // [0.0 0.3 0.6 1.0] rain and night sink into a deep navy-blue mood
 #define COOL_AIR 0.6 // [0.0 0.3 0.6 0.8 1.0] the whole world sits in a clear, cool blue-cyan air; shade leans deep blue-teal
 #define CANOPY_DEPTH 0.6 // [0.0 0.3 0.6 1.0] leaves deep inside and under a canopy turn a cooler deep green, outer leaves stay bright
 #define LEAF_SHEEN 0.6 // [0.0 0.3 0.6 1.0] calm soft sheen on sunlit canopy tops, like painted highlights

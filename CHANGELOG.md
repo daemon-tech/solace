@@ -6,6 +6,10 @@ All builds tested in the real client with screenshots.
 ## 0.34.2
 
 ### Changes
+- **Smooth shading**: light now falls off in one soft, smooth gradient instead of visible light bands; contrast comes from colour, with neutral lit faces and deep blue-teal shade (Smooth Shading setting, 0 brings back stepped bands).
+- **Outlines off by default**: shapes render clean and painted without edge lines; outlines stay available in the Outline settings.
+- **Sun glare**: a bright soft glow with gentle radial streaks around the sun, plus stronger default bloom and light rays (Sun Glare setting).
+- **Navy rain and night**: in rain and at night the world sinks into a calm, deep navy blue (Navy Mood setting).
 - **Cyan underwater depths**: underwater, the water glows a clear cyan toward the surface and settles into a calm dark blue toward the depths below, with somewhat brighter light shafts.
 - **Rolling surf**: soft white foam lines form out in the shallows and slowly roll in toward the shore, in long calm stretches along the coast.
 - **Bright turquoise water**: water is a brighter, clearer turquoise that deepens into clean sky-blue, and looking out across it the surface keeps much more of the mirrored sky.

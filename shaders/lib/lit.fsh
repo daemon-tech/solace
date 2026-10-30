@@ -201,6 +201,7 @@ void main() {
 	}
 #endif
 	float lb = celBandSoft(light, CEL_BANDS, SHADOW_EDGE); // cel bands with soft shadow edges
+	lb = mix(lb, smoothstep(0.0, 1.0, light), SMOOTH_SHADING); // smooth: one soft gradient, contrast from colour
 #if defined ENTITY_PASS && ENTITY_SOFT > 0
 	// mobs and players: soft two-tone cartoon shading (wrapped light, one wide soft step, brighter shade side)
 	{
@@ -210,7 +211,7 @@ void main() {
 	}
 #endif
 	// foliage: flat fields with a single shadow tone (2 bands)
-	if (isFoliage == 1) lb = step(0.35, light) * 0.9 + 0.1 * lb;
+	if (isFoliage == 1) lb = mix(step(0.35, light), smoothstep(0.15, 0.65, light), SMOOTH_SHADING) * 0.9 + 0.1 * lb;
 
 	// Light is white-balanced: ambient + sun ~= neutral white on a fully lit surface.
 	// Shadowed areas keep only the cool ambient term (blue, never pink/purple on warm albedo).

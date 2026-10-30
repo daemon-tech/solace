@@ -1030,6 +1030,15 @@ void main() {
 			float str = GODRAYS_STRENGTH * (1.0 + FOREST_RAYS * bDark + FOREST_RAYS * 0.5 * smoothstep(0.9, 0.6, float(eyeBrightnessSmooth.y) / 240.0)) * (useSun ? mix(0.55, 1.0, duskG) * (1.0 + 0.4 * morningW * MORNING_MIST) : 0.35);
 			// soft bands (no hard wedges), and less on clouds/terrain at dusk so near clouds do not turn into pale fans
 			col += rc * celBandSoft(acc * fall, 4, 0.5) * str * (sky ? 0.35 : mix(0.55, 0.25, duskG));
+			// sun glare: a bright soft glow and a few still radial streaks around a visible sun
+			if (useSun && sunHg > 0.0) {
+				vec2 gd = (uv - suv) * vec2(viewWidth / viewHeight, 1.0);
+				float gr = length(gd), ga = atan(gd.y, gd.x);
+				float streak = pow(abs(cos(ga * 3.0 + 0.35)), 28.0) + 0.6 * pow(abs(cos(ga * 5.0 + 1.2)), 48.0);
+				float vis = step(1.0, texture(depthtex0, clamp(suv, 0.0, 1.0)).r) * (1.0 - rainStrength);
+				float glare = exp(-gr * 7.0) * 0.55 + streak * exp(-gr * 3.2) * 0.30;
+				col += mix(rc, vec3(1.0), 0.5) * glare * vis * SUN_GLARE * (1.0 - 0.5 * duskG);
+			}
 #ifdef CANOPY_RAYS
 			// sun beams through trees: when the sun sits behind a broken canopy, long soft beams fan out
 			// from the gaps. Strongest when about half of the sky around the sun is blocked by leaves.
@@ -1305,6 +1314,10 @@ void main() {
 		col = mix(col, cc, caK * (sky ? 0.45 : 1.0));
 		float shK = 1.0 - smoothstep(0.12, 0.45, luma(col));
 		col = mix(col, col * vec3(0.74, 0.94, 1.16), caK * 0.7 * shK * (sky ? 0.0 : 1.0));
+		// rain and night: the world sinks into a deep, calm navy blue (almost one hue, light kept)
+		float nvK = NAVY_MOOD * max(rainStrength, 1.0 - dayG) * (1.0 - cave * 0.7);
+		vec3 navyC = vec3(luma(col)) * vec3(0.62, 0.80, 1.38);
+		col = mix(col, navyC, nvK * 0.65);
 	}
 	// pale gardens: a quiet, muted grey-green mood on the land (less colour, slightly dimmer)
 	if (IS_OW && !sky && isEyeInWater == 0) {
