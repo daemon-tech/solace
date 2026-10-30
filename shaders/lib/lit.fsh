@@ -230,6 +230,12 @@ void main() {
 		ambient = mix(ambient, ambN, twA * 0.8);
 	}
 	vec3 sunCol = mix(sunNight, sunDay, day);
+	{
+		// smooth shading at range: far away the shade side keeps a deeper blue-teal so hills still read as lit and shaded
+		float farS = smoothstep(32.0, 140.0, length(cwpos - cameraPosition)) * SMOOTH_SHADING * FAR_SHADE;
+		ambient *= mix(vec3(1.0), vec3(0.70, 0.84, 1.02), farS * (1.0 - lb) * day);
+		sunCol *= 1.0 + 0.12 * farS * day;
+	}
 #if WARM_COOL > 0
 	{
 		// warm-cool contrast: sunlit faces lean a touch warm, shade leans soft sky-blue; stronger with a lower sun

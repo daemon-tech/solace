@@ -143,7 +143,9 @@ const float sunPathRotation = -25.0;
 #define FROST_TIPS 0.6 // [0.0 0.3 0.6 1.0] in snowy lands the tops of tree crowns wear a soft pale frost
 #define SMOOTH_SHADING 1.0 // [0.0 0.5 1.0] 0 = stepped cel light bands, 1 = soft smooth light with colour contrast
 #define SUN_GLARE 0.6 // [0.0 0.3 0.6 1.0] bright glow and soft radial streaks around the sun
-#define NAVY_MOOD 0.6 // [0.0 0.3 0.6 1.0] rain and night sink into a deep navy-blue mood
+#define NAVY_MOOD 0.8 // [0.0 0.3 0.6 0.8 1.0] rain and night sink into a deep navy-blue mood
+#define NAVY_RAIN 1.6 // [1.0 1.3 1.6 2.0] how much stronger rain turns navy than night
+#define FAR_SHADE 1.0 // [0.0 0.5 1.0 1.5] far hills keep deep blue-teal shade sides with smooth shading
 #define COOL_AIR 0.6 // [0.0 0.3 0.6 0.8 1.0] the whole world sits in a clear, cool blue-cyan air; shade leans deep blue-teal
 #define CANOPY_DEPTH 0.6 // [0.0 0.3 0.6 1.0] leaves deep inside and under a canopy turn a cooler deep green, outer leaves stay bright
 #define LEAF_SHEEN 0.6 // [0.0 0.3 0.6 1.0] calm soft sheen on sunlit canopy tops, like painted highlights

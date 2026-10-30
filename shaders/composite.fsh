@@ -1315,9 +1315,11 @@ void main() {
 		float shK = 1.0 - smoothstep(0.12, 0.45, luma(col));
 		col = mix(col, col * vec3(0.74, 0.94, 1.16), caK * 0.7 * shK * (sky ? 0.0 : 1.0));
 		// rain and night: the world sinks into a deep, calm navy blue (almost one hue, light kept)
-		float nvK = NAVY_MOOD * max(rainStrength, 1.0 - dayG) * (1.0 - cave * 0.7);
-		vec3 navyC = vec3(luma(col)) * vec3(0.62, 0.80, 1.38);
-		col = mix(col, navyC, nvK * 0.65);
+		// rain weighs heavier than night: a rainy day turns clearly deep blue, not grey
+		float nvR = rainStrength * NAVY_RAIN, nvN = 1.0 - dayG;
+		float nvK = NAVY_MOOD * clamp(max(nvR, nvN), 0.0, 1.0) * (1.0 - cave * 0.7);
+		vec3 navyC = vec3(luma(col)) * mix(vec3(0.62, 0.80, 1.38), vec3(0.46, 0.70, 1.42), clamp(nvR - nvN * 0.5, 0.0, 1.0));
+		col = mix(col, navyC, nvK * mix(0.82, 0.88, clamp(nvR, 0.0, 1.0))); // night: almost one navy hue, like rain
 	}
 	// pale gardens: a quiet, muted grey-green mood on the land (less colour, slightly dimmer)
 	if (IS_OW && !sky && isEyeInWater == 0) {

@@ -489,3 +489,7 @@ option.SUN_GLARE=Sun Glare
 option.SUN_GLARE.comment=A bright soft glow and a few still radial streaks around the sun when you can see it. 0 turns it off.
 option.NAVY_MOOD=Navy Rain and Night
 option.NAVY_MOOD.comment=Rain and night sink into a deep, calm navy-blue mood. 0 keeps their normal colours.
+option.NAVY_RAIN=Navy Rain Weight
+option.NAVY_RAIN.comment=How much stronger rainy weather turns deep navy blue than the night does.
+option.FAR_SHADE=Far Shading
+option.FAR_SHADE.comment=With smooth shading, far hills keep deep blue-teal shade sides so light and shade still read at range.
