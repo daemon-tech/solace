@@ -1787,6 +1787,13 @@ void main() {
 		uw = mix(uw * vec3(0.30, 0.36, 0.55), uw, uwDay);
 		col = mix(col * vec3(0.55, 0.85, 1.15) + vec3(0.0, 0.05, 0.14), uw, clamp(f * 0.95 + 0.18, 0.0, 0.9));
 		{
+			// clear cyan near the surface, settling into a calm dark blue toward the depths below
+			float vyD = (mat3(gbufferModelViewInverse) * vdir).y;
+			float deepK = smoothstep(0.20, -0.55, vyD) * smoothstep(4.0, 28.0, dist);
+			col = mix(col, vec3(0.03, 0.14, 0.34) * mix(0.45, 1.0, uwDay), deepK * 0.60);
+			col = mix(col, vec3(0.26, 0.84, 0.96) * mix(0.35, 1.0, uwDay), smoothstep(-0.10, 0.45, vyD) * 0.22);
+		}
+		{
 			// looking up: the water brightens gently toward the sunlit surface (soft vertical light gradient)
 			float upG = smoothstep(-0.1, 0.8, (mat3(gbufferModelViewInverse) * vdir).y);
 			col = mix(col, vec3(0.62, 0.90, 0.96) * mix(0.35, 1.0, uwDay), upG * 0.22);
@@ -1808,7 +1815,7 @@ void main() {
 			float rays = smoothstep(0.55, 0.85, vnoise(rq * vec2(1.0, 0.25) * 2.0 + vnoise(rq * 0.5) * 0.6));
 			float upw = smoothstep(-0.3, 0.6, wd.y);
 			float dayU = clamp(dot(safeNormalize(sunPosition, upPosition), safeNormalize(upPosition, vec3(0, 1, 0))) * 3.0 + 0.2, 0.0, 1.0);
-			col += vec3(0.60, 0.90, 1.0) * celBandSoft(rays * upw, 3, 0.7) * 0.16 * dayU * UNDERWATER_RAYS * smoothstep(1.0, 10.0, min(lin, 40.0));
+			col += vec3(0.60, 0.92, 1.0) * celBandSoft(rays * upw, 3, 0.7) * 0.28 * dayU * UNDERWATER_RAYS * smoothstep(1.0, 10.0, min(lin, 40.0));
 		}
 #endif
 	}
