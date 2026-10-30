@@ -887,7 +887,7 @@ void main() {
 		float vf = 1.0 - exp(-seg * 0.030 * (0.35 + depthB));
 		vf *= smoothstep(10.0, 40.0, lin) * (1.0 - smoothstep(far * 0.85, far, lin) * 0.5);
 		vf = celBandSoft(clamp(vf, 0.0, 1.0), 4, 0.5);
-		vec3 vc = mix(mix(fogSky, vec3(0.74, 0.84, 0.97), 0.45), vec3(0.16, 0.20, 0.36), 1.0 - dayFactor(sunPosition, upPosition));
+		vec3 vc = mix(mix(fogSky, vec3(0.80, 0.92, 0.99), 0.6), vec3(0.16, 0.20, 0.36), 1.0 - dayFactor(sunPosition, upPosition));
 		col = mix(col, vc, vf * VALLEY_FOG * (1.0 - rainStrength * 0.5) * (water ? 0.6 : 1.0));
 	}
 #endif
@@ -1153,10 +1153,10 @@ void main() {
 		// calm flat haze plane and far mountains read as stacked painted silhouettes
 		hb = mix(hb, celBandSoft(hb, 4, 0.45), 0.25 * float(MOUNTAIN_LAYERS) * smoothstep(0.02, 0.15, hb));
 #endif
-		vec3 blueC = mix(fogSky, vec3(0.66, 0.80, 0.97), 0.55) * mix(0.55, 1.0, dayG);
+		vec3 blueC = mix(fogSky, vec3(0.64, 0.86, 0.98), 0.65) * mix(0.55, 1.0, dayG);
 		// far land first loses its detail (contrast pulled toward a calm mid tone), then turns light blue
 		float apK = DISTANCE_BLUE * (1.0 - 0.6 * duskG);
-		vec3 flatC = mix(vec3(luma(col)), col, 0.55) * 0.5 + blueC * 0.5;
+		vec3 flatC = mix(vec3(luma(col)), col, 0.7) * 0.45 + blueC * 0.55;
 		col = mix(col, flatC, smoothstep(0.0, 0.6, hb) * min(apK * 1.4, 0.8));
 		col = mix(col, blueC, hb * min(apK * 1.15, 0.85));
 		// forests: blue depth haze already between nearby trunks

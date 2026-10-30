@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.34.2
 
 ### Changes
+- **Cyan distance and valley mist**: far land fades into a paler, clearer cyan instead of grey-blue, the low valley mist is a little denser and lies higher, and the view past the world edge from high spots now settles into a soft blue-teal that matches the cyan horizon instead of a dark grey band.
 - **Azure day sky**: the clear day sky is a deeper azure overhead that flows into a clear cyan near the horizon, with much less white glare along the horizon line.
 - **Pale blue air**: distant land now softly fades into a pale cool blue with distance, and a calm low mist lies in valleys and over rivers (Aerial Perspective, Distance Blue and Valley Fog are on by default again).
 - **Underwater light beams**: under water, soft slanted beams of light fall from the surface along the sun direction and sway slowly (Underwater Rays setting).

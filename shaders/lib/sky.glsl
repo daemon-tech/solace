@@ -19,12 +19,12 @@ void biomeSky(inout vec3 zen, inout vec3 hor, float k) {
 // instead of pale sky, so it never reads as a fog wall; stays sky-coloured right at the horizon line (seamless edge)
 vec3 celBelowHorizon(vec3 col, float hv, float day, float rain) {
 	if (hv >= 0.0) return col;
-	vec3 land = mix(vec3(0.07, 0.09, 0.14), vec3(0.36, 0.45, 0.42), day);
+	vec3 land = mix(vec3(0.07, 0.09, 0.14), vec3(0.42, 0.62, 0.74), day); // day: a soft blue-teal far-land tone that sits with the cyan horizon
 	land = mix(land, vec3(luma(land)) * vec3(0.92, 0.97, 1.04), rain * 0.5) * mix(1.0, 0.85, rain);
 	land = mix(land, col * 0.8, 0.35 * (1.0 - rain)); // rain: do not pull the pale overcast sky back in
 	land *= mix(1.0, 0.8, rain); // the rain veil drawn on top brightens it again, so start a bit darker
 	float k = smoothstep(0.0, mix(0.22, 0.165, rain), -hv); // rain: start a little closer to the horizon, same smooth ramp
-	return mix(col, land, k * k * (3.0 - 2.0 * k) * mix(0.75, 0.9, rain));
+	return mix(col, land, k * k * (3.0 - 2.0 * k) * mix(mix(0.75, 0.55, day), 0.9, rain));
 }
 vec3 celSkyImpl(vec3 dir, vec3 sunView, vec3 upView, float rain, bool discs) {
 	vec3 up = safeNormalize(upView, vec3(0, 1, 0));
