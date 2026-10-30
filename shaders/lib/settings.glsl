@@ -26,7 +26,7 @@
 #define GRASS_SWAY 0.07 // [0.0 0.05 0.07 0.10 0.15]
 #define GRASS_SWAY_SPEED 1.2 // [0.6 1.2 2.0]
 #define TORCH_STRENGTH 0.9 // [0.5 0.6 0.75 0.9 1.0]
-#define SOFT_CLOUDS // cloud style: on = painted soft clouds on a sky plane, off = cubic block clouds (default)
+#define SOFT_CLOUDS // cloud style: on = painted soft clouds on a sky plane (default), off = cubic block clouds
 #define CLOUD_LAYERS // three cubic cloud layers at different heights and speeds (parallax)
 #define CLOUD_PUFFY // low cloud layer: big rounded soft puffs instead of block cells
 #define CLOUD_LOW // low layer: bigger, faster, softer-lit (casts soft ground shadows)
