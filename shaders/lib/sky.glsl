@@ -51,9 +51,9 @@ vec3 celSkyImpl(vec3 dir, vec3 sunView, vec3 upView, float rain, bool discs) {
 	vec3 mid = mix(zen, hor, 0.5);
 	// sunset gold/orange vs sunrise peach/rose; replaces (not averages) the blue palette
 	// layered: a warm glowing horizon, a coral middle and a soft rose-lilac above it
-	vec3 dZen = mix(vec3(0.880, 0.560, 0.480), vec3(0.62, 0.70, 0.90), morning); // sunrise: soft blue above
-	vec3 dMid = mix(vec3(0.950, 0.520, 0.240), vec3(0.93, 0.72, 0.74), morning); // sunrise: soft rose middle
-	vec3 dHor = mix(vec3(0.960, 0.560, 0.120), vec3(1.00, 0.86, 0.64), morning); // sunrise: pale gold near the sun
+	vec3 dZen = mix(vec3(0.640, 0.540, 0.860), vec3(0.62, 0.70, 0.90), morning); // sunrise: soft blue above
+	vec3 dMid = mix(vec3(0.960, 0.640, 0.500), vec3(0.93, 0.72, 0.74), morning); // sunrise: soft rose middle
+	vec3 dHor = mix(vec3(0.980, 0.700, 0.280), vec3(1.00, 0.86, 0.64), morning); // sunrise: pale gold near the sun
 	// anti-sun side at dusk: soft violet/rose band ("belt of Venus")
 	// hot dry lands (savanna, desert): the evening sky settles into a calm soft peach instead of deep orange
 	float hotD = sbHot * (1.0 - morning);
@@ -134,7 +134,7 @@ vec3 celHorizon(vec3 dir, vec3 sunView, vec3 upView, float rain) {
 	hor = mix(hor, vec3(0.46, 0.83, 0.99), day * (1.0 - dusk) * SKY_BRIGHT);
 	hor = mix(hor, vec3(0.80, 0.88, 0.96), SKY_SUN_GLOW * day * (1.0 - dusk) * facing * facing * facing * facing * 0.45);
 	{ vec3 zDummy = hor; biomeSky(zDummy, hor, day * (1.0 - smoothstep(0.0, 0.6, dusk) * 0.7)); }
-	vec3 dHor = mix(vec3(0.960, 0.560, 0.120), vec3(1.00, 0.78, 0.56), morning);
+	vec3 dHor = mix(vec3(0.980, 0.700, 0.280), vec3(1.00, 0.78, 0.56), morning);
 	dHor = mix(dHor, vec3(0.97, 0.76, 0.58), sbHot * (1.0 - morning) * 0.75);
 	vec3 belt = mix(vec3(0.62, 0.42, 0.66), vec3(0.70, 0.58, 0.80), morning);
 	hor = mix(hor, mix(belt * 1.05, dHor, facing), smoothstep(0.0, 0.6, dusk) * DUSK_SKY);

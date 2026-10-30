@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.34.2
 
 ### Changes
+- **Gold and violet sunsets**: evening skies glow a warm gold at the horizon and rise through soft peach into a gentle pink-violet overhead, instead of deep orange all the way up.
 - **Clouds keep their colour**: clouds (block clouds and painted clouds) are kept out of bloom, sun glare and the colour grades, so they no longer blow out to white, especially at dusk.
 - **Ochre sandstorms**: deserts, badlands and savannas fade out of the navy rain mood, so sandstorms keep their warm ochre dust instead of turning navy-grey.
 - **Calm sandstorms**: bad weather over deserts now raises a dense, calm ochre dust wall that swallows the distance (Sandstorm is on by default again), with only faint drifting streaks instead of busy lines.
