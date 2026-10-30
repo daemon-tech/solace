@@ -891,7 +891,7 @@ void main() {
 		vf = max(vf, lowK * (1.0 - exp(-lin * 0.014)) * 0.85);
 		vf *= smoothstep(6.0, 30.0, lin) * (1.0 - smoothstep(far * 0.85, far, lin) * 0.5);
 		vf = smoothstep(0.0, 1.0, clamp(vf, 0.0, 1.0)); // smooth, no visible steps
-		vec3 vc = mix(mix(fogSky, vec3(0.80, 0.92, 0.99), 0.6), vec3(0.16, 0.20, 0.36), 1.0 - dayFactor(sunPosition, upPosition));
+		vec3 vc = mix(mix(fogSky, vec3(0.92, 0.96, 1.0), 0.8), vec3(0.16, 0.20, 0.36), 1.0 - dayFactor(sunPosition, upPosition));
 		col = mix(col, vc, vf * VALLEY_FOG * (1.0 - rainStrength * 0.5) * (water ? 0.6 : 1.0));
 	}
 #endif
