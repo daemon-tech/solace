@@ -885,8 +885,12 @@ void main() {
 		float seg = lin * inside;
 		float depthB = clamp((Ht - 0.5 * (lo + min(hi, Ht))) / 10.0, 0.0, 1.0); // denser near the valley floor
 		float vf = 1.0 - exp(-seg * 0.030 * (0.35 + depthB));
-		vf *= smoothstep(10.0, 40.0, lin) * (1.0 - smoothstep(far * 0.85, far, lin) * 0.5);
-		vf = celBandSoft(clamp(vf, 0.0, 1.0), 4, 0.5);
+		// land lying low in the valleys sits inside the mist: a soft veil that grows with distance,
+		// so valley floors between hills read misty from above and from inside the valley
+		float lowK = smoothstep(Ht + 3.0, Ht - 7.0, wY);
+		vf = max(vf, lowK * (1.0 - exp(-lin * 0.014)) * 0.85);
+		vf *= smoothstep(6.0, 30.0, lin) * (1.0 - smoothstep(far * 0.85, far, lin) * 0.5);
+		vf = smoothstep(0.0, 1.0, clamp(vf, 0.0, 1.0)); // smooth, no visible steps
 		vec3 vc = mix(mix(fogSky, vec3(0.80, 0.92, 0.99), 0.6), vec3(0.16, 0.20, 0.36), 1.0 - dayFactor(sunPosition, upPosition));
 		col = mix(col, vc, vf * VALLEY_FOG * (1.0 - rainStrength * 0.5) * (water ? 0.6 : 1.0));
 	}
