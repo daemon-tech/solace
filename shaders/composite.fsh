@@ -1010,7 +1010,11 @@ void main() {
 			}
 			glow += lg * 0.25 * (l == 0 ? 0.30 : (l == 1 ? 0.35 : (l == 2 ? 0.35 : 0.45))); // widest level: soft sun glow
 		}
-		col += glow * 0.70 * (BLOOM_STRENGTH * STYLE_K) * mix(0.5, 1.6, max(duskG, 0.0)) * (1.0 - cloudM);
+		// low sun (sunrise/sunset): a capped, peach-gold glow instead of a white wash along the horizon; midday unchanged
+		float bLow = smoothstep(0.0, 1.0, max(duskG, 0.0));
+		glow = mix(glow, vec3(luma(glow)) * vec3(1.0, 0.80, 0.56), bLow * 0.8);
+		col += glow * 0.70 * (BLOOM_STRENGTH * STYLE_K) * mix(0.5, 0.6, bLow) * (1.0 - cloudM)
+		       * mix(1.0, 1.0 - smoothstep(0.55, 0.92, luma(col)), bLow); // already bright sky near the low sun gets no extra white
 	}
 #endif
 #ifdef GODRAYS
