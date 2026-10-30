@@ -18,8 +18,9 @@ float fbmAA(vec2 p) {
 	for (int i = 0; i < 5; i++) { s += a * mix(vnoise(p), 0.5, smoothstep(0.25, 0.5, fw)); p = p * 2.03 + 17.1; fw *= 2.03; a *= 0.5; }
 	return s;
 }
-/* RENDERTARGETS: 0 */
+/* RENDERTARGETS: 0,2 */
 layout(location = 0) out vec4 outColor;
+layout(location = 1) out vec4 outFlag; // a = 0.25 marks painted cloud pixels (bloom and grades skip them)
 uniform int renderStage;
 void main() {
 	// vanilla star quads would draw over our clouds (white dots at sunrise): Solace draws its own stars
@@ -85,6 +86,7 @@ void main() {
 #endif
 	}
 	// after-rain rainbow is painted in composite (over clouds and far hills)
+	float cloudFlag = 0.0;
 #ifdef SOFT_CLOUDS
 	// soft, puffy cel cumulus on a sky plane (replaces blocky vanilla clouds)
 	{
@@ -109,9 +111,11 @@ void main() {
 				vec3 cc = mix(under, top, lit);
 				cc = mix(cc, vec3(luma(cc)) * 0.8, rainStrength * 0.6);
 				col = mix(col, cc, mask * 0.97);
+				cloudFlag = step(0.02, mask); // whole cloud incl. soft edges, so no bloomed blotches inside
 			}
 		}
 	}
 #endif
 	outColor = vec4(col, 1.0);
+	outFlag = vec4(0.0, 0.0, 0.0, 0.25 * cloudFlag);
 }

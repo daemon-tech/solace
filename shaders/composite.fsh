@@ -992,6 +992,8 @@ void main() {
 		col = mix(col, col * 1.25 + vec3(0.30, 0.34, 0.46) * (sky ? 1.0 : 0.6), fl);
 	}
 #endif
+	// cloud pixels (flag a = 0.25 in colortex2): kept out of bloom, sun glare and the colour grades so they never blow out
+	float cloudM = 1.0 - step(0.06, abs(texture(colortex2, uv).a - 0.25));
 #ifdef BLOOM
 	// soft wide glow: bright areas from three blurred mip levels (smooth, colour-preserving, no ring specks)
 	{
@@ -1009,7 +1011,7 @@ void main() {
 			}
 			glow += lg * 0.25 * (l == 0 ? 0.30 : (l == 1 ? 0.35 : (l == 2 ? 0.35 : 0.45))); // widest level: soft sun glow
 		}
-		col += glow * 0.70 * (BLOOM_STRENGTH * STYLE_K) * mix(0.5, 1.6, max(duskG, 0.0));
+		col += glow * 0.70 * (BLOOM_STRENGTH * STYLE_K) * mix(0.5, 1.6, max(duskG, 0.0)) * (1.0 - cloudM);
 	}
 #endif
 #ifdef GODRAYS
@@ -1041,7 +1043,7 @@ void main() {
 				float streak = pow(abs(cos(ga * 3.0 + 0.35)), 28.0) + 0.6 * pow(abs(cos(ga * 5.0 + 1.2)), 48.0);
 				float vis = step(1.0, texture(depthtex0, clamp(suv, 0.0, 1.0)).r) * (1.0 - rainStrength);
 				float glare = exp(-gr * 7.0) * 0.55 + streak * exp(-gr * 3.2) * 0.30;
-				col += mix(rc, vec3(1.0), 0.5) * glare * vis * SUN_GLARE * (1.0 - 0.5 * duskG);
+				col += mix(rc, vec3(1.0), 0.5) * glare * vis * SUN_GLARE * (1.0 - 0.5 * duskG) * (1.0 - cloudM);
 			}
 #ifdef CANOPY_RAYS
 			// sun beams through trees: when the sun sits behind a broken canopy, long soft beams fan out
@@ -1325,6 +1327,7 @@ void main() {
 	}
 	// cool air: the whole scene leans into a clear blue-cyan light (brightness kept), and the darker tones
 	// sink into a deep blue-teal instead of grey, so shade reads as cool air rather than dirt
+	vec3 preCA = col;
 	if (IS_OW && isEyeInWater == 0) {
 		float caK = COOL_AIR * mix(0.75, 1.0, dayG) * (1.0 - 0.6 * duskG);
 		vec3 cc = col * vec3(0.84, 0.99, 1.17);
@@ -1334,11 +1337,14 @@ void main() {
 		col = mix(col, col * vec3(0.74, 0.94, 1.16), caK * 0.7 * shK * (sky ? 0.0 : 1.0));
 		// rain and night: the world sinks into a deep, calm navy blue (almost one hue, light kept)
 		// rain weighs heavier than night: a rainy day turns clearly deep blue, not grey
-		float nvR = rainStrength * NAVY_RAIN, nvN = 1.0 - dayG;
+		// hot dry lands (desert, badlands, savanna, sandstorms) keep their ochre dust: no navy rain there (smooth biome fade)
+		float hotNv = max(smoothstep(1.3, 1.8, bTemp) * (1.0 - smoothstep(0.05, 0.3, bRain)), max(sbHot, sbMesa));
+		float nvR = rainStrength * NAVY_RAIN * (1.0 - hotNv), nvN = 1.0 - dayG;
 		float nvK = NAVY_MOOD * clamp(max(nvR, nvN), 0.0, 1.0) * (1.0 - cave * 0.7);
 		nvK *= 1.0 - 0.85 * smoothstep(0.06, 0.28, col.r - col.b) * smoothstep(0.08, 0.3, luma(col)); // torch and fire light stay warm orange in the navy
 		vec3 navyC = vec3(luma(col)) * mix(vec3(0.62, 0.80, 1.38), vec3(0.46, 0.70, 1.42), clamp(nvR - nvN * 0.5, 0.0, 1.0));
 		col = mix(col, navyC, nvK * mix(0.82, 0.88, clamp(nvR, 0.0, 1.0))); // night: almost one navy hue, like rain
+		col = mix(col, preCA, cloudM); // clouds keep their own authored colour
 	}
 	// pale gardens: a quiet, muted grey-green mood on the land (less colour, slightly dimmer)
 	if (IS_OW && !sky && isEyeInWater == 0) {
@@ -1360,9 +1366,8 @@ void main() {
 	if (!sky) {
 		vec3 pre = col;
 		col = grade(col) * bTint;
-		// clouds: the evening grade leaves them alone, so they keep the colour of the evening sky
-		float cloudF = 1.0 - step(0.06, abs(texture(colortex2, uv).a - 0.25));
-		col = mix(col, pre, cloudF * duskG);
+		// clouds: the grade leaves them alone, so they keep their own colour (no blow-out to white)
+		col = mix(col, pre, cloudM);
 		// particles (splash mist, smoke, clouds of dust): pale ones stay neutral white, never sand-beige
 		float pf = texture(colortex2, uv).a;
 		if (pf > 0.4 && pf < 0.8) {

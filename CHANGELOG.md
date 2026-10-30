@@ -6,6 +6,8 @@ All builds tested in the real client with screenshots.
 ## 0.34.2
 
 ### Changes
+- **Clouds keep their colour**: clouds (block clouds and painted clouds) are kept out of bloom, sun glare and the colour grades, so they no longer blow out to white, especially at dusk.
+- **Ochre sandstorms**: deserts, badlands and savannas fade out of the navy rain mood, so sandstorms keep their warm ochre dust instead of turning navy-grey.
 - **Calm sandstorms**: bad weather over deserts now raises a dense, calm ochre dust wall that swallows the distance (Sandstorm is on by default again), with only faint drifting streaks instead of busy lines.
 - **Desert sky**: over deserts and other hot, dry lands the day sky turns a soft violet overhead and settles into a warm peach toward the horizon.
 - **Valley mist you can see**: low land between hills now sits inside a soft pale veil that grows with distance, so valley floors read misty from hilltops and from inside the valley; the mist is smooth, without visible steps.
