@@ -1285,6 +1285,16 @@ void main() {
 		coolC *= luma(col) / max(luma(coolC), 1e-4);
 		col = mix(col, coolC, mbK * mix(0.6, 1.0, smoothstep(8.0, 64.0, lin)));
 	}
+	// cool air: the whole scene leans into a clear blue-cyan light (brightness kept), and the darker tones
+	// sink into a deep blue-teal instead of grey, so shade reads as cool air rather than dirt
+	if (IS_OW && isEyeInWater == 0) {
+		float caK = COOL_AIR * mix(0.75, 1.0, dayG) * (1.0 - 0.6 * duskG);
+		vec3 cc = col * vec3(0.84, 0.99, 1.17);
+		cc *= luma(col) / max(luma(cc), 1e-4);
+		col = mix(col, cc, caK * (sky ? 0.45 : 1.0));
+		float shK = 1.0 - smoothstep(0.12, 0.45, luma(col));
+		col = mix(col, col * vec3(0.74, 0.94, 1.16), caK * 0.7 * shK * (sky ? 0.0 : 1.0));
+	}
 	// pale gardens: a quiet, muted grey-green mood on the land (less colour, slightly dimmer)
 	if (IS_OW && !sky && isEyeInWater == 0) {
 		vec3 paleC = mix(vec3(luma(col)), col, 0.35) * vec3(0.94, 0.99, 0.96) * 0.90;

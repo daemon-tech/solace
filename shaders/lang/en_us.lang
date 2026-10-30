@@ -481,3 +481,5 @@ option.SAVANNA_GOLD=Savanna Gold
 option.SAVANNA_GOLD.comment=In savannas and other hot, dry lands the grass keeps a warm golden-olive tone instead of meadow green. 0 turns it off.
 option.FROST_TIPS=Frosted Tree Tops
 option.FROST_TIPS.comment=In snowy lands the tops of tree crowns wear a soft pale frost. 0 turns it off.
+option.COOL_AIR=Cool Air
+option.COOL_AIR.comment=The whole world sits in a clear, cool blue-cyan light and shade turns a deep blue-teal. 0 keeps the warmer classic look.
