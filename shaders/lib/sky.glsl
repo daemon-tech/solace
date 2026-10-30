@@ -23,6 +23,8 @@ vec3 celBelowHorizon(vec3 col, float hv, float day, float rain) {
 	land = mix(land, vec3(luma(land)) * vec3(0.92, 0.97, 1.04), rain * 0.5) * mix(1.0, 0.85, rain);
 	land = mix(land, col * 0.8, 0.35 * (1.0 - rain)); // rain: do not pull the pale overcast sky back in
 	land *= mix(1.0, 0.8, rain); // the rain veil drawn on top brightens it again, so start a bit darker
+	// snowfall: below the horizon keeps the soft white-grey of the snow overcast (no dark band under a pale sky)
+	land = mix(land, col * 0.92, clamp(rain * sbCold, 0.0, 1.0) * 0.8);
 	float k = smoothstep(0.0, mix(0.22, 0.165, rain), -hv); // rain: start a little closer to the horizon, same smooth ramp
 	return mix(col, land, k * k * (3.0 - 2.0 * k) * mix(mix(0.75, 0.55, day), 0.9, rain));
 }
