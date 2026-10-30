@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.34.2
 
 ### Changes
+- **Rain clouds**: in rain the painted clouds turn a calm slate blue by day and a dark navy at night instead of staying bright white, a little darker still in thunderstorms and a soft cool grey-white during snowfall.
 - **Spotlight beams in rain**: the light beams through rain clouds are narrower, brighter and gently slanted, so they read as calm spotlight shafts falling from gaps in the overcast.
 - **Readable snowy nights**: in snowy lands at night and during snowfall the darkest tones lift gently, so snowy hills stay readable inside the calm navy mood (Snowy Night Lift setting).
 - **More open sky between clouds**: the painted clouds leave a little more clear blue between the puffs, so each cumulus reads on its own.

@@ -6,6 +6,7 @@ uniform mat4 gbufferProjectionInverse;
 uniform vec3 sunPosition;
 uniform vec3 upPosition;
 uniform float rainStrength;
+uniform float thunderStrength;
 uniform float wetness;
 uniform float viewWidth;
 uniform float viewHeight;
@@ -109,7 +110,12 @@ void main() {
 				vec3 under = mix(vec3(0.12, 0.13, 0.30), vec3(0.64, 0.77, 0.94), dayC); // light-blue undersides
 				under = mix(under, vec3(0.82, 0.54, 0.50), clamp(dusk * 1.2, 0.0, 1.0));
 				vec3 cc = mix(under, top, lit);
-				cc = mix(cc, vec3(luma(cc)) * 0.8, rainStrength * 0.6);
+				// rain: calm slate-blue clouds by day, dark navy at night (soft clouds skip the grades, so tint them here);
+				// thunder darkens them a little more, snowfall keeps them a soft cool grey-white
+				vec3 rainCl = mix(vec3(0.06, 0.08, 0.16), vec3(0.34, 0.41, 0.56), dayC) * mix(0.88, 1.08, lit);
+				rainCl = mix(rainCl, mix(vec3(0.14, 0.18, 0.30), vec3(0.66, 0.71, 0.80), dayC) * mix(0.92, 1.05, lit), sbCold);
+				rainCl *= 1.0 - 0.25 * thunderStrength;
+				cc = mix(cc, rainCl, rainStrength * 0.9);
 				col = mix(col, cc, mask * 0.92);
 				cloudFlag = step(0.02, mask); // whole cloud incl. soft edges, so no bloomed blotches inside
 			}
