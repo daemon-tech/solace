@@ -80,7 +80,7 @@
 #define GODRAYS
 #define SHORE_FOAM 0.85 // [0.0 0.5 0.85 1.0] soft white foam line washing along the shore
 #define BOUNCE_LIGHT 3 // [0 2 3 5] warm light bounced from sunlit ground onto undersides (x10 percent)
-#define AERIAL_PERSPECTIVE 0 // [0 2 4 6] distant land fades paler and bluer into the sky (x10 percent)
+#define AERIAL_PERSPECTIVE 4 // [0 2 4 6] distant land fades paler and bluer into the sky (x10 percent)
 #define GRASS_PART 1.0 // [0.0 0.5 1.0 1.5] grass and flowers bend softly away around your feet
 #define SUN_SPOTS 0.6 // [0.0 0.35 0.6 0.85] soft round sun spots on the ground under leaf canopies
 #define CANOPY_RAYS 1.0 // [0.0 0.5 1.0 1.5] long soft sun beams through gaps in tree canopies
@@ -101,7 +101,7 @@ const float sunPathRotation = -25.0;
 #define SKY_SUN_GLOW 0.5 // [0.0 0.25 0.5 1.0 1.5]
 #define DUSK_SKY 1.0 // [0.5 0.75 1.0]
 #define FOG_SKY_MATCH 0.8 // [0.0 0.4 0.6 0.8 1.0] fog takes the sky horizon colour
-#define VALLEY_FOG 0.0 // [0.0 0.2 0.35 0.45 0.6 0.8] calm low-lying fog layer in valleys and over rivers
+#define VALLEY_FOG 0.45 // [0.0 0.2 0.35 0.45 0.6 0.8] calm low-lying fog layer in valleys and over rivers
 #define VALLEY_FOG_HEIGHT 70.0 // [64.0 67.0 70.0 74.0 80.0] top of the valley fog layer (world height)
 #define MORNING_MIST 0.0 // [0.0 0.3 0.6 0.9] low ground mist at sunrise and in swamps
 #define BIOME_FOG 0.0 // [0.0 0.5 1.0 1.5] denser fog in swamps, dark forests, cold biomes
@@ -174,7 +174,7 @@ const float sunPathRotation = -25.0;
 #define WATER_SPLASH // rings and foam bursts around the player in water, foam where falling water lands
 #define WATER_SPLASH_AMT 1.0 // [0.0 0.5 1.0 1.5]
 #define MOUNTAIN_LAYERS 0 // [0 1 2 3 4] far ridges fade in soft steps like stacked silhouettes
-#define DISTANCE_BLUE 0.0 // [0.0 0.2 0.35 0.5 0.6 0.75] far mountains fade to soft blue
+#define DISTANCE_BLUE 0.5 // [0.0 0.2 0.35 0.5 0.6 0.75] far mountains fade to soft blue
 #define TIME_GRADING // per time-of-day colour grading (sunrise, noon, golden hour, blue hour, night)
 #define TIME_GRADING_STRENGTH 1.0 // [0.0 0.5 1.0 1.5]
 #define WEATHER_FX // rain fog, sandstorms in hot dry biomes, snow haze

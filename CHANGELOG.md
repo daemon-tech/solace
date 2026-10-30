@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.34.2
 
 ### Changes
+- **Pale blue air**: distant land now softly fades into a pale cool blue with distance, and a calm low mist lies in valleys and over rivers (Aerial Perspective, Distance Blue and Valley Fog are on by default again).
 - **Smooth shading**: light now falls off in one soft, smooth gradient instead of visible light bands; contrast comes from colour, with neutral lit faces and deep blue-teal shade (Smooth Shading setting, 0 brings back stepped bands).
 - **Outlines off by default**: shapes render clean and painted without edge lines; outlines stay available in the Outline settings.
 - **Sun glare**: a bright soft glow with gentle radial streaks around the sun, plus stronger default bloom and light rays (Sun Glare setting).
