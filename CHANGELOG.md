@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.34.2
 
 ### Changes
+- **More open sky between clouds**: the painted clouds leave a little more clear blue between the puffs, so each cumulus reads on its own.
 - **Big soft painted clouds**: Soft Clouds are now on by default: large, softly shaded cumulus with pale tops and light-blue undersides instead of flat blocky slabs; they turn peach at sunset and settle into calm dark shapes at night (block clouds stay available in the Clouds menu).
 - **One clean sun glow**: the older Sun Halo is off by default, since Sun Glare already draws the soft glow around the sun; the sun no longer gets a doubled wide haze (Sun Halo stays in the menu).
 - **Whiter valley mist**: the mist lying in valleys is a softer near-white, so it stands out from the blue distance haze.

@@ -94,7 +94,7 @@ void main() {
 		if (w.y > 0.015) {
 			vec2 cp = w.xz / w.y * 0.9 + vec2(frameTimeCounter * 0.004, 0.0); // big cumulus
 			float d = fbmAA(cp * 1.3);
-			float cov = mix(0.56, 0.44, CLOUD_COVER);
+			float cov = mix(0.56, 0.44, CLOUD_COVER) + 0.04; // painted clouds: a little more open sky between the puffs
 			float mask = smoothstep(cov, cov + 0.06 + 0.25 * smoothstep(0.1, 1.0, length(fwidth(cp))), d) * smoothstep(0.015, 0.12, w.y);
 			if (mask > 0.0) {
 				vec3 sunW = normalize(mat3(gbufferModelViewInverse) * sunPosition);
