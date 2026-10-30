@@ -55,7 +55,7 @@ vec3 celSkyImpl(vec3 dir, vec3 sunView, vec3 upView, float rain, bool discs) {
 	// sunset gold/orange vs sunrise peach/rose; replaces (not averages) the blue palette
 	// layered: a warm glowing horizon, a coral middle and a soft rose-lilac above it
 	vec3 dZen = mix(vec3(0.640, 0.540, 0.860), vec3(0.62, 0.70, 0.90), morning); // sunrise: soft blue above
-	vec3 dMid = mix(vec3(0.960, 0.640, 0.500), vec3(0.93, 0.72, 0.74), morning); // sunrise: soft rose middle
+	vec3 dMid = mix(vec3(0.960, 0.640, 0.500), vec3(0.95, 0.78, 0.64), morning); // sunrise: soft peach middle
 	vec3 dHor = mix(vec3(0.980, 0.700, 0.280), vec3(1.00, 0.86, 0.64), morning); // sunrise: pale gold near the sun
 	// anti-sun side at dusk: soft violet/rose band ("belt of Venus")
 	// hot dry lands (savanna, desert): the evening sky settles into a calm soft peach instead of deep orange

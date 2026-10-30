@@ -1243,8 +1243,8 @@ void main() {
 		vec3 cLit = mix(vec3(0.20, 0.22, 0.46), vec3(1.0, 1.0, 0.98), cDay);
 		vec3 cShade = mix(vec3(0.13, 0.14, 0.32), vec3(0.84, 0.88, 0.96), cDay); // soft pale undersides by day
 		float cMorn = ((sunAngle > 0.75 || sunAngle < 0.25) ? 1.0 : 0.0);
-		cLit = mix(cLit, mix(vec3(1.0, 0.80, 0.55), vec3(1.0, 0.84, 0.80), cMorn), cDusk * 0.75); // sunrise: peach-rose, not gold
-		cShade = mix(cShade, mix(vec3(0.92, 0.56, 0.46), vec3(0.86, 0.60, 0.64), cMorn), cDusk * 0.7); // warm coral undersides, never pale grey-mauve
+		cLit = mix(cLit, mix(vec3(1.0, 0.80, 0.55), vec3(1.0, 0.86, 0.66), cMorn), cDusk * 0.75); // sunrise: soft peach-gold
+		cShade = mix(cShade, mix(vec3(0.92, 0.56, 0.46), vec3(0.88, 0.68, 0.56), cMorn), cDusk * 0.7); // warm coral undersides, never pale grey-mauve
 		float hotC = sbHot * cDusk * (1.0 - cMorn); // hot dry lands: soft peach evening clouds
 		cLit = mix(cLit, vec3(1.0, 0.90, 0.82), clamp(hotC * 1.6, 0.0, 1.0));
 		cShade = mix(cShade, vec3(0.95, 0.80, 0.76), clamp(hotC * 1.6, 0.0, 1.0));
@@ -1254,7 +1254,7 @@ void main() {
 		cLit = mix(cLit, mix(vec3(0.07, 0.09, 0.17), vec3(0.38, 0.45, 0.60), cDay), rainStrength * 0.85);
 		cShade = mix(cShade, mix(vec3(0.05, 0.07, 0.14), vec3(0.30, 0.37, 0.51), cDay), rainStrength * 0.85);
 		float toSun = max(dot(rd, sunW), 0.0);
-		vec3 rimC = mix(vec3(1.0, 0.72, 0.42), vec3(1.0, 0.74, 0.66), cMorn) * cDusk * (1.0 - rainStrength);
+		vec3 rimC = mix(vec3(1.0, 0.72, 0.42), vec3(1.0, 0.80, 0.58) * 0.6, cMorn) * cDusk * (1.0 - rainStrength); // sunrise: calmer rim, no blow-out near the sun
 		float pxA = 2.0 / (gbufferProjection[1][1] * viewHeight); // angle of one pixel
 #ifdef CLOUD_HIGH
 		if (sky) {
