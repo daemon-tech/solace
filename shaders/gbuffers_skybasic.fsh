@@ -61,6 +61,11 @@ void main() {
 			h = 0.0; // no square band dots with soft stars
 			vec3 sc = mix(vec3(0.86, 0.90, 1.0), vec3(1.0, 0.93, 0.82), step(0.7, hash12(cell.zy + 5.0)));
 			col = mix(col, sc, clamp((disc + halo) * breathe * on, 0.0, 1.0) * night * (1.0 - rainStrength));
+			// many small faint stars between the bright ones: a fine, still second layer (no twinkle)
+			vec3 c2 = floor(sd * 150.0); float h2 = hash12(c2.xy + c2.z * 19.3);
+			vec3 f2 = fract(sd * 150.0) - 0.5; f2 -= dot(f2, nS) * nS;
+			float s2 = (1.0 - smoothstep(0.10, 0.24, length(f2))) * step(0.91, h2) * mix(0.30, 0.65, hash12(c2.yz + 2.0));
+			col = mix(col, vec3(0.84, 0.89, 1.0), s2 * night * (1.0 - rainStrength));
 		}
 #else
 		if (h > 0.9965) col = mix(col, vec3(0.95, 0.95, 1.0), night * (1.0 - rainStrength));

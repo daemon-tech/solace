@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.34.2
 
 ### Changes
+- **Starry nights**: clear nights show many more stars: a fine, still layer of small faint stars fills the sky between the bright soft ones, and fades at dawn, dusk and in rain.
 - **Orange torch light**: torches, lanterns and fire cast a saturated orange glow, and their light pools stay warm orange inside the navy night and rain (Orange Torch Light setting).
 - **Cherry blossoms at night**: pink crowns sink into the dark with the rest of the trees instead of glowing pale lavender.
 - **Blue rain air**: rain fills the distance with a thick, calm deep-blue veil (Rain Fog is on by default again), lighter at night so the land stays readable, and by day a few broad soft pale light beams fall through gaps in the rain clouds (Rain Light Beams setting); the beams are broad and bright enough to read clearly while staying calm.
