@@ -92,7 +92,7 @@ void main() {
 	{
 		vec3 w = mat3(gbufferModelViewInverse) * dir;
 		if (w.y > 0.015) {
-			vec2 cp = w.xz / w.y * 1.6 + vec2(frameTimeCounter * 0.006, 0.0);
+			vec2 cp = w.xz / w.y * 0.9 + vec2(frameTimeCounter * 0.004, 0.0); // big cumulus
 			float d = fbmAA(cp * 1.3);
 			float cov = mix(0.56, 0.44, CLOUD_COVER);
 			float mask = smoothstep(cov, cov + 0.06 + 0.25 * smoothstep(0.1, 1.0, length(fwidth(cp))), d) * smoothstep(0.015, 0.12, w.y);
@@ -100,17 +100,17 @@ void main() {
 				vec3 sunW = normalize(mat3(gbufferModelViewInverse) * sunPosition);
 				// self-shadow: density a little toward the sun -> lit tops, soft undersides
 				float d2 = fbmAA(cp * 1.3 + sunW.xz * 0.10 + vec2(0.0, 0.06));
-				float lit = celBand(clamp((d - d2) * 5.0 + 0.55 + (d - cov) * 1.5, 0.0, 1.0), 3);
+				float lit = smoothstep(0.15, 0.85, clamp((d - d2) * 5.0 + 0.60 + (d - cov) * 1.8, 0.0, 1.0)); // soft painted shading
 				float sunH = dot(safeNormalize(sunPosition, up), up);
 				float dayC = clamp(sunH * 4.0 + 0.4, 0.0, 1.0);
 				float dusk = clamp(1.0 - abs(sunH) * 5.0, 0.0, 1.0);
-				vec3 top = mix(vec3(0.20, 0.22, 0.45), vec3(1.0, 1.0, 0.98), dayC);
-				top = mix(top, mix(vec3(1.0, 0.82, 0.58), vec3(1.0, 0.85, 0.80), ((sunAngle > 0.75 || sunAngle < 0.25) ? 1.0 : 0.0)), dusk * 0.85); // sunrise: peach-rose
-				vec3 under = mix(vec3(0.12, 0.13, 0.30), vec3(0.66, 0.74, 0.88), dayC);
-				under = mix(under, vec3(0.78, 0.52, 0.55), dusk * 0.7);
+				vec3 top = mix(vec3(0.20, 0.22, 0.45), vec3(0.80, 0.85, 0.92), dayC); // soft pale tops, not near-white
+				top = mix(top, mix(vec3(1.0, 0.82, 0.58), vec3(1.0, 0.85, 0.80), ((sunAngle > 0.75 || sunAngle < 0.25) ? 1.0 : 0.0)), clamp(dusk * 1.3, 0.0, 1.0)); // sunrise: peach-rose; dusk tops stay warm
+				vec3 under = mix(vec3(0.12, 0.13, 0.30), vec3(0.64, 0.77, 0.94), dayC); // light-blue undersides
+				under = mix(under, vec3(0.82, 0.54, 0.50), clamp(dusk * 1.2, 0.0, 1.0));
 				vec3 cc = mix(under, top, lit);
 				cc = mix(cc, vec3(luma(cc)) * 0.8, rainStrength * 0.6);
-				col = mix(col, cc, mask * 0.97);
+				col = mix(col, cc, mask * 0.92);
 				cloudFlag = step(0.02, mask); // whole cloud incl. soft edges, so no bloomed blotches inside
 			}
 		}
