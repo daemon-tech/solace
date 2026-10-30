@@ -119,6 +119,8 @@ vec3 celSkyImpl(vec3 dir, vec3 sunView, vec3 upView, float rain, bool discs) {
 	col = mix(col, vec3(luma(col)) * 0.7, rain * 0.6);
 	// rain: the whole sky settles into one calm slate overcast (no bright blue gaps), navy at night
 	col = mix(col, mix(vec3(0.07, 0.09, 0.18), vec3(0.32, 0.39, 0.53), day) * mix(0.92, 1.05, clamp(h, 0.0, 1.0)), rain * 0.75 * (1.0 - sbCold * 0.5));
+	// rain by day: a calm, lighter band of light low on the horizon under the overcast
+	col = mix(col, vec3(0.56, 0.64, 0.78), (1.0 - smoothstep(0.0, 0.20, abs(h))) * rain * day * (1.0 - sbCold) * (1.0 - 0.5 * thunderStrength) * 0.45);
 	// cold lands: snowfall overcast settles into a gentle cool white instead of a dull grey
 	col = mix(col, vec3(0.80, 0.84, 0.90) * mix(0.3, 1.0, day), rain * sbCold * 0.55);
 	// thunderstorm: the overcast sinks a calm step darker and cooler, so storms read heavier than rain
@@ -152,6 +154,7 @@ vec3 celHorizon(vec3 dir, vec3 sunView, vec3 upView, float rain) {
 	float g = hv >= 0.0 ? 1.0 - smoothstep(0.0, 0.30, pow(max(hv, 0.0), 0.8)) : 1.0 - smoothstep(0.0, 0.45, -hv);
 	hor = mix(hor, vec3(0.78, 0.88, 0.98), g * day * (1.0 - smoothstep(0.0, 0.6, dusk)) * (1.0 - rain) * 0.45);
 	hor = mix(hor, vec3(luma(hor)) * 0.7, rain * 0.6);
+	hor = mix(hor, vec3(0.56, 0.64, 0.78), (1.0 - smoothstep(0.0, 0.20, abs(hv))) * rain * day * (1.0 - sbCold) * (1.0 - 0.5 * thunderStrength) * 0.45);
 	hor = mix(hor, hor * vec3(0.70, 0.74, 0.86), thunderStrength * rain);
 	return celBelowHorizon(hor, hv, day, rain);
 }
