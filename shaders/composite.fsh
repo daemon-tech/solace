@@ -1192,16 +1192,16 @@ void main() {
 	}
 #ifdef WEATHER_FX
 #if RAIN_SHAFTS > 0
-	// rain by day: a few broad, soft pale beams fall through gaps in the overcast, drifting very slowly
+	// rain (day and, dimmer and bluer, night): a few broad, soft pale beams fall through gaps in the overcast, drifting very slowly
 	if (isEyeInWater == 0) {
-		float rsK = rainStrength * (1.0 - smoothstep(1.3, 1.8, bTemp)) * (1.0 - max(1.0 - smoothstep(0.05, 0.3, bTemp), sbCold)) * dayFactor(sunPosition, upPosition) * (1.0 - cave);
+		float rsK = rainStrength * (1.0 - smoothstep(1.3, 1.8, bTemp)) * (1.0 - max(1.0 - smoothstep(0.05, 0.3, bTemp), sbCold)) * mix(0.6, 1.0, dayFactor(sunPosition, upPosition)) * (1.0 - cave); // night rain: calm moonlit beams too
 		if (rsK > 0.001) {
 			vec3 rv = safeNormalize(mat3(gbufferModelViewInverse) * vpos, vec3(0, 0, 1));
 			float az = atan(rv.z, rv.x);
 			float bm = smoothstep(0.66, 0.84, vnoise(vec2(az * 6.0 + rv.y * 1.2 + frameTimeCounter * 0.004, 7.3))); // narrower, gently slanted spotlight beams
 			float vert = smoothstep(-0.12, 0.08, rv.y) * (1.0 - smoothstep(0.45, 0.95, rv.y));
 			float reach = sky ? 1.0 : smoothstep(20.0, far * 0.6, lin);
-			col += vec3(0.55, 0.68, 0.88) * bm * vert * reach * rsK * 0.28 * float(RAIN_SHAFTS);
+			col += mix(vec3(0.26, 0.36, 0.66), vec3(0.55, 0.68, 0.88), dayFactor(sunPosition, upPosition)) * bm * vert * reach * rsK * 0.28 * float(RAIN_SHAFTS);
 		}
 	}
 #endif

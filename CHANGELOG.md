@@ -4,6 +4,7 @@ Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All 
 All builds tested in the real client with screenshots.
 
 ## 0.34.2
+- Night rain: a few calm, dim blue moonlit beams now fall through the overcast too, like the daytime rain beams.
 - Far valley mist: from high ground, distant valley floors lie under soft pale-blue mist sheets, so hills stack into calm layers (new Far Valley Mist options).
 - Sandstorm: clouds fade away behind the dust, so the sky is one calm ochre haze instead of showing blue cloud patches.
 - Sandstorm: the ochre dust wall closes in a little sooner and denser, like a real dust storm.
