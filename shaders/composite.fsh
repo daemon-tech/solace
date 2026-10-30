@@ -1180,7 +1180,7 @@ void main() {
 #if RAIN_SHAFTS > 0
 	// rain by day: a few broad, soft pale beams fall through gaps in the overcast, drifting very slowly
 	if (isEyeInWater == 0) {
-		float rsK = rainStrength * (1.0 - smoothstep(1.3, 1.8, bTemp)) * dayFactor(sunPosition, upPosition) * (1.0 - cave);
+		float rsK = rainStrength * (1.0 - smoothstep(1.3, 1.8, bTemp)) * (1.0 - max(1.0 - smoothstep(0.05, 0.3, bTemp), sbCold)) * dayFactor(sunPosition, upPosition) * (1.0 - cave);
 		if (rsK > 0.001) {
 			vec3 rv = safeNormalize(mat3(gbufferModelViewInverse) * vpos, vec3(0, 0, 1));
 			float az = atan(rv.z, rv.x);

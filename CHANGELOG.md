@@ -4,6 +4,7 @@ Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All 
 All builds tested in the real client with screenshots.
 
 ## 0.34.2
+- Snowfall: the spotlight beams of rain clouds fade out in snowfall and cold lands, so no bright vertical streaks stand over snowy hills.
 - Rain: the sky, the block cloud layers and the gaps between clouds settle into one calm slate overcast by day (navy at night) instead of bright blue patches.
 
 ### Changes
