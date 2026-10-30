@@ -1830,6 +1830,27 @@ void main() {
 			float dayU = clamp(dot(safeNormalize(sunPosition, upPosition), safeNormalize(upPosition, vec3(0, 1, 0))) * 3.0 + 0.2, 0.0, 1.0);
 			col += vec3(0.60, 0.92, 1.0) * celBandSoft(rays * upw, 3, 0.7) * 0.28 * dayU * UNDERWATER_RAYS * smoothstep(1.0, 10.0, min(lin, 40.0));
 		}
+		{
+			// slanted light beams: soft volumetric shafts falling from the surface along the sun direction, swaying slowly
+			vec3 wd2 = mat3(gbufferModelViewInverse) * vdir;
+			vec3 Lw = mat3(gbufferModelViewInverse) * safeNormalize(sunPosition, upPosition);
+			if (Lw.y < 0.0) Lw = -Lw; // night: follow the moon
+			Lw = normalize(vec3(Lw.x * 0.55, Lw.y + 0.6, Lw.z * 0.55)); // refracted: steeper under water
+			float dayB = clamp(dot(safeNormalize(sunPosition, upPosition), safeNormalize(upPosition, vec3(0, 1, 0))) * 3.0 + 0.2, 0.0, 1.0);
+			float maxD = min((d0 >= 1.0 && !isDH) ? 32.0 : lin, 32.0);
+			float acc = 0.0;
+			float tB = frameTimeCounter * 0.04;
+			for (int i = 0; i < 16; i++) {
+				float sd = (float(i) + 0.5) / 16.0 * maxD;
+				vec3 P = cameraPosition + wd2 * sd;
+				vec2 q = P.xz - Lw.xz / Lw.y * P.y; // project along the beam onto a flat plane
+				float b = vnoise(q * 0.16 + vec2(tB, -tB * 0.6)) * 0.65 + vnoise(q * 0.37 - vec2(tB * 0.7, tB * 0.3)) * 0.35;
+				acc += smoothstep(0.58, 0.78, b);
+			}
+			acc /= 16.0;
+			float beamK = acc * smoothstep(0.0, 6.0, maxD) * mix(0.35, 1.0, smoothstep(-0.6, 0.5, wd2.y));
+			col += vec3(0.62, 0.94, 1.0) * beamK * 0.30 * mix(0.15, 1.0, dayB) * UNDERWATER_RAYS;
+		}
 #endif
 	}
 	col = mix(col, portalBase, portalPx * (isEyeInWater == 0 ? 0.8 : 0.0));
