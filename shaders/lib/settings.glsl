@@ -183,7 +183,7 @@ const float sunPathRotation = -25.0;
 #define WEATHER_FX // rain fog, sandstorms in hot dry biomes, snow haze
 #define RAIN_FOG 1.0 // [0.0 0.5 1.0 1.5]
 #define RAIN_SHAFTS 2 // [0 1 2 3] soft pale light beams through the rain clouds by day
-#define SANDSTORM 0.0 // [0.0 0.5 1.0]
+#define SANDSTORM 1.0 // [0.0 0.5 1.0]
 #define WET_GROUND // darker glossy ground and puddle sheen in rain
 #define WET_GROUND_STRENGTH 1.0 // [0.0 0.5 1.0 1.5]
 #define MILKY_WAY 1.0 // [0.0 0.5 1.0 1.5] faint Milky Way band at night

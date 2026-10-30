@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.34.2
 
 ### Changes
+- **Calm sandstorms**: bad weather over deserts now raises a dense, calm ochre dust wall that swallows the distance (Sandstorm is on by default again), with only faint drifting streaks instead of busy lines.
 - **Desert sky**: over deserts and other hot, dry lands the day sky turns a soft violet overhead and settles into a warm peach toward the horizon.
 - **Valley mist you can see**: low land between hills now sits inside a soft pale veil that grows with distance, so valley floors read misty from hilltops and from inside the valley; the mist is smooth, without visible steps.
 - **Starry nights**: clear nights show many more stars: a fine, still layer of small faint stars fills the sky between the bright soft ones, and fades at dawn, dusk and in rain.
