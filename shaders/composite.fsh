@@ -894,6 +894,17 @@ void main() {
 		col = mix(col, vc, vf * VALLEY_FOG * (1.0 - rainStrength * 0.5) * (water ? 0.6 : 1.0));
 	}
 #endif
+#ifdef MIST_SHEETS
+	// far valley mist sheets: on distant land lying in a fixed low height band (valley floors), a soft pale-blue
+	// height fog, so from high spots the valleys read as layers of mist between the hills (no noise, no motion)
+	if (IS_OW && isEyeInWater == 0 && d0 < 1.0 && cave < 0.5) {
+		float bandK = 1.0 - smoothstep(MIST_SHEET_TOP - 6.0, MIST_SHEET_TOP + 2.0, wY);
+		float farK = smoothstep(48.0, 220.0, lin) * smoothstep(MIST_SHEET_TOP - 10.0, MIST_SHEET_TOP + 30.0, cameraPosition.y);
+		float dayM = dayFactor(sunPosition, upPosition);
+		vec3 msC = mix(mix(fogSky, vec3(0.80, 0.88, 0.97), 0.6), vec3(0.14, 0.18, 0.32), 1.0 - dayM);
+		col = mix(col, msC, bandK * farK * MIST_SHEETS * (1.0 - rainStrength * 0.6) * mix(0.5, 1.0, dayM) * (water ? 0.7 : 1.0));
+	}
+#endif
 #ifdef OUTLINES
 #if EDGE_STYLE > 0
 	// no ink underwater (avoids dark rings around bubbles/particles)

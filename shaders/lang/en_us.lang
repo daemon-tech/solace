@@ -499,3 +499,7 @@ option.TORCH_ORANGE=Orange Torch Light
 option.TORCH_ORANGE.comment=Torches, lanterns and fire cast a saturated orange glow that stays warm at night and in rain. 0 keeps the softer neutral warm light.
 option.SNOW_NIGHT_LIFT=Snowy Night Lift
 option.SNOW_NIGHT_LIFT.comment=In snowy lands at night and during snowfall the darkest tones lift gently, so the land stays readable inside the navy mood.
+option.MIST_SHEETS=Far Valley Mist
+option.MIST_SHEETS.comment=Soft pale-blue mist lying on far valley floors, seen from high ground.
+option.MIST_SHEET_TOP=Far Valley Mist Height
+option.MIST_SHEET_TOP.comment=Top of the far valley mist band (world height).

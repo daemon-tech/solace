@@ -241,3 +241,5 @@ const float sunPathRotation = -25.0;
 #define GOLDEN_RIM_STRENGTH 1.0 // [0.5 0.75 1.0 1.25 1.5]
 #define CAVE_HAZE 0.0 // [0.0 0.3 0.6 0.9 1.2] glowing haze around lava and lights underground
 #define MOON_RIM 1.0 // [0.0 0.5 1.0 1.5] faint silver moon fringe on characters at night
+#define MIST_SHEETS 0.6 // [0.0 0.3 0.45 0.6 0.75] far valley mist sheets seen from high ground
+#define MIST_SHEET_TOP 74.0 // [70.0 74.0 78.0] top of the far valley mist band (world height)
