@@ -858,7 +858,7 @@ void main() {
 	}
 #endif
 	// low ground mist: sunrise everywhere, swamps all day; hugs the ground, never on near water
-	if (isEyeInWater == 0 && d0 < 1.0 && MORNING_MIST > 0.0) {
+	if (IS_OW && isEyeInWater == 0 && d0 < 1.0 && MORNING_MIST > 0.0) {
 		float amt = MORNING_MIST * max(morningW, bSwamp * BIOME_MOOD * 0.35);
 		// soft and smooth: a gentle low veil that thins with height, slowly drifting in broad swells (no bands, no noise),
 		// lit warm peach toward the rising sun and cool white away from it
@@ -875,7 +875,7 @@ void main() {
 	// valley fog: a calm, low-lying layer below VALLEY_FOG_HEIGHT that pools in valleys and over rivers all day.
 	// Analytic slab: only the part of the view ray below the layer top gathers fog, thicker deeper down,
 	// so hills rise out of it and looking down into a valley reads layered. Soft bands, no noise.
-	if (isEyeInWater == 0 && d0 < 1.0 && cave < 0.5) {
+	if (IS_OW && isEyeInWater == 0 && d0 < 1.0 && cave < 0.5) {
 		float Ht = VALLEY_FOG_HEIGHT - 63.0 + gRef;
 		float cY = cameraPosition.y;
 		float lo = min(cY, wY), hi = max(cY, wY);

@@ -5,6 +5,7 @@ All builds tested in the real client with screenshots.
 
 ## 0.34.2
 - Jungle sky: the bright mint horizon is now a calm azure-cyan.
+- Nether and End: overworld morning and valley mist no longer wash a pale veil over lava lakes and the void.
 - Biome skies: jungles get a deep azure sky over a humid cyan horizon instead of green-teal; swamps a calm misty teal-grey instead of olive.
 - Rain by day: a calm, lighter band of light sits low on the horizon under the overcast.
 - Night rain: a few calm, dim blue moonlit beams now fall through the overcast too, like the daytime rain beams.
