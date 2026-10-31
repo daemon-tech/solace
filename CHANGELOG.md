@@ -4,6 +4,7 @@ Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All 
 All builds tested in the real client with screenshots.
 
 ## 0.34.2
+- Rain: drops read as soft, slightly translucent pale-blue streaks; snow is unchanged.
 - Jungle sky: the bright mint horizon is now a calm azure-cyan.
 - Nether and End: overworld morning and valley mist no longer wash a pale veil over lava lakes and the void.
 - Biome skies: jungles get a deep azure sky over a humid cyan horizon instead of green-teal; swamps a calm misty teal-grey instead of olive.
