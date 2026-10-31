@@ -1349,7 +1349,8 @@ void main() {
 		float caK = COOL_AIR * mix(0.75, 1.0, dayG) * (1.0 - 0.6 * duskG);
 		vec3 cc = col * vec3(0.84, 0.99, 1.17);
 		cc *= luma(col) / max(luma(cc), 1e-4);
-		col = mix(col, cc, caK * (sky ? 0.45 : 1.0));
+		float skyHz = sky ? (1.0 - smoothstep(0.0, 0.30, abs(dot(vdir, safeNormalize(upPosition, vec3(0, 1, 0)))))) * dayG * (1.0 - duskG) : 0.0;
+		col = mix(col, cc, caK * (sky ? 0.45 * (1.0 - 0.8 * skyHz) : 1.0));
 		float shK = 1.0 - smoothstep(0.12, 0.45, luma(col));
 		col = mix(col, col * vec3(0.74, 0.94, 1.16), caK * 0.7 * shK * (sky ? 0.0 : 1.0));
 		// rain and night: the world sinks into a deep, calm navy blue (almost one hue, light kept)
@@ -1390,6 +1391,17 @@ void main() {
 		float hzW = sky ? skyW * 0.42 : (water ? pow(smoothstep(24.0, wEnd * 0.8, lin), 1.5) * 0.65 : pow(smoothstep(wEnd * 0.45, wEnd * 0.95, lin), 1.5) * 0.42);
 		vec3 hzC = mix(fogSky, vec3(0.97, 0.99, 1.0), 0.6);
 		col = mix(col, hzC, hzW * HORIZON_HAZE * mix(0.25, 1.0, dayG) * (1.0 - rainStrength * 0.5));
+	}
+	// clear-day horizon: sky pixels near the horizon roll off softly into a calm sky-blue instead of clipping to mint
+	if (IS_OW && sky && isEyeInWater == 0) {
+		float hzR = (1.0 - smoothstep(0.0, 0.35, abs(dot(vdir, safeNormalize(upPosition, vec3(0, 1, 0)))))) * dayG * (1.0 - smoothstep(0.0, 0.45, duskG)) * (1.0 - rainStrength) * (1.0 - cloudM) * HORIZON_SOFT;
+		if (hzR > 0.001) {
+			// calm sky-blue (about 115/187/239), following the sky's own brightness a little
+			vec3 blueC = vec3(0.45, 0.73, 0.94) * clamp(luma(col) / 0.80, 0.88, 1.04);
+			vec3 sc = col / (1.0 + max(col - 0.60, 0.0) * 1.2); // soft shoulder: highlights compress instead of clipping
+			sc = mix(sc, blueC, 0.75);
+			col = mix(col, sc, hzR);
+		}
 	}
 	// the sky is authored in its final palette: no grading / scene cast on sky pixels
 	if (!sky) {

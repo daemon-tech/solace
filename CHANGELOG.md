@@ -20,6 +20,7 @@ All builds tested in the real client with screenshots.
 - Rain: the sky, the block cloud layers and the gaps between clouds settle into one calm slate overcast by day (navy at night) instead of bright blue patches.
 
 ### Changes
+- **Soft sky-blue horizon**: on clear days the sky near the horizon rolls off softly into a calm sky-blue instead of clipping to a glaring mint-cyan; land and the sunrise/sunset colours are unchanged (Soft Horizon setting).
 - **Peach-gold sunrise glow**: at sunrise and sunset the bloom stays a softer peach-gold glow instead of washing the horizon next to the sun to white; midday bloom and sun glare are unchanged.
 - **Soft snowfall by day**: in snowfall, snowy ground and cold lands stay a soft cool white-grey instead of turning bright blue; rain elsewhere and the navy night are unchanged.
 - **Rain clouds**: in rain the painted clouds turn a calm slate blue by day and a dark navy at night instead of staying bright white, a little darker still in thunderstorms and a soft cool grey-white during snowfall.
