@@ -1659,7 +1659,7 @@ void main() {
 				vec3 rc = mix(ca, cb, sb);
 				float feet = smoothstep(-0.03, 0.22, dot(vdir, upR));
 				float terr = (d0 >= 1.0) ? 1.0 : smoothstep(far * 0.35, far * 0.85, lin) * 0.7;
-				float a = body * feet * terr * rK * float(RAINBOW) * 0.9;
+				float a = body * feet * terr * rK * float(RAINBOW) * 0.55;
 				col = mix(col, clamp(col * rc * 1.18 + rc * 0.10, 0.0, 1.0), a); // tinted veil that keeps the sky's light
 			}
 		}
