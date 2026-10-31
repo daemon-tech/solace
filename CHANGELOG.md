@@ -4,6 +4,7 @@ Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All 
 All builds tested in the real client with screenshots.
 
 ## 0.34.2
+- Jungle sky: the bright mint horizon is now a calm azure-cyan.
 - Biome skies: jungles get a deep azure sky over a humid cyan horizon instead of green-teal; swamps a calm misty teal-grey instead of olive.
 - Rain by day: a calm, lighter band of light sits low on the horizon under the overcast.
 - Night rain: a few calm, dim blue moonlit beams now fall through the overcast too, like the daytime rain beams.
