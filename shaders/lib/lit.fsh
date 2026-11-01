@@ -566,6 +566,13 @@ void main() {
 			float dcK = DUSK_CROWN_GLOW * clamp(golden / max(GOLDEN_HOUR_TINT * max(day, 0.05), 0.01), 0.0, 1.0) * smoothstep(0.05, 0.35, light) * (1.0 - rainStrength) * (1.0 - smoothstep(0.04, 0.16, albedo.r - albedo.g));
 			col = mix(col, col * vec3(1.34, 1.12, 0.74), clamp(dcK, 0.0, 0.8));
 		}
+		// dusk backlight: at sunrise and sunset grass and leaves seen against the low sun glow through in warm amber, so fields light up toward the sun
+		if (isLeaf == 1 || isFoliage == 1 || isFoliage == 2) {
+			vec3 dbV = safeNormalize(cwpos - cameraPosition, vec3(0, 0, 1));
+			vec3 dbS = safeNormalize(mat3(gbufferModelViewInverse) * sunPosition, vec3(0, 1, 0));
+			float dbK = DUSK_BACKLIGHT * clamp(golden / max(GOLDEN_HOUR_TINT * max(day, 0.05), 0.01), 0.0, 1.0) * smoothstep(0.55, 0.92, dot(dbV, dbS)) * smoothstep(0.6, 0.9, lm.y) * (1.0 - rainStrength) * (1.0 - smoothstep(0.04, 0.16, albedo.r - albedo.g));
+			col = mix(col, col * vec3(1.55, 1.28, 0.62) + albedo.rgb * vec3(0.06, 0.04, 0.0), clamp(dbK, 0.0, 0.75));
+		}
 		// golden hour light: at sunrise and sunset sun-facing walls, roofs, rock and paths catch a warm peach light against the cool shade
 		if (isFoliage == 0 && isLeaf == 0) {
 			float glK = GOLDEN_LIGHT * clamp(golden / max(GOLDEN_HOUR_TINT, 0.01), 0.0, 1.0) * light * (1.0 - rainStrength);

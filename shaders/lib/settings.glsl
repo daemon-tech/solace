@@ -174,6 +174,7 @@ const float sunPathRotation = -25.0;
 #define RAIN_TEAL 1.0 // [0.0 0.5 1.0] in rain land takes a calm, deep blue-teal instead of violet-grey slate
 #define NIGHT_TEAL 1.0 // [0.0 0.5 1.0] at night land takes a deep, saturated blue-teal instead of violet-grey navy
 #define VALLEY_SHADE 1.0 // [0.0 0.5 1.0] by day darker shade on open land settles from vivid green into a calm blue-teal
+#define DUSK_BACKLIGHT 1.0 // [0.0 0.5 1.0] at sunrise and sunset grass and leaves against the low sun glow through in warm amber
 #define SOFT_AQUA 1.0 // [0.0 0.5 1.0] by day the most vivid bright mint grass settles into a softer aqua-green
 #define DUSK_CROWN_GLOW 1.0 // [0.0 0.5 1.0] at sunrise and sunset sun-facing crowns and grass catch a warm honey-gold glow
 #define MEADOW_PATCHES 1.0 // [0.0 0.5 1.0] open grass tops carry soft painterly patches of lighter and deeper green
