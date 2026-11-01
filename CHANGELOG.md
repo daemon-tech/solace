@@ -3,6 +3,10 @@
 Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All Rights Reserved.
 All builds tested in the real client with screenshots.
 
+## 0.34.6
+
+### Changes
+
 ## 0.34.5
 
 Richer deep forests: tree crowns sit a step darker and keep a rich teal-green instead of turning muddy.
