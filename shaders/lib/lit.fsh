@@ -482,6 +482,12 @@ void main() {
 		// warm torch pool painted over the surface (reads orange even on dark green leaves)
 		pool = torch * (1.0 - day * lm.y);
 		col = mix(col, vec3(luma(albedo.rgb) * 0.7 + 0.35) * vec3(1.0, 0.70, 0.42), clamp(pool * 0.30, 0.0, 0.35));
+		// night: the core of each torch pool turns a deep saturated orange close to the flame (pool size unchanged)
+		{
+			float coreK = smoothstep(0.62, 0.95, lm.x) * (1.0 - day) * TORCH_ORANGE;
+			coreK *= 1.0 - 0.5 * smoothstep(0.10, 0.30, col.r - col.b); // already warm wood: less extra
+			col = mix(col, col * vec3(1.40, 0.86, 0.44) + vec3(0.06, 0.02, 0.0), clamp(coreK * 0.7, 0.0, 0.7));
+		}
 		// caves and roofed rooms (little sky light): torch light reads as a calm amber island, saturated even on grey stone,
 		// strongest near the flame and fading softly with the light level
 		{

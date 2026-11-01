@@ -7,6 +7,7 @@ All builds tested in the real client with screenshots.
 
 ### Changes
 - **Readable rainy nights**: on rainy nights the darkest tones lift gently, so wet land and villages read as a calm navy instead of near black (Rainy Night Lift setting).
+- **Orange torch cores**: at night the light right around each torch turns a deeper, saturated orange, while the pools keep their size.
 
 ## 0.34.5
 
