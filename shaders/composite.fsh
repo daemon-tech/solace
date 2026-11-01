@@ -1442,6 +1442,12 @@ void main() {
 			float bsK = BLUE_SHADE * dayG * (1.0 - duskG) * (water ? 0.0 : 1.0) * (1.0 - smoothstep(0.16, 0.42, bsL)) * smoothstep(0.02, 0.08, col.g - max(col.r, col.b)) * (1.0 - cave);
 			col = mix(col, vec3(bsL) * vec3(0.42, 1.04, 1.70), clamp(bsK, 0.0, 0.9));
 		}
+		// shade lift: by day the very darkest shade on land lifts a gentle step toward a luminous painted blue-teal instead of near black
+		{
+			float slL = luma(col);
+			float slK = SHADE_LIFT * dayG * (1.0 - duskG) * (water ? 0.0 : 1.0) * (1.0 - smoothstep(0.05, 0.25, slL)) * (1.0 - cave) * (1.0 - 0.7 * rainStrength);
+			col = mix(col, col * 1.30 + vec3(0.025, 0.040, 0.065), clamp(slK, 0.0, 1.0));
+		}
 		// clouds: the grade leaves them alone, so they keep their own colour (no blow-out to white)
 		col = mix(col, pre, cloudM);
 		// particles (splash mist, smoke, clouds of dust): pale ones stay neutral white, never sand-beige

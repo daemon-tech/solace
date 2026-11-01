@@ -563,3 +563,5 @@ option.FLOWER_POP=Flower Pop
 option.FLOWER_POP.comment=Flower petals keep vivid, saturated colour under the cool grade, so meadows sparkle with bright dots of colour. 0 turns it off.
 option.BLUE_SHADE=Blue Shade
 option.BLUE_SHADE.comment=By day the deepest foliage shade leans from vivid green-black into a calm, painted blue-teal. 0 turns it off.
+option.SHADE_LIFT=Shade Lift
+option.SHADE_LIFT.comment=By day the very darkest shade on land lifts a gentle step toward a luminous painted blue-teal instead of near black. 0 turns it off.
