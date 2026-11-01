@@ -571,3 +571,5 @@ option.MEADOW_AIR=Meadow Air
 option.MEADOW_AIR.comment=By day bright open greens settle from saturated pure green into a lighter, airy blue-green, like grass seen through clear cool air. 0 turns it off.
 option.DEEP_FOREST=Deep Forest Tone
 option.DEEP_FOREST.comment=By day tree crowns sit a clear step darker overall, so forests read as deep, calm masses against bright meadows. 0 turns it off.
+option.FOREST_DEPTH=Forest Depth
+option.FOREST_DEPTH.comment=By day tree crowns settle a calm step darker, so forests read as deep masses against bright meadows. 0 turns it off.

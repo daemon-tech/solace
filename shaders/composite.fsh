@@ -1454,6 +1454,11 @@ void main() {
 			float slK = SHADE_LIFT * dayG * (1.0 - duskG) * (water ? 0.0 : 1.0) * (1.0 - smoothstep(0.05, 0.25, slL)) * (1.0 - cave) * (1.0 - 0.7 * rainStrength);
 			col = mix(col, col * 1.30 + vec3(0.025, 0.040, 0.065), clamp(slK, 0.0, 1.0));
 		}
+		// forest depth: by day tree crowns settle a calm step darker after the shade lifts, so forests read as deep masses against bright meadows
+		{
+			float fdK = FOREST_DEPTH * dayG * (1.0 - duskG) * (abs(texture(colortex1, uv).a - 0.5) < 0.05 ? 1.0 : 0.0) * (1.0 - cave) * (1.0 - smoothstep(0.30, 0.55, luma(col))) * (1.0 - smoothstep(60.0, 140.0, lin)) * (1.0 - 0.5 * rainStrength);
+			col *= mix(vec3(1.0), vec3(0.70, 0.74, 0.78), clamp(fdK, 0.0, 1.0));
+		}
 		// clouds: the grade leaves them alone, so they keep their own colour (no blow-out to white)
 		col = mix(col, pre, cloudM);
 		// particles (splash mist, smoke, clouds of dust): pale ones stay neutral white, never sand-beige
