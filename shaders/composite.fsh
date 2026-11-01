@@ -1469,7 +1469,7 @@ void main() {
 		// bright air highlights: by day the brightest lit land rolls up into a clean, luminous cyan-white, so sunlit slopes sparkle
 		{
 			float bhL = luma(col);
-			float bhK = BRIGHT_HIGHLIGHTS * dayG * (1.0 - duskG) * (water || sky ? 0.0 : 1.0) * smoothstep(0.45, 0.75, bhL) * (1.0 - cave) * (1.0 - 0.75 * smoothstep(0.04, 0.14, col.g - col.r) * smoothstep(0.5, 0.9, col.g - col.b + 0.5)) * (1.0 - rainStrength);
+			float bhK = BRIGHT_HIGHLIGHTS * dayG * (1.0 - duskG) * (water || sky ? 0.0 : 1.0) * smoothstep(0.45, 0.75, bhL) * (1.0 - cave) * (abs(texture(colortex1, uv).a - 0.5) < 0.05 ? 1.0 - smoothstep(-0.04, 0.02, col.r - col.g) : 1.0) * (1.0 - 0.75 * smoothstep(0.04, 0.14, col.g - col.r) * smoothstep(0.5, 0.9, col.g - col.b + 0.5)) * (1.0 - rainStrength);
 			col = mix(col, min(col * vec3(1.06, 1.08, 1.08) + vec3(0.0, 0.015, 0.03), vec3(1.0)), clamp(bhK, 0.0, 1.0));
 		}
 		// calm sand paths: by day loud orange-yellow paths, sand and planks soften into a calm warm sand, so villages sit in the cool land
