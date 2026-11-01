@@ -555,6 +555,12 @@ void main() {
 			float wsK = WET_SHEEN * rainStrength * smoothstep(0.5, 0.9, dot(n, up)) * smoothstep(0.75, 0.95, lm.y) * (1.0 - smoothstep(0.3, 0.6, lm.x));
 			col = mix(col, col * vec3(1.40, 1.62, 1.82) + vec3(0.008, 0.016, 0.026) * mix(0.4, 1.0, day), clamp(wsK, 0.0, 1.0));
 		}
+		// meadow patches: open grass tops carry soft, large painterly patches of lighter fresh and deeper cool green, so flat fields never read as one uniform sheet
+		if (grassTex) {
+			float mpN = vnoise(cwpos.xz * 0.045) * 0.65 + vnoise(cwpos.xz * 0.13 + 7.3) * 0.35;
+			float mpK = MEADOW_PATCHES * smoothstep(0.7, 0.95, dot(n, up)) * smoothstep(0.6, 0.9, lm.y);
+			col *= mix(vec3(1.0), mix(vec3(0.84, 0.92, 1.02), vec3(1.10, 1.07, 0.96), smoothstep(0.3, 0.7, mpN)), mpK);
+		}
 		// golden hour light: at sunrise and sunset sun-facing walls, roofs, rock and paths catch a warm peach light against the cool shade
 		if (isFoliage == 0 && isLeaf == 0) {
 			float glK = GOLDEN_LIGHT * clamp(golden / max(GOLDEN_HOUR_TINT, 0.01), 0.0, 1.0) * light * (1.0 - rainStrength);
