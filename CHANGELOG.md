@@ -9,6 +9,7 @@ All builds tested in the real client with screenshots.
 - **Dusk highlight roll-off**: at sunrise and sunset bright snow and cherry blossoms in the low warm sun roll off softly instead of clipping into a pale sheet, so their colour and texture stay (Dusk Highlight Roll-off setting). The rolled-off tones are gently calmed, so dusk blossoms glow a soft rose instead of a loud coral.
 - **Wet sheen**: the cool wet sheen on crowns and grass tops in rain is a step stronger, so rainy meadows and forests read clearly.
 - **Meadow patches**: open grass tops carry soft, large painterly patches of lighter fresh and deeper cool green, so flat fields never read as one uniform sheet (Meadow Patches setting).
+- **Dusk crown glow**: at sunrise and sunset sun-facing tree crowns and grass catch a calm honey-gold glow (Dusk Crown Glow setting).
 
 ## 0.35.0
 

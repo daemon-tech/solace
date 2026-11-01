@@ -561,6 +561,11 @@ void main() {
 			float mpK = MEADOW_PATCHES * smoothstep(0.7, 0.95, dot(n, up)) * smoothstep(0.6, 0.9, lm.y);
 			col *= mix(vec3(1.0), mix(vec3(0.84, 0.92, 1.02), vec3(1.10, 1.07, 0.96), smoothstep(0.3, 0.7, mpN)), mpK);
 		}
+		// dusk crown glow: at sunrise and sunset sun-facing tree crowns and grass catch a warm honey-gold glow, so forests glow at the edge of the day instead of dull olive
+		if (isLeaf == 1 || isFoliage == 1 || isFoliage == 2) {
+			float dcK = DUSK_CROWN_GLOW * clamp(golden / max(GOLDEN_HOUR_TINT * max(day, 0.05), 0.01), 0.0, 1.0) * smoothstep(0.05, 0.35, light) * (1.0 - rainStrength) * (1.0 - smoothstep(0.04, 0.16, albedo.r - albedo.g));
+			col = mix(col, col * vec3(1.34, 1.12, 0.74), clamp(dcK, 0.0, 0.8));
+		}
 		// golden hour light: at sunrise and sunset sun-facing walls, roofs, rock and paths catch a warm peach light against the cool shade
 		if (isFoliage == 0 && isLeaf == 0) {
 			float glK = GOLDEN_LIGHT * clamp(golden / max(GOLDEN_HOUR_TINT, 0.01), 0.0, 1.0) * light * (1.0 - rainStrength);

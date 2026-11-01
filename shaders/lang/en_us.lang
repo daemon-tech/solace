@@ -595,3 +595,5 @@ option.DUSK_ROLLOFF=Dusk Highlight Roll-off
 option.DUSK_ROLLOFF.comment=At sunrise and sunset bright snow and blossoms roll off softly instead of clipping into a pale sheet, so their colour and texture stay. 0 turns it off.
 option.MEADOW_PATCHES=Meadow Patches
 option.MEADOW_PATCHES.comment=Open grass tops carry soft, large painterly patches of lighter fresh and deeper cool green, so flat fields never read as one uniform sheet. 0 turns it off.
+option.DUSK_CROWN_GLOW=Dusk Crown Glow
+option.DUSK_CROWN_GLOW.comment=At sunrise and sunset sun-facing tree crowns and grass catch a calm honey-gold glow, so forests glow at the edge of the day. 0 turns it off.
