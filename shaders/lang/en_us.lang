@@ -545,3 +545,5 @@ option.TORCH_RICH=Torch-Lit Warmth
 option.TORCH_RICH.comment=At night surfaces inside a torch pool take a richer, saturated amber, so lit wood and paths glow against the navy. 0 turns it off.
 option.SOFT_SNOW=Soft Snow
 option.SOFT_SNOW.comment=By day bright snow keeps a soft cool white with only a light blue cast instead of a saturated blue sheet. 0 turns it off.
+option.CHERRY_PINK=Cherry Pink
+option.CHERRY_PINK.comment=By day cherry blossoms keep a soft pastel pink under the cool grade instead of turning white-lilac. 0 turns it off.

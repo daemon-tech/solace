@@ -526,6 +526,11 @@ void main() {
 			float tlL = luma(col);
 			col = mix(col, max(vec3(tlL) + (col - vec3(tlL)) * 1.5, 0.0) * vec3(1.10, 0.98, 0.80), clamp(tlK, 0.0, 0.8));
 		}
+		// cherry pink: by day cherry blossoms keep a soft pastel pink under the cool grade instead of turning white-lilac
+		if (isLeaf == 1) {
+			float cpK = CHERRY_PINK * day * smoothstep(0.04, 0.16, albedo.r - albedo.g) * (1.0 - 0.5 * rainStrength);
+			col = mix(col, col * vec3(1.16, 0.90, 0.78), clamp(cpK, 0.0, 1.0));
+		}
 		// crown undersides: by day the side and lower faces of tree crowns sink into a cooler deep teal, so each crown
 		// reads as a lit top over a shaded body
 		if (isLeaf == 1) col *= mix(vec3(1.0), vec3(0.78, 0.88, 0.96), CROWN_SHADE * day * (1.0 - smoothstep(-0.1, 0.6, dot(n, up))) * (1.0 - smoothstep(0.04, 0.16, albedo.r - albedo.g)));

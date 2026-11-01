@@ -14,6 +14,7 @@ All builds tested in the real client with screenshots.
 - **Gust silver**: rolling gust fronts brush open grass with a soft cool silver-green sheen that travels with the wind across whole fields (Gust Silver setting).
 - **Torch-lit warmth**: at night surfaces inside a torch pool take a richer, saturated amber, so lit walls and paths glow against the navy, also in rain (Torch-Lit Warmth setting).
 - **Soft snow**: by day sunlit snow and snowy slopes read as a soft cool white instead of a saturated blue sheet, also next to cherry groves and in ice fields (Soft Snow setting).
+- **Cherry pink**: by day cherry blossoms keep a soft pastel pink under the cool daylight instead of turning white-lilac; nights keep their calm tone (Cherry Pink setting).
 
 ## 0.34.7
 
