@@ -487,9 +487,10 @@ void main() {
 		}
 		// cool earth: by day exposed dirt and paths lose their red cast and settle into a calm, cooler umber under the blue grade
 		if (isFoliage == 0 && isLeaf == 0) {
-			float ceW = smoothstep(0.06, 0.16, albedo.r - albedo.b) * (1.0 - smoothstep(0.10, 0.22, albedo.g - albedo.b)) * (1.0 - smoothstep(0.55, 0.75, albedo.r));
+			float ceW = smoothstep(0.06, 0.16, albedo.r - albedo.b) * (1.0 - smoothstep(0.16, 0.30, albedo.g - albedo.b)) * (1.0 - smoothstep(0.55, 0.75, albedo.r));
 			float ceK = COOL_EARTH * day * ceW * smoothstep(0.6, 0.9, lm.y);
-			col = mix(col, vec3(luma(col)) * vec3(1.02, 0.98, 1.0) + (col - vec3(luma(col))) * vec3(0.55, 0.75, 0.9), clamp(ceK, 0.0, 0.8));
+			float ceL = luma(col);
+			col = mix(col, ceL * vec3(1.10, 1.04, 0.66), clamp(ceK, 0.0, 0.9)); // soft olive-umber: drops the red-pink cast but keeps a warm earthy tint, never grey
 		}
 		// vivid grass: by day open grass tops turn a rich, saturated green with a little more depth, instead of pale mint
 		if (grassTex && isGrassPlant == 0) {
