@@ -591,3 +591,5 @@ option.SLATE_CLIFFS=Slate Cliffs
 option.SLATE_CLIFFS.comment=By day shaded rock settles from a saturated periwinkle wall into a calm blue-grey slate. 0 turns it off.
 option.WET_SHEEN=Wet Sheen
 option.WET_SHEEN.comment=In rain upward-facing tree crowns and grass tops catch a soft cool wet sheen, so rainy forests keep their shape in the dark blue air. 0 turns it off.
+option.DUSK_ROLLOFF=Dusk Highlight Roll-off
+option.DUSK_ROLLOFF.comment=At sunrise and sunset bright snow and blossoms roll off softly instead of clipping into a pale sheet, so their colour and texture stay. 0 turns it off.

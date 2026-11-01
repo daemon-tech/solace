@@ -698,6 +698,13 @@ void main() {
 	}
 // deep forest tone: by day tree crowns sit a clear step darker overall, so forests read as deep, calm masses against bright meadows
 if (isLeaf == 1) col *= mix(1.0, 0.72, DEEP_FOREST * day * (1.0 - smoothstep(0.04, 0.16, albedo.r - albedo.g)) * (1.0 - 0.5 * rainStrength));
+	// dusk highlight roll-off: at sunrise and sunset bright snow and blossoms in the low warm sun were lit past white and clipped into a pale sheet; roll them off softly so their colour and texture stay
+	{
+		vec3 drS = safeNormalize(mat3(gbufferModelViewInverse) * sunPosition, vec3(0, 1, 0));
+		float drK = DUSK_ROLLOFF * smoothstep(-0.02, 0.06, drS.y) * (1.0 - smoothstep(0.25, 0.5, drS.y));
+		float drM = max(col.r, max(col.g, col.b));
+		col *= mix(1.0, (0.74 + 0.24 * (1.0 - exp(-(drM - 0.74) * 2.0))) / max(drM, 1e-3), 0.8 * drK * step(0.74, drM));
+	}
 	// dusk grass gold: last word on grass blades and tops at sunrise and sunset, a warm gold instead of fresh lime (after all other foliage tints)
 #ifdef TERRAIN_PASS
 	if (isGrassPlant == 1 || ((isFoliage == 2 || isFoliage == 1) && vcolor.g > vcolor.b * 1.15 && vcolor.g > vcolor.r * 1.05)) {

@@ -3,6 +3,11 @@
 Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All Rights Reserved.
 All builds tested in the real client with screenshots.
 
+## 0.35.1
+
+### Changes
+- **Dusk highlight roll-off**: at sunrise and sunset bright snow and cherry blossoms in the low warm sun roll off softly instead of clipping into a pale sheet, so their colour and texture stay (Dusk Highlight Roll-off setting).
+
 ## 0.35.0
 
 A mood update: deep blue-teal nights and rain with warm windows, moonlit and wet crowns that keep their shape, luminous sunlit slopes, calm slate cliffs and sand paths, and richer teal forests.
