@@ -1465,6 +1465,12 @@ void main() {
 			float vsK = VALLEY_SHADE * dayG * (1.0 - duskG) * (water || sky ? 0.0 : 1.0) * (abs(texture(colortex1, uv).a - 0.5) < 0.05 ? 0.0 : 1.0) * (1.0 - smoothstep(0.22, 0.42, vsL)) * smoothstep(0.06, 0.18, col.g - col.r) * (1.0 - cave) * (1.0 - 0.6 * rainStrength);
 			col = mix(col, vec3(vsL) * vec3(0.74, 0.98, 1.04) * 0.86, clamp(vsK * 0.5, 0.0, 0.5)); // calmer, a touch deeper
 		}
+		// night teal: at night land leaves the violet-grey navy for a deep, saturated blue-teal, torch pools kept warm
+		{
+			float ntL = luma(col);
+			float ntK = NIGHT_TEAL * (1.0 - dayG) * (1.0 - duskG) * (sky ? 0.0 : 1.0) * (1.0 - smoothstep(0.05, 0.12, col.r - col.b)) * (1.0 - cave) * (1.0 - rainStrength);
+			col = mix(col, ntL * vec3(0.40, 1.10, 1.75), clamp(ntK * 0.5, 0.0, 0.5));
+		}
 		// clouds: the grade leaves them alone, so they keep their own colour (no blow-out to white)
 		col = mix(col, pre, cloudM);
 		// particles (splash mist, smoke, clouds of dust): pale ones stay neutral white, never sand-beige

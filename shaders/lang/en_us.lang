@@ -575,3 +575,5 @@ option.FOREST_DEPTH=Forest Depth
 option.FOREST_DEPTH.comment=By day tree crowns settle a calm step darker, so forests read as deep masses against bright meadows. 0 turns it off.
 option.VALLEY_SHADE=Valley Shade
 option.VALLEY_SHADE.comment=By day the darker shade on open land loses its vivid green and settles into a calm blue-teal. 0 turns it off.
+option.NIGHT_TEAL=Night Teal
+option.NIGHT_TEAL.comment=At night land leaves the violet-grey navy for a deep, saturated blue-teal, while torch pools stay warm. 0 turns it off.

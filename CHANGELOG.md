@@ -3,6 +3,11 @@
 Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All Rights Reserved.
 All builds tested in the real client with screenshots.
 
+## 0.35.0
+
+### Changes
+- **Night teal**: at night land leaves the violet-grey navy for a deep, saturated blue-teal, while torch pools stay warm (Night Teal setting).
+
 ## 0.34.9
 
 A calm depth update: deep, dark forests against light airy meadows, painted blue-teal shade, vivid flowers and warm golden grass at dusk.
