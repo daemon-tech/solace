@@ -1374,6 +1374,8 @@ void main() {
 		vec3 navyC = vec3(luma(col)) * mix(vec3(0.62, 0.80, 1.38), vec3(0.46, 0.70, 1.42), clamp(nvR - nvN * 0.5, 0.0, 1.0));
 		// rain sky and cloud layers: a calm slate overcast instead of a saturated blue
 		if (sky) navyC = mix(navyC, vec3(luma(col)) * vec3(0.86, 0.96, 1.16), clamp(nvR - nvN * 0.5, 0.0, 1.0) * 0.8);
+		// rain by day: land turns a soft slate grey-green instead of deep blue, so grass and trees keep a hint of their colour
+		if (!sky) navyC = mix(navyC, mix(vec3(luma(col)) * vec3(0.86, 0.97, 1.08), col, 0.40), clamp(nvR, 0.0, 1.0) * dayG * RAIN_DAY_SOFT);
 		col = mix(col, navyC, nvK * mix(0.82, 0.88, clamp(nvR, 0.0, 1.0))); // night: almost one navy hue, like rain
 		// snowy nights and snowfall: gently lift the darkest tones so snowy land stays readable (navy hue kept)
 		float snowL = max(1.0 - smoothstep(0.05, 0.3, bTemp), sbCold) * max(nvN, rainStrength) * (1.0 - cave) * SNOW_NIGHT_LIFT;
