@@ -154,6 +154,7 @@ const float sunPathRotation = -25.0;
 #define LEAF_POP 1.0 // [0.0 0.5 1.0] by day leaves keep crisp texture contrast with dark gaps and bright speckles
 #define COOL_EARTH 1.0 // [0.0 0.5 1.0] by day exposed dirt and paths lose their red cast and settle into a soft olive umber
 #define CYAN_HIGHLIGHTS 1.0 // [0.0 0.5 1.0] by day the brightest sunlit grass and leaf tops roll off into a fresh cyan-white
+#define GOLDEN_SHADE 1.0 // [0.0 0.5 1.0] at sunrise and sunset faces away from the sun sink into a cool blue-teal
 #define SHADE_SIDES 0.8 // [0.0 0.4 0.8 1.0] by day faces turned away from the sun sit a step deeper in cool teal
 #define VIVID_GRASS 1.0 // [0.0 0.35 0.7 1.0] by day open grass tops turn a rich, saturated green instead of pale mint
 #define CROWN_SHADE 0.8 // [0.0 0.4 0.8 1.0] by day side and lower faces of tree crowns sink into a cooler deep teal

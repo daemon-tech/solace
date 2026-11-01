@@ -535,3 +535,5 @@ option.COOL_EARTH=Cool Earth
 option.COOL_EARTH.comment=By day exposed dirt and paths lose their red cast and settle into a calm, cooler umber under the blue grade. 0 turns it off.
 option.CYAN_HIGHLIGHTS=Cyan Highlights
 option.CYAN_HIGHLIGHTS.comment=By day the brightest sunlit grass and leaf tops roll off into a fresh cyan-white glint instead of yellow-lime. 0 turns it off.
+option.GOLDEN_SHADE=Golden Hour Shade
+option.GOLDEN_SHADE.comment=At sunrise and sunset faces turned away from the sun sink into a cool blue-teal, so warm lit sides glow against cool shade. 0 turns it off.
