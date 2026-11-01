@@ -12,6 +12,7 @@ All builds tested in the real client with screenshots.
 - **Golden hour shade**: at sunrise and sunset faces turned away from the sun sink into a cool blue-teal, so warm lit sides glow against cool shade (Golden Hour Shade setting).
 - **Shadow pools**: by day sun-facing ground and crowns caught in a tree or cliff shadow sink into a deep blue-teal, so cast shadows read crisply in forests (Shadow Pools setting).
 - **Gust silver**: rolling gust fronts brush open grass with a soft cool silver-green sheen that travels with the wind across whole fields (Gust Silver setting).
+- **Torch-lit warmth**: at night surfaces inside a torch pool take a richer, saturated amber, so lit walls and paths glow against the navy, also in rain (Torch-Lit Warmth setting).
 
 ## 0.34.7
 

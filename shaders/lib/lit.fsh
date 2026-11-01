@@ -520,6 +520,12 @@ void main() {
 			float gsK = GUST_SILVER * gsG * smoothstep(0.5, 0.9, dot(n, up)) * smoothstep(0.6, 0.9, lm.y) * mix(0.35, 1.0, day) * (1.0 - 0.5 * rainStrength);
 			col = mix(col, col * vec3(0.90, 1.12, 1.16) + vec3(0.03, 0.07, 0.08), clamp(gsK, 0.0, 0.9));
 		}
+		// torch-lit warmth: at night surfaces inside a torch pool take a richer, saturated amber, so lit wood and paths glow against the navy
+		{
+			float tlK = TORCH_RICH * (1.0 - day) * smoothstep(0.45, 0.85, lm.x);
+			float tlL = luma(col);
+			col = mix(col, max(vec3(tlL) + (col - vec3(tlL)) * 1.5, 0.0) * vec3(1.10, 0.98, 0.80), clamp(tlK, 0.0, 0.8));
+		}
 		// crown undersides: by day the side and lower faces of tree crowns sink into a cooler deep teal, so each crown
 		// reads as a lit top over a shaded body
 		if (isLeaf == 1) col *= mix(vec3(1.0), vec3(0.78, 0.88, 0.96), CROWN_SHADE * day * (1.0 - smoothstep(-0.1, 0.6, dot(n, up))) * (1.0 - smoothstep(0.04, 0.16, albedo.r - albedo.g)));

@@ -541,3 +541,5 @@ option.SHADOW_POOLS=Shadow Pools
 option.SHADOW_POOLS.comment=By day sun-facing ground caught in a tree or cliff shadow sinks into a deep blue-teal pool, so cast shadows read crisply on the land. 0 turns it off.
 option.GUST_SILVER=Gust Silver
 option.GUST_SILVER.comment=Rolling gust fronts brush open grass with a soft cool silver-green sheen, so the wind reads across whole fields. 0 turns it off.
+option.TORCH_RICH=Torch-Lit Warmth
+option.TORCH_RICH.comment=At night surfaces inside a torch pool take a richer, saturated amber, so lit wood and paths glow against the navy. 0 turns it off.
