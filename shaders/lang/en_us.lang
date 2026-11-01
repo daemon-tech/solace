@@ -525,3 +525,5 @@ option.MOONLIT_LAND=Moonlit Land
 option.MOONLIT_LAND.comment=On clear nights open land reads as a deep moonlit blue instead of grey-black, while torch light stays warm. 0 turns it off.
 option.RAIN_NIGHT_BLUE=Rainy Night Blue
 option.RAIN_NIGHT_BLUE.comment=On rainy nights land sinks into a deep, saturated rain blue instead of dark grey, while torch light stays warm. 0 turns it off.
+option.VIVID_GRASS=Vivid Grass
+option.VIVID_GRASS.comment=By day open grass tops turn a rich, saturated green with a little more depth instead of pale mint. 0 turns it off.

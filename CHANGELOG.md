@@ -10,6 +10,7 @@ All builds tested in the real client with screenshots.
 - **Crown undersides**: by day the side and lower faces of tree crowns sink into a cooler deep teal, so each crown reads as a lit top over a shaded body (Crown Undersides setting).
 - **Moonlit land**: on clear nights open land reads as a deep moonlit blue instead of grey-black, so villages and hills stay readable; torch light and lit windows stay warm and cherry blossoms keep their calm night tone (Moonlit Land setting).
 - **Rainy night blue**: on rainy nights land sinks into a deep, saturated rain blue instead of dark grey (Rainy Night Blue setting).
+- **Vivid grass**: by day open grass tops turn a rich, saturated green with more depth instead of pale mint (Vivid Grass setting).
 
 ## 0.34.6
 
