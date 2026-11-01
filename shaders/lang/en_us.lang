@@ -557,3 +557,5 @@ option.CAVE_GLOW=Cave Glow Islands
 option.CAVE_GLOW.comment=In caves torch and lava light forms warm, saturated amber islands against the dark, also by day. 0 turns it off.
 option.GOLDEN_LIGHT=Golden Hour Light
 option.GOLDEN_LIGHT.comment=At sunrise and sunset sun-facing walls, roofs, rock and paths catch a warm peach light against the cool shade. 0 turns it off.
+option.DEEP_CANOPY_MID=Deep Canopy Midtones
+option.DEEP_CANOPY_MID.comment=By day the mid tones of tree crowns settle a step darker and richer, so forests read as deep painted green while highlights stay bright. 0 turns it off.

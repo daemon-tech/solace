@@ -550,6 +550,12 @@ void main() {
 			float glK = GOLDEN_LIGHT * clamp(golden / max(GOLDEN_HOUR_TINT, 0.01), 0.0, 1.0) * light * (1.0 - rainStrength);
 			col = mix(col, col * vec3(1.22, 1.0, 0.76), clamp(glK, 0.0, 0.9));
 		}
+		// deep canopy midtones: by day the mid tones of tree crowns settle a step darker and richer, so forests read as deep painted green, highlights kept
+		if (isLeaf == 1) {
+			float dmL = luma(col);
+			float dmK = DEEP_CANOPY_MID * day * smoothstep(0.06, 0.18, dmL) * (1.0 - smoothstep(0.32, 0.55, dmL)) * (1.0 - smoothstep(0.04, 0.16, albedo.r - albedo.g));
+			col = mix(col, col * vec3(0.74, 0.80, 0.82), clamp(dmK, 0.0, 1.0));
+		}
 		// crown undersides: by day the side and lower faces of tree crowns sink into a cooler deep teal, so each crown
 		// reads as a lit top over a shaded body
 		if (isLeaf == 1) col *= mix(vec3(1.0), vec3(0.78, 0.88, 0.96), CROWN_SHADE * day * (1.0 - smoothstep(-0.1, 0.6, dot(n, up))) * (1.0 - smoothstep(0.04, 0.16, albedo.r - albedo.g)));

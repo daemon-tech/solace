@@ -165,6 +165,7 @@ const float sunPathRotation = -25.0;
 #define SUN_TRANSLUCENT 1.0 // [0.0 0.5 1.0] leaves seen against the sun glow through in a fresh luminous light green
 #define CAVE_GLOW 1.0 // [0.0 0.5 1.0] in caves torch and lava light forms warm saturated amber islands, also by day
 #define GOLDEN_LIGHT 1.0 // [0.0 0.5 1.0] at sunrise and sunset sun-facing walls, rock and paths catch a warm peach light
+#define DEEP_CANOPY_MID 1.0 // [0.0 0.5 1.0] by day the mid tones of tree crowns settle a step darker and richer
 #define SHADE_SIDES 0.8 // [0.0 0.4 0.8 1.0] by day faces turned away from the sun sit a step deeper in cool teal
 #define VIVID_GRASS 1.0 // [0.0 0.35 0.7 1.0] by day open grass tops turn a rich, saturated green instead of pale mint
 #define CROWN_SHADE 0.8 // [0.0 0.4 0.8 1.0] by day side and lower faces of tree crowns sink into a cooler deep teal

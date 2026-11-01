@@ -3,6 +3,11 @@
 Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All Rights Reserved.
 All builds tested in the real client with screenshots.
 
+## 0.34.9
+
+### Changes
+- **Deep canopy midtones**: by day the mid tones of tree crowns settle a step darker and richer, so forests read as deep painted green while sunlit highlights stay bright (Deep Canopy Midtones setting).
+
 ## 0.34.8
 
 A painterly light update: crisp leaves, luminous backlit crowns, cool shade with warm golden-hour light, calm slate cliffs, soft white snow, pastel cherry blossoms, travelling gust streaks on grass, darker forest floors and warm amber glow islands at night and in caves.
