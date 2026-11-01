@@ -1397,9 +1397,9 @@ void main() {
 		float hzR = (1.0 - smoothstep(0.0, 0.35, abs(dot(vdir, safeNormalize(upPosition, vec3(0, 1, 0)))))) * dayG * (1.0 - smoothstep(0.0, 0.45, duskG)) * (1.0 - rainStrength) * (1.0 - cloudM) * HORIZON_SOFT;
 		if (hzR > 0.001) {
 			// calm sky-blue (about 115/187/239), following the sky's own brightness a little
-			vec3 blueC = vec3(0.45, 0.73, 0.94) * clamp(luma(col) / 0.80, 0.88, 1.04);
+			vec3 blueC = vec3(0.43, 0.72, 0.94) * clamp(luma(col) / 0.80, 0.86, 1.0);
 			vec3 sc = col / (1.0 + max(col - 0.60, 0.0) * 1.2); // soft shoulder: highlights compress instead of clipping
-			sc = mix(sc, blueC, 0.75);
+			sc = mix(sc, blueC, 0.88);
 			col = mix(col, sc, hzR);
 		}
 	}

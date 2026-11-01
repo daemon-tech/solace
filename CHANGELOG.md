@@ -3,6 +3,12 @@
 Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All Rights Reserved.
 All builds tested in the real client with screenshots.
 
+## 0.34.3
+
+### Changes
+- **Brighter snowy nights**: during snowfall at night the dark tones lift a little more, so snowy hills read more clearly inside the navy mood (Snowy Night Lift now 1.0 by default).
+- **Deeper horizon blue**: on clear days the soft horizon leans a touch more into calm sky-blue.
+
 ## 0.34.2
 
 A big look update: a clear, cool painted world with soft smooth shading, big soft clouds, a glowing sun, deep navy rain and nights, calm sandstorms, pale blue distance and valley mist, brighter turquoise water and warm orange torch light. Outlines are now optional and off by default.
