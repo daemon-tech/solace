@@ -16,6 +16,7 @@ All builds tested in the real client with screenshots.
 - **Soft snow**: by day sunlit snow and snowy slopes read as a soft cool white instead of a saturated blue sheet, also next to cherry groves and in ice fields (Soft Snow setting).
 - **Cherry pink**: by day cherry blossoms keep a soft pastel pink under the cool daylight instead of turning white-lilac; nights keep their calm tone (Cherry Pink setting).
 - **Forest floor shade**: by day the ground under a dense canopy sinks into a deep, cool teal shade, so forests read darker and calmer inside (Forest Floor Shade setting).
+- **Calm stone**: grey rock and cliffs keep a cool slate grey under the blue daylight instead of turning a saturated blue wall; far mountains keep their airy blue (Calm Stone setting).
 
 ## 0.34.7
 

@@ -1363,6 +1363,12 @@ void main() {
 		}
 		float shK = 1.0 - smoothstep(0.12, 0.45, luma(col));
 		col = mix(col, col * vec3(0.74, 0.94, 1.16), caK * 0.7 * shK * (sky ? 0.0 : 1.0));
+		// calm stone: grey rock and cliffs keep a cool slate grey under the blue air instead of turning a saturated blue wall
+		{
+			float psMx = max(preCA.r, max(preCA.g, preCA.b)), psMn = min(preCA.r, min(preCA.g, preCA.b));
+			float csK = CALM_STONE * (sky || water ? 0.0 : 1.0) * max(1.0 - smoothstep(0.05, 0.14, psMx - psMn), smoothstep(1.5, 2.2, col.b / max(col.r, 0.02)) * smoothstep(0.08, 0.2, col.g - col.r) * step(col.g, col.b * 0.8)) * smoothstep(0.08, 0.25, col.b - col.r) * (1.0 - smoothstep(60.0, 120.0, lin)); // also rock the cool shade already pushed blue (near range only, far air keeps its blue)
+			col = mix(col, vec3(luma(col)) * vec3(0.86, 0.96, 1.10), clamp(csK * 0.75, 0.0, 0.75));
+		}
 		// rain and night: the world sinks into a deep, calm navy blue (almost one hue, light kept)
 		// rain weighs heavier than night: a rainy day turns clearly deep blue, not grey
 		// hot dry lands (desert, badlands, savanna, sandstorms) keep their ochre dust: no navy rain there (smooth biome fade)
