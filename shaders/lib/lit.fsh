@@ -406,6 +406,8 @@ void main() {
 		}
 	#endif
 		if (isFoliage == 1) col *= mix(vec3(1.0), vec3(1.14, 0.98, 0.78), golden * lb); // warm low sun on blades/leaves
+		// golden hour: sun-facing treetops and grass catch a clear warm gold (shaded sides stay cool green)
+		if (isFoliage == 1 || isLeaf == 1) col = mix(col, col * vec3(1.42, 1.12, 0.60) + vec3(0.045, 0.028, 0.0), clamp(golden * lb * DUSK_LEAF_GOLD * 1.4, 0.0, 0.85));
 		float fcK = FOLIAGE_CONTRAST, shK = 1.0;
 #ifdef SOFT_GRASS
 		if (isGrassPlant == 1) { fcK *= 1.0 - 0.4 * min(SOFT_GRASS_STRENGTH, 1.5); shK = 0.5; } // blades never pop out

@@ -10,6 +10,7 @@ All builds tested in the real client with screenshots.
 - **Orange torch cores**: at night the light right around each torch turns a deeper, saturated orange, while the pools keep their size.
 - **Rainy days keep their green**: in daytime rain, grass and trees turn a soft slate grey-green instead of deep blue (Rainy Day Colour setting).
 - **Deeper forests at range**: trees in the middle distance settle into a deeper, calmer blue-green instead of bright aqua (Deep Far Canopy setting).
+- **Golden hour leaves**: at sunset and sunrise, sun-facing treetops and grass catch a warm golden-green glow while shaded sides stay cool (Golden Hour Leaves setting).
 
 ## 0.34.5
 
