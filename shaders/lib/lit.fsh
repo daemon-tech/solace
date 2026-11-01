@@ -704,6 +704,7 @@ if (isLeaf == 1) col *= mix(1.0, 0.72, DEEP_FOREST * day * (1.0 - smoothstep(0.0
 		float drK = DUSK_ROLLOFF * smoothstep(-0.02, 0.06, drS.y) * (1.0 - smoothstep(0.25, 0.5, drS.y));
 		float drM = max(col.r, max(col.g, col.b));
 		col *= mix(1.0, (0.74 + 0.24 * (1.0 - exp(-(drM - 0.74) * 2.0))) / max(drM, 1e-3), 0.8 * drK * step(0.74, drM));
+		col = mix(col, vec3(luma(col)) * vec3(1.04, 0.99, 0.97), 0.35 * drK * smoothstep(0.55, 0.75, drM)); // calm the rolled-off tones: blossoms stay soft rose, not loud coral
 	}
 	// dusk grass gold: last word on grass blades and tops at sunrise and sunset, a warm gold instead of fresh lime (after all other foliage tints)
 #ifdef TERRAIN_PASS
