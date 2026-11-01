@@ -5,6 +5,8 @@ All builds tested in the real client with screenshots.
 
 ## 0.35.1
 
+A golden light update: warm amber backlit fields and honey-gold crowns at dusk, snow and blossoms that keep their colour in the low sun, painterly meadow patches, softer lawns and clearer rainy forests.
+
 ### Changes
 - **Dusk highlight roll-off**: at sunrise and sunset bright snow and cherry blossoms in the low warm sun roll off softly instead of clipping into a pale sheet, so their colour and texture stay (Dusk Highlight Roll-off setting). The rolled-off tones are gently calmed, so dusk blossoms glow a soft rose instead of a loud coral.
 - **Wet sheen**: the cool wet sheen on crowns and grass tops in rain is a step stronger, so rainy meadows and forests read clearly.
