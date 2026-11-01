@@ -527,3 +527,5 @@ option.RAIN_NIGHT_BLUE=Rainy Night Blue
 option.RAIN_NIGHT_BLUE.comment=On rainy nights land sinks into a deep, saturated rain blue instead of dark grey, while torch light stays warm. 0 turns it off.
 option.VIVID_GRASS=Vivid Grass
 option.VIVID_GRASS.comment=By day open grass tops turn a rich, saturated green with a little more depth instead of pale mint. 0 turns it off.
+option.SHADE_SIDES=Shade Sides
+option.SHADE_SIDES.comment=By day block faces turned away from the sun sit a step deeper in a cool teal, so hills and buildings read with clear form. 0 turns it off.

@@ -480,6 +480,11 @@ void main() {
 			col = mix(col, mix(vec3(luma(col)), col, 1.18), ldK); // keep the deep green rich, never muddy grey
 		}
 		if (isLeaf == 1) col *= mix(vec3(1.0), vec3(0.74, 0.88, 1.0), CANOPY_DEPTH * (1.0 - smoothstep(0.62, 0.95, lm.y)) * mix(0.5, 1.0, day));
+		// sun and shade sides: by day block faces turned away from the sun sit a step deeper in cool teal, so hills read with clear form
+		{
+			float fcK = SHADE_SIDES * day * smoothstep(0.6, 0.9, lm.y) * (1.0 - light) * (1.0 - 0.7 * rainStrength) * (isFoliage == 4 ? 0.0 : 1.0);
+			col *= mix(vec3(1.0), vec3(0.80, 0.90, 1.0), clamp(fcK, 0.0, 1.0));
+		}
 		// vivid grass: by day open grass tops turn a rich, saturated green with a little more depth, instead of pale mint
 		if (grassTex && isGrassPlant == 0) {
 			float vgK = VIVID_GRASS * day * smoothstep(0.5, 0.9, dot(n, up)) * smoothstep(0.6, 0.9, lm.y) * (1.0 - 0.6 * rainStrength);
