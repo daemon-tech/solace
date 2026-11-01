@@ -555,3 +555,5 @@ option.SUN_TRANSLUCENT=Sunlit Translucency
 option.SUN_TRANSLUCENT.comment=Leaves seen against the sun glow through in a fresh, luminous light green, so backlit crowns read light-filled. 0 turns it off.
 option.CAVE_GLOW=Cave Glow Islands
 option.CAVE_GLOW.comment=In caves torch and lava light forms warm, saturated amber islands against the dark, also by day. 0 turns it off.
+option.GOLDEN_LIGHT=Golden Hour Light
+option.GOLDEN_LIGHT.comment=At sunrise and sunset sun-facing walls, roofs, rock and paths catch a warm peach light against the cool shade. 0 turns it off.

@@ -545,6 +545,11 @@ void main() {
 			float stK = SUN_TRANSLUCENT * day * smoothstep(0.35, 0.9, dot(stV, stS)) * smoothstep(0.55, 0.9, lm.y) * (1.0 - 0.8 * rainStrength) * (1.0 - smoothstep(0.04, 0.16, albedo.r - albedo.g));
 			col = mix(col, col * vec3(1.45, 1.32, 0.42) + albedo.rgb * vec3(0.10, 0.10, 0.0), clamp(stK, 0.0, 0.9));
 		}
+		// golden hour light: at sunrise and sunset sun-facing walls, roofs, rock and paths catch a warm peach light against the cool shade
+		if (isFoliage == 0 && isLeaf == 0) {
+			float glK = GOLDEN_LIGHT * clamp(golden / max(GOLDEN_HOUR_TINT, 0.01), 0.0, 1.0) * light * (1.0 - rainStrength);
+			col = mix(col, col * vec3(1.22, 1.0, 0.76), clamp(glK, 0.0, 0.9));
+		}
 		// crown undersides: by day the side and lower faces of tree crowns sink into a cooler deep teal, so each crown
 		// reads as a lit top over a shaded body
 		if (isLeaf == 1) col *= mix(vec3(1.0), vec3(0.78, 0.88, 0.96), CROWN_SHADE * day * (1.0 - smoothstep(-0.1, 0.6, dot(n, up))) * (1.0 - smoothstep(0.04, 0.16, albedo.r - albedo.g)));
