@@ -1386,6 +1386,13 @@ void main() {
 		snowL = max(snowL, rainStrength * nvN * (1.0 - cave) * RAIN_NIGHT_LIFT * 0.8);
 		vec3 liftC = pow(max(col, 0.0), vec3(0.62)) * vec3(0.92, 0.97, 1.08) + vec3(0.025, 0.035, 0.06);
 		col = mix(col, liftC, snowL * 0.8 * (1.0 - smoothstep(0.2, 0.6, luma(col))));
+		// clear nights: open land under the sky reads as a deep moonlit blue instead of grey-black (torch light kept warm)
+		{
+			float mlK = MOONLIT_LAND * nvN * (1.0 - rainStrength) * (1.0 - cave) * (sky ? 0.0 : 1.0);
+			mlK *= (1.0 - smoothstep(0.18, 0.5, luma(col))) * (1.0 - smoothstep(0.06, 0.28, col.r - col.b));
+			vec3 mlC = pow(max(col, 0.0), vec3(0.78)) * vec3(0.70, 0.88, 1.30) + vec3(0.004, 0.012, 0.035);
+			col = mix(col, mlC, clamp(mlK, 0.0, 1.0));
+		}
 		// snowfall by day: snow settles into a soft cool white-grey (calm, low saturation)
 		col = mix(col, vec3(luma(col)) * vec3(0.93, 0.98, 1.06) * 1.04, snNv * rainStrength * 0.75);
 		col = mix(col, preCA, cloudM); // clouds keep their own authored colour
