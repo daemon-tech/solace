@@ -10,6 +10,7 @@ All builds tested in the real client with screenshots.
 - **Wet sheen**: the cool wet sheen on crowns and grass tops in rain is a step stronger, so rainy meadows and forests read clearly.
 - **Meadow patches**: open grass tops carry soft, large painterly patches of lighter fresh and deeper cool green, so flat fields never read as one uniform sheet (Meadow Patches setting).
 - **Dusk crown glow**: at sunrise and sunset sun-facing tree crowns and grass catch a calm honey-gold glow (Dusk Crown Glow setting).
+- **Soft aqua grass**: by day the most vivid bright mint grass settles into a softer aqua-green, so lit lawns glow without neon (Soft Aqua Grass setting).
 
 ## 0.35.0
 

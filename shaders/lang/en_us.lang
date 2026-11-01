@@ -597,3 +597,5 @@ option.MEADOW_PATCHES=Meadow Patches
 option.MEADOW_PATCHES.comment=Open grass tops carry soft, large painterly patches of lighter fresh and deeper cool green, so flat fields never read as one uniform sheet. 0 turns it off.
 option.DUSK_CROWN_GLOW=Dusk Crown Glow
 option.DUSK_CROWN_GLOW.comment=At sunrise and sunset sun-facing tree crowns and grass catch a calm honey-gold glow, so forests glow at the edge of the day. 0 turns it off.
+option.SOFT_AQUA=Soft Aqua Grass
+option.SOFT_AQUA.comment=By day the most vivid bright mint grass settles into a softer aqua-green, so lit lawns glow without neon. 0 turns it off.

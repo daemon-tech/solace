@@ -1487,6 +1487,12 @@ void main() {
 			float scK = SLATE_CLIFFS * dayG * (1.0 - duskG) * (water || sky ? 0.0 : 1.0) * (abs(texture(colortex1, uv).a - 0.5) < 0.05 ? 0.0 : 1.0) * smoothstep(0.14, 0.26, col.b - col.r) * smoothstep(0.06, 0.14, col.b - col.g) * (1.0 - smoothstep(80.0, 160.0, lin)) * (1.0 - cave);
 			col = mix(col, scL * vec3(0.90, 1.0, 1.14), clamp(scK * 0.6, 0.0, 0.6));
 		}
+		// soft aqua grass: by day the most vivid bright mint grass settles into a softer aqua-green, so lit lawns glow without neon
+		{
+			float sgL = luma(col);
+			float sgK = SOFT_AQUA * dayG * (1.0 - duskG) * (water || sky ? 0.0 : 1.0) * smoothstep(0.22, 0.38, col.g - col.r) * smoothstep(0.45, 0.65, sgL) * step(col.b, col.g) * (1.0 - cave);
+			col = mix(col, vec3(sgL) * vec3(0.84, 1.03, 1.04), clamp(sgK * 0.45, 0.0, 0.45));
+		}
 		// night teal: at night land leaves the violet-grey navy for a deep, saturated blue-teal, torch pools kept warm
 		{
 			float ntL = luma(col);
