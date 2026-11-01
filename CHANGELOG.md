@@ -15,6 +15,7 @@ All builds tested in the real client with screenshots.
 - **Moonlit crowns**: at night upward-facing tree crowns and grass tops catch a soft cool silver lift, so night forests keep their shape instead of one flat mass (Moonlit Crowns setting).
 - **Cherry blossom colour**: by day sunlit cherry crowns keep their pastel pink instead of blowing out to white under the bright highlights.
 - **Slate cliffs**: by day shaded rock settles from a saturated periwinkle wall into a calm blue-grey slate (Slate Cliffs setting).
+- **Wet sheen**: in rain upward-facing tree crowns and grass tops catch a soft cool wet sheen, so rainy forests keep their shape in the dark blue air (Wet Sheen setting).
 
 ## 0.34.9
 

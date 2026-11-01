@@ -550,6 +550,11 @@ void main() {
 			float mcK = MOONLIT_CROWNS * (1.0 - day) * smoothstep(0.5, 0.9, dot(n, up)) * smoothstep(0.8, 0.97, lm.y) * (1.0 - smoothstep(0.3, 0.6, lm.x)) * (1.0 - rainStrength);
 			col = mix(col, col * vec3(1.30, 1.42, 1.55) + vec3(0.004, 0.008, 0.014), clamp(mcK, 0.0, 1.0));
 		}
+		// wet sheen: in rain upward-facing tree crowns and grass tops catch a soft cool wet sheen, so rainy forests keep their shape in the dark blue air
+		if (isLeaf == 1 || grassTex) {
+			float wsK = WET_SHEEN * rainStrength * smoothstep(0.5, 0.9, dot(n, up)) * smoothstep(0.75, 0.95, lm.y) * (1.0 - smoothstep(0.3, 0.6, lm.x));
+			col = mix(col, col * vec3(1.20, 1.36, 1.50) + vec3(0.006, 0.012, 0.020) * mix(0.4, 1.0, day), clamp(wsK, 0.0, 1.0));
+		}
 		// golden hour light: at sunrise and sunset sun-facing walls, roofs, rock and paths catch a warm peach light against the cool shade
 		if (isFoliage == 0 && isLeaf == 0) {
 			float glK = GOLDEN_LIGHT * clamp(golden / max(GOLDEN_HOUR_TINT, 0.01), 0.0, 1.0) * light * (1.0 - rainStrength);

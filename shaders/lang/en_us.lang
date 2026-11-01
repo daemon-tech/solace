@@ -589,3 +589,5 @@ option.MOONLIT_CROWNS=Moonlit Crowns
 option.MOONLIT_CROWNS.comment=At night upward-facing tree crowns and grass tops catch a soft cool silver lift, so night forests keep their shape. 0 turns it off.
 option.SLATE_CLIFFS=Slate Cliffs
 option.SLATE_CLIFFS.comment=By day shaded rock settles from a saturated periwinkle wall into a calm blue-grey slate. 0 turns it off.
+option.WET_SHEEN=Wet Sheen
+option.WET_SHEEN.comment=In rain upward-facing tree crowns and grass tops catch a soft cool wet sheen, so rainy forests keep their shape in the dark blue air. 0 turns it off.

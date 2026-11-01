@@ -174,6 +174,7 @@ const float sunPathRotation = -25.0;
 #define RAIN_TEAL 1.0 // [0.0 0.5 1.0] in rain land takes a calm, deep blue-teal instead of violet-grey slate
 #define NIGHT_TEAL 1.0 // [0.0 0.5 1.0] at night land takes a deep, saturated blue-teal instead of violet-grey navy
 #define VALLEY_SHADE 1.0 // [0.0 0.5 1.0] by day darker shade on open land settles from vivid green into a calm blue-teal
+#define WET_SHEEN 1.0 // [0.0 0.5 1.0] in rain upward-facing crowns and grass tops catch a soft cool wet sheen
 #define SLATE_CLIFFS 1.0 // [0.0 0.5 1.0] by day shaded rock settles from saturated periwinkle into a calm blue-grey slate
 #define MOONLIT_CROWNS 1.0 // [0.0 0.5 1.0] at night upward-facing crowns and grass tops catch a soft cool silver lift
 #define CALM_PATHS 1.0 // [0.0 0.5 1.0] by day loud orange-yellow paths, sand and planks soften into a calm warm sand
