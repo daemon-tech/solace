@@ -1377,6 +1377,8 @@ void main() {
 		col = mix(col, navyC, nvK * mix(0.82, 0.88, clamp(nvR, 0.0, 1.0))); // night: almost one navy hue, like rain
 		// snowy nights and snowfall: gently lift the darkest tones so snowy land stays readable (navy hue kept)
 		float snowL = max(1.0 - smoothstep(0.05, 0.3, bTemp), sbCold) * max(nvN, rainStrength) * (1.0 - cave) * SNOW_NIGHT_LIFT;
+		// rainy nights: the same gentle lift (a little less), so wet land stays readable as calm navy instead of black
+		snowL = max(snowL, rainStrength * nvN * (1.0 - cave) * RAIN_NIGHT_LIFT * 0.8);
 		vec3 liftC = pow(max(col, 0.0), vec3(0.62)) * vec3(0.92, 0.97, 1.08) + vec3(0.025, 0.035, 0.06);
 		col = mix(col, liftC, snowL * 0.8 * (1.0 - smoothstep(0.2, 0.6, luma(col))));
 		// snowfall by day: snow settles into a soft cool white-grey (calm, low saturation)

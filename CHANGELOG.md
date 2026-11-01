@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.34.6
 
 ### Changes
+- **Readable rainy nights**: on rainy nights the darkest tones lift gently, so wet land and villages read as a calm navy instead of near black (Rainy Night Lift setting).
 
 ## 0.34.5
 

@@ -509,3 +509,5 @@ option.TEAL_GREENS=Teal Greens
 option.TEAL_GREENS.comment=Grass and leaves lean from lime into a deeper painted blue-green, a little darker. 0 keeps the brighter meadow green.
 option.LEAF_DEEP=Deep Forest Crowns
 option.LEAF_DEEP.comment=Tree crowns settle into a deeper, darker teal-green than open grass, so forests read as calm dark masses. 0 turns it off.
+option.RAIN_NIGHT_LIFT=Rainy Night Lift
+option.RAIN_NIGHT_LIFT.comment=On rainy nights the darkest tones lift gently, so wet land stays readable as calm navy instead of black.
