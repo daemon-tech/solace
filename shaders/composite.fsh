@@ -1436,6 +1436,12 @@ void main() {
 	if (!sky) {
 		vec3 pre = col;
 		col = grade(col) * bTint;
+		// blue shade: the grade's saturation and lime push turn the deepest foliage shade into vivid green-black; by day lean it back into a calm painted blue-teal
+		{
+			float bsL = luma(col);
+			float bsK = BLUE_SHADE * dayG * (1.0 - duskG) * (water ? 0.0 : 1.0) * (1.0 - smoothstep(0.16, 0.42, bsL)) * smoothstep(0.02, 0.08, col.g - max(col.r, col.b)) * (1.0 - cave);
+			col = mix(col, vec3(bsL) * vec3(0.50, 1.05, 1.50), clamp(bsK * 0.9, 0.0, 0.85));
+		}
 		// clouds: the grade leaves them alone, so they keep their own colour (no blow-out to white)
 		col = mix(col, pre, cloudM);
 		// particles (splash mist, smoke, clouds of dust): pale ones stay neutral white, never sand-beige

@@ -561,3 +561,5 @@ option.DEEP_CANOPY_MID=Deep Canopy Midtones
 option.DEEP_CANOPY_MID.comment=By day the mid tones of tree crowns settle a step darker and richer, so forests read as deep painted green while highlights stay bright. 0 turns it off.
 option.FLOWER_POP=Flower Pop
 option.FLOWER_POP.comment=Flower petals keep vivid, saturated colour under the cool grade, so meadows sparkle with bright dots of colour. 0 turns it off.
+option.BLUE_SHADE=Blue Shade
+option.BLUE_SHADE.comment=By day the deepest foliage shade leans from vivid green-black into a calm, painted blue-teal. 0 turns it off.

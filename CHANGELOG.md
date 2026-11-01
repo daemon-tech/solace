@@ -8,6 +8,7 @@ All builds tested in the real client with screenshots.
 ### Changes
 - **Deep canopy midtones**: by day the mid tones of tree crowns settle a step darker and richer, so forests read as deep painted green while sunlit highlights stay bright (Deep Canopy Midtones setting).
 - **Flower pop**: flower petals keep vivid, saturated colour under the cool daylight, so meadows sparkle with bright dots of yellow, red and blue (Flower Pop setting).
+- **Blue shade**: by day the deepest shade in tree crowns leans from vivid green-black into a calm, painted blue-teal (Blue Shade setting).
 
 ## 0.34.8
 
