@@ -5,6 +5,8 @@ All builds tested in the real client with screenshots.
 
 ## 0.34.7
 
+Clearer form by day and bluer nights: bright sunlit crowns over cool shaded undersides, vivid grass, deeper shade sides, and deep blue clear and rainy nights.
+
 ### Changes
 - **Sunlit crowns**: by day the sun-facing tops of leaves and grass catch a fresh, bright green, so lit treetops and hills stand out against the deep teal shade (Sunlit Crowns setting).
 - **Crown undersides**: by day the side and lower faces of tree crowns sink into a cooler deep teal, so each crown reads as a lit top over a shaded body (Crown Undersides setting).
