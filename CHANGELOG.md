@@ -5,7 +5,10 @@ All builds tested in the real client with screenshots.
 
 ## 0.34.5
 
+Richer deep forests: tree crowns sit a step darker and keep a rich teal-green instead of turning muddy.
+
 ### Changes
+- **Richer deep forest crowns**: Deep Forest Crowns is now at full strength by default; crowns sit a step darker while keeping their colour rich, never grey.
 
 ## 0.34.4
 
