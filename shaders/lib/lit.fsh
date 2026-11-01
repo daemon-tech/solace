@@ -686,6 +686,8 @@ void main() {
 		float tw = pow(max(sin(frameTimeCounter * (1.5 + 2.5 * h) + h * 60.0), 0.0), 6.0);
 		col += vec3(1.0, 0.92, 1.0) * step(0.78, h) * tw * smoothstep(0.25, 0.5, luma(albedo.rgb)) * 3.0 * AMETHYST_TWINKLE;
 	}
+// deep forest tone: by day tree crowns sit a clear step darker overall, so forests read as deep, calm masses against bright meadows
+if (isLeaf == 1) col *= mix(1.0, 0.72, DEEP_FOREST * day * (1.0 - smoothstep(0.04, 0.16, albedo.r - albedo.g)) * (1.0 - 0.5 * rainStrength));
 	// dusk grass gold: last word on grass blades and tops at sunrise and sunset, a warm gold instead of fresh lime (after all other foliage tints)
 #ifdef TERRAIN_PASS
 	if (isGrassPlant == 1 || ((isFoliage == 2 || isFoliage == 1) && vcolor.g > vcolor.b * 1.15 && vcolor.g > vcolor.r * 1.05)) {

@@ -170,6 +170,8 @@ const float sunPathRotation = -25.0;
 #define BLUE_SHADE 1.0 // [0.0 0.5 1.0] by day the deepest foliage shade leans from vivid green-black into a calm blue-teal
 #define SHADE_LIFT 1.0 // [0.0 0.5 1.0] by day the very darkest shade lifts a gentle step toward a luminous blue-teal
 #define DUSK_GRASS_GOLD 0.75 // [0.0 0.5 0.75 1.0] at sunrise and sunset grass blades and tops turn a warm gold instead of fresh lime
+#define DEEP_FOREST 1.0 // [0.0 0.5 1.0] by day tree crowns sit a clear step darker overall
+#define MEADOW_AIR 1.0 // [0.0 0.5 1.0] by day bright open greens settle into a lighter, airy blue-green
 #define SHADE_SIDES 0.8 // [0.0 0.4 0.8 1.0] by day faces turned away from the sun sit a step deeper in cool teal
 #define VIVID_GRASS 1.0 // [0.0 0.35 0.7 1.0] by day open grass tops turn a rich, saturated green instead of pale mint
 #define CROWN_SHADE 0.8 // [0.0 0.4 0.8 1.0] by day side and lower faces of tree crowns sink into a cooler deep teal
