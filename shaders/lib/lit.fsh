@@ -516,9 +516,11 @@ void main() {
 		}
 		// gust silver: rolling gust fronts brush open grass with a soft cool silver-green sheen, so the wind reads across whole fields
 		if (grassTex) {
-			float gsG = smoothstep(0.1, 0.55, windGust(cwpos.xz, frameTimeCounter));
+			vec2 gsD = windDir();
+			float gsS = sin(dot(cwpos.xz, gsD) * 0.32 - frameTimeCounter * WIND_SPEED * 1.4 + vnoise(cwpos.xz * 0.05) * 3.0) * 0.5 + 0.5; // narrower travelling streaks riding the gust fronts
+			float gsG = max(smoothstep(0.05, 0.5, windGust(cwpos.xz, frameTimeCounter)), 0.55 * smoothstep(0.35, 0.75, vnoise(cwpos.xz * 0.02 - gsD * frameTimeCounter * WIND_SPEED * 0.3))) * smoothstep(0.45, 0.85, gsS); // also in calm spells a few soft streaks keep travelling
 			float gsK = GUST_SILVER * gsG * smoothstep(0.5, 0.9, dot(n, up)) * smoothstep(0.6, 0.9, lm.y) * mix(0.35, 1.0, day) * (1.0 - 0.5 * rainStrength);
-			col = mix(col, col * vec3(0.90, 1.12, 1.16) + vec3(0.03, 0.07, 0.08), clamp(gsK, 0.0, 0.9));
+			col = mix(col, vec3(luma(col)) * vec3(0.88, 1.06, 1.02) * 1.3 + vec3(0.03), clamp(gsK * 0.6, 0.0, 0.6)); // silver: paler, less saturated streak
 		}
 		// torch-lit warmth: at night surfaces inside a torch pool take a richer, saturated amber, so lit wood and paths glow against the navy
 		{

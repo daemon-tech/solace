@@ -11,7 +11,7 @@ All builds tested in the real client with screenshots.
 - **Cyan highlights**: by day the brightest sunlit grass and leaf tops roll off into a fresh cyan-white instead of yellow-lime, so lit hills and crowns sit in the cool daylight (Cyan Highlights setting).
 - **Golden hour shade**: at sunrise and sunset faces turned away from the sun sink into a cool blue-teal, so warm lit sides glow against cool shade (Golden Hour Shade setting).
 - **Shadow pools**: by day sun-facing ground and crowns caught in a tree or cliff shadow sink into a deep blue-teal, so cast shadows read crisply in forests (Shadow Pools setting).
-- **Gust silver**: rolling gust fronts brush open grass with a soft cool silver-green sheen that travels with the wind across whole fields (Gust Silver setting).
+- **Gust silver**: travelling streaks of pale silver-mint sheen sweep across open grass with the wind, so gusts read across whole fields, also in calm spells (Gust Silver setting).
 - **Torch-lit warmth**: at night surfaces inside a torch pool take a richer, saturated amber, so lit walls and paths glow against the navy, also in rain (Torch-Lit Warmth setting).
 - **Soft snow**: by day sunlit snow and snowy slopes read as a soft cool white instead of a saturated blue sheet, also next to cherry groves and in ice fields (Soft Snow setting).
 - **Cherry pink**: by day cherry blossoms keep a soft pastel pink under the cool daylight instead of turning white-lilac; nights keep their calm tone (Cherry Pink setting).
