@@ -480,6 +480,13 @@ void main() {
 			col = mix(col, mix(vec3(luma(col)), col, 1.18), ldK); // keep the deep green rich, never muddy grey
 		}
 		if (isLeaf == 1) col *= mix(vec3(1.0), vec3(0.74, 0.88, 1.0), CANOPY_DEPTH * (1.0 - smoothstep(0.62, 0.95, lm.y)) * mix(0.5, 1.0, day));
+		// sunlit crowns: by day the sun-facing tops of leaves and grass catch a fresh, bright green, so lit hills and
+		// treetops pop against the deep teal shade (rain and night unchanged)
+		if (isFoliage == 1 || isGrassPlant == 1 || grassTex) {
+			float scK = SUNLIT_CROWNS * day * light * smoothstep(0.2, 0.8, dot(n, up)) * smoothstep(0.7, 0.95, lm.y) * (1.0 - rainStrength);
+			scK *= 1.0 - smoothstep(0.04, 0.16, albedo.r - albedo.g); // pink blossoms keep their pastel
+			col = mix(col, col * vec3(1.18, 1.42, 1.10) + vec3(0.02, 0.04, 0.0), clamp(scK, 0.0, 1.0));
+		}
 	#endif
 		// warm torch pool painted over the surface (reads orange even on dark green leaves)
 		pool = torch * (1.0 - day * lm.y);

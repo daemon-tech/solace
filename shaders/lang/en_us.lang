@@ -517,3 +517,5 @@ option.RAIN_DAY_SOFT=Rainy Day Colour
 option.RAIN_DAY_SOFT.comment=By day in the rain, land stays a soft slate grey-green instead of deep blue, so grass and trees keep a hint of their colour.
 option.RAIN_NIGHT_LIFT=Rainy Night Lift
 option.RAIN_NIGHT_LIFT.comment=On rainy nights the darkest tones lift gently, so wet land stays readable as calm navy instead of black.
+option.SUNLIT_CROWNS=Sunlit Crowns
+option.SUNLIT_CROWNS.comment=By day the sun-facing tops of leaves and grass catch a fresh, bright green, so lit treetops and hills stand out against the deep shade. 0 turns it off.
