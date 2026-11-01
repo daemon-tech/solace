@@ -1658,6 +1658,9 @@ void main() {
 		float snowP = smoothstep(0.52, 0.66, lS) * (1.0 - smoothstep(0.22, 0.34, spread)) * (1.0 - smoothstep(90.0, 170.0, lin)) * dayG;
 		float k = max(snowB * smoothstep(0.45, 0.7, lS), snowP) * blueish;
 		col = mix(col, vec3(lS) * vec3(0.97, 0.99, 1.03) * mix(1.02, 1.08, snowP), k * mix(0.55, 0.7, snowP));
+		// soft snow: sunlit snow that the cool grade already pushed to a saturated blue sheet comes back to a soft cool white
+		float ssK = SOFT_SNOW * dayG * smoothstep(0.80, 0.90, col.b) * smoothstep(0.40, 0.50, lS) * smoothstep(0.25, 0.40, spread) * smoothstep(0.05, 0.15, col.g - col.r) * (1.0 - smoothstep(90.0, 170.0, lin)) * (1.0 - rainStrength);
+		col = mix(col, min(vec3(lS * 1.55) * vec3(0.90, 0.96, 1.04), vec3(0.97)), clamp(ssK, 0.0, 0.8));
 	}
 #endif
 #if RAINBOW > 0 && !defined DIM_NETHER && !defined DIM_END

@@ -158,6 +158,7 @@ const float sunPathRotation = -25.0;
 #define SHADOW_POOLS 1.0 // [0.0 0.5 1.0] by day sun-facing ground in a cast shadow sinks into a deep blue-teal pool
 #define GUST_SILVER 1.0 // [0.0 0.5 1.0] rolling gust fronts brush open grass with a soft cool silver-green sheen
 #define TORCH_RICH 1.0 // [0.0 0.5 1.0] at night surfaces inside a torch pool take a richer saturated amber
+#define SOFT_SNOW 1.0 // [0.0 0.5 1.0] by day sunlit snow reads as a soft cool white instead of a saturated blue sheet
 #define SHADE_SIDES 0.8 // [0.0 0.4 0.8 1.0] by day faces turned away from the sun sit a step deeper in cool teal
 #define VIVID_GRASS 1.0 // [0.0 0.35 0.7 1.0] by day open grass tops turn a rich, saturated green instead of pale mint
 #define CROWN_SHADE 0.8 // [0.0 0.4 0.8 1.0] by day side and lower faces of tree crowns sink into a cooler deep teal
