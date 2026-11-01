@@ -1390,6 +1390,8 @@ void main() {
 		{
 			float mlK = nvN * mix(MOONLIT_LAND, RAIN_NIGHT_BLUE, rainStrength) * (1.0 - cave) * (sky ? 0.0 : 1.0);
 			mlK *= (1.0 - smoothstep(0.18, 0.5, luma(col))) * (1.0 - smoothstep(0.06, 0.28, col.r - col.b));
+			mlK *= 1.0 - smoothstep(0.03, 0.12, preCA.r - preCA.b); // lit windows and torch light keep their warmth
+			mlK *= 1.0 - smoothstep(0.02, 0.08, min(preCA.r - preCA.g, preCA.b - preCA.g * 0.9)); // cherry blossoms: no blue-lavender glow
 			vec3 mlC = pow(max(col, 0.0), vec3(mix(0.78, 0.70, rainStrength))) * mix(vec3(0.70, 0.88, 1.30), vec3(0.58, 0.82, 1.45), rainStrength) + vec3(0.004, 0.012, 0.035);
 			col = mix(col, mlC, clamp(mlK, 0.0, 1.0));
 		}
