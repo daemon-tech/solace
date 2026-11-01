@@ -551,3 +551,5 @@ option.FOREST_FLOOR=Forest Floor Shade
 option.FOREST_FLOOR.comment=By day the ground under a dense canopy sinks into a deep, cool teal shade, so forests read dark and calm inside. 0 turns it off.
 option.CALM_STONE=Calm Stone
 option.CALM_STONE.comment=Grey rock and cliffs keep a cool slate grey under the blue air instead of turning a saturated blue wall. 0 turns it off.
+option.SUN_TRANSLUCENT=Sunlit Translucency
+option.SUN_TRANSLUCENT.comment=Leaves seen against the sun glow through in a fresh, luminous light green, so backlit crowns read light-filled. 0 turns it off.

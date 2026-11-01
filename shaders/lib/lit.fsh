@@ -538,6 +538,13 @@ void main() {
 			float ffK = FOREST_FLOOR * day * smoothstep(0.5, 0.9, dot(n, up)) * (1.0 - smoothstep(0.84, 0.97, lm.y)) * (1.0 - smoothstep(0.2, 0.6, light)) * (1.0 - smoothstep(0.3, 0.7, lm.x));
 			col *= mix(vec3(1.0), vec3(0.50, 0.66, 0.80), clamp(ffK, 0.0, 1.0));
 		}
+		// sunlit translucency: leaves seen against the sun glow through in a fresh, luminous light green, so backlit crowns read light-filled
+		if (isLeaf == 1 || isFoliage == 1) {
+			vec3 stV = safeNormalize(cwpos - cameraPosition, vec3(0, 0, 1));
+			vec3 stS = safeNormalize(mat3(gbufferModelViewInverse) * sunPosition, vec3(0, 1, 0));
+			float stK = SUN_TRANSLUCENT * day * smoothstep(0.35, 0.9, dot(stV, stS)) * smoothstep(0.55, 0.9, lm.y) * (1.0 - 0.8 * rainStrength) * (1.0 - smoothstep(0.04, 0.16, albedo.r - albedo.g));
+			col = mix(col, col * vec3(1.45, 1.32, 0.42) + albedo.rgb * vec3(0.10, 0.10, 0.0), clamp(stK, 0.0, 0.9));
+		}
 		// crown undersides: by day the side and lower faces of tree crowns sink into a cooler deep teal, so each crown
 		// reads as a lit top over a shaded body
 		if (isLeaf == 1) col *= mix(vec3(1.0), vec3(0.78, 0.88, 0.96), CROWN_SHADE * day * (1.0 - smoothstep(-0.1, 0.6, dot(n, up))) * (1.0 - smoothstep(0.04, 0.16, albedo.r - albedo.g)));
