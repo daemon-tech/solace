@@ -1177,8 +1177,11 @@ void main() {
 		// far land first loses its detail (contrast pulled toward a calm mid tone), then turns light blue
 		float apK = DISTANCE_BLUE * (1.0 - 0.6 * duskG);
 		vec3 flatC = mix(vec3(luma(col)), col, 0.7) * 0.45 + blueC * 0.55;
-		col = mix(col, flatC, smoothstep(0.0, 0.6, hb) * min(apK * 1.4, 0.8));
-		col = mix(col, blueC, hb * min(apK * 1.15, 0.85));
+		// far forest canopies: dark green-teal crowns keep a little more of their colour under the haze
+		float vegK = smoothstep(0.45, 0.15, luma(col)) * smoothstep(-0.01, 0.04, col.g - col.r) * (1.0 - smoothstep(0.0, 0.10, col.r - col.g));
+		float hbV = 1.0 - 0.6 * vegK;
+		col = mix(col, flatC, smoothstep(0.0, 0.6, hb) * min(apK * 1.4, 0.8) * hbV);
+		col = mix(col, blueC, hb * min(apK * 1.15, 0.85) * hbV);
 		// forests: blue depth haze already between nearby trunks
 		float forestK = clamp(bDark + smoothstep(0.7, 0.95, bRain) * 0.6 + 0.2, 0.0, 1.0);
 		col = mix(col, blueC * vec3(0.85, 0.95, 1.05), celBandSoft(smoothstep(10.0, 70.0, lin), 4, 0.45) * FOREST_HAZE * forestK * dayG * (1.0 - hb));

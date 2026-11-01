@@ -6,6 +6,7 @@ All builds tested in the real client with screenshots.
 ## 0.35.0
 
 ### Changes
+- **Far canopies**: distant dark forest crowns keep a little more of their deep green-teal under the blue distance haze.
 - **Night teal**: at night land leaves the violet-grey navy for a deep, saturated blue-teal, while torch pools and cherry crowns keep their colour (Night Teal setting).
 - **Rain teal**: in rain land leaves the violet-grey slate for a calm, deep blue-teal, while warm windows stay warm (Rain Teal setting).
 - **Bright highlights**: by day the brightest lit land rolls up into a clean, luminous cyan-white, so sunlit slopes sparkle (Bright Highlights setting).
