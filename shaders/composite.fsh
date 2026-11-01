@@ -1457,7 +1457,7 @@ void main() {
 		// forest depth: by day tree crowns settle a calm step darker after the shade lifts, so forests read as deep masses against bright meadows
 		{
 			float fdK = FOREST_DEPTH * dayG * (1.0 - duskG) * (abs(texture(colortex1, uv).a - 0.5) < 0.05 ? 1.0 : 0.0) * (1.0 - cave) * (1.0 - smoothstep(0.30, 0.55, luma(col))) * (1.0 - smoothstep(60.0, 140.0, lin)) * (1.0 - 0.5 * rainStrength);
-			col *= mix(vec3(1.0), vec3(0.70, 0.74, 0.78), clamp(fdK, 0.0, 1.0));
+			col *= mix(vec3(1.0), vec3(0.60, 0.65, 0.70), clamp(fdK, 0.0, 1.0));
 		}
 		// valley shade: by day the darker shade on open land loses its vivid green and settles into a calm blue-teal, as in the cool painted shade of the meadows
 		{
