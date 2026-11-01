@@ -531,3 +531,5 @@ option.SHADE_SIDES=Shade Sides
 option.SHADE_SIDES.comment=By day block faces turned away from the sun sit a step deeper in a cool teal, so hills and buildings read with clear form. 0 turns it off.
 option.LEAF_POP=Leaf Texture Pop
 option.LEAF_POP.comment=By day leaves keep crisp texture contrast, with dark gaps and bright speckles, instead of a flat green mass. 0 turns it off.
+option.COOL_EARTH=Cool Earth
+option.COOL_EARTH.comment=By day exposed dirt and paths lose their red cast and settle into a calm, cooler umber under the blue grade. 0 turns it off.

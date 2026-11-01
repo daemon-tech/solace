@@ -7,6 +7,7 @@ All builds tested in the real client with screenshots.
 
 ### Changes
 - **Leaf texture pop**: by day leaves keep crisp texture contrast, with dark gaps and bright speckles, so tree crowns read as rich painted foliage instead of a flat green mass (Leaf Texture Pop setting).
+- **Cool earth**: by day exposed dirt and paths lose their red cast and settle into a calm, cooler umber that sits with the blue-green land (Cool Earth setting).
 
 ## 0.34.7
 

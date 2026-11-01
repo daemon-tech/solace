@@ -152,6 +152,7 @@ const float sunPathRotation = -25.0;
 #define HORIZON_SOFT 1.0 // [0.0 0.5 1.0] clear days: the sky near the horizon rolls off softly into calm sky-blue instead of clipping to bright mint
 #define TEAL_GREENS 0.6 // [0.0 0.3 0.6 0.8 1.0] grass and leaves lean from lime into a deeper painted blue-green
 #define LEAF_POP 1.0 // [0.0 0.5 1.0] by day leaves keep crisp texture contrast with dark gaps and bright speckles
+#define COOL_EARTH 1.0 // [0.0 0.5 1.0] by day exposed dirt and paths lose their red cast and settle into a cooler umber
 #define SHADE_SIDES 0.8 // [0.0 0.4 0.8 1.0] by day faces turned away from the sun sit a step deeper in cool teal
 #define VIVID_GRASS 1.0 // [0.0 0.35 0.7 1.0] by day open grass tops turn a rich, saturated green instead of pale mint
 #define CROWN_SHADE 0.8 // [0.0 0.4 0.8 1.0] by day side and lower faces of tree crowns sink into a cooler deep teal

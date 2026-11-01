@@ -485,6 +485,12 @@ void main() {
 			float fcK = SHADE_SIDES * day * smoothstep(0.6, 0.9, lm.y) * (1.0 - light) * (1.0 - 0.7 * rainStrength) * (isFoliage == 4 ? 0.0 : 1.0);
 			col *= mix(vec3(1.0), vec3(0.80, 0.90, 1.0), clamp(fcK, 0.0, 1.0));
 		}
+		// cool earth: by day exposed dirt and paths lose their red cast and settle into a calm, cooler umber under the blue grade
+		if (isFoliage == 0 && isLeaf == 0) {
+			float ceW = smoothstep(0.06, 0.16, albedo.r - albedo.b) * (1.0 - smoothstep(0.10, 0.22, albedo.g - albedo.b)) * (1.0 - smoothstep(0.55, 0.75, albedo.r));
+			float ceK = COOL_EARTH * day * ceW * smoothstep(0.6, 0.9, lm.y);
+			col = mix(col, vec3(luma(col)) * vec3(1.02, 0.98, 1.0) + (col - vec3(luma(col))) * vec3(0.55, 0.75, 0.9), clamp(ceK, 0.0, 0.8));
+		}
 		// vivid grass: by day open grass tops turn a rich, saturated green with a little more depth, instead of pale mint
 		if (grassTex && isGrassPlant == 0) {
 			float vgK = VIVID_GRASS * day * smoothstep(0.5, 0.9, dot(n, up)) * smoothstep(0.6, 0.9, lm.y) * (1.0 - 0.6 * rainStrength);
