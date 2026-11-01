@@ -5,7 +5,7 @@ All builds tested in the real client with screenshots.
 
 ## 0.34.9
 - Deep Forest Tone: by day tree crowns sit a clear step darker, so forests read as deep, calm masses against bright meadows.
-- Meadow Air: by day bright open grass settles from saturated pure green into a lighter, airy blue-green.
+- Meadow Air: by day bright and mid-bright open grass settles from saturated pure green into a lighter, airy blue-green.
 
 ### Changes
 - **Deep canopy midtones**: by day the mid tones of tree crowns settle a step darker and richer, so forests read as deep painted green while sunlit highlights stay bright (Deep Canopy Midtones setting).

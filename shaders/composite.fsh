@@ -1445,8 +1445,8 @@ void main() {
 		// meadow air: by day bright open greens settle from saturated pure green into a lighter, airy blue-green, like grass seen through clear cool air
 		{
 			float maL = luma(col);
-			float maK = MEADOW_AIR * dayG * (1.0 - duskG) * (water ? 0.0 : 1.0) * smoothstep(0.06, 0.20, col.g - max(col.r, col.b)) * smoothstep(0.18, 0.40, maL) * (1.0 - cave) * (1.0 - rainStrength);
-			col = mix(col, vec3(maL) * vec3(0.78, 1.04, 1.16) * 1.06, clamp(maK * 0.45, 0.0, 0.45));
+			float maK = MEADOW_AIR * dayG * (1.0 - duskG) * (water ? 0.0 : 1.0) * smoothstep(0.06, 0.20, col.g - max(col.r, col.b)) * smoothstep(0.12, 0.34, maL) * (1.0 - cave) * (1.0 - rainStrength);
+			col = mix(col, vec3(maL) * vec3(0.78, 1.04, 1.16) * 1.06, clamp(maK * 0.65, 0.0, 0.65));
 		}
 		// shade lift: by day the very darkest shade on land lifts a gentle step toward a luminous painted blue-teal instead of near black
 		{
