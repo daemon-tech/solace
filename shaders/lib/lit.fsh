@@ -535,8 +535,8 @@ void main() {
 		}
 		// forest floor: by day the ground under a dense canopy sinks into a deep, cool teal shade, so forests read dark and calm inside
 		if (isLeaf == 0) {
-			float ffK = FOREST_FLOOR * day * smoothstep(0.5, 0.9, dot(n, up)) * (1.0 - smoothstep(0.78, 0.94, lm.y)) * (1.0 - smoothstep(0.2, 0.6, light)) * (1.0 - smoothstep(0.3, 0.7, lm.x));
-			col *= mix(vec3(1.0), vec3(0.60, 0.74, 0.84), clamp(ffK, 0.0, 1.0));
+			float ffK = FOREST_FLOOR * day * smoothstep(0.5, 0.9, dot(n, up)) * (1.0 - smoothstep(0.84, 0.97, lm.y)) * (1.0 - smoothstep(0.2, 0.6, light)) * (1.0 - smoothstep(0.3, 0.7, lm.x));
+			col *= mix(vec3(1.0), vec3(0.50, 0.66, 0.80), clamp(ffK, 0.0, 1.0));
 		}
 		// crown undersides: by day the side and lower faces of tree crowns sink into a cooler deep teal, so each crown
 		// reads as a lit top over a shaded body
