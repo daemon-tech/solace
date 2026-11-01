@@ -12,6 +12,7 @@ All builds tested in the real client with screenshots.
 - **Forest teal**: by day tree crowns lose their grey red share and read as a rich, deep teal-green (Forest Teal setting).
 - **Calm sand paths**: by day loud orange-yellow paths, sand and planks soften into a calm warm sand, so villages sit in the cool land (Calm Sand Paths setting).
 - **Grass highlights balance**: bright flat grass keeps a fresh green instead of turning pale mint-white where meadow air and bright highlights overlap.
+- **Moonlit crowns**: at night upward-facing tree crowns and grass tops catch a soft cool silver lift, so night forests keep their shape instead of one flat mass (Moonlit Crowns setting).
 
 ## 0.34.9
 

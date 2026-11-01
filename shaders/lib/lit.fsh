@@ -545,6 +545,11 @@ void main() {
 			float stK = SUN_TRANSLUCENT * day * smoothstep(0.35, 0.9, dot(stV, stS)) * smoothstep(0.55, 0.9, lm.y) * (1.0 - 0.8 * rainStrength) * (1.0 - smoothstep(0.04, 0.16, albedo.r - albedo.g));
 			col = mix(col, col * vec3(1.45, 1.32, 0.42) + albedo.rgb * vec3(0.10, 0.10, 0.0), clamp(stK, 0.0, 0.9));
 		}
+		// moonlit crowns: at night upward-facing tree crowns and grass tops catch a soft cool silver lift, so night forests keep their shape instead of one flat mass
+		if (isLeaf == 1 || grassTex) {
+			float mcK = MOONLIT_CROWNS * (1.0 - day) * smoothstep(0.5, 0.9, dot(n, up)) * smoothstep(0.8, 0.97, lm.y) * (1.0 - smoothstep(0.3, 0.6, lm.x)) * (1.0 - rainStrength);
+			col = mix(col, col * vec3(1.30, 1.42, 1.55) + vec3(0.004, 0.008, 0.014), clamp(mcK, 0.0, 1.0));
+		}
 		// golden hour light: at sunrise and sunset sun-facing walls, roofs, rock and paths catch a warm peach light against the cool shade
 		if (isFoliage == 0 && isLeaf == 0) {
 			float glK = GOLDEN_LIGHT * clamp(golden / max(GOLDEN_HOUR_TINT, 0.01), 0.0, 1.0) * light * (1.0 - rainStrength);
