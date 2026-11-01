@@ -5,7 +5,11 @@ All builds tested in the real client with screenshots.
 
 ## 0.34.4
 
+Deeper forests: tree crowns settle into a darker painted teal-green, and far greens lean further into the cool distance.
+
 ### Changes
+- **Deep forest crowns**: tree crowns settle into a deeper, darker teal-green than open grass, so forests read as calm dark masses from above (Deep Forest Crowns setting); cherry blossoms keep their pink.
+- **Teal greens at range**: grass and leaves far away lean a little further into teal, so distant meadows melt into the cool air.
 
 ## 0.34.3
 

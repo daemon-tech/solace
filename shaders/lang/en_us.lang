@@ -507,3 +507,5 @@ option.HORIZON_SOFT=Soft Horizon
 option.HORIZON_SOFT.comment=On clear days the sky near the horizon rolls off softly into a calm sky-blue instead of clipping to bright mint.
 option.TEAL_GREENS=Teal Greens
 option.TEAL_GREENS.comment=Grass and leaves lean from lime into a deeper painted blue-green, a little darker. 0 keeps the brighter meadow green.
+option.LEAF_DEEP=Deep Forest Crowns
+option.LEAF_DEEP.comment=Tree crowns settle into a deeper, darker teal-green than open grass, so forests read as calm dark masses. 0 turns it off.

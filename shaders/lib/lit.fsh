@@ -471,6 +471,8 @@ void main() {
 		}
 		// snowy lands: tree crowns wear a soft pale frost on their upward faces (calm, no sparkle)
 		if (isLeaf == 1) col = mix(col, vec3(0.86, 0.92, 0.98) * (0.62 + 0.38 * lb) * mix(0.45, 1.0, day), FROST_TIPS * 0.5 * sbCold * smoothstep(0.55, 0.92, dot(n, up)));
+		// deep forest crowns: leaves settle into a deeper, darker teal-green than open grass (pink blossoms keep their tone)
+		if (isLeaf == 1) col *= mix(vec3(1.0), vec3(0.56, 0.70, 0.80), LEAF_DEEP * smoothstep(0.02, 0.12, albedo.g - albedo.r) * mix(0.5, 1.0, day));
 		if (isLeaf == 1) col *= mix(vec3(1.0), vec3(0.74, 0.88, 1.0), CANOPY_DEPTH * (1.0 - smoothstep(0.62, 0.95, lm.y)) * mix(0.5, 1.0, day));
 	#endif
 		// warm torch pool painted over the surface (reads orange even on dark green leaves)

@@ -1353,10 +1353,10 @@ void main() {
 		col = mix(col, cc, caK * (sky ? 0.45 * (1.0 - 0.8 * skyHz) : 1.0));
 		// teal greens: grass and leaves lean from lime into a deeper blue-green, a little darker (painted teal forests)
 		if (!sky) {
-			float gK = smoothstep(0.04, 0.22, col.g - max(col.r, col.b)) * TEAL_GREENS * mix(0.5, 1.0, dayG) * (1.0 - cave);
+			float gK = smoothstep(0.04, 0.22, col.g - max(col.r, col.b)) * TEAL_GREENS * mix(0.5, 1.0, dayG) * (1.0 - cave) * (1.0 + 0.6 * smoothstep(40.0, 220.0, lin)); // far greens lean further into teal
 			vec3 tg = col * vec3(0.72, 0.90, 1.38);
 			tg *= 0.90 * luma(col) / max(luma(tg), 1e-4);
-			col = mix(col, tg, gK);
+			col = mix(col, tg, clamp(gK, 0.0, 1.0));
 		}
 		float shK = 1.0 - smoothstep(0.12, 0.45, luma(col));
 		col = mix(col, col * vec3(0.74, 0.94, 1.16), caK * 0.7 * shK * (sky ? 0.0 : 1.0));
