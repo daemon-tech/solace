@@ -523,3 +523,5 @@ option.CROWN_SHADE=Crown Undersides
 option.CROWN_SHADE.comment=By day the side and lower faces of tree crowns sink into a cooler deep teal, so each crown reads as a lit top over a shaded body. 0 turns it off.
 option.MOONLIT_LAND=Moonlit Land
 option.MOONLIT_LAND.comment=On clear nights open land reads as a deep moonlit blue instead of grey-black, while torch light stays warm. 0 turns it off.
+option.RAIN_NIGHT_BLUE=Rainy Night Blue
+option.RAIN_NIGHT_BLUE.comment=On rainy nights land sinks into a deep, saturated rain blue instead of dark grey, while torch light stays warm. 0 turns it off.

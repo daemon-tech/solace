@@ -1388,9 +1388,9 @@ void main() {
 		col = mix(col, liftC, snowL * 0.8 * (1.0 - smoothstep(0.2, 0.6, luma(col))));
 		// clear nights: open land under the sky reads as a deep moonlit blue instead of grey-black (torch light kept warm)
 		{
-			float mlK = MOONLIT_LAND * nvN * (1.0 - rainStrength) * (1.0 - cave) * (sky ? 0.0 : 1.0);
+			float mlK = nvN * mix(MOONLIT_LAND, RAIN_NIGHT_BLUE, rainStrength) * (1.0 - cave) * (sky ? 0.0 : 1.0);
 			mlK *= (1.0 - smoothstep(0.18, 0.5, luma(col))) * (1.0 - smoothstep(0.06, 0.28, col.r - col.b));
-			vec3 mlC = pow(max(col, 0.0), vec3(0.78)) * vec3(0.70, 0.88, 1.30) + vec3(0.004, 0.012, 0.035);
+			vec3 mlC = pow(max(col, 0.0), vec3(mix(0.78, 0.70, rainStrength))) * mix(vec3(0.70, 0.88, 1.30), vec3(0.58, 0.82, 1.45), rainStrength) + vec3(0.004, 0.012, 0.035);
 			col = mix(col, mlC, clamp(mlK, 0.0, 1.0));
 		}
 		// snowfall by day: snow settles into a soft cool white-grey (calm, low saturation)

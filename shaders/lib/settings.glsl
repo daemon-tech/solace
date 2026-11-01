@@ -143,6 +143,7 @@ const float sunPathRotation = -25.0;
 #define FROST_TIPS 0.6 // [0.0 0.3 0.6 1.0] in snowy lands the tops of tree crowns wear a soft pale frost
 #define SMOOTH_SHADING 1.0 // [0.0 0.5 1.0] 0 = stepped cel light bands, 1 = soft smooth light with colour contrast
 #define SUN_GLARE 0.6 // [0.0 0.3 0.6 1.0] bright glow and soft radial streaks around the sun
+#define RAIN_NIGHT_BLUE 0.8 // [0.0 0.4 0.8 1.0] rainy nights: land sinks into a deep saturated rain blue instead of dark grey
 #define MOONLIT_LAND 0.7 // [0.0 0.35 0.7 1.0] clear nights: open land reads as a deep moonlit blue instead of grey-black
 #define NAVY_MOOD 0.8 // [0.0 0.3 0.6 0.8 1.0] rain and night sink into a deep navy-blue mood
 #define NAVY_RAIN 1.6 // [1.0 1.3 1.6 2.0] how much stronger rain turns navy than night
