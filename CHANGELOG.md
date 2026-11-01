@@ -11,6 +11,7 @@ All builds tested in the real client with screenshots.
 - **Bright highlights**: by day the brightest lit land rolls up into a clean, luminous cyan-white, so sunlit slopes sparkle (Bright Highlights setting).
 - **Forest teal**: by day tree crowns lose their grey red share and read as a rich, deep teal-green (Forest Teal setting).
 - **Calm sand paths**: by day loud orange-yellow paths, sand and planks soften into a calm warm sand, so villages sit in the cool land (Calm Sand Paths setting).
+- **Grass highlights balance**: bright flat grass keeps a fresh green instead of turning pale mint-white where meadow air and bright highlights overlap.
 
 ## 0.34.9
 

@@ -1445,7 +1445,7 @@ void main() {
 		// meadow air: by day bright open greens settle from saturated pure green into a lighter, airy blue-green, like grass seen through clear cool air
 		{
 			float maL = luma(col);
-			float maK = MEADOW_AIR * dayG * (1.0 - duskG) * (water ? 0.0 : 1.0) * smoothstep(0.06, 0.20, col.g - max(col.r, col.b)) * smoothstep(0.12, 0.34, maL) * (1.0 - cave) * (1.0 - rainStrength);
+			float maK = MEADOW_AIR * dayG * (1.0 - duskG) * (water ? 0.0 : 1.0) * smoothstep(0.06, 0.20, col.g - max(col.r, col.b)) * smoothstep(0.12, 0.34, maL) * (1.0 - cave) * (1.0 - 0.6 * smoothstep(0.50, 0.75, maL)) * (1.0 - rainStrength);
 			col = mix(col, vec3(maL) * vec3(0.78, 1.04, 1.16) * 1.06, clamp(maK * 0.65, 0.0, 0.65));
 		}
 		// shade lift: by day the very darkest shade on land lifts a gentle step toward a luminous painted blue-teal instead of near black
@@ -1469,7 +1469,7 @@ void main() {
 		// bright air highlights: by day the brightest lit land rolls up into a clean, luminous cyan-white, so sunlit slopes sparkle
 		{
 			float bhL = luma(col);
-			float bhK = BRIGHT_HIGHLIGHTS * dayG * (1.0 - duskG) * (water || sky ? 0.0 : 1.0) * smoothstep(0.45, 0.75, bhL) * (1.0 - cave) * (1.0 - rainStrength);
+			float bhK = BRIGHT_HIGHLIGHTS * dayG * (1.0 - duskG) * (water || sky ? 0.0 : 1.0) * smoothstep(0.45, 0.75, bhL) * (1.0 - cave) * (1.0 - 0.75 * smoothstep(0.04, 0.14, col.g - col.r) * smoothstep(0.5, 0.9, col.g - col.b + 0.5)) * (1.0 - rainStrength);
 			col = mix(col, min(col * vec3(1.06, 1.08, 1.08) + vec3(0.0, 0.015, 0.03), vec3(1.0)), clamp(bhK, 0.0, 1.0));
 		}
 		// calm sand paths: by day loud orange-yellow paths, sand and planks soften into a calm warm sand, so villages sit in the cool land
