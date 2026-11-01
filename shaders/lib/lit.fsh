@@ -524,7 +524,7 @@ void main() {
 		}
 		// torch-lit warmth: at night surfaces inside a torch pool take a richer, saturated amber, so lit wood and paths glow against the navy
 		{
-			float tlK = TORCH_RICH * (1.0 - day) * smoothstep(0.45, 0.85, lm.x);
+			float tlK = TORCH_RICH * max(1.0 - day, CAVE_GLOW * (1.0 - smoothstep(0.05, 0.3, lm.y))) * smoothstep(0.45, 0.85, lm.x); // caves: warm amber glow islands also by day
 			float tlL = luma(col);
 			col = mix(col, max(vec3(tlL) + (col - vec3(tlL)) * 1.5, 0.0) * vec3(1.10, 0.98, 0.80), clamp(tlK, 0.0, 0.8));
 		}

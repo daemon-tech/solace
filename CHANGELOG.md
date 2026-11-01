@@ -18,6 +18,7 @@ All builds tested in the real client with screenshots.
 - **Forest floor shade**: by day the ground under a dense canopy sinks into a deep, cool teal shade, so forests read darker and calmer inside (Forest Floor Shade setting).
 - **Calm stone**: grey rock and cliffs keep a cool slate grey under the blue daylight instead of turning a saturated blue wall; far mountains keep their airy blue (Calm Stone setting).
 - **Sunlit translucency**: tree crowns seen against the sun glow through in a fresh, luminous light green, so backlit forests read light-filled (Sunlit Translucency setting).
+- **Cave glow islands**: in caves torch and lava light forms warm, saturated amber islands against the dark, also by day (Cave Glow Islands setting).
 
 ## 0.34.7
 

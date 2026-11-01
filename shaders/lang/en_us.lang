@@ -553,3 +553,5 @@ option.CALM_STONE=Calm Stone
 option.CALM_STONE.comment=Grey rock and cliffs keep a cool slate grey under the blue air instead of turning a saturated blue wall. 0 turns it off.
 option.SUN_TRANSLUCENT=Sunlit Translucency
 option.SUN_TRANSLUCENT.comment=Leaves seen against the sun glow through in a fresh, luminous light green, so backlit crowns read light-filled. 0 turns it off.
+option.CAVE_GLOW=Cave Glow Islands
+option.CAVE_GLOW.comment=In caves torch and lava light forms warm, saturated amber islands against the dark, also by day. 0 turns it off.
