@@ -14,6 +14,7 @@ All builds tested in the real client with screenshots.
 - **Grass highlights balance**: bright flat grass keeps a fresh green instead of turning pale mint-white where meadow air and bright highlights overlap.
 - **Moonlit crowns**: at night upward-facing tree crowns and grass tops catch a soft cool silver lift, so night forests keep their shape instead of one flat mass (Moonlit Crowns setting).
 - **Cherry blossom colour**: by day sunlit cherry crowns keep their pastel pink instead of blowing out to white under the bright highlights.
+- **Slate cliffs**: by day shaded rock settles from a saturated periwinkle wall into a calm blue-grey slate (Slate Cliffs setting).
 
 ## 0.34.9
 

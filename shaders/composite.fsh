@@ -1478,6 +1478,12 @@ void main() {
 			float cpK = CALM_PATHS * dayG * (1.0 - duskG) * (water || sky ? 0.0 : 1.0) * smoothstep(0.22, 0.40, col.r - col.b) * smoothstep(0.08, 0.18, col.g - col.b) * smoothstep(0.25, 0.45, cpL) * (1.0 - cave);
 			col = mix(col, cpL * vec3(1.08, 1.0, 0.84), clamp(cpK * 0.6, 0.0, 0.6));
 		}
+		// slate cliffs: by day shaded rock that the late shade steps pushed into a saturated periwinkle wall settles back into a calm blue-grey slate
+		{
+			float scL = luma(col);
+			float scK = SLATE_CLIFFS * dayG * (1.0 - duskG) * (water || sky ? 0.0 : 1.0) * (abs(texture(colortex1, uv).a - 0.5) < 0.05 ? 0.0 : 1.0) * smoothstep(0.14, 0.26, col.b - col.r) * smoothstep(0.06, 0.14, col.b - col.g) * (1.0 - smoothstep(80.0, 160.0, lin)) * (1.0 - cave);
+			col = mix(col, scL * vec3(0.90, 1.0, 1.14), clamp(scK * 0.6, 0.0, 0.6));
+		}
 		// night teal: at night land leaves the violet-grey navy for a deep, saturated blue-teal, torch pools kept warm
 		{
 			float ntL = luma(col);

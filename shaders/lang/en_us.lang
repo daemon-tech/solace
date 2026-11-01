@@ -587,3 +587,5 @@ option.CALM_PATHS=Calm Sand Paths
 option.CALM_PATHS.comment=By day loud orange-yellow paths, sand and planks soften into a calm warm sand, so villages sit in the cool land. 0 turns it off.
 option.MOONLIT_CROWNS=Moonlit Crowns
 option.MOONLIT_CROWNS.comment=At night upward-facing tree crowns and grass tops catch a soft cool silver lift, so night forests keep their shape. 0 turns it off.
+option.SLATE_CLIFFS=Slate Cliffs
+option.SLATE_CLIFFS.comment=By day shaded rock settles from a saturated periwinkle wall into a calm blue-grey slate. 0 turns it off.
