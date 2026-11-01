@@ -4,6 +4,7 @@ Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All 
 All builds tested in the real client with screenshots.
 
 ## 0.34.9
+- Valley Shade: by day the darker shade on open land loses its vivid green and settles into a calm blue-teal.
 - Forest Depth: by day near and mid-range tree crowns settle a calm step darker, blossoms and distant haze untouched.
 - Deep Forest Tone: by day tree crowns sit a clear step darker, so forests read as deep, calm masses against bright meadows.
 - Meadow Air: by day bright and mid-bright open grass settles from saturated pure green into a lighter, airy blue-green.

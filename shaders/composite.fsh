@@ -1459,6 +1459,12 @@ void main() {
 			float fdK = FOREST_DEPTH * dayG * (1.0 - duskG) * (abs(texture(colortex1, uv).a - 0.5) < 0.05 ? 1.0 : 0.0) * (1.0 - cave) * (1.0 - smoothstep(0.30, 0.55, luma(col))) * (1.0 - smoothstep(60.0, 140.0, lin)) * (1.0 - 0.5 * rainStrength);
 			col *= mix(vec3(1.0), vec3(0.70, 0.74, 0.78), clamp(fdK, 0.0, 1.0));
 		}
+		// valley shade: by day the darker shade on open land loses its vivid green and settles into a calm blue-teal, as in the cool painted shade of the meadows
+		{
+			float vsL = luma(col);
+			float vsK = VALLEY_SHADE * dayG * (1.0 - duskG) * (water || sky ? 0.0 : 1.0) * (abs(texture(colortex1, uv).a - 0.5) < 0.05 ? 0.0 : 1.0) * (1.0 - smoothstep(0.22, 0.42, vsL)) * smoothstep(0.06, 0.18, col.g - col.r) * (1.0 - cave) * (1.0 - 0.6 * rainStrength);
+			col = mix(col, vec3(vsL) * vec3(0.74, 0.98, 1.04) * 0.86, clamp(vsK * 0.5, 0.0, 0.5)); // calmer, a touch deeper
+		}
 		// clouds: the grade leaves them alone, so they keep their own colour (no blow-out to white)
 		col = mix(col, pre, cloudM);
 		// particles (splash mist, smoke, clouds of dust): pale ones stay neutral white, never sand-beige
