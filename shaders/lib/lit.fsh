@@ -498,6 +498,12 @@ void main() {
 			vec3 vg = mix(vec3(luma(col)), col, 1.65) * vec3(0.90, 1.0, 0.80) * 0.88;
 			col = mix(col, max(vg, 0.0), clamp(vgK, 0.0, 1.0));
 		}
+		// cyan highlights: by day the brightest sunlit grass and leaf tops roll off into a fresh cyan-white glint instead of yellow-lime
+		if (grassTex || isLeaf == 1) {
+			float chL = luma(col);
+			float chK = CYAN_HIGHLIGHTS * day * smoothstep(0.30, 0.65, chL) * smoothstep(0.3, 0.9, dot(n, up)) * (1.0 - 0.7 * rainStrength);
+			col = mix(col, col * vec3(0.86, 1.0, 1.22) + vec3(0.0, 0.02, 0.05), clamp(chK, 0.0, 0.8));
+		}
 		// crown undersides: by day the side and lower faces of tree crowns sink into a cooler deep teal, so each crown
 		// reads as a lit top over a shaded body
 		if (isLeaf == 1) col *= mix(vec3(1.0), vec3(0.78, 0.88, 0.96), CROWN_SHADE * day * (1.0 - smoothstep(-0.1, 0.6, dot(n, up))) * (1.0 - smoothstep(0.04, 0.16, albedo.r - albedo.g)));
