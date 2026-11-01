@@ -4,12 +4,13 @@ Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All 
 All builds tested in the real client with screenshots.
 
 ## 0.34.9
-- Valley Shade: by day the darker shade on open land loses its vivid green and settles into a calm blue-teal.
-- Forest Depth: by day near and mid-range tree crowns settle a calm step darker, blossoms and distant haze untouched.
-- Deep Forest Tone: by day tree crowns sit a clear step darker, so forests read as deep, calm masses against bright meadows.
-- Meadow Air: by day bright and mid-bright open grass settles from saturated pure green into a lighter, airy blue-green.
+
+A calm depth update: deep, dark forests against light airy meadows, painted blue-teal shade, vivid flowers and warm golden grass at dusk.
 
 ### Changes
+- **Meadow air**: by day bright and mid-bright open grass settles from saturated pure green into a lighter, airy blue-green (Meadow Air setting).
+- **Forest depth**: by day near and mid-range tree crowns settle a calm step darker, while blossoms and distant haze stay untouched (Forest Depth and Deep Forest Tone settings).
+- **Valley shade**: by day the darker shade on open land loses its vivid green and settles into a calm blue-teal (Valley Shade setting).
 - **Deep canopy midtones**: by day the mid tones of tree crowns settle a step darker and richer, so forests read as deep painted green while sunlit highlights stay bright (Deep Canopy Midtones setting).
 - **Flower pop**: flower petals keep vivid, saturated colour under the cool daylight, so meadows sparkle with bright dots of yellow, red and blue (Flower Pop setting).
 - **Blue shade**: by day the deepest shade in tree crowns leans from vivid green-black into a calm, painted blue-teal (Blue Shade setting).
