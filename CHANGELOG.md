@@ -3,6 +3,11 @@
 Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All Rights Reserved.
 All builds tested in the real client with screenshots.
 
+## 0.34.8
+
+### Changes
+- **Leaf texture pop**: by day leaves keep crisp texture contrast, with dark gaps and bright speckles, so tree crowns read as rich painted foliage instead of a flat green mass (Leaf Texture Pop setting).
+
 ## 0.34.7
 
 Clearer form by day and bluer nights: bright sunlit crowns over cool shaded undersides, vivid grass, deeper shade sides, and deep blue clear and rainy nights.

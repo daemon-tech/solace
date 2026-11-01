@@ -494,6 +494,11 @@ void main() {
 		// crown undersides: by day the side and lower faces of tree crowns sink into a cooler deep teal, so each crown
 		// reads as a lit top over a shaded body
 		if (isLeaf == 1) col *= mix(vec3(1.0), vec3(0.78, 0.88, 0.96), CROWN_SHADE * day * (1.0 - smoothstep(-0.1, 0.6, dot(n, up))) * (1.0 - smoothstep(0.04, 0.16, albedo.r - albedo.g)));
+		// leaf texture pop: by day leaves keep crisp texture contrast, dark gaps and bright speckles, instead of a flat green mass
+		if (isLeaf == 1) {
+			float lpL = luma(col);
+			col *= mix(1.0, clamp(pow(max(lpL, 1e-4) / 0.16, 0.35), 0.55, 1.5), LEAF_POP * day * (1.0 - 0.6 * rainStrength));
+		}
 		// sunlit crowns: by day the sun-facing tops of leaves and grass catch a fresh, bright green, so lit hills and
 		// treetops pop against the deep teal shade (rain and night unchanged)
 		if (isFoliage == 1 || isGrassPlant == 1 || grassTex) {
