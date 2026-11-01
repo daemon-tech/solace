@@ -577,3 +577,5 @@ option.VALLEY_SHADE=Valley Shade
 option.VALLEY_SHADE.comment=By day the darker shade on open land loses its vivid green and settles into a calm blue-teal. 0 turns it off.
 option.NIGHT_TEAL=Night Teal
 option.NIGHT_TEAL.comment=At night land leaves the violet-grey navy for a deep, saturated blue-teal, while torch pools stay warm. 0 turns it off.
+option.RAIN_TEAL=Rain Teal
+option.RAIN_TEAL.comment=In rain land leaves the violet-grey slate for a calm, deep blue-teal, while warm windows stay warm. 0 turns it off.

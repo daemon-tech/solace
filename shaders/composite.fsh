@@ -1471,6 +1471,12 @@ void main() {
 			float ntK = NIGHT_TEAL * (1.0 - dayG) * (1.0 - duskG) * (sky ? 0.0 : 1.0) * (1.0 - smoothstep(0.05, 0.12, col.r - col.b)) * (1.0 - cave) * (1.0 - rainStrength);
 			col = mix(col, ntL * vec3(0.40, 1.10, 1.75), clamp(ntK * 0.5, 0.0, 0.5));
 		}
+		// rain teal: in rain land leaves the violet-grey slate for a calm, deep blue-teal, warm windows kept
+		{
+			float rtL = luma(col);
+			float rtK = RAIN_TEAL * rainStrength * (sky ? 0.0 : 1.0) * (1.0 - smoothstep(0.05, 0.12, col.r - col.b)) * (1.0 - cave);
+			col = mix(col, rtL * vec3(0.45, 1.08, 1.60), clamp(rtK * 0.5, 0.0, 0.5));
+		}
 		// clouds: the grade leaves them alone, so they keep their own colour (no blow-out to white)
 		col = mix(col, pre, cloudM);
 		// particles (splash mist, smoke, clouds of dust): pale ones stay neutral white, never sand-beige

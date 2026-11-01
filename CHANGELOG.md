@@ -7,6 +7,7 @@ All builds tested in the real client with screenshots.
 
 ### Changes
 - **Night teal**: at night land leaves the violet-grey navy for a deep, saturated blue-teal, while torch pools stay warm (Night Teal setting).
+- **Rain teal**: in rain land leaves the violet-grey slate for a calm, deep blue-teal, while warm windows stay warm (Rain Teal setting).
 
 ## 0.34.9
 
