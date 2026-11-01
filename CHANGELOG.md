@@ -3,6 +3,10 @@
 Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All Rights Reserved.
 All builds tested in the real client with screenshots.
 
+## 0.34.4
+
+### Changes
+
 ## 0.34.3
 
 A calm colour update: deeper teal greens, a clearer sky-blue horizon on clear days and brighter snowy nights.
