@@ -5,6 +5,8 @@ All builds tested in the real client with screenshots.
 
 ## 0.35.0
 
+A mood update: deep blue-teal nights and rain with warm windows, moonlit and wet crowns that keep their shape, luminous sunlit slopes, calm slate cliffs and sand paths, and richer teal forests.
+
 ### Changes
 - **Far canopies**: distant dark forest crowns keep a little more of their deep green-teal under the blue distance haze.
 - **Night teal**: at night land leaves the violet-grey navy for a deep, saturated blue-teal, while torch pools and cherry crowns keep their colour (Night Teal setting).
