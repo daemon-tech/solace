@@ -1357,6 +1357,9 @@ void main() {
 			vec3 tg = col * vec3(0.72, 0.90, 1.38);
 			tg *= 0.90 * luma(col) / max(luma(tg), 1e-4);
 			col = mix(col, tg, clamp(gK, 0.0, 1.0));
+			// mid-distance canopy: settles into a deeper, calmer blue-green instead of bright aqua, before the far haze takes over
+			float fcK = FAR_CANOPY_DEEP * smoothstep(0.06, 0.25, col.g - col.r) * smoothstep(20.0, 70.0, lin) * (1.0 - smoothstep(0.30, 0.75, lin / wEnd)) * mix(0.4, 1.0, dayG) * (1.0 - cave);
+			col = mix(col, mix(vec3(luma(col)), col, 0.80) * 0.62, clamp(fcK, 0.0, 1.0));
 		}
 		float shK = 1.0 - smoothstep(0.12, 0.45, luma(col));
 		col = mix(col, col * vec3(0.74, 0.94, 1.16), caK * 0.7 * shK * (sky ? 0.0 : 1.0));

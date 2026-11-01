@@ -150,6 +150,7 @@ const float sunPathRotation = -25.0;
 #define HORIZON_SOFT 1.0 // [0.0 0.5 1.0] clear days: the sky near the horizon rolls off softly into calm sky-blue instead of clipping to bright mint
 #define TEAL_GREENS 0.6 // [0.0 0.3 0.6 0.8 1.0] grass and leaves lean from lime into a deeper painted blue-green
 #define LEAF_DEEP 1.0 // [0.0 0.3 0.6 0.8 1.0] tree crowns settle into a deeper, darker teal-green than open grass
+#define FAR_CANOPY_DEEP 0.7 // [0.0 0.35 0.7 1.0] mid-distance trees and grass settle into a deeper blue-green instead of bright aqua
 #define RAIN_DAY_SOFT 0.7 // [0.0 0.35 0.7 1.0] rain by day: land stays a soft slate grey-green instead of deep blue
 #define RAIN_NIGHT_LIFT 0.8 // [0.0 0.4 0.8 1.0] rainy nights: dark tones lift gently so wet land stays readable
 #define FAR_SHADE 1.0 // [0.0 0.5 1.0 1.5] far hills keep deep blue-teal shade sides with smooth shading
