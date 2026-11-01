@@ -4,24 +4,26 @@ Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All 
 All builds tested in the real client with screenshots.
 
 ## 0.34.2
-- Rainbow after rain: a fainter, calmer pastel arc.
-- Rain: drops read as soft, slightly translucent pale-blue streaks; snow is unchanged.
-- Jungle sky: the bright mint horizon is now a calm azure-cyan.
-- Nether and End: overworld morning and valley mist no longer wash a pale veil over lava lakes and the void.
-- Biome skies: jungles get a deep azure sky over a humid cyan horizon instead of green-teal; swamps a calm misty teal-grey instead of olive.
-- Rain by day: a calm, lighter band of light sits low on the horizon under the overcast.
-- Night rain: a few calm, dim blue moonlit beams now fall through the overcast too, like the daytime rain beams.
-- Far valley mist: from high ground, distant valley floors lie under soft pale-blue mist sheets, so hills stack into calm layers (new Far Valley Mist options).
-- Sandstorm: clouds fade away behind the dust, so the sky is one calm ochre haze instead of showing blue cloud patches.
-- Sandstorm: the ochre dust wall closes in a little sooner and denser, like a real dust storm.
-- Night sky: stars are drawn behind the painted clouds and the block cloud layers, so far fewer stars shine through clouds.
-- Sunrise: sky and clouds glow a soft peach-gold instead of pink, with a calmer rim light on clouds near the sun.
-- Thunderstorms: the overcast sinks a calm step darker and cooler than plain rain, so storms read heavier.
-- Snowfall: the view below the horizon keeps the soft white-grey of the snow overcast, so no dark band sits under the pale sky.
-- Snowfall: the spotlight beams of rain clouds fade out in snowfall and cold lands, so no bright vertical streaks stand over snowy hills.
-- Rain: the sky, the block cloud layers and the gaps between clouds settle into one calm slate overcast by day (navy at night) instead of bright blue patches.
+
+A big look update: a clear, cool painted world with soft smooth shading, big soft clouds, a glowing sun, deep navy rain and nights, calm sandstorms, pale blue distance and valley mist, brighter turquoise water and warm orange torch light. Outlines are now optional and off by default.
 
 ### Changes
+- **Rainbow after rain**: a fainter, calmer pastel arc.
+- **Rain**: drops read as soft, slightly translucent pale-blue streaks; snow is unchanged.
+- **Jungle sky**: the bright mint horizon is now a calm azure-cyan.
+- **Nether and End**: overworld morning and valley mist no longer wash a pale veil over lava lakes and the void.
+- **Biome skies**: jungles get a deep azure sky over a humid cyan horizon instead of green-teal; swamps a calm misty teal-grey instead of olive.
+- **Rain by day**: a calm, lighter band of light sits low on the horizon under the overcast.
+- **Night rain**: a few calm, dim blue moonlit beams now fall through the overcast too, like the daytime rain beams.
+- **Far valley mist**: from high ground, distant valley floors lie under soft pale-blue mist sheets, so hills stack into calm layers (new Far Valley Mist options).
+- **Sandstorm**: clouds fade away behind the dust, so the sky is one calm ochre haze instead of showing blue cloud patches.
+- **Sandstorm**: the ochre dust wall closes in a little sooner and denser, like a real dust storm.
+- **Night sky**: stars are drawn behind the painted clouds and the block cloud layers, so far fewer stars shine through clouds.
+- **Sunrise**: sky and clouds glow a soft peach-gold instead of pink, with a calmer rim light on clouds near the sun.
+- **Thunderstorms**: the overcast sinks a calm step darker and cooler than plain rain, so storms read heavier.
+- **Snowfall**: the view below the horizon keeps the soft white-grey of the snow overcast, so no dark band sits under the pale sky.
+- **Snowfall**: the spotlight beams of rain clouds fade out in snowfall and cold lands, so no bright vertical streaks stand over snowy hills.
+- **Rain**: the sky, the block cloud layers and the gaps between clouds settle into one calm slate overcast by day (navy at night) instead of bright blue patches.
 - **Soft sky-blue horizon**: on clear days the sky near the horizon rolls off softly into a calm sky-blue instead of clipping to a glaring mint-cyan; land and the sunrise/sunset colours are unchanged (Soft Horizon setting).
 - **Peach-gold sunrise glow**: at sunrise and sunset the bloom stays a softer peach-gold glow instead of washing the horizon next to the sun to white; midday bloom and sun glare are unchanged.
 - **Soft snowfall by day**: in snowfall, snowy ground and cold lands stay a soft cool white-grey instead of turning bright blue; rain elsewhere and the navy night are unchanged.
