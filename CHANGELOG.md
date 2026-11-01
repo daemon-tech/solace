@@ -10,6 +10,7 @@ All builds tested in the real client with screenshots.
 - **Flower pop**: flower petals keep vivid, saturated colour under the cool daylight, so meadows sparkle with bright dots of yellow, red and blue (Flower Pop setting).
 - **Blue shade**: by day the deepest shade in tree crowns leans from vivid green-black into a calm, painted blue-teal (Blue Shade setting).
 - **Shade lift**: by day the very darkest shade on land lifts a gentle step toward a luminous blue-teal instead of near black (Shade Lift setting).
+- **Dusk grass gold**: at sunrise and sunset grass blades and grass tops turn a warm golden olive instead of fresh lime, so meadows and villages glow warm at dusk (Dusk Grass Gold setting).
 
 ## 0.34.8
 

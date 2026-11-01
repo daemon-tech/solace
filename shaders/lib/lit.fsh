@@ -686,6 +686,15 @@ void main() {
 		float tw = pow(max(sin(frameTimeCounter * (1.5 + 2.5 * h) + h * 60.0), 0.0), 6.0);
 		col += vec3(1.0, 0.92, 1.0) * step(0.78, h) * tw * smoothstep(0.25, 0.5, luma(albedo.rgb)) * 3.0 * AMETHYST_TWINKLE;
 	}
+	// dusk grass gold: last word on grass blades and tops at sunrise and sunset, a warm gold instead of fresh lime (after all other foliage tints)
+#ifdef TERRAIN_PASS
+	if (isGrassPlant == 1 || ((isFoliage == 2 || isFoliage == 1) && vcolor.g > vcolor.b * 1.15 && vcolor.g > vcolor.r * 1.05)) {
+		vec3 dgS = safeNormalize(mat3(gbufferModelViewInverse) * sunPosition, vec3(0, 1, 0));
+		float dgK = DUSK_GRASS_GOLD * smoothstep(-0.02, 0.06, dgS.y) * (1.0 - smoothstep(0.20, 0.45, dgS.y)) * smoothstep(0.6, 0.9, lm.y) * (1.0 - rainStrength);
+		float dgL = luma(col);
+		col = mix(col, vec3(dgL) * vec3(1.30, 1.05, 0.55) * 1.05, clamp(dgK * 0.55, 0.0, 0.55));
+	}
+#endif
 	outColor = vec4(clamp(col, 0.0, 4.0), albedo.a);
 	outFlag = vec4(0.0, clamp(pool, 0.0, 1.0), 0.0, 1.0);
 #ifdef FLAT_NORMAL
