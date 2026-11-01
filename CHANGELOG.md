@@ -10,6 +10,7 @@ All builds tested in the real client with screenshots.
 - **Rain teal**: in rain land leaves the violet-grey slate for a calm, deep blue-teal, while warm windows stay warm (Rain Teal setting).
 - **Bright highlights**: by day the brightest lit land rolls up into a clean, luminous cyan-white, so sunlit slopes sparkle (Bright Highlights setting).
 - **Forest teal**: by day tree crowns lose their grey red share and read as a rich, deep teal-green (Forest Teal setting).
+- **Calm sand paths**: by day loud orange-yellow paths, sand and planks soften into a calm warm sand, so villages sit in the cool land (Calm Sand Paths setting).
 
 ## 0.34.9
 

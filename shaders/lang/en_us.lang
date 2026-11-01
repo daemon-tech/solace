@@ -583,3 +583,5 @@ option.BRIGHT_HIGHLIGHTS=Bright Highlights
 option.BRIGHT_HIGHLIGHTS.comment=By day the brightest lit land rolls up into a clean, luminous cyan-white, so sunlit slopes sparkle. 0 turns it off.
 option.FOREST_TEAL=Forest Teal
 option.FOREST_TEAL.comment=By day tree crowns lose their grey red share and read as a rich, deep teal-green. 0 turns it off.
+option.CALM_PATHS=Calm Sand Paths
+option.CALM_PATHS.comment=By day loud orange-yellow paths, sand and planks soften into a calm warm sand, so villages sit in the cool land. 0 turns it off.

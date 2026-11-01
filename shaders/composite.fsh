@@ -1472,6 +1472,12 @@ void main() {
 			float bhK = BRIGHT_HIGHLIGHTS * dayG * (1.0 - duskG) * (water || sky ? 0.0 : 1.0) * smoothstep(0.45, 0.75, bhL) * (1.0 - cave) * (1.0 - rainStrength);
 			col = mix(col, min(col * vec3(1.06, 1.08, 1.08) + vec3(0.0, 0.015, 0.03), vec3(1.0)), clamp(bhK, 0.0, 1.0));
 		}
+		// calm sand paths: by day loud orange-yellow paths, sand and planks soften into a calm warm sand, so villages sit in the cool land
+		{
+			float cpL = luma(col);
+			float cpK = CALM_PATHS * dayG * (1.0 - duskG) * (water || sky ? 0.0 : 1.0) * smoothstep(0.22, 0.40, col.r - col.b) * smoothstep(0.08, 0.18, col.g - col.b) * smoothstep(0.25, 0.45, cpL) * (1.0 - cave);
+			col = mix(col, cpL * vec3(1.08, 1.0, 0.84), clamp(cpK * 0.6, 0.0, 0.6));
+		}
 		// night teal: at night land leaves the violet-grey navy for a deep, saturated blue-teal, torch pools kept warm
 		{
 			float ntL = luma(col);
