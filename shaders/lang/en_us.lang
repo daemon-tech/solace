@@ -567,3 +567,7 @@ option.SHADE_LIFT=Shade Lift
 option.SHADE_LIFT.comment=By day the very darkest shade on land lifts a gentle step toward a luminous painted blue-teal instead of near black. 0 turns it off.
 option.DUSK_GRASS_GOLD=Dusk Grass Gold
 option.DUSK_GRASS_GOLD.comment=At sunrise and sunset grass blades and grass tops turn a warm gold instead of fresh lime. 0 turns it off.
+option.MEADOW_AIR=Meadow Air
+option.MEADOW_AIR.comment=By day bright open greens settle from saturated pure green into a lighter, airy blue-green, like grass seen through clear cool air. 0 turns it off.
+option.DEEP_FOREST=Deep Forest Tone
+option.DEEP_FOREST.comment=By day tree crowns sit a clear step darker overall, so forests read as deep, calm masses against bright meadows. 0 turns it off.

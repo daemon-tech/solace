@@ -4,6 +4,7 @@ Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All 
 All builds tested in the real client with screenshots.
 
 ## 0.34.9
+- Meadow Air: by day bright open grass settles from saturated pure green into a lighter, airy blue-green.
 
 ### Changes
 - **Deep canopy midtones**: by day the mid tones of tree crowns settle a step darker and richer, so forests read as deep painted green while sunlit highlights stay bright (Deep Canopy Midtones setting).
