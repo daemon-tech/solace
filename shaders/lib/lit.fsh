@@ -509,6 +509,11 @@ void main() {
 			float ghK = GOLDEN_SHADE * clamp(golden / max(GOLDEN_HOUR_TINT, 0.01), 0.0, 1.0) * (1.0 - light) * smoothstep(0.6, 0.9, lm.y) * (1.0 - 0.7 * rainStrength);
 			col = mix(col, col * vec3(0.72, 0.90, 1.12), clamp(ghK, 0.0, 0.85));
 		}
+		// shadow pools: by day sun-facing ground caught in a tree or cliff shadow sinks into a deep blue-teal pool, so cast shadows read crisply on the land
+		{
+			float spK = SHADOW_POOLS * day * smoothstep(0.15, 0.4, ndl) * (1.0 - smoothstep(0.1, 0.5, light)) * smoothstep(0.75, 0.95, lm.y) * (1.0 - 0.7 * rainStrength) * (isLeaf == 1 ? 0.4 : 1.0);
+			col = mix(col, col * vec3(0.66, 0.84, 1.04), clamp(spK, 0.0, 0.8));
+		}
 		// crown undersides: by day the side and lower faces of tree crowns sink into a cooler deep teal, so each crown
 		// reads as a lit top over a shaded body
 		if (isLeaf == 1) col *= mix(vec3(1.0), vec3(0.78, 0.88, 0.96), CROWN_SHADE * day * (1.0 - smoothstep(-0.1, 0.6, dot(n, up))) * (1.0 - smoothstep(0.04, 0.16, albedo.r - albedo.g)));

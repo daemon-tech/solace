@@ -537,3 +537,5 @@ option.CYAN_HIGHLIGHTS=Cyan Highlights
 option.CYAN_HIGHLIGHTS.comment=By day the brightest sunlit grass and leaf tops roll off into a fresh cyan-white glint instead of yellow-lime. 0 turns it off.
 option.GOLDEN_SHADE=Golden Hour Shade
 option.GOLDEN_SHADE.comment=At sunrise and sunset faces turned away from the sun sink into a cool blue-teal, so warm lit sides glow against cool shade. 0 turns it off.
+option.SHADOW_POOLS=Shadow Pools
+option.SHADOW_POOLS.comment=By day sun-facing ground caught in a tree or cliff shadow sinks into a deep blue-teal pool, so cast shadows read crisply on the land. 0 turns it off.

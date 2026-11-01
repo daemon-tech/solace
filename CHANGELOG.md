@@ -10,6 +10,7 @@ All builds tested in the real client with screenshots.
 - **Cool earth**: by day exposed dirt and paths lose their red-pink cast and settle into a soft olive umber that sits with the blue-green land, without turning grey (Cool Earth setting).
 - **Cyan highlights**: by day the brightest sunlit grass and leaf tops roll off into a fresh cyan-white instead of yellow-lime, so lit hills and crowns sit in the cool daylight (Cyan Highlights setting).
 - **Golden hour shade**: at sunrise and sunset faces turned away from the sun sink into a cool blue-teal, so warm lit sides glow against cool shade (Golden Hour Shade setting).
+- **Shadow pools**: by day sun-facing ground and crowns caught in a tree or cliff shadow sink into a deep blue-teal, so cast shadows read crisply in forests (Shadow Pools setting).
 
 ## 0.34.7
 
