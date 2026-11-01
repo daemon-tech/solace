@@ -556,6 +556,13 @@ void main() {
 			float dmK = DEEP_CANOPY_MID * day * smoothstep(0.06, 0.18, dmL) * (1.0 - smoothstep(0.32, 0.55, dmL)) * (1.0 - smoothstep(0.04, 0.16, albedo.r - albedo.g));
 			col = mix(col, col * vec3(0.74, 0.80, 0.82), clamp(dmK, 0.0, 1.0));
 		}
+		// flower pop: petals of flowers keep vivid, saturated colour under the cool grade, so meadows sparkle with bright dots of colour
+		if ((isFoliage == 1 || isFoliage == 5) && isLeaf == 0 && !grassTex) {
+			float fpC = max(albedo.r, albedo.b) - albedo.g;
+			float fpK = FLOWER_POP * smoothstep(0.06, 0.20, fpC) * mix(0.4, 1.0, day);
+			float fpL = luma(col);
+			col = mix(col, max(vec3(fpL) + (col - vec3(fpL)) * 1.9, 0.0) * 1.12, clamp(fpK, 0.0, 1.0));
+		}
 		// crown undersides: by day the side and lower faces of tree crowns sink into a cooler deep teal, so each crown
 		// reads as a lit top over a shaded body
 		if (isLeaf == 1) col *= mix(vec3(1.0), vec3(0.78, 0.88, 0.96), CROWN_SHADE * day * (1.0 - smoothstep(-0.1, 0.6, dot(n, up))) * (1.0 - smoothstep(0.04, 0.16, albedo.r - albedo.g)));
