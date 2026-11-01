@@ -519,3 +519,5 @@ option.RAIN_NIGHT_LIFT=Rainy Night Lift
 option.RAIN_NIGHT_LIFT.comment=On rainy nights the darkest tones lift gently, so wet land stays readable as calm navy instead of black.
 option.SUNLIT_CROWNS=Sunlit Crowns
 option.SUNLIT_CROWNS.comment=By day the sun-facing tops of leaves and grass catch a fresh, bright green, so lit treetops and hills stand out against the deep shade. 0 turns it off.
+option.CROWN_SHADE=Crown Undersides
+option.CROWN_SHADE.comment=By day the side and lower faces of tree crowns sink into a cooler deep teal, so each crown reads as a lit top over a shaded body. 0 turns it off.

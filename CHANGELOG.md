@@ -7,6 +7,7 @@ All builds tested in the real client with screenshots.
 
 ### Changes
 - **Sunlit crowns**: by day the sun-facing tops of leaves and grass catch a fresh, bright green, so lit treetops and hills stand out against the deep teal shade (Sunlit Crowns setting).
+- **Crown undersides**: by day the side and lower faces of tree crowns sink into a cooler deep teal, so each crown reads as a lit top over a shaded body (Crown Undersides setting).
 
 ## 0.34.6
 

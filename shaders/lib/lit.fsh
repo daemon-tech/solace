@@ -480,6 +480,9 @@ void main() {
 			col = mix(col, mix(vec3(luma(col)), col, 1.18), ldK); // keep the deep green rich, never muddy grey
 		}
 		if (isLeaf == 1) col *= mix(vec3(1.0), vec3(0.74, 0.88, 1.0), CANOPY_DEPTH * (1.0 - smoothstep(0.62, 0.95, lm.y)) * mix(0.5, 1.0, day));
+		// crown undersides: by day the side and lower faces of tree crowns sink into a cooler deep teal, so each crown
+		// reads as a lit top over a shaded body
+		if (isLeaf == 1) col *= mix(vec3(1.0), vec3(0.78, 0.88, 0.96), CROWN_SHADE * day * (1.0 - smoothstep(-0.1, 0.6, dot(n, up))) * (1.0 - smoothstep(0.04, 0.16, albedo.r - albedo.g)));
 		// sunlit crowns: by day the sun-facing tops of leaves and grass catch a fresh, bright green, so lit hills and
 		// treetops pop against the deep teal shade (rain and night unchanged)
 		if (isFoliage == 1 || isGrassPlant == 1 || grassTex) {
