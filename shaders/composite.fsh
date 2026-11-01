@@ -1351,6 +1351,13 @@ void main() {
 		cc *= luma(col) / max(luma(cc), 1e-4);
 		float skyHz = sky ? (1.0 - smoothstep(0.0, 0.30, abs(dot(vdir, safeNormalize(upPosition, vec3(0, 1, 0)))))) * dayG * (1.0 - duskG) : 0.0;
 		col = mix(col, cc, caK * (sky ? 0.45 * (1.0 - 0.8 * skyHz) : 1.0));
+		// teal greens: grass and leaves lean from lime into a deeper blue-green, a little darker (painted teal forests)
+		if (!sky) {
+			float gK = smoothstep(0.04, 0.22, col.g - max(col.r, col.b)) * TEAL_GREENS * mix(0.5, 1.0, dayG) * (1.0 - cave);
+			vec3 tg = col * vec3(0.72, 0.90, 1.38);
+			tg *= 0.90 * luma(col) / max(luma(tg), 1e-4);
+			col = mix(col, tg, gK);
+		}
 		float shK = 1.0 - smoothstep(0.12, 0.45, luma(col));
 		col = mix(col, col * vec3(0.74, 0.94, 1.16), caK * 0.7 * shK * (sky ? 0.0 : 1.0));
 		// rain and night: the world sinks into a deep, calm navy blue (almost one hue, light kept)

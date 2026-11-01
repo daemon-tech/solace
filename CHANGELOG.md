@@ -5,7 +5,10 @@ All builds tested in the real client with screenshots.
 
 ## 0.34.3
 
+A calm colour update: deeper teal greens, a clearer sky-blue horizon on clear days and brighter snowy nights.
+
 ### Changes
+- **Teal greens**: grass and leaves lean from bright lime into a deeper painted blue-green, so meadows and forests sit calmly in the cool air (Teal Greens setting).
 - **Brighter snowy nights**: during snowfall at night the dark tones lift a little more, so snowy hills read more clearly inside the navy mood (Snowy Night Lift now 1.0 by default).
 - **Deeper horizon blue**: on clear days the soft horizon settles into a calm, clear sky-blue over a wider band above the horizon; sunrise and sunset colours are unchanged.
 

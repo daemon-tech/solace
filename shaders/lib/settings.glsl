@@ -148,6 +148,7 @@ const float sunPathRotation = -25.0;
 #define TORCH_ORANGE 0.7 // [0.0 0.4 0.7 1.0] torches, lanterns and fire cast a saturated orange glow
 #define SNOW_NIGHT_LIFT 1.0 // [0.0 0.3 0.6 1.0] snowy nights and snowfall: dark tones lift gently so snowy land stays readable
 #define HORIZON_SOFT 1.0 // [0.0 0.5 1.0] clear days: the sky near the horizon rolls off softly into calm sky-blue instead of clipping to bright mint
+#define TEAL_GREENS 0.6 // [0.0 0.3 0.6 0.8 1.0] grass and leaves lean from lime into a deeper painted blue-green
 #define FAR_SHADE 1.0 // [0.0 0.5 1.0 1.5] far hills keep deep blue-teal shade sides with smooth shading
 #define COOL_AIR 0.6 // [0.0 0.3 0.6 0.8 1.0] the whole world sits in a clear, cool blue-cyan air; shade leans deep blue-teal
 #define CANOPY_DEPTH 0.6 // [0.0 0.3 0.6 1.0] leaves deep inside and under a canopy turn a cooler deep green, outer leaves stay bright
