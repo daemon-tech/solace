@@ -174,6 +174,7 @@ const float sunPathRotation = -25.0;
 #define RAIN_TEAL 1.0 // [0.0 0.5 1.0] in rain land takes a calm, deep blue-teal instead of violet-grey slate
 #define NIGHT_TEAL 1.0 // [0.0 0.5 1.0] at night land takes a deep, saturated blue-teal instead of violet-grey navy
 #define VALLEY_SHADE 1.0 // [0.0 0.5 1.0] by day darker shade on open land settles from vivid green into a calm blue-teal
+#define FOREST_TEAL 1.0 // [0.0 0.5 1.0] by day tree crowns lose their grey red share and read as rich deep teal-green
 #define FOREST_DEPTH 1.0 // [0.0 0.5 1.0] by day tree crowns settle a calm step darker
 #define DEEP_FOREST 1.0 // [0.0 0.5 1.0] by day tree crowns sit a clear step darker overall
 #define MEADOW_AIR 1.0 // [0.0 0.5 1.0] by day bright open greens settle into a lighter, airy blue-green

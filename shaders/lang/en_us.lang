@@ -581,3 +581,5 @@ option.RAIN_TEAL=Rain Teal
 option.RAIN_TEAL.comment=In rain land leaves the violet-grey slate for a calm, deep blue-teal, while warm windows stay warm. 0 turns it off.
 option.BRIGHT_HIGHLIGHTS=Bright Highlights
 option.BRIGHT_HIGHLIGHTS.comment=By day the brightest lit land rolls up into a clean, luminous cyan-white, so sunlit slopes sparkle. 0 turns it off.
+option.FOREST_TEAL=Forest Teal
+option.FOREST_TEAL.comment=By day tree crowns lose their grey red share and read as a rich, deep teal-green. 0 turns it off.
