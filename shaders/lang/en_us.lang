@@ -547,3 +547,5 @@ option.SOFT_SNOW=Soft Snow
 option.SOFT_SNOW.comment=By day bright snow keeps a soft cool white with only a light blue cast instead of a saturated blue sheet. 0 turns it off.
 option.CHERRY_PINK=Cherry Pink
 option.CHERRY_PINK.comment=By day cherry blossoms keep a soft pastel pink under the cool grade instead of turning white-lilac. 0 turns it off.
+option.FOREST_FLOOR=Forest Floor Shade
+option.FOREST_FLOOR.comment=By day the ground under a dense canopy sinks into a deep, cool teal shade, so forests read dark and calm inside. 0 turns it off.

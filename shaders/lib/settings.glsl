@@ -160,6 +160,7 @@ const float sunPathRotation = -25.0;
 #define TORCH_RICH 1.0 // [0.0 0.5 1.0] at night surfaces inside a torch pool take a richer saturated amber
 #define SOFT_SNOW 1.0 // [0.0 0.5 1.0] by day sunlit snow reads as a soft cool white instead of a saturated blue sheet
 #define CHERRY_PINK 1.0 // [0.0 0.5 1.0] by day cherry blossoms keep a soft pastel pink instead of white-lilac
+#define FOREST_FLOOR 1.0 // [0.0 0.5 1.0] by day the ground under a dense canopy sinks into a deep cool teal shade
 #define SHADE_SIDES 0.8 // [0.0 0.4 0.8 1.0] by day faces turned away from the sun sit a step deeper in cool teal
 #define VIVID_GRASS 1.0 // [0.0 0.35 0.7 1.0] by day open grass tops turn a rich, saturated green instead of pale mint
 #define CROWN_SHADE 0.8 // [0.0 0.4 0.8 1.0] by day side and lower faces of tree crowns sink into a cooler deep teal

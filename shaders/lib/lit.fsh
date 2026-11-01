@@ -533,6 +533,11 @@ void main() {
 			float cpK = CHERRY_PINK * day * smoothstep(0.04, 0.16, albedo.r - albedo.g) * (1.0 - 0.5 * rainStrength);
 			col = mix(col, col * vec3(1.16, 0.90, 0.78), clamp(cpK, 0.0, 1.0));
 		}
+		// forest floor: by day the ground under a dense canopy sinks into a deep, cool teal shade, so forests read dark and calm inside
+		if (isLeaf == 0) {
+			float ffK = FOREST_FLOOR * day * smoothstep(0.5, 0.9, dot(n, up)) * (1.0 - smoothstep(0.78, 0.94, lm.y)) * (1.0 - smoothstep(0.2, 0.6, light)) * (1.0 - smoothstep(0.3, 0.7, lm.x));
+			col *= mix(vec3(1.0), vec3(0.60, 0.74, 0.84), clamp(ffK, 0.0, 1.0));
+		}
 		// crown undersides: by day the side and lower faces of tree crowns sink into a cooler deep teal, so each crown
 		// reads as a lit top over a shaded body
 		if (isLeaf == 1) col *= mix(vec3(1.0), vec3(0.78, 0.88, 0.96), CROWN_SHADE * day * (1.0 - smoothstep(-0.1, 0.6, dot(n, up))) * (1.0 - smoothstep(0.04, 0.16, albedo.r - albedo.g)));
