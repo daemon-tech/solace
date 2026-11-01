@@ -5,6 +5,8 @@ All builds tested in the real client with screenshots.
 
 ## 0.34.8
 
+A painterly light update: crisp leaves, luminous backlit crowns, cool shade with warm golden-hour light, calm slate cliffs, soft white snow, pastel cherry blossoms, travelling gust streaks on grass, darker forest floors and warm amber glow islands at night and in caves.
+
 ### Changes
 - **Leaf texture pop**: by day leaves keep crisp texture contrast, with dark gaps and bright speckles, so tree crowns read as rich painted foliage instead of a flat green mass (Leaf Texture Pop setting).
 - **Cool earth**: by day exposed dirt and paths lose their red-pink cast and settle into a soft olive umber that sits with the blue-green land, without turning grey (Cool Earth setting).
