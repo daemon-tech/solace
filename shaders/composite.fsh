@@ -1499,6 +1499,14 @@ void main() {
 			float dhK = DUSK_HONEY * duskG * (water || sky ? 0.0 : 1.0) * smoothstep(0.18, 0.32, col.g - col.b) * smoothstep(0.28, 0.50, dhL) * (1.0 - cave);
 			col = mix(col, vec3(dhL) * vec3(1.08, 1.02, 0.78), clamp(dhK * 0.50, 0.0, 0.50));
 		}
+		// rain field form: in rain open grass keeps soft lighter and deeper patches, so wet fields don't read as one flat slate
+		if (rainStrength > 0.05) {
+			vec3 rfW = mat3(gbufferModelViewInverse) * vpos + cameraPosition;
+			float rfN = vnoise(rfW.xz * 0.04) * 0.65 + vnoise(rfW.xz * 0.11 + 4.7) * 0.35;
+			float rfL = luma(col);
+			float rfK = RAIN_PATCHES * rainStrength * (water || sky ? 0.0 : 1.0) * smoothstep(0.04, 0.14, col.g - col.r * 0.5) * smoothstep(0.08, 0.28, rfL) * (1.0 - cave);
+			col *= mix(vec3(1.0), mix(vec3(0.82, 0.90, 0.98), vec3(1.16, 1.14, 1.08), smoothstep(0.3, 0.7, rfN)), clamp(rfK, 0.0, 1.0));
+		}
 		// night teal: at night land leaves the violet-grey navy for a deep, saturated blue-teal, torch pools kept warm
 		{
 			float ntL = luma(col);

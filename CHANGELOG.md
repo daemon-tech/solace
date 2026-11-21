@@ -9,6 +9,7 @@ All builds tested in the real client with screenshots.
 - **Sun halo**: when the sun is in view it gains a soft glowing bloom, strongest at golden hour (Sun Halo setting).
 - **Sun spots**: soft round sun patches on the ground under leaf canopies read a little more clearly (Sun Spots setting).
 - **Dusk honey**: at sunrise and sunset the most vivid yellow-lime grass settles into a softer honey, so fields glow warm without neon (Dusk Honey setting).
+- **Rain field form**: in rain open grass keeps soft lighter and deeper patches, so wet fields don't read as one flat slate (Rain Field Form setting).
 
 ## 0.35.1
 
