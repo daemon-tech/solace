@@ -195,7 +195,7 @@ const float sunPathRotation = -25.0;
 #define SUNLIT_CROWNS 0.5 // [0.0 0.25 0.5 0.75 1.0] by day sun-facing leaf and grass tops catch a fresh bright green
 #define LEAF_DEEP 1.0 // [0.0 0.3 0.6 0.8 1.0] tree crowns settle into a deeper, darker teal-green than open grass
 #define DUSK_LEAF_GOLD 0.8 // [0.0 0.4 0.8 1.0] golden hour: sunlit treetops and grass catch a warm gold glow
-#define FAR_CANOPY_DEEP 0.7 // [0.0 0.35 0.7 1.0] mid-distance trees and grass settle into a deeper blue-green instead of bright aqua
+#define FAR_CANOPY_DEEP 1.0 // [0.0 0.35 0.7 1.0] mid-distance trees and grass settle into a deeper blue-green instead of bright aqua
 #define RAIN_DAY_SOFT 0.7 // [0.0 0.35 0.7 1.0] rain by day: land stays a soft slate grey-green instead of deep blue
 #define RAIN_NIGHT_LIFT 0.8 // [0.0 0.4 0.8 1.0] rainy nights: dark tones lift gently so wet land stays readable
 #define FAR_SHADE 1.0 // [0.0 0.5 1.0 1.5] far hills keep deep blue-teal shade sides with smooth shading
