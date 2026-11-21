@@ -84,7 +84,7 @@
 #define GRASS_PART 1.0 // [0.0 0.5 1.0 1.5] grass and flowers bend softly away around your feet
 #define SUN_SPOTS 0.85 // [0.0 0.35 0.6 0.85] soft round sun spots on the ground under leaf canopies
 #define CANOPY_RAYS 1.0 // [0.0 0.5 1.0 1.5] long soft sun beams through gaps in tree canopies
-#define GODRAYS_STRENGTH 0.7 // [0.0 0.2 0.35 0.5 0.7 0.9]
+#define GODRAYS_STRENGTH 0.9 // [0.0 0.2 0.35 0.5 0.7 0.9]
 #define CANOPY_GLOW 0.20 // [0.0 0.06 0.12 0.20 0.30]
 #define BLOOM_STRENGTH 0.9 // [0.0 0.3 0.6 0.9 1.2]
 #define HAZE 0.0 // [0.0 0.1 0.18 0.22 0.3 0.45]

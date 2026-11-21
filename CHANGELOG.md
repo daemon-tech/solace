@@ -11,6 +11,7 @@ All builds tested in the real client with screenshots.
 - **Dusk honey**: at sunrise and sunset the most vivid yellow-lime grass settles into a softer honey, so fields glow warm without neon (Dusk Honey setting).
 - **Rain field form**: in rain open grass keeps soft lighter and deeper patches, so wet fields don't read as one flat slate (Rain Field Form setting).
 - **Deep far canopy**: trees and grass in the middle distance settle a step deeper into a calmer blue-green, so mid-distance forests read richer before they fade into the haze (Deep Far Canopy setting).
+- **God rays**: sun rays around the sun read a step stronger, especially at sunrise and sunset (God Ray Strength setting).
 
 ## 0.35.1
 
