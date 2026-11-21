@@ -416,7 +416,7 @@ void main() {
 		if (isFoliage == 1) col *= 1.0 + WIND_SHEEN * 0.6 * windG * day * lb * shK; // grass blades / leaves in gusts
 		// leaf flip: a passing gust turns leaves to show their paler, silvery undersides (calm, travels with the front)
 		// canopy tops: a calm, broad painted sheen where the sun falls on upward faces (no sparkle, no motion)
-		if (isLeaf == 1) col = mix(col, col * vec3(1.14, 1.16, 0.90) + vec3(0.035, 0.045, 0.0), LEAF_SHEEN * 0.65 * smoothstep(0.55, 0.95, dot(n, up)) * lb * day * (1.0 - 0.5 * golden) * (1.0 - smoothstep(0.04, 0.16, albedo.r - albedo.g))); // cherry crowns keep their pink
+		if (isLeaf == 1) col = mix(col, col * vec3(1.14, 1.16, 0.90) + vec3(0.035, 0.045, 0.0), LEAF_SHEEN * 0.65 * smoothstep(0.55, 0.95, dot(n, up)) * lb * day * (1.0 - 0.5 * golden));
 		if (isLeaf == 1) col = mix(col, vec3(luma(col)) * vec3(0.96, 1.04, 1.00) * 1.14, WIND_SHEEN * 1.6 * smoothstep(0.15, 0.85, windG) * mix(0.45, 1.0, day));
 #ifdef SOFT_GRASS
 		// grass plants: soft contact shade at the base fading out by mid-height (tips unchanged, no glow)
