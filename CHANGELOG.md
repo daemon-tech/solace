@@ -13,6 +13,7 @@ All builds tested in the real client with screenshots.
 - **Deep far canopy**: trees and grass in the middle distance settle a step deeper into a calmer blue-green, so mid-distance forests read richer before they fade into the haze (Deep Far Canopy setting).
 - **God rays**: sun rays around the sun read a step stronger, especially at sunrise and sunset (God Ray Strength setting).
 - **Moonlit land**: on clear nights open land reads a little more clearly as a deep moonlit blue instead of grey-black, while torch light stays warm (Moonlit Land setting).
+- **Soft aqua grass**: by day the most vivid bright mint on open lawns leans a little further into a clear aqua, so sunlit meadows read cooler and less mint, while tree crowns stay deep (Soft Aqua setting).
 
 ## 0.35.1
 

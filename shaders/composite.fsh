@@ -1490,8 +1490,8 @@ void main() {
 		// soft aqua grass: by day the most vivid bright mint grass settles into a softer aqua-green, so lit lawns glow without neon
 		{
 			float sgL = luma(col);
-			float sgK = SOFT_AQUA * dayG * (1.0 - duskG) * (water || sky ? 0.0 : 1.0) * smoothstep(0.22, 0.38, col.g - col.r) * smoothstep(0.45, 0.65, sgL) * step(col.b, col.g) * (1.0 - cave);
-			col = mix(col, vec3(sgL) * vec3(0.84, 1.03, 1.04), clamp(sgK * 0.45, 0.0, 0.45));
+			float sgK = SOFT_AQUA * dayG * (1.0 - duskG) * (water || sky ? 0.0 : 1.0) * (abs(texture(colortex1, uv).a - 0.5) < 0.05 ? 0.0 : 1.0) * smoothstep(0.22, 0.38, col.g - col.r) * smoothstep(0.45, 0.65, sgL) * step(col.b, col.g) * (1.0 - cave);
+			col = mix(col, vec3(sgL) * vec3(0.82, 1.02, 1.14), clamp(sgK * 0.50, 0.0, 0.50));
 		}
 		// dusk honey: at sunrise and sunset the most vivid yellow-lime grass settles into a softer honey, so fields glow warm without neon
 		{
