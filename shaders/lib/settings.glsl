@@ -201,7 +201,7 @@ const float sunPathRotation = -25.0;
 #define FAR_SHADE 1.0 // [0.0 0.5 1.0 1.5] far hills keep deep blue-teal shade sides with smooth shading
 #define COOL_AIR 0.6 // [0.0 0.3 0.6 0.8 1.0] the whole world sits in a clear, cool blue-cyan air; shade leans deep blue-teal
 #define CANOPY_DEPTH 0.6 // [0.0 0.3 0.6 1.0] leaves deep inside and under a canopy turn a cooler deep green, outer leaves stay bright
-#define LEAF_SHEEN 0.6 // [0.0 0.3 0.6 1.0] calm soft sheen on sunlit canopy tops, like painted highlights
+#define LEAF_SHEEN 1.0 // [0.0 0.3 0.6 1.0] calm soft sheen on sunlit canopy tops, like painted highlights
 #define MORNING_BLUE 0.6 // [0.0 0.3 0.6 1.0] fresh, slightly cool blue air over the land in the early morning
 #define PALE_GARDEN_MOOD 1.0 // [0.0 0.5 1.0] pale gardens turn quiet, muted and grey-green
 #define WIND_SHEEN 0.15 // [0.0 0.05 0.10 0.15 0.2] light sheen where gusts bend the grass
