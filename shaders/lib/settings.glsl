@@ -82,7 +82,7 @@
 #define BOUNCE_LIGHT 3 // [0 2 3 5] warm light bounced from sunlit ground onto undersides (x10 percent)
 #define AERIAL_PERSPECTIVE 4 // [0 2 4 6] distant land fades paler and bluer into the sky (x10 percent)
 #define GRASS_PART 1.0 // [0.0 0.5 1.0 1.5] grass and flowers bend softly away around your feet
-#define SUN_SPOTS 0.6 // [0.0 0.35 0.6 0.85] soft round sun spots on the ground under leaf canopies
+#define SUN_SPOTS 0.85 // [0.0 0.35 0.6 0.85] soft round sun spots on the ground under leaf canopies
 #define CANOPY_RAYS 1.0 // [0.0 0.5 1.0 1.5] long soft sun beams through gaps in tree canopies
 #define GODRAYS_STRENGTH 0.7 // [0.0 0.2 0.35 0.5 0.7 0.9]
 #define CANOPY_GLOW 0.20 // [0.0 0.06 0.12 0.20 0.30]

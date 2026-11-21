@@ -7,6 +7,7 @@ All builds tested in the real client with screenshots.
 
 ### Changes
 - **Sun halo**: when the sun is in view it gains a soft glowing bloom, strongest at golden hour (Sun Halo setting).
+- **Sun spots**: soft round sun patches on the ground under leaf canopies read a little more clearly (Sun Spots setting).
 
 ## 0.35.1
 
