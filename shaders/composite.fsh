@@ -1493,6 +1493,12 @@ void main() {
 			float sgK = SOFT_AQUA * dayG * (1.0 - duskG) * (water || sky ? 0.0 : 1.0) * smoothstep(0.22, 0.38, col.g - col.r) * smoothstep(0.45, 0.65, sgL) * step(col.b, col.g) * (1.0 - cave);
 			col = mix(col, vec3(sgL) * vec3(0.84, 1.03, 1.04), clamp(sgK * 0.45, 0.0, 0.45));
 		}
+		// dusk honey: at sunrise and sunset the most vivid yellow-lime grass settles into a softer honey, so fields glow warm without neon
+		{
+			float dhL = luma(col);
+			float dhK = DUSK_HONEY * duskG * (water || sky ? 0.0 : 1.0) * smoothstep(0.18, 0.32, col.g - col.b) * smoothstep(0.28, 0.50, dhL) * (1.0 - cave);
+			col = mix(col, vec3(dhL) * vec3(1.08, 1.02, 0.78), clamp(dhK * 0.50, 0.0, 0.50));
+		}
 		// night teal: at night land leaves the violet-grey navy for a deep, saturated blue-teal, torch pools kept warm
 		{
 			float ntL = luma(col);
