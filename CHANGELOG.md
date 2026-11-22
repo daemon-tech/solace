@@ -7,6 +7,7 @@ All builds tested in the real client with screenshots.
 
 ### Changes
 - **Dusk grass gold**: at sunrise and sunset grass blades and grass tops turn a warmer gold instead of fresh lime, so fields glow honey at low sun (Dusk Grass Gold setting).
+- **Dry tint**: savanna, badlands and desert-edge grass keep a warm golden-olive tone, while cool cyan meadow grades stay on plains and forests.
 
 ## 0.35.3
 

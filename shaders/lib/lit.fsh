@@ -142,9 +142,13 @@ void main() {
 #ifdef HIDE_LEAF_LITTER
 	if (isFoliage == 3) discard;
 #endif
+	// biome grass tint from the colormap: plains/forest are greener (G clearly above R);
+	// savanna, badlands and desert-edge tints are yellow-olive (R close to or above G)
+	bool biomeGrassTint = vcolor.g > vcolor.b * 1.15 && vcolor.r > vcolor.b * 1.05;
+	float dryTint = biomeGrassTint && (isFoliage == 2 || isGrassPlant == 1) ? smoothstep(-0.04, 0.02, vcolor.r - vcolor.g) : 0.0;
 	// low-pass texture detail: smooth even grass tops and leaf masses (mip bias, alpha-corrected)
 	{
-		bool tinted = vcolor.g > vcolor.b * 1.15 && vcolor.g > vcolor.r * 1.05;
+		bool tinted = biomeGrassTint;
 		float sm = ((isFoliage == 2 || isGrassPlant == 1) && tinted) ? GRASS_SMOOTH : (isFoliage == 1 ? FOLIAGE_SMOOTH : 0.0);
 #ifdef SOFT_GRASS
 		if ((isFoliage == 2 || isGrassPlant == 1) && tinted) sm = min(sm + 0.25 * SOFT_GRASS_STRENGTH, 0.9); // calmer grass surface, texels fade out
@@ -313,7 +317,7 @@ void main() {
 	#endif
 	#ifdef GROUND_GRADE
 		// grass ground: tinted texels (grass top / side overlay) get flat, soft lighting
-		bool grassTex = (isFoliage == 2 || isGrassPlant == 1) && vcolor.g > vcolor.b * 1.15 && vcolor.g > vcolor.r * 1.05;
+		bool grassTex = (isFoliage == 2 || isGrassPlant == 1) && biomeGrassTint;
 		if (grassTex) {
 			lb = mix(lb, 1.0, 0.55 * smoothstep(0.1, 0.4, light)); // fewer, softer steps in sun
 			lighting = ambient + sunCol * glassTint * lb + block + vec3(0.03);
@@ -332,7 +336,7 @@ void main() {
 			vec2 tex = vec2(0.82, 1.10);
 	#endif
 			// savanna and other hot dry lands: the grass keeps a warm golden-olive tone (sun-dried, still soft)
-			tone = mix(tone, vec3(0.64, 0.66, 0.27), sbHot * SAVANNA_GOLD);
+			tone = mix(tone, vec3(0.64, 0.66, 0.27), max(sbHot, dryTint) * SAVANNA_GOLD);
 			// golden hour: low sun warms the lit grass and deepens its shade side
 			float shadeK = mix(lb * 0.35 + 0.65, lb * 0.55 + 0.45, golden);
 			vec3 target = tone * 1.02 * mix(tex.x, tex.y, clamp(lf, 0.0, 1.0)) * mix(0.45, 1.0, day) * shadeK;
@@ -369,7 +373,7 @@ void main() {
 	#else
 			vec3 toneF = vec3(0.27, 0.72, 0.38);
 	#endif
-			toneF = mix(toneF, vec3(0.64, 0.66, 0.27), sbHot * SAVANNA_GOLD); // same golden side fringe as the savanna tops
+			toneF = mix(toneF, vec3(0.64, 0.66, 0.27), max(sbHot, dryTint) * SAVANNA_GOLD); // same golden side fringe as the savanna tops
 			vec3 fc = toneF * 0.96 * mix(0.45, 1.0, day) * (lb * 0.35 + 0.65) * (0.9 + 0.1 * lb);
 			col = mix(col, fc * mix(0.82, 1.0, fr), min(fr * 1.15 * GROUND_GRADE_STRENGTH, 0.92));
 		}
@@ -726,7 +730,7 @@ if (isLeaf == 1) col *= mix(1.0, 0.72, DEEP_FOREST * day * (1.0 - smoothstep(0.0
 	}
 	// dusk grass gold: last word on grass blades and tops at sunrise and sunset, a warm gold instead of fresh lime (after all other foliage tints)
 #ifdef TERRAIN_PASS
-	if (isGrassPlant == 1 || ((isFoliage == 2 || isFoliage == 1) && vcolor.g > vcolor.b * 1.15 && vcolor.g > vcolor.r * 1.05)) {
+	if (isGrassPlant == 1 || ((isFoliage == 2 || isFoliage == 1) && biomeGrassTint)) {
 		vec3 dgS = safeNormalize(mat3(gbufferModelViewInverse) * sunPosition, vec3(0, 1, 0));
 		float dgK = DUSK_GRASS_GOLD * smoothstep(-0.02, 0.06, dgS.y) * (1.0 - smoothstep(0.20, 0.45, dgS.y)) * smoothstep(0.6, 0.9, lm.y) * (1.0 - rainStrength);
 		float dgL = luma(col);
@@ -734,7 +738,7 @@ if (isLeaf == 1) col *= mix(1.0, 0.72, DEEP_FOREST * day * (1.0 - smoothstep(0.0
 	}
 #endif
 	outColor = vec4(clamp(col, 0.0, 4.0), albedo.a);
-	outFlag = vec4(0.0, clamp(pool, 0.0, 1.0), 0.0, 1.0);
+	outFlag = vec4(0.0, clamp(pool, 0.0, 1.0), dryTint, 1.0); // .b = dry yellow-olive biome grass tint (composite scales cyan grades off these pixels)
 #ifdef FLAT_NORMAL
 	outFlag.a = 0.6; // particle flag: composite keeps white mist/smoke neutral (no sand/warm grading)
 #endif
@@ -751,6 +755,6 @@ if (isLeaf == 1) col *= mix(1.0, 0.72, DEEP_FOREST * day * (1.0 - smoothstep(0.0
 	if (isEyeInWater == 0 && ndl > 0.0) outShadow = vec4(cOut[1] - cOut[0], lb);
 #endif
 	// alpha 0.5 = foliage, 0.85 = graded grass ground (outlines skip small grass ledges), 1.0 = other
-	bool grassG = isFoliage == 2 && vcolor.g > vcolor.b * 1.15 && vcolor.g > vcolor.r * 1.05;
+	bool grassG = isFoliage == 2 && biomeGrassTint;
 	outNormal = vec4(n * 0.5 + 0.5, isFoliage == 1 ? (isGrassPlant == 1 ? 0.6 : (isLeaf == 2 ? 0.56 : 0.5)) : (grassG ? 0.85 : 1.0)); // 0.5 leaves, 0.6 grass plants (both < 0.75 = foliage)
 }

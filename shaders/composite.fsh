@@ -1345,23 +1345,26 @@ void main() {
 		coolC *= luma(col) / max(luma(coolC), 1e-4);
 		col = mix(col, coolC, mbK * mix(0.6, 1.0, smoothstep(8.0, 64.0, lin)));
 	}
+	// dry tint: yellow-olive biome grass written by gbuffers into colortex2.b (unused on terrain).
+	// cyan grades stay off those pixels so savanna keeps its warmth; plains and forest write 0.
+	float dryTint = (water || sky) ? 0.0 : texture(colortex2, uv).b;
 	// cool air: the whole scene leans into a clear blue-cyan light (brightness kept), and the darker tones
 	// sink into a deep blue-teal instead of grey, so shade reads as cool air rather than dirt
 	vec3 preCA = col;
 	if (IS_OW && isEyeInWater == 0) {
-		float caK = COOL_AIR * mix(0.75, 1.0, dayG) * (1.0 - 0.6 * duskG);
+		float caK = COOL_AIR * mix(0.75, 1.0, dayG) * (1.0 - 0.6 * duskG) * mix(1.0, 0.20, sky ? 0.0 : dryTint);
 		vec3 cc = col * vec3(0.84, 0.99, 1.17);
 		cc *= luma(col) / max(luma(cc), 1e-4);
 		float skyHz = sky ? (1.0 - smoothstep(0.0, 0.30, abs(dot(vdir, safeNormalize(upPosition, vec3(0, 1, 0)))))) * dayG * (1.0 - duskG) : 0.0;
 		col = mix(col, cc, caK * (sky ? 0.45 * (1.0 - 0.8 * skyHz) : 1.0));
 		// teal greens: grass and leaves lean from lime into a deeper blue-green, a little darker (painted teal forests)
 		if (!sky) {
-			float gK = smoothstep(0.04, 0.22, col.g - max(col.r, col.b)) * TEAL_GREENS * mix(0.5, 1.0, dayG) * (1.0 - cave) * (1.0 + 0.6 * smoothstep(40.0, 220.0, lin)) * (1.0 - 0.6 * DUSK_LEAF_GOLD * duskG * dayG); // far greens lean further into teal; golden hour keeps its warmth
+			float gK = smoothstep(0.04, 0.22, col.g - max(col.r, col.b)) * TEAL_GREENS * mix(0.5, 1.0, dayG) * (1.0 - cave) * (1.0 + 0.6 * smoothstep(40.0, 220.0, lin)) * (1.0 - 0.6 * DUSK_LEAF_GOLD * duskG * dayG) * (1.0 - dryTint); // far greens lean further into teal; golden hour keeps its warmth
 			vec3 tg = col * vec3(0.72, 0.90, 1.38);
 			tg *= 0.90 * luma(col) / max(luma(tg), 1e-4);
 			col = mix(col, tg, clamp(gK, 0.0, 1.0));
 			// mid-distance canopy: settles into a deeper, calmer blue-green instead of bright aqua, before the far haze takes over
-			float fcK = FAR_CANOPY_DEEP * smoothstep(0.06, 0.25, col.g - col.r) * smoothstep(20.0, 70.0, lin) * (1.0 - smoothstep(0.30, 0.75, lin / wEnd)) * mix(0.4, 1.0, dayG) * (1.0 - cave);
+			float fcK = FAR_CANOPY_DEEP * smoothstep(0.06, 0.25, col.g - col.r) * smoothstep(20.0, 70.0, lin) * (1.0 - smoothstep(0.30, 0.75, lin / wEnd)) * mix(0.4, 1.0, dayG) * (1.0 - cave) * (1.0 - dryTint);
 			col = mix(col, mix(vec3(luma(col)), col, 0.80) * 0.62, clamp(fcK, 0.0, 1.0));
 		}
 		float shK = 1.0 - smoothstep(0.12, 0.45, luma(col));
@@ -1448,7 +1451,7 @@ void main() {
 		// meadow air: by day bright open greens settle from saturated pure green into a lighter, airy blue-green, like grass seen through clear cool air
 		{
 			float maL = luma(col);
-			float maK = MEADOW_AIR * dayG * (1.0 - duskG) * (water ? 0.0 : 1.0) * (abs(texture(colortex1, uv).a - 0.5) < 0.05 ? 0.0 : 1.0) * smoothstep(0.06, 0.20, col.g - col.r) * smoothstep(0.08, 0.28, maL) * (1.0 - cave) * (1.0 - 0.6 * smoothstep(0.50, 0.75, maL)) * (1.0 - rainStrength);
+			float maK = MEADOW_AIR * dayG * (1.0 - duskG) * (water ? 0.0 : 1.0) * (abs(texture(colortex1, uv).a - 0.5) < 0.05 ? 0.0 : 1.0) * smoothstep(0.06, 0.20, col.g - col.r) * smoothstep(0.08, 0.28, maL) * (1.0 - cave) * (1.0 - 0.6 * smoothstep(0.50, 0.75, maL)) * (1.0 - rainStrength) * (1.0 - dryTint);
 			col = mix(col, vec3(maL) * vec3(0.76, 1.02, 1.22) * 1.10, clamp(maK * 0.70, 0.0, 0.70));
 		}
 		// shade lift: by day the very darkest shade on land lifts a gentle step toward a luminous painted blue-teal instead of near black
@@ -1472,7 +1475,7 @@ void main() {
 		// valley shade: by day the darker shade on open land loses its vivid green and settles into a calm blue-teal, as in the cool painted shade of the meadows
 		{
 			float vsL = luma(col);
-			float vsK = VALLEY_SHADE * dayG * (1.0 - duskG) * (water || sky ? 0.0 : 1.0) * (abs(texture(colortex1, uv).a - 0.5) < 0.05 ? 0.0 : 1.0) * (1.0 - smoothstep(0.22, 0.42, vsL)) * smoothstep(0.06, 0.18, col.g - col.r) * (1.0 - cave) * (1.0 - 0.6 * rainStrength);
+			float vsK = VALLEY_SHADE * dayG * (1.0 - duskG) * (water || sky ? 0.0 : 1.0) * (abs(texture(colortex1, uv).a - 0.5) < 0.05 ? 0.0 : 1.0) * (1.0 - smoothstep(0.22, 0.42, vsL)) * smoothstep(0.06, 0.18, col.g - col.r) * (1.0 - cave) * (1.0 - 0.6 * rainStrength) * (1.0 - dryTint);
 			col = mix(col, vec3(vsL) * vec3(0.74, 0.98, 1.04) * 0.86, clamp(vsK * 0.5, 0.0, 0.5)); // calmer, a touch deeper
 		}
 		// bright air highlights: by day the brightest lit land rolls up into a clean, luminous cyan-white, so sunlit slopes sparkle
@@ -1496,13 +1499,13 @@ void main() {
 		// soft aqua grass: by day the most vivid bright mint grass settles into a softer aqua-green, so lit lawns glow without neon
 		{
 			float sgL = luma(col);
-			float sgK = SOFT_AQUA * dayG * (1.0 - duskG) * (water || sky ? 0.0 : 1.0) * (abs(texture(colortex1, uv).a - 0.5) < 0.05 ? 0.0 : 1.0) * smoothstep(0.22, 0.38, col.g - col.r) * smoothstep(0.45, 0.65, sgL) * step(col.b, col.g) * (1.0 - cave);
+			float sgK = SOFT_AQUA * dayG * (1.0 - duskG) * (water || sky ? 0.0 : 1.0) * (abs(texture(colortex1, uv).a - 0.5) < 0.05 ? 0.0 : 1.0) * smoothstep(0.22, 0.38, col.g - col.r) * smoothstep(0.45, 0.65, sgL) * step(col.b, col.g) * (1.0 - cave) * (1.0 - dryTint);
 			col = mix(col, vec3(sgL) * vec3(0.82, 1.02, 1.14), clamp(sgK * 0.50, 0.0, 0.50));
 		}
 		// valley light: by day mid-lit open grass lifts into a brighter, clearer cyan, so valleys read lighter and cooler, while tree crowns stay deep
 		{
 			float vlL = luma(col);
-			float vlK = VALLEY_LIGHT * dayG * (1.0 - duskG) * (water || sky ? 0.0 : 1.0) * (abs(texture(colortex1, uv).a - 0.5) < 0.05 ? 0.0 : 1.0) * smoothstep(0.06, 0.18, col.g - col.r) * smoothstep(0.16, 0.30, vlL) * (1.0 - smoothstep(0.52, 0.70, vlL)) * (1.0 - cave) * (1.0 - rainStrength);
+			float vlK = VALLEY_LIGHT * dayG * (1.0 - duskG) * (water || sky ? 0.0 : 1.0) * (abs(texture(colortex1, uv).a - 0.5) < 0.05 ? 0.0 : 1.0) * smoothstep(0.06, 0.18, col.g - col.r) * smoothstep(0.16, 0.30, vlL) * (1.0 - smoothstep(0.52, 0.70, vlL)) * (1.0 - cave) * (1.0 - rainStrength) * (1.0 - dryTint);
 			col = mix(col, vec3(mix(vlL, 0.55, 0.50)) * vec3(0.76, 1.04, 1.22), clamp(vlK * 0.50, 0.0, 0.50));
 		}
 		// dusk honey: at sunrise and sunset the most vivid yellow-lime grass settles into a softer honey, so fields glow warm without neon
