@@ -1338,12 +1338,14 @@ void main() {
 		vec3 calmC = mix(vec3(luma(col)), col, 0.55) * mix(vec3(1.0), fogSky / max(luma(fogSky), 1e-3), 0.25);
 		col = mix(col, calmC, dfK * 0.5);
 	}
-	// early morning: fresh, slightly cool blue air over the land for the first hours after sunrise (brightness kept)
+	// early morning: slightly cool air after sunrise; mid-dark land lifts a clear step so valleys read fresh and bright, not gloomy
 	if (IS_OW && !sky && isEyeInWater == 0 && cave < 0.5) {
 		float mbK = MORNING_BLUE * MORN_K * smoothstep(0.0, 0.08, sunHg) * (1.0 - smoothstep(0.30, 0.55, sunHg)) * (1.0 - rainStrength);
-		vec3 coolC = col * vec3(0.84, 0.97, 1.20);
-		coolC *= luma(col) / max(luma(coolC), 1e-4);
-		col = mix(col, coolC, mbK * mix(0.6, 1.0, smoothstep(8.0, 64.0, lin)));
+		float mbL = luma(col);
+		vec3 coolC = col * vec3(0.92, 1.04, 1.10);
+		coolC *= mbL / max(luma(coolC), 1e-4);
+		coolC = coolC * mix(1.40, 1.08, smoothstep(0.10, 0.55, mbL)) + vec3(0.02, 0.03, 0.04);
+		col = mix(col, coolC, mbK * mix(0.70, 1.0, smoothstep(6.0, 48.0, lin)));
 	}
 	// dry tint: yellow-olive biome grass written by gbuffers into colortex2.b (unused on terrain).
 	// cyan grades stay off those pixels so savanna keeps its warmth; plains and forest write 0.
