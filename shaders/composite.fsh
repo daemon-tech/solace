@@ -1511,7 +1511,7 @@ void main() {
 		{
 			float ntL = luma(col);
 			float ntK = NIGHT_TEAL * (1.0 - dayG) * (1.0 - duskG) * (sky ? 0.0 : 1.0) * (1.0 - smoothstep(0.05, 0.12, col.r - col.b)) * (1.0 - cave) * (1.0 - rainStrength) * (abs(texture(colortex1, uv).a - 0.5) < 0.05 ? 1.0 - smoothstep(-0.02, 0.04, col.r - col.g * 0.85) : 1.0); // cherry crowns keep their violet
-			col = mix(col, ntL * vec3(0.24, 1.16, 1.90), clamp(ntK * 0.68, 0.0, 0.68)); // deeper, more saturated blue-teal
+			col = mix(col, ntL * vec3(0.18, 1.18, 1.94), clamp(ntK * 0.68, 0.0, 0.68)); // deeper, more saturated blue-teal
 		}
 		// rain teal: in rain land leaves the violet-grey slate for a calm, deep blue-teal, warm windows kept
 		{
