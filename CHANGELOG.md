@@ -5,6 +5,8 @@ All builds tested in the real client with screenshots.
 
 ## 0.35.2
 
+A light and air update: a soft glowing sun, clearer sun patches under the trees, warmer honey fields at dusk, rainy meadows with soft form, deeper mid-distance forests, stronger sun rays, clearer moonlit land and cooler aqua lawns.
+
 ### Changes
 - **Sun halo**: when the sun is in view it gains a soft glowing bloom, strongest at golden hour (Sun Halo setting).
 - **Sun spots**: soft round sun patches on the ground under leaf canopies read a little more clearly (Sun Spots setting).
