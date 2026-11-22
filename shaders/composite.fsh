@@ -1463,6 +1463,12 @@ void main() {
 			col *= mix(vec3(1.0), vec3(0.55, 0.68, 0.58), clamp(fdK, 0.0, 1.0)); // a step darker, greener than blue
 			col.r *= mix(1.0, 0.55, clamp(fdK * FOREST_TEAL, 0.0, 1.0)); // forest teal: crowns lose their grey red share and read as rich deep teal-green
 		}
+		// deep crowns: by day mid-dark tree crowns settle a step darker and greener, less blue; the darkest creases stay put
+		{
+			float dcL = luma(col);
+			float dcK = DEEP_CROWNS * dayG * (1.0 - duskG) * (abs(texture(colortex1, uv).a - 0.5) < 0.05 ? 1.0 : 0.0) * (1.0 - cave) * smoothstep(0.08, 0.16, dcL) * (1.0 - smoothstep(0.50, 0.70, dcL)) * (1.0 - smoothstep(180.0, 280.0, lin)) * (1.0 - 0.5 * rainStrength);
+			col *= mix(vec3(1.0), vec3(0.86, 0.93, 0.70), clamp(dcK * 0.90, 0.0, 0.90));
+		}
 		// valley shade: by day the darker shade on open land loses its vivid green and settles into a calm blue-teal, as in the cool painted shade of the meadows
 		{
 			float vsL = luma(col);

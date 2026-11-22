@@ -12,6 +12,7 @@ All builds tested in the real client with screenshots.
 - **Meadow air**: by day mid-lit open grass leans further into a lighter, clearer cyan, so valleys read cooler and airier, while tree crowns stay deep (Meadow Air setting).
 - **Forest depth**: by day tree crowns settle a little deeper into a rich green, so forests read less blue and more as deep painted masses against the meadows (Forest Depth setting).
 - **Valley light**: by day mid-lit open grass lifts into a brighter, clearer cyan, so valleys read lighter and cooler, while tree crowns stay deep (Valley Light setting).
+- **Deep crowns**: by day mid-dark tree crowns settle a step darker and greener, less blue, while the darkest creases stay put (Deep Crowns setting).
 
 ## 0.35.2
 

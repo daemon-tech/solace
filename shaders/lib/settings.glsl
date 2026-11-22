@@ -188,6 +188,7 @@ const float sunPathRotation = -25.0;
 #define CALM_PATHS 1.0 // [0.0 0.5 1.0] by day loud orange-yellow paths, sand and planks soften into a calm warm sand
 #define FOREST_TEAL 1.0 // [0.0 0.5 1.0] by day tree crowns lose their grey red share and read as rich deep teal-green
 #define FOREST_DEPTH 1.0 // [0.0 0.5 1.0] by day tree crowns settle a calm step darker
+#define DEEP_CROWNS 1.0 // [0.0 0.5 1.0] by day mid-dark tree crowns settle a step darker and greener, less blue
 #define DEEP_FOREST 1.0 // [0.0 0.5 1.0] by day tree crowns sit a clear step darker overall
 #define MEADOW_AIR 1.0 // [0.0 0.5 1.0] by day bright open greens settle into a lighter, airy blue-green
 #define SHADE_SIDES 0.8 // [0.0 0.4 0.8 1.0] by day faces turned away from the sun sit a step deeper in cool teal
