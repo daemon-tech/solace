@@ -3,6 +3,11 @@
 Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All Rights Reserved.
 All builds tested in the real client with screenshots.
 
+## 0.35.4
+
+### Changes
+- **Dusk grass gold**: at sunrise and sunset grass blades and grass tops turn a warmer gold instead of fresh lime, so fields glow honey at low sun (Dusk Grass Gold setting).
+
 ## 0.35.3
 
 A light and depth update: a stronger glowing sun and bloom, deeper greener forest crowns, lighter cyan valleys, and more saturated moonlit land.

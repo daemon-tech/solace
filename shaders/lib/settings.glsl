@@ -169,7 +169,7 @@ const float sunPathRotation = -25.0;
 #define FLOWER_POP 1.0 // [0.0 0.5 1.0] flower petals keep vivid saturated colour under the cool grade
 #define BLUE_SHADE 1.0 // [0.0 0.5 1.0] by day the deepest foliage shade leans from vivid green-black into a calm blue-teal
 #define SHADE_LIFT 1.0 // [0.0 0.5 1.0] by day the very darkest shade lifts a gentle step toward a luminous blue-teal
-#define DUSK_GRASS_GOLD 0.75 // [0.0 0.5 0.75 1.0] at sunrise and sunset grass blades and tops turn a warm gold instead of fresh lime
+#define DUSK_GRASS_GOLD 1.0 // [0.0 0.5 0.75 1.0] at sunrise and sunset grass blades and tops turn a warm gold instead of fresh lime
 #define BRIGHT_HIGHLIGHTS 1.0 // [0.0 0.5 1.0] by day the brightest lit land rolls up into a luminous cyan-white
 #define RAIN_TEAL 1.0 // [0.0 0.5 1.0] in rain land takes a calm, deep blue-teal instead of violet-grey slate
 #define NIGHT_TEAL 1.0 // [0.0 0.5 1.0] at night land takes a deep, saturated blue-teal instead of violet-grey navy
