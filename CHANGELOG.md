@@ -3,6 +3,11 @@
 Iris shaderpack for Minecraft 26.3 (tested with Iris 1.11.7, Sodium 0.9.2). All Rights Reserved.
 All builds tested in the real client with screenshots.
 
+## 0.35.3
+
+### Changes
+- **Sun halo**: the glowing bloom around the sun is a step stronger, especially at sunrise and sunset (Sun Halo setting).
+
 ## 0.35.2
 
 A light and air update: a soft glowing sun, clearer sun patches under the trees, warmer honey fields at dusk, rainy meadows with soft form, deeper mid-distance forests, stronger sun rays, clearer moonlit land and cooler aqua lawns.
