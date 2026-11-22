@@ -5,6 +5,8 @@ All builds tested in the real client with screenshots.
 
 ## 0.35.3
 
+A light and depth update: a stronger glowing sun and bloom, deeper greener forest crowns, lighter cyan valleys, and more saturated moonlit land.
+
 ### Changes
 - **Sun halo**: the glowing bloom around the sun is a step stronger, especially at sunrise and sunset (Sun Halo setting).
 - **Bloom**: the soft bloom around bright light is a step stronger, so the sun and highlights glow more clearly (Bloom setting).
