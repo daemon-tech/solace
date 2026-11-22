@@ -9,6 +9,7 @@ All builds tested in the real client with screenshots.
 - **Sun halo**: the glowing bloom around the sun is a step stronger, especially at sunrise and sunset (Sun Halo setting).
 - **Bloom**: the soft bloom around bright light is a step stronger, so the sun and highlights glow more clearly (Bloom setting).
 - **Night teal**: at night land reads a little more saturated, a deeper blue-teal, while torch light and cherry crowns keep their colour (Night Teal setting).
+- **Meadow air**: by day mid-lit open grass leans further into a lighter, clearer cyan, so valleys read cooler and airier, while tree crowns stay deep (Meadow Air setting).
 
 ## 0.35.2
 
