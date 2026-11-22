@@ -10,6 +10,7 @@ All builds tested in the real client with screenshots.
 - **Bloom**: the soft bloom around bright light is a step stronger, so the sun and highlights glow more clearly (Bloom setting).
 - **Night teal**: at night land reads a little more saturated, a deeper blue-teal, while torch light and cherry crowns keep their colour (Night Teal setting).
 - **Meadow air**: by day mid-lit open grass leans further into a lighter, clearer cyan, so valleys read cooler and airier, while tree crowns stay deep (Meadow Air setting).
+- **Forest depth**: by day tree crowns settle a little deeper into a rich green, so forests read less blue and more as deep painted masses against the meadows (Forest Depth setting).
 
 ## 0.35.2
 
