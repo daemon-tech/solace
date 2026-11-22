@@ -86,7 +86,7 @@
 #define CANOPY_RAYS 1.0 // [0.0 0.5 1.0 1.5] long soft sun beams through gaps in tree canopies
 #define GODRAYS_STRENGTH 0.9 // [0.0 0.2 0.35 0.5 0.7 0.9]
 #define CANOPY_GLOW 0.20 // [0.0 0.06 0.12 0.20 0.30]
-#define BLOOM_STRENGTH 0.9 // [0.0 0.3 0.6 0.9 1.2]
+#define BLOOM_STRENGTH 1.2 // [0.0 0.3 0.6 0.9 1.2]
 #define HAZE 0.0 // [0.0 0.1 0.18 0.22 0.3 0.45]
 #define SAND_BOOST 0.8 // [0.0 0.4 0.8 1.0]
 //#define DISTANCE_FOG

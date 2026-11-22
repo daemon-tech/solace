@@ -7,6 +7,7 @@ All builds tested in the real client with screenshots.
 
 ### Changes
 - **Sun halo**: the glowing bloom around the sun is a step stronger, especially at sunrise and sunset (Sun Halo setting).
+- **Bloom**: the soft bloom around bright light is a step stronger, so the sun and highlights glow more clearly (Bloom setting).
 
 ## 0.35.2
 
