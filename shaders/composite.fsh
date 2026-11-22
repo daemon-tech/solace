@@ -1493,6 +1493,12 @@ void main() {
 			float sgK = SOFT_AQUA * dayG * (1.0 - duskG) * (water || sky ? 0.0 : 1.0) * (abs(texture(colortex1, uv).a - 0.5) < 0.05 ? 0.0 : 1.0) * smoothstep(0.22, 0.38, col.g - col.r) * smoothstep(0.45, 0.65, sgL) * step(col.b, col.g) * (1.0 - cave);
 			col = mix(col, vec3(sgL) * vec3(0.82, 1.02, 1.14), clamp(sgK * 0.50, 0.0, 0.50));
 		}
+		// valley light: by day mid-lit open grass lifts into a brighter, clearer cyan, so valleys read lighter and cooler, while tree crowns stay deep
+		{
+			float vlL = luma(col);
+			float vlK = VALLEY_LIGHT * dayG * (1.0 - duskG) * (water || sky ? 0.0 : 1.0) * (abs(texture(colortex1, uv).a - 0.5) < 0.05 ? 0.0 : 1.0) * smoothstep(0.06, 0.18, col.g - col.r) * smoothstep(0.16, 0.30, vlL) * (1.0 - smoothstep(0.52, 0.70, vlL)) * (1.0 - cave) * (1.0 - rainStrength);
+			col = mix(col, vec3(mix(vlL, 0.55, 0.50)) * vec3(0.76, 1.04, 1.22), clamp(vlK * 0.50, 0.0, 0.50));
+		}
 		// dusk honey: at sunrise and sunset the most vivid yellow-lime grass settles into a softer honey, so fields glow warm without neon
 		{
 			float dhL = luma(col);
